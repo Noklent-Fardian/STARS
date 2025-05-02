@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('m_keahlians', function (Blueprint $table) {
+        Schema::create('table_t_keahlian_lombas', function (Blueprint $table) {
             $table->id();
-            $table->string('keahlian_nama');
-            $table->string('keahlian_sertifikat');
-            $table->boolean('keahlian_visible')->default(true);
+            $table->foreignId('lomba_id')->constrained('table_m_lombas')->onDelete('cascade');
+            $table->foreignId('keahlian_id')->constrained('m_keahlians')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('m_keahlians');
+        Schema::dropIfExists('table_t_keahlian_lombas');
     }
 };

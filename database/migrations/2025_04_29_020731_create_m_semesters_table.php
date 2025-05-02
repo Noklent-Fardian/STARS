@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('m_periode_semesters', function (Blueprint $table) {
+        Schema::create('m_semesters', function (Blueprint $table) {
             $table->id();
             $table->string('semester_nama')->unique();
+            $table->integer('semester_tahun')->default(2000);
             $table->enum('semester_jenis', ['Ganjil', 'Genap'])->default('Ganjil');
             $table->boolean('semester_aktif')->default(true);
             $table->boolean('semester_visible')->default(true);
