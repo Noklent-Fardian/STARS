@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('t_keahlian_mahasiswas', function (Blueprint $table) {
+        Schema::create('t_bimbingans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('mahasiswa_id')->constrained('m_mahasiswas')->onDelete('cascade');
-            $table->foreignId('keahlian_id')->constrained('m_keahlians')->onDelete('cascade');
+            $table->foreignId('dosen_id')->constrained('m_dosens')->onDelete('cascade');
+            $table->foreignId('lomba_id')->constrained('m_lombas')->onDelete('cascade');
+            $table->enum('bimbingan_status', ['berlangsung', 'selesai','batal'])->default('berlangsung');
+            $table->boolean('bimbingan_visible')->default(true);
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('table_t_keahlian_mahasiswas');
+        Schema::dropIfExists('t_bimbingans');
     }
 };
