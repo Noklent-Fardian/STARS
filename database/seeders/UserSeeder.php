@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         DB::table('m_users')->insert([
             [
                 'username' => 'admin1',
-                'user_password' => Hash::make('12345'),
+                'user_password' => Hash::make('admin123'),
                 'user_role' => 'Admin',
             ],
             [
@@ -37,7 +37,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'dosen1',
-                'user_password' => Hash::make('12345'),
+                'user_password' => Hash::make('dosen123'),
                 'user_role' => 'Dosen',
             ],
             [
@@ -77,7 +77,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'mahasiswa1',
-                'user_password' => Hash::make('12345'),
+                'user_password' => Hash::make('mahasiswa123'),
                 'user_role' => 'Mahasiswa',
             ],
             [

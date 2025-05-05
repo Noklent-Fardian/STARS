@@ -25,10 +25,10 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
+        'username',
+        'user_password',
+        'user_role',
+        'user_visible',
     ];
 
     /**
@@ -37,8 +37,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'user_password',
     ];
 
     /**
@@ -47,9 +46,18 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'user_visible' => 'boolean',
     ];
+
+    /**
+     * Get the password for the user.
+     *
+     * @return string
+     */
+    public function getAuthPassword()
+    {
+        return $this->user_password;
+    }
 
     /**
      * Get the mahasiswa associated with the user.
@@ -73,5 +81,35 @@ class User extends Authenticatable
     public function admin(): HasOne
     {
         return $this->hasOne(Admin::class, 'user_id');
+    }
+
+    /**
+     * Determine if the user is an admin.
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->user_role === 'Admin';
+    }
+
+    /**
+     * Determine if the user is a dosen.
+     *
+     * @return bool
+     */
+    public function isDosen(): bool
+    {
+        return $this->user_role === 'Dosen';
+    }
+
+    /**
+     * Determine if the user is a mahasiswa.
+     *
+     * @return bool
+     */
+    public function isMahasiswa(): bool
+    {
+        return $this->user_role === 'Mahasiswa';
     }
 }
