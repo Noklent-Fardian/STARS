@@ -15,3 +15,4 @@ use App\Http\Controllers\LandingController;
 */
 
 Route::get('/', [LandingController::class, 'index']);
+Route::get('/login', [LandingController::class, 'login'])->name('login');

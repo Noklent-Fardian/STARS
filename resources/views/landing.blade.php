@@ -9,8 +9,7 @@
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    {{-- <link href="/logo_sigma.png" rel="icon">
-    <link href="/apple-touch-icon.png" rel="apple-touch-icon"> --}}
+    <link href="{{ asset('img/logo.svg') }}" rel="icon">
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -39,7 +38,8 @@
         <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
             <a href="#" class="logo d-flex align-items-center me-auto">
-                <h1 class="sitename">Pencatatan Prestasi </h1>
+                <img src="{{ asset('img/logo.svg') }}" class="me-2" alt="STARS Logo" height="40">
+                <h1 class="sitename">Pencatatan Prestasi</h1>
             </a>
 
             <nav id="navmenu" class="navmenu">
@@ -78,8 +78,9 @@
                                     class="bi bi-play-circle"></i><span>Watch Video</span></a>
                         </div>
                     </div>
-                    <div class="col-lg-6 order-1 order-lg-2 hero-img">
-                        <img src="/logo_sigma.png" class="img-fluid animated" alt="">
+                    <div class="col-lg-6 order-1 order-lg-2 hero-img text-center d-flex align-items-center justify-content-center">
+                        <img src="{{ asset('img/logo.svg') }}" class="img-fluid animated mx-auto d-block" alt=""
+                            style="width: 61%;">
                     </div>
                 </div>
             </div>
@@ -159,8 +160,8 @@
                     <div class="col-lg-6 content" data-aos="fade-right" data-aos-duration="1000">
                         <div class="about-content-box">
                             <p class="lead-text">
-                                SAN SIGMA atau Sistem Pencatatan Prestasi Digital Mahasiswa ini dirancang untuk mencatat
-                                dan mengelola informasi prestasi mahasiswa di Polinema secara terpusat dan terstruktur.
+                                STARS atau Student Achievement Record Sistem ini dirancang untuk mencatat
+                                dan mengelola informasi prestasi mahasiswa Jurusan Teknologi Informasi Polinema secara terpusat dan terstruktur.
                             </p>
 
                             <div class="team-section">
@@ -255,8 +256,8 @@
         <section id="services" class="services section">
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
-                <h2>Fitur San Sigma</h2>
-                <p>Dengan San Sigma menuju prestasi tingkat dunia </p>
+                <h2>Fitur STARS</h2>
+                <p>Dengan STARS menuju prestasi tingkat dunia </p>
             </div><!-- End Section Title -->
             <div class="container">
                 <div class="row gy-4">
@@ -300,7 +301,7 @@
                 <div class="row justify-content-between align-items-center" data-aos="zoom-in" data-aos-delay="100">
                     <div class="col-xl-7 text-center text-xl-start">
                         <div class="cta-content">
-                            <h3 class="mb-4">User SAN SIGMA</h3>
+                            <h3 class="mb-4">User STARS</h3>
 
                             <div class="role-cards">
                                 <div class="role-card">
@@ -424,76 +425,76 @@
         </section><!-- /Pricing Section -->
 
 
-            <!-- Contact Section -->
-            <section id="contact" class="contact section">
-                <!-- Section Title -->
-                <div class="container section-title" data-aos="fade-up">
-                    <h2>Hubungi Kami</h2>
-                    <p>Berikan saran dan kritik agar membantu dalam perkembangan website kami.</p>
-                </div><!-- End Section Title -->
+        <!-- Contact Section -->
+        <section id="contact" class="contact section">
+            <!-- Section Title -->
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Hubungi Kami</h2>
+                <p>Berikan saran dan kritik agar membantu dalam perkembangan website kami.</p>
+            </div><!-- End Section Title -->
 
-                <!-- Contact Form -->
-                <div class="container" data-aos="fade-up" data-aos-delay="200">
-                    <div class="row gy-4">
-                        <div class="col-lg-6">
-                            <div class="contact-info-card">
-                                <div class="contact-info-header">
-                                    <div class="info-header-icon">
-                                        <i class="bi bi-map"></i>
-                                    </div>
-                                    <h3>Informasi Kontak</h3>
+            <!-- Contact Form -->
+            <div class="container" data-aos="fade-up" data-aos-delay="200">
+                <div class="row gy-4">
+                    <div class="col-lg-6">
+                        <div class="contact-info-card">
+                            <div class="contact-info-header">
+                                <div class="info-header-icon">
+                                    <i class="bi bi-map"></i>
                                 </div>
-
-                                <div class="info-items">
-                                    <div class="info-item" data-aos="fade-up" data-aos-delay="100">
-                                        <i class="bi bi-geo-alt flex-shrink-0 pulse-icon"></i>
-                                        <div>
-                                            <h4>Alamat</h4>
-                                            <p>Jl. Soekarno Hatta No.9, Jatimulyo, Kec. Lowokwaru, Kota Malang, Jawa
-                                                Timur 65141</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="info-item" data-aos="fade-up" data-aos-delay="200">
-                                        <i class="bi bi-telephone flex-shrink-0 pulse-icon"></i>
-                                        <div>
-                                            <h4>Nomor Telepon</h4>
-                                            <p>+62 878-6192-6248</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="info-item" data-aos="fade-up" data-aos-delay="300">
-                                        <i class="bi bi-envelope flex-shrink-0 pulse-icon"></i>
-                                        <div>
-                                            <h4>Email</h4>
-                                            <p>info@sansigma.ac.id</p>
-                                        </div>
-                                    </div>
-                                </div>
-
+                                <h3>Informasi Kontak</h3>
                             </div>
+
+                            <div class="info-items">
+                                <div class="info-item" data-aos="fade-up" data-aos-delay="100">
+                                    <i class="bi bi-geo-alt flex-shrink-0 pulse-icon"></i>
+                                    <div>
+                                        <h4>Alamat</h4>
+                                        <p>Jl. Soekarno Hatta No.9, Jatimulyo, Kec. Lowokwaru, Kota Malang, Jawa
+                                            Timur 65141</p>
+                                    </div>
+                                </div>
+
+                                <div class="info-item" data-aos="fade-up" data-aos-delay="200">
+                                    <i class="bi bi-telephone flex-shrink-0 pulse-icon"></i>
+                                    <div>
+                                        <h4>Nomor Telepon</h4>
+                                        <p>+62 878-6192-6248</p>
+                                    </div>
+                                </div>
+
+                                <div class="info-item" data-aos="fade-up" data-aos-delay="300">
+                                    <i class="bi bi-envelope flex-shrink-0 pulse-icon"></i>
+                                    <div>
+                                        <h4>Email</h4>
+                                        <p>info@sansigma.ac.id</p>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
+                    </div>
 
-                        <div class="col-lg-6">
-                            <div class="map-container" data-aos="fade-up" data-aos-delay="300">
-                                <div class="map-header">
-                                    <div class="map-icon">
-                                        <i class="bi bi-pin-map-fill"></i>
-                                    </div>
-                                    <h3>Lokasi Kami</h3>
+                    <div class="col-lg-6">
+                        <div class="map-container" data-aos="fade-up" data-aos-delay="300">
+                            <div class="map-header">
+                                <div class="map-icon">
+                                    <i class="bi bi-pin-map-fill"></i>
                                 </div>
-
-                                <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15806.497797965125!2d112.61442606697996!3d-7.934233362695417!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e78827687d272e7%3A0x789ce9a636cd3aa2!2sPoliteknik%20Negeri%20Malang!5e0!3m2!1sid!2sid!4v1732764514137!5m2!1sid!2sid"
-                                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                                </iframe>
-
-                                
+                                <h3>Lokasi Kami</h3>
                             </div>
+
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15806.497797965125!2d112.61442606697996!3d-7.934233362695417!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e78827687d272e7%3A0x789ce9a636cd3aa2!2sPoliteknik%20Negeri%20Malang!5e0!3m2!1sid!2sid!4v1732764514137!5m2!1sid!2sid"
+                                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+
+
                         </div>
                     </div>
                 </div>
-            </section><!-- /Contact Section -->
+            </div>
+        </section><!-- /Contact Section -->
 
 
     </main>
@@ -504,7 +505,7 @@
                 <div class="row gy-4 justify-content-between">
                     <div class="col-lg-4 col-md-6 footer-info">
                         <a href="#" class="footer-logo d-flex align-items-center">
-                            <span class="gradient-text">SAN SIGMA</span>
+                            <span class="gradient-text">STARS</span>
                         </a>
                         <p class="mt-3">Sistem Pencatatan Prestasi Digital Mahasiswa yang dirancang untuk pencatatan
                             dan pengelolaan prestasi mahasiswa secara terpusat.</p>
@@ -543,7 +544,7 @@
 
         <div class="container footer-bottom">
             <div class="copyright">
-                &copy; <span id="current-year">2024</span> <strong><span>SAN SIGMA</span></strong>. All Rights Reserved
+                &copy; <span id="current-year">2024</span> <strong><span>STARS</span></strong>. All Rights Reserved
             </div>
         </div>
     </footer>
