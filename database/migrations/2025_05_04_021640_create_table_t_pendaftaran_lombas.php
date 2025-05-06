@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('t_pendaftaran_lombas', function (Blueprint $table) {
+        Schema::create('t_request_tambah_lombas', function (Blueprint $table) {
             $table->id();
        
             $table->foreignId('mahasiswa_id')->constrained('m_mahasiswas')->onDelete('cascade');
