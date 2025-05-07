@@ -19,15 +19,42 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Public routes
-Route::get('/', [LandingController::class, 'index']);
+Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::get('/login', [LandingController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Admin routes
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
+    // Dashboard
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-    // Add other admin routes here
+    
+    // Manajemen Pengguna
+    Route::get('/mahasiswa', [AdminController::class, 'mahasiswaIndex'])->name('admin.mahasiswa.index');
+    Route::get('/dosen', [AdminController::class, 'dosenIndex'])->name('admin.dosen.index');
+    Route::get('/admin', [AdminController::class, 'adminIndex'])->name('admin.admin.index');
+    
+    // Manajemen Prestasi
+    Route::get('/prestasi/verification', [AdminController::class, 'prestasiVerification'])->name('admin.prestasi.verification');
+    Route::get('/prestasi/akademik', [AdminController::class, 'prestasiAkademik'])->name('admin.prestasi.akademik');
+    Route::get('/prestasi/non-akademik', [AdminController::class, 'prestasiNonAkademik'])->name('admin.prestasi.non-akademik');
+    Route::get('/prestasi', [AdminController::class, 'prestasiIndex'])->name('admin.prestasi.index');
+    Route::get('/prestasi/report', [AdminController::class, 'prestasiReport'])->name('admin.prestasi.report');
+    
+    // Manajemen Lomba
+    Route::get('/lomba/verification', [AdminController::class, 'lombaVerification'])->name('admin.lomba.verification');
+    Route::get('/lomba', [AdminController::class, 'lombaIndex'])->name('admin.lomba.index');
+    
+    // Master Data
+    Route::get('/master/periode', [AdminController::class, 'masterPeriode'])->name('admin.master.periode');
+    Route::get('/master/prodi', [AdminController::class, 'masterProdi'])->name('admin.master.prodi');
+    Route::get('/master/keahlian', [AdminController::class, 'masterKeahlian'])->name('admin.master.keahlian');
+    Route::get('/master/kategori', [AdminController::class, 'masterKategori'])->name('admin.master.kategori');
+    
+    // Settings
+    Route::get('/settings', [AdminController::class, 'settings'])->name('admin.settings');
+    Route::get('/profile', [AdminController::class, 'profile'])->name('admin.profile');
+    
 });
 
 // Dosen routes
