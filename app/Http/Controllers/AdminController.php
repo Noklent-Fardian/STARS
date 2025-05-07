@@ -16,25 +16,25 @@ class AdminController extends Controller
         return view('admin.index', compact('admin'));
     }
 
-   
+
     public function mahasiswaIndex()
     {
         return view('admin.mahasiswa.index');
     }
 
- 
+
     public function dosenIndex()
     {
         return view('admin.dosen.index');
     }
 
-  
+
     public function adminIndex()
     {
         return view('admin.admin.index');
     }
 
-  
+
     public function prestasiVerification()
     {
         return view('admin.prestasi.verification');
@@ -84,16 +84,16 @@ class AdminController extends Controller
     {
         return view('admin.master.keahlian');
     }
+    // tingkatanLomba
+    public function masterTingkatanLomba()
+    {
+        return view('admin.master.tingkatanLomba');
+    }
+    public function masterPeringkatLomba()
+    {
+        return view('admin.master.peringkatLomba');
+    }
 
-    public function masterKategori()
-    {
-        return view('admin.master.kategori');
-    }
-    public function settings()
-    {
-        return view('admin.settings');
-    }
-    
     public function profile()
     {
         $admin = Auth::user()->admin;

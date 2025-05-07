@@ -101,9 +101,13 @@
         <a class="collapse-item {{ request()->routeIs('admin.master.keahlian') ? 'active' : '' }}" 
           href="{{ route('admin.master.keahlian') }}">
           <i class="fas fa-fw fa-tools"></i> Bidang Keahlian</a>
-        <a class="collapse-item {{ request()->routeIs('admin.master.kategori') ? 'active' : '' }}" 
-          href="{{ route('admin.master.kategori') }}">
-          <i class="fas fa-fw fa-tags"></i> Kategori Prestasi</a>
+        <a class="collapse-item {{ request()->routeIs('admin.master.tingkatanLomba') ? 'active' : '' }}" 
+          href="{{ route('admin.master.tingkatanLomba') }}">
+          <i class="fas fa-fw fa-trophy"></i> Tingkatan Lomba</a>
+        <a class="collapse-item {{ request()->routeIs('admin.master.peringkatLomba') ? 'active' : '' }}" 
+          href="{{ route('admin.master.peringkatLomba') }}">
+          <i class="fas fa-fw fa-medal"></i> Peringkat Lomba</a>
+       
       </div>
     </div>
   </li>

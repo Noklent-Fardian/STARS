@@ -48,11 +48,14 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     // Master Data
     Route::get('/master/periode', [AdminController::class, 'masterPeriode'])->name('admin.master.periode');
     Route::get('/master/prodi', [AdminController::class, 'masterProdi'])->name('admin.master.prodi');
+    // tingkatanLomba
+    Route::get('/master/tingkatanLomba', [AdminController::class, 'masterTingkatanLomba'])->name('admin.master.tingkatanLomba');
+    Route::get('/master/peringkatLomba', [AdminController::class, 'masterPeringkatLomba'])->name('admin.master.peringkatLomba');
     Route::get('/master/keahlian', [AdminController::class, 'masterKeahlian'])->name('admin.master.keahlian');
-    Route::get('/master/kategori', [AdminController::class, 'masterKategori'])->name('admin.master.kategori');
+
+
     
     // Settings
-    Route::get('/settings', [AdminController::class, 'settings'])->name('admin.settings');
     Route::get('/profile', [AdminController::class, 'profile'])->name('admin.profile');
     
 });
