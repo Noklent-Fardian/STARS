@@ -24,6 +24,12 @@ class DatabaseSeeder extends Seeder
             LombaSeeder::class,
             PeringkatSeeder::class,
             PenghargaanSeeder::class,
+            BimbinganSeeder::class,
+            KeahlianLombaSeeder::class,
+            KeahlianMahasiswaSeeder::class,
+            PenghargaanSeeder::class,
+            TambahLombaSeeder::class,
+            VerifikasiSeeder::class,
         ]);
     }
 }
