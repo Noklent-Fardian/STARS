@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('m_users')->onDelete('cascade');
             $table->foreignId('prodi_id')->constrained('m_prodis')->onDelete('cascade');
             $table->foreignId('keahlian_id')->constrained('m_keahlians')->onDelete('cascade');
+            $table->foreignId('semester_id')->constrained('m_semesters')->onDelete('cascade');
             $table->string('mahasiswa_nama');
             $table->string('mahasiswa_nim')->unique();
             $table->enum('mahasiswa_status', ['Aktif', 'Tidak Aktif', 'Cuti']);

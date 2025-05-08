@@ -27,6 +27,7 @@ class Mahasiswa extends Model
         'prodi_id',
         'keahlian_id',
         'mahasiswa_nama',
+        'semester_id',
         'mahasiswa_nim',
         'mahasiswa_status',
         'mahasiswa_gender',
