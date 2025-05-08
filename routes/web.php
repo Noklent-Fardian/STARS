@@ -57,6 +57,8 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     
     // Settings
     Route::get('/profile', [AdminController::class, 'profile'])->name('admin.profile');
+    Route::get('/admin/profile/edit', [AdminController::class, 'editProfile'])->name('admin.editProfile');
+    Route::put('/admin/profile/update', [AdminController::class, 'updateProfile'])->name('admin.updateProfile');
     
 });
 
