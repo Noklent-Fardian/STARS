@@ -497,3 +497,82 @@ body.sidebar-toggled .sidebar-overlay {
 #content {
     padding-bottom: 1rem;
 }
+/* Add these styles at the end of your file */
+
+/* Fix for content not being cut when inspector is open */
+@media screen and (min-height: 300px) {
+    .sidebar {
+        height: 100%;
+        min-height: 100%;
+        position: relative;
+        overflow-y: auto;
+    }
+    
+    /* Ensure sidebar scrolls properly */
+    .sidebar::-webkit-scrollbar {
+        width: 5px;
+    }
+    
+    .sidebar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    .sidebar::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+    }
+
+    /* Ensure content wrapper adjusts to height changes */
+    #content-wrapper {
+        height: auto;
+        min-height: 100%;
+    }
+    
+    /* Make footer adjust position properly */
+    footer.sticky-footer {
+        position: relative;
+        bottom: 0;
+        width: 100%;
+    }
+}
+
+/* For dev tools opened at bottom of screen */
+@media screen and (max-height: 500px) {
+    #wrapper {
+        height: auto;
+        min-height: 500px;
+    }
+    
+    .sidebar {
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: 500px;
+    }
+    
+    .min-content-height {
+        min-height: 300px;
+    }
+}
+
+/* Prevent fixed elements from being cut off */
+.topbar {
+    position: relative;
+    z-index: 1040;
+}
+
+/* Override any element that might cause cutoff when resizing */
+.modal-open,
+.modal-open .modal {
+    overflow-y: auto !important;
+}
+
+/* Ensure proper margin on small screens */
+@media (max-width: 576px) {
+    .container-fluid {
+        padding: 0 10px;
+    }
+    
+    .card {
+        margin-bottom: 10px;
+    }
+}

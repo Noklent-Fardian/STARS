@@ -68,7 +68,7 @@
       <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
         <img class="img-profile rounded-circle" src="{{ asset('RuangAdmin/img/boy.png') }}" alt="Profile Image">
-        <span class="ml-2 d-none d-lg-inline text-white small">{{ Auth::user()->username ?? 'Admin' }}</span>
+        <span class="ml-2 d-none d-lg-inline text-white small">{{ Auth::user()->admin->admin_name ?? Auth::user()->username }}</span>
         
       </a>
       <!-- Dropdown - User Information -->

@@ -708,7 +708,7 @@ a:focus {
 
 .sidebar .nav-item .collapse .collapse-inner,
 .sidebar .nav-item .collapsing .collapse-inner {
-    background-color: var(--white);
+    background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 0.15rem 1.75rem 0 rgba(16, 32, 68, 0.15) !important;
     padding: 0.7rem 0;
@@ -745,6 +745,7 @@ a:focus {
 .sidebar .nav-item .collapsing .collapse-inner .collapse-item:hover {
     background-color: rgba(var(--primary-color-rgb), 0.05);
     color: var(--accent-color);
+    text-decoration: none;
 }
 
 .sidebar .nav-item .collapse .collapse-inner .collapse-item:hover i,
@@ -1152,7 +1153,7 @@ a:focus {
 .sidebar-light .nav-item .nav-link:focus,
 .sidebar-light .nav-item .nav-link:hover {
   color: #6e707e;
-  background-color: #eee
+
 }
 
 .sidebar-light .nav-item .nav-link:active i,

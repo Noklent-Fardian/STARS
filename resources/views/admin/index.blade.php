@@ -18,7 +18,7 @@
                     <img src="{{ asset('img/logo.svg') }}" alt="STARS Logo" width="60">
                 </div>
                 <div>
-                    <h4 class="mb-1">Selamat Datang, {{ Auth::user()->username ?? 'Admin' }}</h4>
+                    <h4 class="mb-1">Selamat Datang, {{ Auth::user()->admin->admin_name ?? Auth::user()->username }}</h4>
                     <p>Selamat datang di dashboard Admin. Pantau dan kelola data prestasi mahasiswa dengan mudah.</p>
                 </div>
             </div>

@@ -90,7 +90,7 @@
     </a>
     <div id="collapseMaster" class="collapse {{ request()->routeIs('admin.master.*') ? 'show' : '' }}" 
       aria-labelledby="headingMaster" data-parent="#accordionSidebar">
-      <div class="bg-white py-2 collapse-inner rounded">
+      <div class=" py-2 collapse-inner rounded">
         <h6 class="collapse-header">Data Master:</h6>
         <a class="collapse-item {{ request()->routeIs('admin.master.periode') ? 'active' : '' }}" 
           href="{{ route('admin.master.periode') }}">
