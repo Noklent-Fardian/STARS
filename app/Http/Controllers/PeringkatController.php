@@ -22,8 +22,7 @@ class PeringkatController extends Controller
     public function getPeringkatList(Request $request)
     {
         $peringkats = Peringkat::select('id', 'peringkat_nama', 'peringkat_bobot', 'peringkat_visible')
-            ->where('peringkat_visible', true)
-            ->orderBy('id', 'asc');
+            ->where('peringkat_visible', true);
 
         return DataTables::of($peringkats)
             ->addColumn('aksi', function ($peringkat) {
@@ -69,6 +68,7 @@ class PeringkatController extends Controller
         Peringkat::create([
             'peringkat_nama' => $request->peringkat_nama,
             'peringkat_bobot' => $request->peringkat_bobot,
+            'peringkat_visible' => 1,
         ]);
 
         return response()->json([
@@ -153,6 +153,7 @@ class PeringkatController extends Controller
 
         // Update visibility
         $peringkat->update([
+            'peringkat_nama' => $peringkat->peringkat_nama . ' (Dihapus on date ' . date('H:i d/m/Y') . ')',
             'peringkat_visible' => false
         ]);
 

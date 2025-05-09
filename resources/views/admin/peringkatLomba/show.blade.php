@@ -5,6 +5,7 @@
 @section('page-title', 'Detail Peringkat Lomba')
 
 @section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ route('admin.master.peringkatLomba.index') }}">Peringkat Lomba</a></li>
 @endsection
 
 @section('content')

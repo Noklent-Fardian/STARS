@@ -178,20 +178,23 @@
                 columns: [{
                     data: "id",
                     className: "text-center",
-                    width: "5%"
+                    width: "5%",
+                    orderable: true
                 }, {
                     data: "tingkatan_nama",
-                    width: "35%"
+                    width: "35%",
+                    orderable: true
                 }, {
                     data: "tingkatan_point",
-                    width: "10%"
+                    width: "10%",
+                    orderable: true
                 }, {
                     data: "aksi",
                     className: "text-center",
                     orderable: false,
                     searchable: false,
                     width: "15%"
-                }, ],
+                }],
                 language: {
                     processing: '<div class="spinner-border text-primary" role="status"></div>',
                     search: "",

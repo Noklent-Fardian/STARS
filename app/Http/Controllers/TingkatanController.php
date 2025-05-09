@@ -30,8 +30,7 @@ class TingkatanController extends Controller
     public function getTingkatanList(Request $request)
     {
         $tingkatans = Tingkatan::select('id', 'tingkatan_nama', 'tingkatan_point', 'tingkatan_visible')
-            ->where('tingkatan_visible', true)
-            ->orderBy('created_at', 'desc');
+            ->where('tingkatan_visible', true);
 
         return DataTables::of($tingkatans)
             ->addColumn('aksi', function ($tingkatan) {
@@ -70,6 +69,7 @@ class TingkatanController extends Controller
         $validator = Validator::make($request->all(), [
             'tingkatan_nama' => 'required|string|max:255|unique:m_tingkatans',
             'tingkatan_point' => 'required|integer|min:0',
+            ''
         ]);
 
         if ($validator->fails()) {
@@ -83,6 +83,7 @@ class TingkatanController extends Controller
         Tingkatan::create([
             'tingkatan_nama' => $request->tingkatan_nama,
             'tingkatan_point' => $request->tingkatan_point,
+            'tingkatan_visible' => 1,
         ]);
 
         return response()->json([
@@ -183,6 +184,7 @@ class TingkatanController extends Controller
 
         // Update visibility instead of deleting
         $tingkatan->update([
+            'tingkatan_nama' => $tingkatan->tingkatan_nama . ' (Dihapus on date ' . date('H:i d/m/Y') . ')',
             'tingkatan_visible' => false
         ]);
 

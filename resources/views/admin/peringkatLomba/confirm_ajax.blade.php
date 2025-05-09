@@ -147,8 +147,8 @@
                                             });
 
                                             // Reload DataTable if we're on the index page
-                                            if (typeof dataTingkatan !== 'undefined') {
-                                                dataTingkatan.ajax.reload();
+                                            if (typeof dataPeringkat !== 'undefined') {
+                                                dataPeringkat.ajax.reload();
                                             }
                                         }
                                     } else {
