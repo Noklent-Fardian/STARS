@@ -105,7 +105,7 @@
                     href="{{ route('admin.master.tingkatanLomba.index') }}">
                     <i class="fas fa-fw fa-trophy"></i> Tingkatan Lomba</a>
                 <a class="collapse-item {{ request()->routeIs('admin.master.peringkatLomba') ? 'active' : '' }}"
-                    href="{{ route('admin.master.peringkatLomba') }}">
+                    href="{{ route('admin.master.peringkatLomba.index') }}">
                     <i class="fas fa-fw fa-medal"></i> Peringkat Lomba</a>
 
             </div>
