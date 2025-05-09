@@ -49,7 +49,7 @@
 </form>
 <script>
     $(document).ready(function() {
-        // Add animation to form elements when modal loads
+        
         $('.form-group').each(function(i) {
             $(this).css({
                 'opacity': 0,

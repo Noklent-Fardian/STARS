@@ -128,7 +128,6 @@
                     }
                 },
                 submitHandler: function(form) {
-                    // Clear any previous error messages
                     $('.error-text').text('');
 
                     // Add loading state to button
