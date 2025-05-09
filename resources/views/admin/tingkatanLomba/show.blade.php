@@ -38,7 +38,7 @@
                         </div>
                         <h4 class="mb-2 font-weight-bold">{{ $tingkatan->tingkatan_nama }}</h4>
                         <div class="d-flex justify-content-center mt-2">
-                            <div class="px-3 py-2 bg-primary text-white rounded-pill">
+                            <div class="px-3 py-2  text-white rounded-pill" style="background-color: #162547;">
                                 <i class="fas fa-star mr-1"></i> {{ $tingkatan->tingkatan_point }} Poin
                             </div>
                         </div>
@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-header bg-primary text-white">
+                        <div class="card-header text-white" style="background-color: #162547;">
                             <h6 class="mb-0 font-weight-bold">Informasi Tingkatan</h6>
                         </div>
                         <div class="card-body">
