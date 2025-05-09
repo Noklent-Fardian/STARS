@@ -5,8 +5,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\MahasiswaController;
-use App\Http\Controllers\TingkatanController;
 use App\Http\Controllers\PeringkatController;
+use App\Http\Controllers\ProdiController;
+use App\Http\Controllers\TingkatanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -57,7 +58,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::get('/list', [TingkatanController::class, 'getTingkatanList'])->name('list');
         Route::post('/', [TingkatanController::class, 'store']);
         Route::get('/show/{id}', [TingkatanController::class, 'show']);
-    
+
         // AJAX routes
         Route::get('/create_ajax', [TingkatanController::class, 'createAjax'])->name('createAjax');
         Route::post('/ajax', [TingkatanController::class, 'storeAjax'])->name('storeAjax');
@@ -76,7 +77,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::get('/list', [PeringkatController::class, 'getPeringkatList'])->name('list');
         Route::post('/', [PeringkatController::class, 'store']);
         Route::get('/show/{id}', [PeringkatController::class, 'show']);
-    
+
         // AJAX routes
         Route::get('/create_ajax', [PeringkatController::class, 'createAjax'])->name('createAjax');
         Route::post('/ajax', [PeringkatController::class, 'storeAjax'])->name('storeAjax');
@@ -89,10 +90,27 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::get('/export_pdf', [PeringkatController::class, 'exportPDF'])->name('exportPDF');
     });
 
+    // Master Program Studi Routes
+    Route::prefix('master/prodi')->name('admin.master.prodi.')->group(function () {
+        Route::get('/', [ProdiController::class, 'index'])->name('index');
+        Route::get('/list', [ProdiController::class, 'getProdiList'])->name('list');
+        Route::post('/', [ProdiController::class, 'store']);
+        Route::get('/show/{id}', [ProdiController::class, 'show']);
+
+        // AJAX routes
+        Route::get('/create_ajax', [ProdiController::class, 'createAjax'])->name('createAjax');
+        Route::post('/ajax', [ProdiController::class, 'storeAjax'])->name('storeAjax');
+        Route::get('/{id}/edit_ajax', [ProdiController::class, 'editAjax'])->name('editAjax');
+        Route::put('/{id}/update_ajax', [ProdiController::class, 'updateAjax'])->name('updateAjax');
+        Route::get('/{id}/confirm_ajax', [ProdiController::class, 'confirmAjax'])->name('confirmAjax');
+        Route::delete('/{id}/delete_ajax', [ProdiController::class, 'destroyAjax'])->name('destroyAjax');
+
+        // Export routes
+        Route::get('/export_pdf', [ProdiController::class, 'exportPDF'])->name('exportPDF');
+    });
+
     // Route::get('/master/peringkatLomba', [AdminController::class, 'masterPeringkatLomba'])->name('admin.master.peringkatLomba');
     Route::get('/master/keahlian', [AdminController::class, 'masterKeahlian'])->name('admin.master.keahlian');
-
-
 
     // Settings
     Route::get('/profile', [AdminController::class, 'profile'])->name('admin.profile');

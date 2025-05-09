@@ -110,8 +110,8 @@
                 <a class="collapse-item {{ request()->routeIs('admin.master.periode') ? 'active' : '' }}"
                     href="{{ route('admin.master.periode') }}">
                     <i class="fas fa-fw fa-calendar-alt"></i> Periode Semester</a>
-                <a class="collapse-item {{ request()->routeIs('admin.master.prodi') ? 'active' : '' }}"
-                    href="{{ route('admin.master.prodi') }}">
+                <a class="collapse-item {{ request()->routeIs('admin.master.prodi.*') ? 'active' : '' }}"
+                    href="{{ route('admin.master.prodi.index') }}">
                     <i class="fas fa-fw fa-graduation-cap"></i> Program Studi</a>
                 <a class="collapse-item {{ request()->routeIs('admin.master.keahlian') ? 'active' : '' }}"
                     href="{{ route('admin.master.keahlian') }}">

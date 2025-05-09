@@ -1,20 +1,19 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Peringkat;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Validation\Rule;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Yajra\DataTables\Facades\DataTables;
 
 class PeringkatController extends Controller
 {
     public function index()
     {
         $page = (object) [
-            'title' => 'Data Peringkat Lomba'
+            'title' => 'Data Peringkat Lomba',
         ];
         return view('admin.peringkatLomba.index', compact('page'));
     }
@@ -51,14 +50,14 @@ class PeringkatController extends Controller
     public function storeAjax(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'peringkat_nama' => 'required|string|max:255|unique:m_peringkats',
+            'peringkat_nama'  => 'required|string|max:255|unique:m_peringkats',
             'peringkat_bobot' => 'required|numeric|min:0',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                'status' => false,
-                'message' => 'Validasi gagal. Periksa kembali data Anda!',
+                'status'   => false,
+                'message'  => 'Validasi gagal. Periksa kembali data Anda!',
                 'msgField' => $validator->errors(),
             ]);
         }
@@ -66,22 +65,22 @@ class PeringkatController extends Controller
         $peringkat_bobot = number_format($request->peringkat_bobot, 2, '.', '');
 
         Peringkat::create([
-            'peringkat_nama' => $request->peringkat_nama,
-            'peringkat_bobot' => $request->peringkat_bobot,
+            'peringkat_nama'    => $request->peringkat_nama,
+            'peringkat_bobot'   => $request->peringkat_bobot,
             'peringkat_visible' => 1,
         ]);
 
         return response()->json([
-            'status' => true,
-            'message' => 'Peringkat Lomba berhasil ditambahkan'
+            'status'  => true,
+            'message' => 'Peringkat Lomba berhasil ditambahkan',
         ]);
     }
 
     public function show($id)
     {
         $peringkat = Peringkat::find($id);
-        $page = (object) [
-            'title' => 'Detail Peringkat Lomba'
+        $page      = (object) [
+            'title' => 'Detail Peringkat Lomba',
         ];
 
         $peringkat->peringkat_bobot = number_format($peringkat->peringkat_bobot, 2, '.', '');
@@ -101,7 +100,7 @@ class PeringkatController extends Controller
         $peringkat = Peringkat::find($id);
 
         $validator = Validator::make($request->all(), [
-            'peringkat_nama' => [
+            'peringkat_nama'  => [
                 'required',
                 'string',
                 'max:255',
@@ -112,8 +111,8 @@ class PeringkatController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'status' => false,
-                'message' => 'Validasi gagal. Periksa kembali data Anda!',
+                'status'   => false,
+                'message'  => 'Validasi gagal. Periksa kembali data Anda!',
                 'msgField' => $validator->errors(),
             ]);
         }
@@ -121,14 +120,14 @@ class PeringkatController extends Controller
         $peringkat_bobot = number_format($request->peringkat_bobot, 2, '.', '');
 
         $peringkat->update([
-            'peringkat_nama' => $request->peringkat_nama,
+            'peringkat_nama'  => $request->peringkat_nama,
             'peringkat_bobot' => $request->peringkat_bobot,
         ]);
 
         return response()->json([
-            'status' => true,
+            'status'  => true,
             'message' => 'Peringkat Lomba berhasil diperbarui',
-            'self' => true
+            'self'    => true,
         ]);
 
     }
@@ -144,29 +143,29 @@ class PeringkatController extends Controller
     {
         $peringkat = Peringkat::find($id);
 
-        if (!$peringkat) {
+        if (! $peringkat) {
             return response()->json([
-                'status' => false,
-                'message' => 'Peringkat Lomba tidak ditemukan'
+                'status'  => false,
+                'message' => 'Peringkat Lomba tidak ditemukan',
             ]);
         }
 
         // Update visibility
         $peringkat->update([
-            'peringkat_nama' => $peringkat->peringkat_nama . ' (Dihapus on date ' . date('H:i d/m/Y') . ')',
-            'peringkat_visible' => false
+            'peringkat_nama'    => $peringkat->peringkat_nama . ' (Dihapus on date ' . date('H:i d/m/Y') . ')',
+            'peringkat_visible' => false,
         ]);
 
         return response()->json([
-            'status' => true,
-            'message' => 'Peringkat Lomba berhasil dihapus'
+            'status'  => true,
+            'message' => 'Peringkat Lomba berhasil dihapus',
         ]);
     }
 
     public function exportPDF()
     {
         $peringkats = Peringkat::orderBy('peringkat_bobot', 'desc')->get();
-        $pdf = PDF::loadView('admin.peringkatLomba.export_pdf', compact('peringkats'));
+        $pdf        = PDF::loadView('admin.peringkatLomba.export_pdf', compact('peringkats'));
 
         return $pdf->download('data-peringkat-lomba.pdf');
     }
