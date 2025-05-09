@@ -89,7 +89,7 @@ body {
     color: var(--white) !important;
     font-weight: 600 !important;
     background-color: rgba(255, 255, 255, 0.15) !important;
-    height: 100%;
+    min-height: 39.2px;
 }
 
 .sidebar-light .nav-item.active .nav-link i {

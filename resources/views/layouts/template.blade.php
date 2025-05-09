@@ -24,7 +24,13 @@
     <link href="{{ asset('RuangAdmin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('RuangAdmin/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('RuangAdmin/css/ruang-admin.css') }}" rel="stylesheet">
-
+    <link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="{{ asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <!-- Custom CSS File -->
     <link href="{{ asset('css/layouts.css') }}" rel="stylesheet">
 
@@ -83,12 +89,67 @@
             </div>
         </div>
     </div>
-
+    <!-- jQuery -->
+    <script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
     <!-- Vendor JS Files -->
     <script src="{{ asset('RuangAdmin/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('RuangAdmin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('RuangAdmin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('RuangAdmin/js/ruang-admin.min.js') }}"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="{{ asset('adminlte/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+    <!-- Jquery Validation -->
+    <script src="{{ asset('adminlte/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('adminlte/plugins/jquery-validation/additional-methods.min.js') }}"></script>
+    <!-- SweetAlert2 -->
+    <script src="{{ asset('adminlte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script>
+        $(window).on('load', function() {
+
+            $('.preloader').delay(200).fadeOut('slow');
+
+        });
+
+        $(document).ready(function() {
+            // Add animation to form elements when page loads
+            $('.form-group').each(function(i) {
+                $(this).css({
+                    'opacity': 0,
+                    'transform': 'translateY(20px)'
+                });
+
+                setTimeout(function() {
+                    $('.form-group').eq(i).css({
+                        'opacity': 1,
+                        'transform': 'translateY(0)',
+                        'transition': 'all 0.4s ease-out'
+                    });
+                }, 100 * (i + 1));
+            });
+
+
+
+            // Style validation on submit attempt
+            $('form').on('submit', function() {
+                if (this.checkValidity() === false) {
+                    $(this).find(':invalid').first().focus();
+                    $(this).addClass('was-validated');
+                    return false;
+                }
+            });
+        });
+    </script>
 
 
     <!-- Additional JS -->

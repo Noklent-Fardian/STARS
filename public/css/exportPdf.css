@@ -1,0 +1,192 @@
+:root {
+    --primary-color: #102044;
+    --secondary-color: #1a2a4d;
+    --accent-color: #fa9d1c;
+    --text-color: #444444;
+    --heading-color: #293c5d;
+    --light-text: #777;
+    --white: #fff;
+    --light-gray: #f8f9fc;
+    --border-radius: 8px;
+}
+
+body {
+    font-family: "Poppins", Arial, sans-serif;
+    margin: 15px 25px;
+    line-height: 1.4;
+    color: var(--text-color);
+}
+
+/* Header Styling */
+.letterhead {
+    border-bottom: 2px solid var(--primary-color);
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.letterhead td {
+    vertical-align: middle;
+    padding: 5px;
+}
+
+img.logo {
+    height: 75px;
+    width: auto;
+}
+
+/* Typography */
+.ministry {
+    font-size: 11pt;
+    font-weight: bold;
+    color: var(--text-color);
+    text-align: center;
+}
+
+.institution {
+    font-size: 14pt;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin: 5px 0;
+    text-align: center;
+}
+
+.address {
+    font-size: 9pt;
+    color: var(--light-text);
+    text-align: center;
+}
+
+/* Document Title */
+.document-title {
+    font-size: 16pt;
+    font-weight: bold;
+    text-align: center;
+    color: var(--primary-color);
+    margin: 25px 0 20px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Table Styling */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+   
+    overflow: hidden;
+}
+
+.data-table th {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: black;
+    font-weight: bold;
+    text-align: left;
+    padding: 10px 8px;
+    border: 1px solid var(--secondary-color);
+    font-size: 11pt;
+}
+
+.data-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    font-size: 10pt;
+}
+
+.data-table tr:nth-child(even) {
+    background-color: var(--light-gray);
+}
+
+
+
+.text-center {
+    text-align: center;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 9pt;
+    color: var(--light-text);
+    margin-top: 30px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.page-number {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 9pt;
+}
+
+.watermark {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    font-size: 9pt;
+    color: var(--light-text);
+}
+
+.badge {
+    display: inline-block;
+    padding: 3px 7px;
+    font-size: 9pt;
+}
+
+.badge-primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.badge-warning {
+    background-color: var(--accent-color);
+    color: var(--white);
+}
+
+.badge-success {
+    background-color: #28a745;
+    color: var(--white);
+}
+
+.badge-danger {
+    background-color: #dc3545;
+    color: var(--white);
+}
+
+/* Footer signature section */
+.signature-section {
+    margin-top: 30px;
+    text-align: right;
+    padding-right: 50px;
+}
+
+.signature-name {
+    margin-top: 60px;
+    font-weight: bold;
+    border-top: 1px solid #000;
+    display: inline-block;
+    padding-top: 5px;
+    min-width: 200px;
+    text-align: center;
+}
+
+/* Title with accent color */
+.text-accent {
+    color: var(--accent-color);
+}
+
+/* Additional helper classes */
+.mt-4 {
+    margin-top: 20px;
+}
+
+.mb-4 {
+    margin-bottom: 20px;
+}
+
+.font-weight-bold {
+    font-weight: bold;
+}

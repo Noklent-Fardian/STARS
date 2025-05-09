@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\TingkatanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,38 +29,56 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     // Dashboard
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-    
+
     // Manajemen Pengguna
     Route::get('/mahasiswa', [AdminController::class, 'mahasiswaIndex'])->name('admin.mahasiswa.index');
     Route::get('/dosen', [AdminController::class, 'dosenIndex'])->name('admin.dosen.index');
     Route::get('/admin', [AdminController::class, 'adminIndex'])->name('admin.admin.index');
-    
+
     // Manajemen Prestasi
     Route::get('/prestasi/verification', [AdminController::class, 'prestasiVerification'])->name('admin.prestasi.verification');
     Route::get('/prestasi/akademik', [AdminController::class, 'prestasiAkademik'])->name('admin.prestasi.akademik');
     Route::get('/prestasi/non-akademik', [AdminController::class, 'prestasiNonAkademik'])->name('admin.prestasi.non-akademik');
     Route::get('/prestasi', [AdminController::class, 'prestasiIndex'])->name('admin.prestasi.index');
     Route::get('/prestasi/report', [AdminController::class, 'prestasiReport'])->name('admin.prestasi.report');
-    
+
     // Manajemen Lomba
     Route::get('/lomba/verification', [AdminController::class, 'lombaVerification'])->name('admin.lomba.verification');
     Route::get('/lomba', [AdminController::class, 'lombaIndex'])->name('admin.lomba.index');
-    
+
     // Master Data
     Route::get('/master/periode', [AdminController::class, 'masterPeriode'])->name('admin.master.periode');
     Route::get('/master/prodi', [AdminController::class, 'masterProdi'])->name('admin.master.prodi');
-    // tingkatanLomba
-    Route::get('/master/tingkatanLomba', [AdminController::class, 'masterTingkatanLomba'])->name('admin.master.tingkatanLomba');
+
+    // Master Tingkatan Lomba Routes
+    Route::prefix('master/tingkatanLomba')->name('admin.master.tingkatanLomba.')->group(function () {
+        Route::get('/', [TingkatanController::class, 'index'])->name('index');
+        Route::get('/list', [TingkatanController::class, 'getTingkatanList'])->name('list');
+        Route::post('/', [TingkatanController::class, 'store']);
+        Route::get('/show/{id}', [TingkatanController::class, 'show']);
+    
+        // AJAX routes
+        Route::get('/create_ajax', [TingkatanController::class, 'createAjax'])->name('createAjax');
+        Route::post('/ajax', [TingkatanController::class, 'storeAjax'])->name('storeAjax');
+        Route::get('/{id}/edit_ajax', [TingkatanController::class, 'editAjax'])->name('editAjax');
+        Route::put('/{id}/update_ajax', [TingkatanController::class, 'updateAjax'])->name('updateAjax');
+        Route::get('/{id}/confirm_ajax', [TingkatanController::class, 'confirmAjax'])->name('confirmAjax');
+        Route::delete('/{id}/delete_ajax', [TingkatanController::class, 'destroyAjax'])->name('destroyAjax');
+
+        // Export routes
+        Route::get('/export_pdf', [TingkatanController::class, 'exportPDF'])->name('exportPDF');
+    });
+
+
     Route::get('/master/peringkatLomba', [AdminController::class, 'masterPeringkatLomba'])->name('admin.master.peringkatLomba');
     Route::get('/master/keahlian', [AdminController::class, 'masterKeahlian'])->name('admin.master.keahlian');
 
 
-    
+
     // Settings
     Route::get('/profile', [AdminController::class, 'profile'])->name('admin.profile');
     Route::get('/admin/profile/edit', [AdminController::class, 'editProfile'])->name('admin.editProfile');
     Route::put('/admin/profile/update', [AdminController::class, 'updateProfile'])->name('admin.updateProfile');
-    
 });
 
 // Dosen routes
