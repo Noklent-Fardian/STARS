@@ -1,13 +1,12 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Tingkatan;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Validation\Rule;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Yajra\DataTables\Facades\DataTables;
 
 class TingkatanController extends Controller
 {
@@ -17,9 +16,8 @@ class TingkatanController extends Controller
     public function index()
     {
         $page = (object) [
-            'title' => 'Data Tingkatan Lomba'
+            'title' => 'Data Tingkatan Lomba',
         ];
-
 
         return view('admin.tingkatanLomba.index', compact('page'));
     }
@@ -49,9 +47,6 @@ class TingkatanController extends Controller
             ->make(true);
     }
 
-
-
-
     /**
      * Show the form for creating a new resource with AJAX.
      */
@@ -60,35 +55,34 @@ class TingkatanController extends Controller
         return view('admin.tingkatanLomba.create_ajax');
     }
 
-
     /**
      * Store a newly created resource in storage with AJAX.
      */
     public function storeAjax(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'tingkatan_nama' => 'required|string|max:255|unique:m_tingkatans',
+            'tingkatan_nama'  => 'required|string|max:255|unique:m_tingkatans',
             'tingkatan_point' => 'required|integer|min:0',
-            ''
+            '',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                'status' => false,
-                'message' => 'Validasi gagal. Periksa kembali data Anda.',
+                'status'   => false,
+                'message'  => 'Validasi gagal. Periksa kembali data Anda.',
                 'msgField' => $validator->errors(),
             ]);
         }
 
         Tingkatan::create([
-            'tingkatan_nama' => $request->tingkatan_nama,
-            'tingkatan_point' => $request->tingkatan_point,
+            'tingkatan_nama'    => $request->tingkatan_nama,
+            'tingkatan_point'   => $request->tingkatan_point,
             'tingkatan_visible' => 1,
         ]);
 
         return response()->json([
-            'status' => true,
-            'message' => 'Tingkatan Lomba berhasil ditambahkan'
+            'status'  => true,
+            'message' => 'Tingkatan Lomba berhasil ditambahkan',
         ]);
     }
 
@@ -98,14 +92,12 @@ class TingkatanController extends Controller
     public function show($id)
     {
         $tingkatan = Tingkatan::find($id);
-        $page = (object) [
-            'title' => 'Detail Tingkatan Lomba'
+        $page      = (object) [
+            'title' => 'Detail Tingkatan Lomba',
         ];
 
         return view('admin.tingkatanLomba.show', compact('tingkatan', 'page'));
     }
-
-
 
     /**
      * Show the form for editing the specified resource with AJAX.
@@ -117,15 +109,14 @@ class TingkatanController extends Controller
         return view('admin.tingkatanLomba.edit_ajax', compact('tingkatan'));
     }
 
-
     /**
      * Update the specified resource in storage with AJAX.
-     */ public function updateAjax(Request $request, $id)
+     */public function updateAjax(Request $request, $id)
     {
         $tingkatan = Tingkatan::find($id);
 
         $validator = Validator::make($request->all(), [
-            'tingkatan_nama' => [
+            'tingkatan_nama'  => [
                 'required',
                 'string',
                 'max:255',
@@ -137,25 +128,23 @@ class TingkatanController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'status' => false,
-                'message' => 'Validasi gagal. Periksa kembali data Anda.',
+                'status'   => false,
+                'message'  => 'Validasi gagal. Periksa kembali data Anda.',
                 'msgField' => $validator->errors(),
             ]);
         }
 
         $tingkatan->update([
-            'tingkatan_nama' => $request->tingkatan_nama,
+            'tingkatan_nama'  => $request->tingkatan_nama,
             'tingkatan_point' => $request->tingkatan_point,
         ]);
 
         return response()->json([
-            'status' => true,
+            'status'  => true,
             'message' => 'Tingkatan Lomba berhasil diperbarui',
-            'self' => true
+            'self'    => true,
         ]);
     }
-
-
 
     /**
      * Show confirmation dialog for deleting with AJAX.
@@ -175,22 +164,22 @@ class TingkatanController extends Controller
     {
         $tingkatan = Tingkatan::find($id);
 
-        if (!$tingkatan) {
+        if (! $tingkatan) {
             return response()->json([
-                'status' => false,
-                'message' => 'Tingkatan Lomba tidak ditemukan'
+                'status'  => false,
+                'message' => 'Tingkatan Lomba tidak ditemukan',
             ]);
         }
 
         // Update visibility instead of deleting
         $tingkatan->update([
-            'tingkatan_nama' => $tingkatan->tingkatan_nama . ' (Dihapus on date ' . date('H:i d/m/Y') . ')',
-            'tingkatan_visible' => false
+            'tingkatan_nama'    => $tingkatan->tingkatan_nama . ' (Dihapus on date ' . date('H:i d/m/Y') . ')',
+            'tingkatan_visible' => false,
         ]);
 
         return response()->json([
-            'status' => true,
-            'message' => 'Tingkatan Lomba berhasil dihapus'
+            'status'  => true,
+            'message' => 'Tingkatan Lomba berhasil dihapus',
         ]);
     }
 
@@ -200,7 +189,7 @@ class TingkatanController extends Controller
     public function exportPDF()
     {
         $tingkatans = Tingkatan::orderBy('tingkatan_point', 'desc')->get();
-        $pdf = PDF::loadView('admin.tingkatanLomba.export_pdf', compact('tingkatans'));
+        $pdf        = PDF::loadView('admin.tingkatanLomba.export_pdf', compact('tingkatans'));
 
         return $pdf->download('data-tingkatan-lomba.pdf');
     }
