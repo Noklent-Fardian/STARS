@@ -10,7 +10,7 @@
 @section('content')
     <div class="card shadow-sm rounded-lg overflow-hidden">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Daftar Tingkatan Lomba</h6>
+            <h6 class="m-0 font-weight-bold text-white">Daftar Tingkatan Lomba</h6>
         </div>
         <div class="card-body">
             @if (session('success'))
@@ -32,7 +32,8 @@
 
             <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap">
                 <div class="mb-2 mb-md-0">
-                    <button onclick="modalAction('{{ route('admin.master.tingkatanLomba.createAjax') }}')" class="btn btn-primary">
+                    <button onclick="modalAction('{{ route('admin.master.tingkatanLomba.createAjax') }}')"
+                        class="btn btn-primary">
                         <i class="fas fa-plus-circle mr-1"></i> Tambah Tingkatan Lomba
                     </button>
                     <a href="{{ url('/admin/master/tingkatanLomba/export_pdf') }}" class="btn btn-warning">
@@ -92,12 +93,70 @@
         #table_tingkatan tbody tr:hover {
             background-color: rgba(var(--primary-color-rgb), 0.05);
         }
+
+        .card-header {
+            background: linear-gradient(-45deg, #102044, #1a2a4d, #293c5d, #1a2a4d);
+            background-size: 400% 400%;
+            height: 70px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        @media (max-width: 576px) {
+            .container-fluid {
+                padding: 0 10px;
+            }
+
+            .card {
+                margin-bottom: 10px;
+            }
+        }
+
+        /* Enhanced Search Box Styling */
+        .has-search .form-control {
+            padding-left: 2.8rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .has-search .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(250, 157, 28, 0.25);
+            background-color: #fff;
+        }
+
+        .has-search .form-control-feedback {
+            position: absolute;
+            z-index: 2;
+            display: block;
+            width: 2.8rem;
+            height: 2.8rem;
+            line-height: 2.8rem;
+            text-align: center;
+            pointer-events: none;
+            color: var(--light-text);
+            transition: color 0.3s ease;
+        }
+
+        .has-search .form-control:focus+.form-control-feedback {
+            color: var(--accent-color);
+        }
+
+        .has-search {
+            position: relative;
+            max-width: 300px;
+            margin-left: auto;
+        }
     </style>
 @endpush
 
 @push('js')
     <script>
-        
         function modalAction(url = '') {
             $('#myModal').load(url, function() {
                 $('#myModal').modal('show');
@@ -132,7 +191,7 @@
                     orderable: false,
                     searchable: false,
                     width: "15%"
-                },],
+                }, ],
                 language: {
                     processing: '<div class="spinner-border text-primary" role="status"></div>',
                     search: "",
