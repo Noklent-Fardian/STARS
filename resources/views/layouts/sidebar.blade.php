@@ -81,16 +81,31 @@
     <!-- Master Data -->
     <div class="sidebar-heading">Master Data</div>
 
-    <li class="nav-item {{ request()->routeIs('admin.master.*') ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMaster"
-            aria-expanded="{{ request()->routeIs('admin.master.*') ? 'true' : 'false' }}"
+    @php
+        $masterRoutes = [
+            'admin.master.periode',
+            'admin.master.prodi',
+            'admin.master.keahlian',
+            'admin.master.tingkatanLomba.index',
+            'admin.master.peringkatLomba.index'
+        ];
+        
+        $isMasterActive = collect($masterRoutes)->contains(function($route) {
+            return request()->routeIs($route) || 
+                  (Str::contains($route, '.index') && request()->routeIs(Str::beforeLast($route, '.index').'.*'));
+        });
+    @endphp
+
+    <li class="nav-item {{ $isMasterActive ? 'active' : '' }}">
+        <a class="nav-link {{ !$isMasterActive ? 'collapsed' : '' }}" href="#" data-toggle="collapse" data-target="#collapseMaster"
+            aria-expanded="{{ $isMasterActive ? 'true' : 'false' }}"
             aria-controls="collapseMaster">
             <i class="fas fa-fw fa-database"></i>
             <span>Master Data</span>
         </a>
-        <div id="collapseMaster" class="collapse {{ request()->routeIs('admin.master.*') ? 'show' : '' }}"
+        <div id="collapseMaster" class="collapse {{ $isMasterActive ? 'show' : '' }}"
             aria-labelledby="headingMaster" data-parent="#accordionSidebar">
-            <div class=" py-2 collapse-inner rounded">
+            <div class="py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Data Master:</h6>
                 <a class="collapse-item {{ request()->routeIs('admin.master.periode') ? 'active' : '' }}"
                     href="{{ route('admin.master.periode') }}">
@@ -101,13 +116,12 @@
                 <a class="collapse-item {{ request()->routeIs('admin.master.keahlian') ? 'active' : '' }}"
                     href="{{ route('admin.master.keahlian') }}">
                     <i class="fas fa-fw fa-tools"></i> Bidang Keahlian</a>
-                <a class="collapse-item {{ request()->routeIs('admin.master.tingkatanLomba') ? 'active' : '' }}"
+                <a class="collapse-item {{ request()->routeIs('admin.master.tingkatanLomba.*') ? 'active' : '' }}"
                     href="{{ route('admin.master.tingkatanLomba.index') }}">
                     <i class="fas fa-fw fa-trophy"></i> Tingkatan Lomba</a>
-                <a class="collapse-item {{ request()->routeIs('admin.master.peringkatLomba') ? 'active' : '' }}"
+                <a class="collapse-item {{ request()->routeIs('admin.master.peringkatLomba.*') ? 'active' : '' }}"
                     href="{{ route('admin.master.peringkatLomba.index') }}">
                     <i class="fas fa-fw fa-medal"></i> Peringkat Lomba</a>
-
             </div>
         </div>
     </li>
