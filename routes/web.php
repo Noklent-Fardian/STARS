@@ -6,6 +6,7 @@ use App\Http\Controllers\DosenController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\TingkatanController;
+use App\Http\Controllers\PeringkatController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -69,8 +70,26 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::get('/export_pdf', [TingkatanController::class, 'exportPDF'])->name('exportPDF');
     });
 
+    // Master Peringkat Lomba Routes
+    Route::prefix('master/peringkatLomba')->name('admin.master.peringkatLomba.')->group(function () {
+        Route::get('/', [PeringkatController::class, 'index'])->name('index');
+        Route::get('/list', [PeringkatController::class, 'getPeringkatList'])->name('list');
+        Route::post('/', [PeringkatController::class, 'store']);
+        Route::get('/show/{id}', [PeringkatController::class, 'show']);
+    
+        // AJAX routes
+        Route::get('/create_ajax', [PeringkatController::class, 'createAjax'])->name('createAjax');
+        Route::post('/ajax', [PeringkatController::class, 'storeAjax'])->name('storeAjax');
+        Route::get('/{id}/edit_ajax', [PeringkatController::class, 'editAjax'])->name('editAjax');
+        Route::put('/{id}/update_ajax', [PeringkatController::class, 'updateAjax'])->name('updateAjax');
+        Route::get('/{id}/confirm_ajax', [PeringkatController::class, 'confirmAjax'])->name('confirmAjax');
+        Route::delete('/{id}/delete_ajax', [PeringkatController::class, 'destroyAjax'])->name('destroyAjax');
 
-    Route::get('/master/peringkatLomba', [AdminController::class, 'masterPeringkatLomba'])->name('admin.master.peringkatLomba');
+        // Export routes
+        Route::get('/export_pdf', [PeringkatController::class, 'exportPDF'])->name('exportPDF');
+    });
+
+    // Route::get('/master/peringkatLomba', [AdminController::class, 'masterPeringkatLomba'])->name('admin.master.peringkatLomba');
     Route::get('/master/keahlian', [AdminController::class, 'masterKeahlian'])->name('admin.master.keahlian');
 
 
