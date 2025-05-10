@@ -80,7 +80,7 @@
     </form>
     <script>
         $(document).ready(function() {
-            
+
             $('.form-group').each(function(i) {
                 $(this).css({
                     'opacity': 0,
@@ -150,7 +150,7 @@
                                     updateDetailView({
                                         nama: $('#tingkatan_nama').val(),
                                         point: $('#tingkatan_point').val(),
-                                        visible: $('#tingkatan_visible').val()
+
                                     });
                                 } else {
                                     // If on index page, just reload the DataTable
@@ -190,13 +190,12 @@
             function updateDetailView(data) {
                 // Update the heading and card info
                 $('h4.font-weight-bold').text(data.nama);
-                $('.px-3.py-2.bg-primary.text-white.rounded-pill').html('<i class="fas fa-star mr-1"></i> ' + data
-                    .point + ' Poin');
+                $('.badge.badge-warning.px-3.py-2').html(data.point + ' Poin');
 
                 // Update the table data
-                let tableRows = $('.table.table-hover tr');
-                $(tableRows[1]).find('td:last').text(data.nama);
-                $(tableRows[2]).find('td:last').text(data.point);
+                let tableRows = $('.user-info-item');
+                $(tableRows[1]).find('.info-value').text(data.nama);
+                $(tableRows[2]).find('.info-value').text(data.point);
 
                 // Update the timestamp with current time
                 let now = new Date();
@@ -207,16 +206,16 @@
                     hour: '2-digit',
                     minute: '2-digit'
                 });
-                $(tableRows[4]).find('td:last').text(formattedDate);
+                $(tableRows[4]).find('.info-value').text(formattedDate);
 
                 // Add a highlight effect to show updated content
-                $('.table.table-hover tr td:last').css({
+                $('.user-info-item .info-value').css({
                     'background-color': '#fffde7',
                     'transition': 'background-color 1s'
                 });
 
                 setTimeout(function() {
-                    $('.table.table-hover tr td:last').css('background-color', '');
+                    $('.user-info-item .info-value').css('background-color', '');
                 }, 2000);
             }
         });

@@ -33,11 +33,11 @@
             <div class="row mb-3">
                 <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap">
                     <div class="btn-group-responsive">
-                        <button onclick="modalAction('{{ route('admin.master.tingkatanLomba.createAjax') }}')"
+                        <button onclick="modalAction('{{ route('admin.master.peringkatLomba.createAjax') }}')"
                             class="btn btn-primary mb-2 mb-sm-0 mr-2">
                             <i class="fas fa-plus-circle mr-1"></i> Tambah Tingkatan Lomba
                         </button>
-                        <a href="{{ url('/admin/master/tingkatanLomba/export_pdf') }}" class="btn btn-warning mb-2 mb-sm-0">
+                        <a href="{{ url('/admin/master/peringkatLomba/export_pdf') }}" class="btn btn-warning mb-2 mb-sm-0">
                             <i class="fas fa-file-pdf mr-1"></i> Export PDF
                         </a>
                     </div>
@@ -45,7 +45,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group has-search mb-0 ml-auto" style="max-width: 300px;">
                         <span class="fa fa-search form-control-feedback"></span>
-                        <input type="text" class="form-control" id="searchBox" placeholder="Cari tingkatan lomba...">
+                        <input type="text" class="form-control" id="searchBox" placeholder="Cari Peringkat lomba...">
                     </div>
                 </div>
             </div>

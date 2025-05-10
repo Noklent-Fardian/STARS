@@ -1,4 +1,3 @@
-
 @extends('layouts.template')
 
 @section('title', 'Detail Tingkatan Lomba | STARS')
@@ -8,7 +7,7 @@
 @section('breadcrumb')
 
 
-<li class="breadcrumb-item active">Detail</li>
+    <li class="breadcrumb-item active">Detail</li>
 @endsection
 
 @section('content')
@@ -38,7 +37,7 @@
                                 </div>
                             </div>
                             <h4 class="font-weight-bold mb-1">{{ $tingkatan->tingkatan_nama }}</h4>
-                            <span class="badge badge-warning px-3 py-2">{{ $tingkatan->tingkatan_point }} Poin</span>
+                           <span class="badge badge-warning px-3 py-2">{{ $tingkatan->tingkatan_point }} Poin</span>
                         </div>
                         <div class="col-md-9">
                             <div class="user-info-card">
@@ -92,16 +91,19 @@
                 <a href="{{ route('admin.master.tingkatanLomba.index') }}" class="btn btn-outline-secondary px-4">
                     <i class="fas fa-arrow-left mr-2"></i> Kembali
                 </a>
-                
-                @if(!empty($tingkatan))
-                <div>
-                    <button onclick="modalAction('{{ route('admin.master.tingkatanLomba.editAjax', $tingkatan->id) }}')" class="btn btn-warning px-4 mr-2">
-                        <i class="fas fa-edit mr-2"></i> Edit
-                    </button>
-                    <button onclick="modalAction('{{ route('admin.master.tingkatanLomba.confirmAjax', $tingkatan->id) }}')" class="btn btn-danger px-4">
-                        <i class="fas fa-trash-alt mr-2"></i> Hapus
-                    </button>
-                </div>
+
+                @if (!empty($tingkatan))
+                    <div>
+                        <button onclick="modalAction('{{ route('admin.master.tingkatanLomba.editAjax', $tingkatan->id) }}')"
+                            class="btn btn-warning px-4 mr-2">
+                            <i class="fas fa-edit mr-2"></i> Edit
+                        </button>
+                        <button
+                            onclick="modalAction('{{ route('admin.master.tingkatanLomba.confirmAjax', $tingkatan->id) }}')"
+                            class="btn btn-danger px-4">
+                            <i class="fas fa-trash-alt mr-2"></i> Hapus
+                        </button>
+                    </div>
                 @endif
             </div>
         </div>
@@ -111,29 +113,29 @@
 
 
 @push('js')
-<script>
-    function modalAction(url = '') {
-        $('#myModal').load(url, function() {
-            $('#myModal').modal('show');
-        });
-    }
-    
-    $(document).ready(function() {
-        // Add animation to elements when page loads
-        $('.user-detail-container').css({
-            'opacity': 0,
-            'transform': 'translateY(20px)'
-        });
-        
-        setTimeout(function() {
-            $('.user-detail-container').css({
-                'opacity': 1,
-                'transform': 'translateY(0)',
-                'transition': 'all 0.6s ease-out'
+    <script>
+        function modalAction(url = '') {
+            $('#myModal').load(url, function() {
+                $('#myModal').modal('show');
             });
-        }, 200);
-    });
-</script>
+        }
+
+        $(document).ready(function() {
+            // Add animation to elements when page loads
+            $('.user-detail-container').css({
+                'opacity': 0,
+                'transform': 'translateY(20px)'
+            });
+
+            setTimeout(function() {
+                $('.user-detail-container').css({
+                    'opacity': 1,
+                    'transform': 'translateY(0)',
+                    'transition': 'all 0.6s ease-out'
+                });
+            }, 200);
+        });
+    </script>
 @endpush
 @push('css')
     <link rel="stylesheet" href="{{ asset('css/show.css') }}">

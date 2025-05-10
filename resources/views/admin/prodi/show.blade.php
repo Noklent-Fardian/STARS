@@ -5,7 +5,7 @@
 @section('page-title', 'Detail Program Studi')
 
 @section('breadcrumb')
-<li class="breadcrumb-item"><a href="{{ route('admin.master.prodi.index') }}">Program Studi</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.master.prodi.index') }}">Program Studi</a></li>
 @endsection
 
 @section('content')
@@ -66,7 +66,7 @@
                                         <span>Status</span>
                                     </div>
                                     <div class="info-value">
-                                        @if($prodi->prodi_visible)
+                                        @if ($prodi->prodi_visible)
                                             <span class="badge badge-success">Aktif</span>
                                         @else
                                             <span class="badge badge-danger">Non-Aktif</span>
@@ -102,16 +102,18 @@
                 <a href="{{ route('admin.master.prodi.index') }}" class="btn btn-outline-secondary px-4">
                     <i class="fas fa-arrow-left mr-2"></i> Kembali
                 </a>
-                
-                @if(!empty($prodi))
-                <div>
-                    <button onclick="modalAction('{{ route('admin.master.prodi.editAjax', $prodi->id) }}')" class="btn btn-warning px-4 mr-2">
-                        <i class="fas fa-edit mr-2"></i> Edit
-                    </button>
-                    <button onclick="modalAction('{{ route('admin.master.prodi.confirmAjax', $prodi->id) }}')" class="btn btn-danger px-4">
-                        <i class="fas fa-trash-alt mr-2"></i> Hapus
-                    </button>
-                </div>
+
+                @if (!empty($prodi))
+                    <div>
+                        <button onclick="modalAction('{{ route('admin.master.prodi.editAjax', $prodi->id) }}')"
+                            class="btn btn-warning px-4 mr-2">
+                            <i class="fas fa-edit mr-2"></i> Edit
+                        </button>
+                        <button onclick="modalAction('{{ route('admin.master.prodi.confirmAjax', $prodi->id) }}')"
+                            class="btn btn-danger px-4">
+                            <i class="fas fa-trash-alt mr-2"></i> Hapus
+                        </button>
+                    </div>
                 @endif
             </div>
         </div>
@@ -120,103 +122,30 @@
 @endsection
 
 @push('js')
-<script>
-    function modalAction(url = '') {
-        $('#myModal').load(url, function() {
-            $('#myModal').modal('show');
-        });
-    }
-    
-    $(document).ready(function() {
-        // Add animation to elements when page loads
-        $('.user-detail-container').css({
-            'opacity': 0,
-            'transform': 'translateY(20px)'
-        });
-        
-        setTimeout(function() {
-            $('.user-detail-container').css({
-                'opacity': 1,
-                'transform': 'translateY(0)',
-                'transition': 'all 0.6s ease-out'
+    <script>
+        function modalAction(url = '') {
+            $('#myModal').load(url, function() {
+                $('#myModal').modal('show');
             });
-        }, 200);
-    });
-</script>
-@endpush
+        }
 
+        $(document).ready(function() {
+            // Add animation to elements when page loads
+            $('.user-detail-container').css({
+                'opacity': 0,
+                'transform': 'translateY(20px)'
+            });
+
+            setTimeout(function() {
+                $('.user-detail-container').css({
+                    'opacity': 1,
+                    'transform': 'translateY(0)',
+                    'transition': 'all 0.6s ease-out'
+                });
+            }, 200);
+        });
+    </script>
+@endpush
 @push('css')
-<style>
-    .user-avatar-container {
-        position: relative;
-        width: 120px;
-        height: 120px;
-        margin: 0 auto;
-    }
-    
-    .user-avatar {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 3rem;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    
-    .user-info-card {
-        background: #f8f9fa;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-    
-    .user-info-item {
-        display: flex;
-        margin-bottom: 15px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #eee;
-    }
-    
-    .user-info-item:last-child {
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-    }
-    
-    .info-label {
-        width: 200px;
-        display: flex;
-        align-items: center;
-    }
-    
-    .info-label i {
-        margin-right: 10px;
-        font-size: 1.2rem;
-    }
-    
-    .info-value {
-        flex: 1;
-        font-weight: 500;
-    }
-    
-    .animated-bg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 100%);
-        background-size: 200% 100%;
-        animation: shimmer 2s infinite;
-        z-index: 0;
-    }
-    
-    @keyframes shimmer {
-        0% { background-position: 200% 0; }
-        100% { background-position: -200% 0; }
-    }
-</style>
+    <link rel="stylesheet" href="{{ asset('css/show.css') }}">
 @endpush

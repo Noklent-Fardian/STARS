@@ -162,7 +162,7 @@
                                 updateDetailView({
                                     nama: $('#prodi_nama').val(),
                                     kode: $('#prodi_kode').val(),
-                                    visible: $('#prodi_visible').val()
+                                  
                                 });
                             } else {
                                 // If on index page, just reload the DataTable
@@ -209,11 +209,6 @@
             $(tableRows[1]).find('.info-value').text(data.nama);
             $(tableRows[2]).find('.info-value').text(data.kode);
             
-            // Update status
-            let statusText = data.visible == '1' ? 'Aktif' : 'Non-Aktif';
-            let statusClass = data.visible == '1' ? 'badge-success' : 'badge-danger';
-            $(tableRows[3]).find('.info-value').html('<span class="badge ' + statusClass + '">' + statusText + '</span>');
-
             // Update the timestamp with current time
             let now = new Date();
             let formattedDate = now.toLocaleDateString('id-ID', {
