@@ -188,7 +188,7 @@ class TingkatanController extends Controller
      */
     public function exportPDF()
     {
-        $tingkatans = Tingkatan::orderBy('tingkatan_point', 'desc')->get();
+        $tingkatans = Tingkatan::where('tingkatan_visible', true)->orderBy('tingkatan_point', 'desc')->get();
         $pdf        = PDF::loadView('admin.tingkatanLomba.export_pdf', compact('tingkatans'));
 
         return $pdf->download('data-tingkatan-lomba.pdf');

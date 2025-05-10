@@ -164,7 +164,8 @@ class PeringkatController extends Controller
 
     public function exportPDF()
     {
-        $peringkats = Peringkat::orderBy('peringkat_bobot', 'desc')->get();
+       
+        $peringkats = Peringkat::where('peringkat_visible', true)->orderBy('peringkat_bobot', 'desc')->get();
         $pdf        = PDF::loadView('admin.peringkatLomba.export_pdf', compact('peringkats'));
 
         return $pdf->download('data-peringkat-lomba.pdf');

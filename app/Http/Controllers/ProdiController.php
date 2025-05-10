@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Prodi;
@@ -190,7 +191,8 @@ class ProdiController extends Controller
      */
     public function exportPDF()
     {
-        $prodis = Prodi::orderBy('prodi_nama')->get();
+
+        $prodis     = Prodi::where('prodi_visible', true)->orderBy('prodi_nama', 'asc')->get();
         $pdf    = PDF::loadView('admin.prodi.export_pdf', compact('prodis'));
 
         // dd($prodis);
