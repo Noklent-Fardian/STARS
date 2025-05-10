@@ -32,7 +32,7 @@ class TingkatanController extends Controller
 
         return DataTables::of($tingkatans)
             ->addColumn('aksi', function ($tingkatan) {
-                $view = '<a href="' . url('/admin/master/tingkatanLomba/show/' . $tingkatan->id) . '" class="btn btn-sm btn-info mr-1"><i class="fas fa-eye"></i>Detail</a>';
+                $view = '<a href="' . url('/admin/master/tingkatanLomba/show/' . $tingkatan->id) . '" class="btn btn-sm btn-info mr-1"><i class="fas fa-eye"></i> Detail</a>';
                 $edit = '<button onclick="modalAction(\'' . route('admin.master.tingkatanLomba.editAjax', $tingkatan->id) . '\')" class="btn btn-sm btn-warning mr-2">
                             <i class="fas fa-edit mr-1"></i> Edit
                         </button>';

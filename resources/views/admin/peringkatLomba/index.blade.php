@@ -30,19 +30,23 @@
                 </div>
             @endif
 
-            <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap">
-                <div class="mb-2 mb-md-0">
-                    <button onclick="modalAction('{{ route('admin.master.peringkatLomba.createAjax') }}')"
-                        class="btn btn-primary">
-                        <i class="fas fa-plus-circle mr-1"></i> Tambah Peringkat Lomba
-                    </button>
-                    <a href="{{ url('/admin/master/peringkatLomba/export_pdf') }}" class="btn btn-warning">
-                        <i class="fas fa-file-pdf mr-1"></i> Export PDF
-                    </a>
+            <div class="row mb-3">
+                <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="btn-group-responsive">
+                        <button onclick="modalAction('{{ route('admin.master.tingkatanLomba.createAjax') }}')"
+                            class="btn btn-primary mb-2 mb-sm-0 mr-2">
+                            <i class="fas fa-plus-circle mr-1"></i> Tambah Tingkatan Lomba
+                        </button>
+                        <a href="{{ url('/admin/master/tingkatanLomba/export_pdf') }}" class="btn btn-warning mb-2 mb-sm-0">
+                            <i class="fas fa-file-pdf mr-1"></i> Export PDF
+                        </a>
+                    </div>
                 </div>
-                <div class="form-group has-search mb-0">
-                    <span class="fa fa-search form-control-feedback"></span>
-                    <input type="text" class="form-control" id="searchBox" placeholder="Cari peringkat lomba...">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="form-group has-search mb-0 ml-auto" style="max-width: 300px;">
+                        <span class="fa fa-search form-control-feedback"></span>
+                        <input type="text" class="form-control" id="searchBox" placeholder="Cari tingkatan lomba...">
+                    </div>
                 </div>
             </div>
 
@@ -180,7 +184,7 @@
                     width: "5%"
                 }, {
                     data: "peringkat_nama",
-                    width: "35%"
+                    width: "30%"
                 }, {
                     data: "peringkat_bobot",
                     width: "10%",

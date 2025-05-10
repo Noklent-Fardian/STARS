@@ -25,7 +25,7 @@ class PeringkatController extends Controller
 
         return DataTables::of($peringkats)
             ->addColumn('aksi', function ($peringkat) {
-                $view = '<a href="' . url('/admin/master/peringkatLomba/show/' . $peringkat->id) . '" class="btn btn-sm btn-info mr-1"><i class="fas fa-eye"></i>Detail</a>';
+                $view = '<a href="' . url('/admin/master/peringkatLomba/show/' . $peringkat->id) . '" class="btn btn-sm btn-info mr-1"><i class="fas fa-eye"></i> Detail</a>';
                 $edit = '<button onclick="modalAction(\'' . route('admin.master.peringkatLomba.editAjax', $peringkat->id) . '\')" class="btn btn-sm btn-warning mr-2">
                             <i class="fas fa-edit mr-1"></i> Edit
                         </button>';

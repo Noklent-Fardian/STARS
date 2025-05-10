@@ -30,7 +30,7 @@
             @endif
 
             <div class="row mb-3">
-                <div class="col-lg-6 col-md-6 col-sm-12 mb-2 mb-md-0">
+                <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap">
                     <div class="btn-group-responsive">
                         <button onclick="modalAction('{{ route('admin.master.tingkatanLomba.createAjax') }}')"
                             class="btn btn-primary mb-2 mb-sm-0 mr-2">
