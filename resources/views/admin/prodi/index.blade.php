@@ -30,19 +30,32 @@
                 </div>
             @endif
 
-            <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap">
-                <div class="mb-2 mb-md-0">
-                    <button onclick="modalAction('{{ route('admin.master.prodi.createAjax') }}')"
-                        class="btn btn-primary">
-                        <i class="fas fa-plus-circle mr-1"></i> Tambah Prodi
-                    </button>
-                    <a href="{{ url('/admin/master/prodi/export_pdf') }}" class="btn btn-warning">
-                        <i class="fas fa-file-pdf mr-1"></i> Export PDF
-                    </a>
+            <div class="row mb-3">
+                <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="btn-group-responsive">
+                        <button onclick="modalAction('{{ route('admin.master.prodi.createAjax') }}')"
+                            class="btn btn-primary mb-2 mb-sm-0 mr-2">
+                            <i class="fas fa-plus-circle mr-1"></i> Tambah Prodi
+                        </button>
+                        <a href="{{ route('admin.master.prodi.exportExcel') }}"
+                            class="btn btn-success mb-2 mb-sm-0 mr-2">
+                            <i class="fas fa-file-excel mr-1"></i> Export Excel
+                        </a>
+                        <a href="{{ url('/admin/master/prodi/export_pdf') }}"
+                            class="btn btn-warning mb-2 mb-sm-0 mr-2">
+                            <i class="fas fa-file-pdf mr-1"></i> Export PDF
+                        </a>
+                        <button onclick="modalAction('{{ route('admin.master.prodi.importForm') }}')"
+                            class="btn btn-info mb-2 mb-sm-0">
+                            <i class="fas fa-file-import mr-1"></i> Import Excel
+                        </button>
+                    </div>
                 </div>
-                <div class="form-group has-search mb-0">
-                    <span class="fa fa-search form-control-feedback"></span>
-                    <input type="text" class="form-control" id="searchBox" placeholder="Cari prodi...">
+                <div class="ml-auto">
+                    <div class="form-group has-search mb-0 ml-auto" style="max-width: 300px;">
+                        <span class="fa fa-search form-control-feedback"></span>
+                        <input type="text" class="form-control" id="searchBox" placeholder="Cari prodi...">
+                    </div>
                 </div>
             </div>
 
@@ -86,11 +99,11 @@
             color: var(--light-text);
         }
 
-        #table_peringkat tbody tr {
+        #table_prodi tbody tr {
             transition: all 0.2s ease;
         }
 
-        #table_peringkat tbody tr:hover {
+        #table_prodi tbody tr:hover {
             background-color: rgba(var(--primary-color-rgb), 0.05);
         }
 

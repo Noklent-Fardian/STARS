@@ -117,6 +117,12 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
 
         // Export routes
         Route::get('/export_pdf', [ProdiController::class, 'exportPDF'])->name('exportPDF');
+        Route::get('/export_excel', [ProdiController::class, 'exportExcel'])->name('exportExcel');
+
+        // Import routes
+        Route::get('/import_form', [ProdiController::class, 'importForm'])->name('importForm');
+        Route::post('/import_excel', [ProdiController::class, 'importExcel'])->name('importExcel');
+        Route::get('/generate_template', [ProdiController::class, 'generateTemplate'])->name('generateTemplate');
     });
 
     // Route::get('/master/peringkatLomba', [AdminController::class, 'masterPeringkatLomba'])->name('admin.master.peringkatLomba');

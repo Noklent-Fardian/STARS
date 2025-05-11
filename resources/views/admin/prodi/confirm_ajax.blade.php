@@ -63,16 +63,7 @@
                                     <p class="mb-1 font-weight-bold text-info">Kode:</p>
                                     <h5>{{ $prodi->prodi_kode }}</h5>
                                 </div>
-                                <div class="col-md-6 mt-3">
-                                    <p class="mb-1 font-weight-bold text-success">Status:</p>
-                                    <h5>
-                                        @if($prodi->prodi_visible)
-                                            <span class="badge badge-success">Aktif</span>
-                                        @else
-                                            <span class="badge badge-danger">Non-Aktif</span>
-                                        @endif
-                                    </h5>
-                                </div>
+
                             </div>
                         </div>
                     </div>
