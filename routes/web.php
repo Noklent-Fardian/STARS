@@ -94,6 +94,10 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
 
         // Export routes
         Route::get('/export_pdf', [PeringkatController::class, 'exportPDF'])->name('exportPDF');
+        Route::get('/export_excel', [PeringkatController::class, 'exportExcel'])->name('exportExcel');
+        Route::get('/import_form', [PeringkatController::class, 'importForm'])->name('importForm');
+        Route::post('/import_excel', [PeringkatController::class, 'importExcel'])->name('importExcel');
+        Route::get('/generate_template', [PeringkatController::class, 'generateTemplate'])->name('generateTemplate');
     });
 
     // Master Program Studi Routes

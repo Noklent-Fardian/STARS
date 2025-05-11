@@ -35,14 +35,23 @@
                     <div class="btn-group-responsive">
                         <button onclick="modalAction('{{ route('admin.master.peringkatLomba.createAjax') }}')"
                             class="btn btn-primary mb-2 mb-sm-0 mr-2">
-                            <i class="fas fa-plus-circle mr-1"></i> Tambah Tingkatan Lomba
+                            <i class="fas fa-plus-circle mr-1"></i> Tambah Peringkat Lomba
                         </button>
-                        <a href="{{ url('/admin/master/peringkatLomba/export_pdf') }}" class="btn btn-warning mb-2 mb-sm-0">
+                        <a href="{{ route('admin.master.peringkatLomba.exportExcel') }}"
+                            class="btn btn-success mb-2 mb-sm-0 mr-2">
+                            <i class="fas fa-file-excel mr-1"></i> Export Excel
+                        </a>
+                        <a href="{{ url('/admin/master/peringkatLomba/export_pdf') }}"
+                            class="btn btn-warning mb-2 mb-sm-0 mr-2">
                             <i class="fas fa-file-pdf mr-1"></i> Export PDF
                         </a>
+                        <button onclick="modalAction('{{ route('admin.master.peringkatLomba.importForm') }}')"
+                            class="btn btn-info mb-2 mb-sm-0">
+                            <i class="fas fa-file-import mr-1"></i> Import Excel
+                        </button>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="ml-auto">
                     <div class="form-group has-search mb-0 ml-auto" style="max-width: 300px;">
                         <span class="fa fa-search form-control-feedback"></span>
                         <input type="text" class="form-control" id="searchBox" placeholder="Cari Peringkat lomba...">
