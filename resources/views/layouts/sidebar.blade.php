@@ -33,7 +33,7 @@
             <span>Kelola Dosen</span>
         </a>
     </li>
-    <li class="nav-item {{ request()->routeIs('admin.admin.*') ? 'active' : '' }}">
+    <li class="nav-item {{ request()->routeIs('admin.adminManagement.*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('admin.admin.index') }}">
             <i class="fas fa-fw fa-user-cog"></i>
             <span>Kelola Admin</span>
