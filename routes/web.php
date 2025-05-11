@@ -69,6 +69,12 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
 
         // Export routes
         Route::get('/export_pdf', [TingkatanController::class, 'exportPDF'])->name('exportPDF');
+        Route::get('/export_excel', [TingkatanController::class, 'exportExcel'])->name('exportExcel');
+
+        // Import routes
+        Route::get('/import_form', [TingkatanController::class, 'importForm'])->name('importForm');
+        Route::post('/import_excel', [TingkatanController::class, 'importExcel'])->name('importExcel');
+        Route::get('/generate_template', [TingkatanController::class, 'generateTemplate'])->name('generateTemplate');
     });
 
     // Master Peringkat Lomba Routes

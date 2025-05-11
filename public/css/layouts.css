@@ -161,11 +161,11 @@ body {
     background-color: var(--accent-color) !important;
 }
 
-footer.sticky-footer {
+/* footer.sticky-footer {
     background-color: var(--white) !important;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
     position: relative;
-}
+} */
 
 footer.sticky-footer .copyright {
     color: var(--light-text) !important;
@@ -545,11 +545,11 @@ body.sidebar-toggled .sidebar-overlay {
         min-height: 100%;
     }
 
-    footer.sticky-footer {
+    /* footer.sticky-footer {
         position: relative;
         bottom: 0;
         width: 100%;
-    }
+    } */
 }
 
 /* For dev tools opened at bottom of screen */
