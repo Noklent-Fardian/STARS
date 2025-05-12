@@ -16,23 +16,23 @@ class KeahlianSeeder extends Seeder
         DB::table('m_keahlians')->insert([
             [
                 'keahlian_nama' => 'Frontend Developer',
-                'keahlian_sertifikat' => '',
+                
             ],
             [
                 'keahlian_nama' => 'Backend Developer',
-                'keahlian_sertifikat' => '',
+                
             ],
             [
                 'keahlian_nama' => 'Game Developer',
-                'keahlian_sertifikat' => '',
+                
             ],
             [
                 'keahlian_nama' => 'UI/UX Designer',
-                'keahlian_sertifikat' => '',
+                
             ],
             [
                 'keahlian_nama' => 'Software Tester (QA)',
-                'keahlian_sertifikat' => '',
+                
             ],
         ]);
     }
