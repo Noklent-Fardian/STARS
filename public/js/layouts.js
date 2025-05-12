@@ -5,12 +5,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const contentHeight = document.querySelector("#content").offsetHeight;
         const windowHeight = window.innerHeight;
         const headerHeight = document.querySelector(".topbar").offsetHeight;
-        // const footerHeight = document.querySelector('footer.sticky-footer').offsetHeight;
+        const footerHeight = document.querySelector('footer.sticky-footer').offsetHeight;
 
-        // if (contentHeight < (windowHeight - headerHeight - footerHeight)) {
-        //     document.querySelector('.min-content-height').style.minHeight =
-        //         (windowHeight - headerHeight - footerHeight - 40) + 'px';
-        // }
+        if (contentHeight < (windowHeight - headerHeight - footerHeight)) {
+            document.querySelector('.min-content-height').style.minHeight =
+                (windowHeight - headerHeight - footerHeight - 40) + 'px';
+        }
     }
 
     function ensureSidebarHeight() {

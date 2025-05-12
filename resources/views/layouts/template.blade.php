@@ -133,7 +133,7 @@
     <script src="{{ asset('RuangAdmin/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('RuangAdmin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('RuangAdmin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
-    <script src="{{ asset('RuangAdmin/js/ruang-admin.min.js') }}"></script>
+    <script src="{{ asset('RuangAdmin/js/ruang-admin.js') }}"></script>
     <!-- DataTables  & Plugins -->
     <script src="{{ asset('adminlte/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
