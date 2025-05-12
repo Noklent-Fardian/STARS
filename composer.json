@@ -11,9 +11,10 @@
         "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
-        "phpoffice/phpspreadsheet": "^4.2",
+        "maatwebsite/excel": "*",
+        "phpoffice/phpspreadsheet": "*",
         "yajra/laravel-datatables": "10.0",
-        "yajra/laravel-datatables-oracle": "^10.11"
+        "yajra/laravel-datatables-oracle": "^10"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

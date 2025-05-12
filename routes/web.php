@@ -8,6 +8,9 @@ use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\PeringkatController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\TingkatanController;
+use App\Http\Controllers\BidangKeahlianController;
+use App\Http\Controllers\LombaController;
+use App\Http\Controllers\PrestasiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -123,6 +126,29 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::get('/import_form', [ProdiController::class, 'importForm'])->name('importForm');
         Route::post('/import_excel', [ProdiController::class, 'importExcel'])->name('importExcel');
         Route::get('/generate_template', [ProdiController::class, 'generateTemplate'])->name('generateTemplate');
+    });
+
+    // Master Bidang Keahlian Routes
+    Route::prefix('master/bidangKeahlian')->name('admin.master.bidangKeahlian.')->group(function () {
+        Route::get('/', [BidangKeahlianController::class, 'index'])->name('index');
+        Route::get('/list', [BidangKeahlianController::class, 'getBidangKeahlianList'])->name('list');
+        // Route tambahan untuk create, edit, delete jika diperlukan
+        Route::get('/create-ajax', [BidangKeahlianController::class, 'createAjax'])->name('createAjax');
+        Route::post('/store-ajax', [BidangKeahlianController::class, 'storeAjax'])->name('storeAjax');
+        Route::get('/edit-ajax/{id}', [BidangKeahlianController::class, 'editAjax'])->name('editAjax');
+        Route::put('/update-ajax/{id}', [BidangKeahlianController::class, 'updateAjax'])->name('updateAjax');
+        Route::delete('/delete-ajax/{id}', [BidangKeahlianController::class, 'deleteAjax'])->name('deleteAjax');
+        
+        // Route untuk konfirmasi penghapusan (bisa digabung dengan delete-ajax jika sudah cukup)
+        Route::get('/confirm-ajax/{id}', [BidangKeahlianController::class, 'confirmAjax'])->name('confirmAjax');
+        Route::get('/show/{id}', [BidangKeahlianController::class, 'show'])->name('show');
+
+        // Export routes
+        Route::get('export-pdf', [BidangKeahlianController::class, 'exportPDF'])->name('exportPDF');
+        Route::get('export-excel', [BidangKeahlianController::class, 'exportExcel'])->name('exportExcel');
+        Route::post('import-excel', [BidangKeahlianController::class, 'importExcel'])->name('importExcel');
+        Route::get('generate-template', [BidangKeahlianController::class, 'generateTemplate'])->name('generateTemplate');
+        //Route::get('/bidang-keahlian/export/pdf', [BidangKeahlianController::class, 'exportPdf'])->name('admin.master.bidangKeahlian.exportPdf');
     });
 
     // Route::get('/master/peringkatLomba', [AdminController::class, 'masterPeringkatLomba'])->name('admin.master.peringkatLomba');

@@ -83,7 +83,8 @@ class AdminController extends Controller
     }
     public function masterKeahlian()
     {
-        return view('admin.master.keahlian');
+        //return view('admin.master.bidangKeahlian');
+        return view('admin.bidangKeahlian.index');
     }
     // tingkatanLomba
     public function masterTingkatanLomba()
