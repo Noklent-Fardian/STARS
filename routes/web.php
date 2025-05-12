@@ -11,6 +11,7 @@ use App\Http\Controllers\TingkatanController;
 use App\Http\Controllers\BidangKeahlianController;
 use App\Http\Controllers\LombaController;
 use App\Http\Controllers\PrestasiController;
+use App\Http\Controllers\AdminManagementController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,6 +35,30 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     // Dashboard
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+
+    // Admin Management Routes
+    Route::prefix('adminManagement')->name('admin.adminManagement.')->group(function () {
+        Route::get('/', [AdminManagementController::class, 'index'])->name('index');
+        Route::get('/list', [AdminManagementController::class, 'getAdminList'])->name('list');
+        Route::get('/show/{id}', [AdminManagementController::class, 'show'])->name('show');
+
+        // AJAX routes
+        Route::get('/create_ajax', [AdminManagementController::class, 'createAjax'])->name('createAjax');
+        Route::post('/ajax', [AdminManagementController::class, 'storeAjax'])->name('storeAjax');
+        Route::get('/{id}/edit_ajax', [AdminManagementController::class, 'editAjax'])->name('editAjax');
+        Route::put('/{id}/update_ajax', [AdminManagementController::class, 'updateAjax'])->name('updateAjax');
+        Route::get('/{id}/confirm_ajax', [AdminManagementController::class, 'confirmAjax'])->name('confirmAjax');
+        Route::delete('/{id}/delete_ajax', [AdminManagementController::class, 'destroyAjax'])->name('destroyAjax');
+
+        // Export routes
+        Route::get('/export_pdf', [AdminManagementController::class, 'exportPDF'])->name('exportPDF');
+        Route::get('/export_excel', [AdminManagementController::class, 'exportExcel'])->name('exportExcel');
+
+        // Import routes
+        Route::get('/import_form', [AdminManagementController::class, 'importForm'])->name('importForm');
+        Route::post('/import_excel', [AdminManagementController::class, 'importExcel'])->name('importExcel');
+        Route::get('/generate_template', [AdminManagementController::class, 'generateTemplate'])->name('generateTemplate');
+    });
 
     // Manajemen Pengguna
     Route::get('/mahasiswa', [AdminController::class, 'mahasiswaIndex'])->name('admin.mahasiswa.index');

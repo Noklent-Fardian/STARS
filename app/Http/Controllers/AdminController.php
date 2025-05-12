@@ -32,7 +32,7 @@ class AdminController extends Controller
 
     public function adminIndex()
     {
-        return view('admin.admin.index');
+         return redirect()->route('admin.adminManagement.index');
     }
 
 

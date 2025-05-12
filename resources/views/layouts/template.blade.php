@@ -33,19 +33,50 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <!-- Custom CSS File -->
     <link href="{{ asset('css/layouts.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/preload.css') }}" rel="stylesheet">
+
 
     <!-- Additional CSS -->
     @stack('css')
+
+  
+
 </head>
 
 <body id="page-top">
+    <div class="preloader">
+        <div class="preloader-content">
+            <div class="system-name">
+                <span>S</span>TUDENT <span>A</span>CHIEVEMENT <span>R</span>ECORD <span>S</span>YSTEM
+            </div>
+            <div class="star-container">
+                <div class="logo-main"></div>
+                <div class="logo-glow"></div>
+                <div class="star-rays"></div>
+                <div class="particles">
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+            </div>
+            <div class="loading-text">Loading resources...</div>
+            <div class="progress-percentage">0%</div>
+        </div>
+    </div>
+
     <div id="wrapper">
         @include('layouts.sidebar')
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                @include('layouts.header')<div class="container-fluid" id="container-wrapper">
+                @include('layouts.header')
+                <div class="container-fluid" id="container-wrapper">
                     @include('layouts.breadcrumb')
 
                     <!-- Main Content Area -->
@@ -114,42 +145,7 @@
     <script src="{{ asset('adminlte/plugins/jquery-validation/additional-methods.min.js') }}"></script>
     <!-- SweetAlert2 -->
     <script src="{{ asset('adminlte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-    <script>
-        $(window).on('load', function() {
 
-            $('.preloader').delay(200).fadeOut('slow');
-
-        });
-
-        $(document).ready(function() {
-            // Add animation to form elements when page loads
-            $('.form-group').each(function(i) {
-                $(this).css({
-                    'opacity': 0,
-                    'transform': 'translateY(20px)'
-                });
-
-                setTimeout(function() {
-                    $('.form-group').eq(i).css({
-                        'opacity': 1,
-                        'transform': 'translateY(0)',
-                        'transition': 'all 0.4s ease-out'
-                    });
-                }, 100 * (i + 1));
-            });
-
-
-
-            // Style validation on submit attempt
-            $('form').on('submit', function() {
-                if (this.checkValidity() === false) {
-                    $(this).find(':invalid').first().focus();
-                    $(this).addClass('was-validated');
-                    return false;
-                }
-            });
-        });
-    </script>
 
 
     <!-- Additional JS -->

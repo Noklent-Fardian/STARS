@@ -38,7 +38,7 @@
             <div class="shape square square-1"></div>
             <!-- Glass Effect -->
             <div class="glass-effect glass-1"></div>
-            
+
             <div class="welcome-content">
                 <img src="{{ asset('img/logo.svg') }}" alt="Logo" class="logo">
                 <h1>Selamat Datang!</h1>
@@ -47,7 +47,7 @@
         </div>
 
         <!-- Login Section -->
-        
+
         <div class="login-section">
             <div class="login-box">
                 <h2>Login</h2>
@@ -61,8 +61,12 @@
                     <div class="input-group">
                         <input type="password" id="password" name="password" placeholder="Password" required>
                         <span class="input-icon"><i class="fas fa-lock"></i></span>
+                        <span class="toggle-password" id="togglePassword" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer; z-index: 10;">
+                            <i class="fas fa-eye"></i>
+                        </span>
                         <small id="error-password" class="error-text"></small>
                     </div>
+
                     <div class="form-options">
                         <label>
                             <input type="checkbox" name="remember">
@@ -157,8 +161,12 @@
                                         container: 'swal-container-fixed'
                                     },
                                     didOpen: () => {
-                                        $btn.html('<i class="fas fa-check"></i> Success!');
-                                        $btn.css('background', 'linear-gradient(135deg, #28a745, #20c997)');
+                                        $btn.html(
+                                            '<i class="fas fa-check"></i> Success!'
+                                            );
+                                        $btn.css('background',
+                                            'linear-gradient(135deg, #28a745, #20c997)'
+                                            );
                                         Swal.showLoading();
                                     }
                                 }).then(function() {
@@ -169,7 +177,7 @@
                                 // Error case
                                 $btn.html(originalText);
                                 $btn.prop('disabled', false);
-                                
+
                                 // Display field-specific errors
                                 $('.error-text').text('');
                                 if (response.msgField) {
@@ -177,7 +185,7 @@
                                         $('#error-' + prefix).text(val[0]);
                                     });
                                 }
-                                
+
                                 // Show error popup
                                 Swal.fire({
                                     icon: 'error',
@@ -215,6 +223,20 @@
                 }
             });
         });
+
+        $("#togglePassword").click(function() {
+        const passwordField = $("#password");
+        const toggleIcon = $(this).find("i");
+
+        if (passwordField.attr("type") === "password") {
+            passwordField.attr("type", "text");
+            toggleIcon.removeClass("fa-eye").addClass("fa-eye-slash");
+        } else {
+            passwordField.attr("type", "password");
+            toggleIcon.removeClass("fa-eye-slash").addClass("fa-eye");
+        }
+        });
+  
     </script>
 </body>
 
