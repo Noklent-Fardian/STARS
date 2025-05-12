@@ -16,11 +16,6 @@
                     <input type="text" name="keahlian_nama" class="form-control" placeholder="Masukkan nama keahlian" required>
                     <small id="error-keahlian_nama" class="error-text form-text text-danger"></small>
                 </div>
-                <div class="form-group">
-                    <label class="font-weight-bold">Sertifikat</label>
-                    <input type="text" name="keahlian_sertifikat" class="form-control" placeholder="Masukkan nama sertifikat">
-                    <small id="error-keahlian_sertifikat" class="error-text form-text text-danger"></small>
-                </div>
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" data-dismiss="modal" class="btn btn-outline-secondary">
@@ -57,18 +52,12 @@
                 keahlian_nama: {
                     required: true,
                     maxlength: 255
-                },
-                keahlian_visible: {
-                    required: true
                 }
             },
             messages: {
                 keahlian_nama: {
                     required: "Nama keahlian tidak boleh kosong",
                     maxlength: "Nama keahlian maksimal 255 karakter"
-                },
-                keahlian_visible: {
-                    required: "Visibilitas harus dipilih"
                 }
             },
             submitHandler: function(form) {

@@ -35,15 +35,15 @@
                             class="btn btn-primary mb-2 mb-sm-0 mr-2">
                             <i class="fas fa-plus-circle mr-1"></i> Tambah Bidang Keahlian
                         </button>
-                        <button onclick="showComingSoon('Export Excel')"
+                        <a href="{{ route('admin.master.bidangKeahlian.exportExcel') }}"
                             class="btn btn-success mb-2 mb-sm-0 mr-2">
                             <i class="fas fa-file-excel mr-1"></i> Export Excel
-                        </button>
-                        <button onclick="showComingSoon('Export PDF')"
+                        </a>
+                        <a href="{{ route('admin.master.bidangKeahlian.exportPDF') }}"
                             class="btn btn-warning mb-2 mb-sm-0 mr-2">
                             <i class="fas fa-file-pdf mr-1"></i> Export PDF
-                        </button>
-                        <button onclick="showComingSoon('Import Excel')"
+                        </a>
+                        <button onclick="modalAction('{{ route('admin.master.bidangKeahlian.importForm') }}')"
                             class="btn btn-info mb-2 mb-sm-0">
                             <i class="fas fa-file-import mr-1"></i> Import Excel
                         </button>
@@ -63,7 +63,6 @@
                         <tr>
                             <th>ID</th>
                             <th>Nama Keahlian</th>
-                            <th>Sertifikat</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -97,11 +96,11 @@
             color: var(--light-text);
         }
 
-        #table_peringkat tbody tr {
+        #table_keahlian tbody tr {
             transition: all 0.2s ease;
         }
 
-        #table_peringkat tbody tr:hover {
+        #table_keahlian tbody tr:hover {
             background-color: rgba(var(--primary-color-rgb), 0.05);
         }
 
@@ -169,26 +168,37 @@
 @push('js')
     <script>
         function modalAction(url = '') {
-            $('#myModal').load(url, function () {
+            $('#myModal').load(url, function() {
                 $('#myModal').modal('show');
             });
         }
 
-        $(document).ready(function () {
-            let dataKeahlian = $('#table_keahlian').DataTable({
+        var dataKeahlian;
+        
+        $(document).ready(function() {
+            dataKeahlian = $('#table_keahlian').DataTable({
                 serverSide: true,
                 processing: true,
                 ajax: {
                     url: "{{ route('admin.master.bidangKeahlian.list') }}",
                     type: "GET"
                 },
-                columns: [
-                    { data: 'id', className: 'text-center', width: '2%' },
-                    { data: 'keahlian_nama', width: '15%' },
-                    { data: 'keahlian_sertifikat', width: '20%', render: function(data) {
-                        return data ? data : '-';
-                    }},
-                    { data: 'aksi', className: 'text-center', orderable: false, searchable: false, width: '15%' },
+                columns: [{
+                        data: 'id',
+                        className: 'text-center',
+                        width: '5%'
+                    },
+                    {
+                        data: 'keahlian_nama',
+                        width: '65%'
+                    },
+                    {
+                        data: 'aksi',
+                        className: 'text-center',
+                        orderable: false,
+                        searchable: false,
+                        width: '30%'
+                    },
                 ],
                 language: {
                     processing: '<div class="spinner-border text-primary" role="status"></div>',
@@ -207,11 +217,11 @@
                     }
                 },
                 dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
-                     "<'row'<'col-sm-12'tr>>" +
-                     "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             });
 
-            $('#searchBox').on('keyup', function () {
+            $('#searchBox').on('keyup', function() {
                 dataKeahlian.search(this.value).draw();
             });
 

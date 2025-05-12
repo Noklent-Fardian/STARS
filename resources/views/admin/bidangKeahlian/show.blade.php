@@ -54,13 +54,6 @@
                                 </div>
                                 <div class="user-info-item">
                                     <div class="info-label">
-                                        <i class="fas fa-certificate text-warning"></i>
-                                        <span>Sertifikat</span>
-                                    </div>
-                                    <div class="info-value">{{ $keahlian->keahlian_sertifikat ?? 'Tidak Ada' }}</div>
-                                </div>
-                                <div class="user-info-item">
-                                    <div class="info-label">
                                         <i class="fas fa-eye text-success"></i>
                                         <span>Keahlian Visible</span>
                                     </div>

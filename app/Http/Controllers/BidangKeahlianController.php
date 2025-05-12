@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Keahlian;
@@ -7,7 +6,6 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
-use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -19,20 +17,17 @@ class BidangKeahlianController extends Controller
 {
     public function index()
     {
-        $keahlians = Keahlian::all(); // Ambil semua data dari tabel m_keahlians
+        $keahlians = Keahlian::all();
         return view('admin.bidangKeahlian.index', compact('keahlians'));
     }
 
     public function getBidangKeahlianList(Request $request)
     {
-        // Ambil data bidang keahlian
-        $bidangKeahlian = Keahlian::select('id', 'keahlian_nama', 'keahlian_sertifikat', 'keahlian_visible')
+        $bidangKeahlian = Keahlian::select('id', 'keahlian_nama', 'keahlian_visible')
             ->where('keahlian_visible', true);
 
-        // Cek jika request datang dari DataTables
         if ($request->ajax()) {
             return DataTables::of($bidangKeahlian)
-                // Menambahkan kolom aksi (untuk edit, view, delete)
                 ->addColumn('aksi', function ($keahlian) {
                     $view = '<a href="' . url('/admin/master/bidangKeahlian/show/' . $keahlian->id) . '" class="btn btn-sm btn-info mr-1"><i class="fas fa-eye"></i> Detail</a>';
                     $edit = '<button onclick="modalAction(\'' . route('admin.master.bidangKeahlian.editAjax', $keahlian->id) . '\')" class="btn btn-sm btn-warning mr-2">
@@ -42,16 +37,12 @@ class BidangKeahlianController extends Controller
                                 <i class="fas fa-trash-alt mr-1"></i> Hapus
                             </button>';
 
-                    // Gabungkan tombol aksi
                     return $view . $edit . $delete;
                 })
-                // Format kolom bobot atau nilai yang ingin ditampilkan dalam format tertentu (jika ada)
                 ->editColumn('keahlian_nama', function ($keahlian) {
                     return $keahlian->keahlian_nama;
                 })
-                // Menambahkan rawColumns untuk kolom aksi agar bisa merender HTML seperti tombol
                 ->rawColumns(['aksi'])
-                // Kembalikan response berupa JSON DataTables
                 ->make(true);
         }
     }
@@ -65,8 +56,6 @@ class BidangKeahlianController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'keahlian_nama' => 'required|string|max:255',
-            'keahlian_sertifikat' => 'nullable|string|max:255',
-            // keahlian_visible tidak perlu divalidasi karena akan diset default true
         ]);
 
         if ($validator->fails()) {
@@ -77,8 +66,7 @@ class BidangKeahlianController extends Controller
             ]);
         }
 
-        // Ambil input dan tambahkan nilai default untuk keahlian_visible
-        $data = $request->only(['keahlian_nama', 'keahlian_sertifikat']);
+        $data = $request->only(['keahlian_nama']);
         $data['keahlian_visible'] = true;
 
         Keahlian::create($data);
@@ -88,7 +76,6 @@ class BidangKeahlianController extends Controller
             'message' => 'Data berhasil disimpan'
         ]);
     }
-
 
     public function editAjax($id)
     {
@@ -100,8 +87,6 @@ class BidangKeahlianController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'keahlian_nama' => 'required|string|max:255',
-            'keahlian_sertifikat' => 'nullable|string|max:255',
-            // Hapus validasi keahlian_visible
         ]);
 
         if ($validator->fails()) {
@@ -121,8 +106,7 @@ class BidangKeahlianController extends Controller
             ]);
         }
 
-        // Ambil data yang diizinkan diubah
-        $data = $request->only(['keahlian_nama', 'keahlian_sertifikat']);
+        $data = $request->only(['keahlian_nama']);
 
         $keahlian->update($data);
 
@@ -141,6 +125,14 @@ class BidangKeahlianController extends Controller
     public function deleteAjax($id)
     {
         $keahlian = Keahlian::find($id);
+        
+        if (!$keahlian) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data tidak ditemukan'
+            ]);
+        }
+        
         $keahlian->delete();
 
         return response()->json([
@@ -159,7 +151,7 @@ class BidangKeahlianController extends Controller
     {
         $keahlians = Keahlian::orderBy('keahlian_nama')->get();
 
-        $pdf = Pdf::loadView('keahlian.export_pdf', compact('keahlians'))
+        $pdf = Pdf::loadView('admin.bidangKeahlian.export_pdf', compact('keahlians'))
             ->setPaper('a4', 'portrait');
 
         return $pdf->download('Laporan_Bidang_Keahlian.pdf');
@@ -167,37 +159,102 @@ class BidangKeahlianController extends Controller
 
     public function exportExcel()
     {
-        $data = Keahlian::orderBy('nama', 'asc')->get();
+        $keahlians = Keahlian::where('keahlian_visible', true)
+            ->orderBy('keahlian_nama', 'asc')
+            ->get();
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
+        $spreadsheet->getProperties()
+            ->setCreator('STAR System')
+            ->setLastModifiedBy('STAR System')
+            ->setTitle('Data Bidang Keahlian')
+            ->setSubject('Bidang Keahlian Export')
+            ->setDescription('Daftar bidang keahlian yang aktif dalam sistem');
+
         $sheet->setCellValue('A1', 'DAFTAR BIDANG KEAHLIAN');
-        $sheet->mergeCells('A1:B1');
+        $sheet->mergeCells('A1:C1');
         $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(16);
-        $sheet->getStyle('A1')->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
         $sheet->setCellValue('A2', 'No');
-        $sheet->setCellValue('B2', 'Nama Bidang Keahlian');
+        $sheet->setCellValue('B2', 'ID');
+        $sheet->setCellValue('C2', 'Nama Bidang Keahlian');
 
+        $headerStyle = [
+            'font' => [
+                'bold' => true,
+                'color' => ['rgb' => 'FFFFFF']
+            ],
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => ['rgb' => '102044']
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['rgb' => '000000']
+                ]
+            ]
+        ];
+        $sheet->getStyle('A2:C2')->applyFromArray($headerStyle);
+        $sheet->getRowDimension(2)->setRowHeight(25);
+        $sheet->freezePane('A3');
+
+        $no = 1;
         $row = 3;
-        foreach ($data as $index => $item) {
-            $sheet->setCellValue('A' . $row, $index + 1);
-            $sheet->setCellValue('B' . $row, $item->nama);
+        foreach ($keahlians as $keahlian) {
+            $sheet->setCellValue('A' . $row, $no);
+            $sheet->setCellValue('B' . $row, $keahlian->id);
+            $sheet->setCellValue('C' . $row, $keahlian->keahlian_nama);
+
+            $sheet->getStyle('A' . $row . ':C' . $row)->applyFromArray([
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => Border::BORDER_THIN,
+                        'color' => ['rgb' => '000000']
+                    ]
+                ]
+            ]);
+
+            $sheet->getStyle('A' . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle('B' . $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
             $row++;
+            $no++;
         }
 
-        foreach (range('A', 'B') as $column) {
+        foreach (range('A', 'C') as $column) {
             $sheet->getColumnDimension($column)->setAutoSize(true);
         }
 
+        $sheet->setTitle('Bidang Keahlian');
+
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $filename = 'Data_Bidang_Keahlian_' . date('Ymd_His') . '.xlsx';
+
+        $filename = 'Data_Bidang_Keahlian_' . date('Y-m-d_H-i-s') . '.xlsx';
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header("Content-Disposition: attachment; filename=\"$filename\"");
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        header('Cache-Control: max-age=1');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        header('Cache-Control: cache, must-revalidate');
+        header('Pragma: public');
+
         $writer->save('php://output');
         exit;
+    }
+
+    public function importForm()
+    {
+        return view('admin.bidangKeahlian.import');
     }
 
     public function importExcel(Request $request)
@@ -224,12 +281,17 @@ class BidangKeahlianController extends Controller
                 continue;
             }
 
-            if (Keahlian::where('nama', $nama)->exists()) {
+            if (Keahlian::where('keahlian_nama', $nama)->exists()) {
                 $errors[] = "Baris " . ($index + 1) . ": '$nama' sudah ada";
                 continue;
             }
 
-            $insert[] = ['nama' => $nama, 'created_at' => now(), 'updated_at' => now()];
+            $insert[] = [
+                'keahlian_nama' => $nama, 
+                'keahlian_visible' => true,
+                'created_at' => now(), 
+                'updated_at' => now()
+            ];
         }
 
         if ($errors) {
@@ -252,16 +314,27 @@ class BidangKeahlianController extends Controller
     {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
+        
         $sheet->setCellValue('A1', 'Nama Bidang Keahlian');
         $sheet->setCellValue('A2', 'Contoh Keahlian');
+        
+        $sheet->getStyle('A1')->getFont()->setBold(true);
+        $sheet->getStyle('A1')->getFill()
+            ->setFillType(Fill::FILL_SOLID)
+            ->getStartColor()->setRGB('102044');
+        $sheet->getStyle('A1')->getFont()->getColor()->setRGB('FFFFFF');
+        
+        $sheet->getColumnDimension('A')->setAutoSize(true);
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $path = public_path('excel/template_bidang_keahlian.xlsx');
+        
         if (!file_exists(dirname($path))) {
             mkdir(dirname($path), 0755, true);
         }
+        
         $writer->save($path);
-
-        return response()->download($path);
+        
+        return response()->download($path, 'template_bidang_keahlian.xlsx');
     }
 }

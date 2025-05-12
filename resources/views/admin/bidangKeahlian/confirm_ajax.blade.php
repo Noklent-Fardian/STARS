@@ -28,7 +28,7 @@
         </div>
     </div>
 @else
-    <form action="{{ route('admin.master.bidangKeahlian.destroyAjax', $keahlian->id) }}" method="POST" id="form-delete">
+    <form action="{{ route('admin.master.bidangKeahlian.deleteAjax', $keahlian->id) }}" method="POST" id="form-delete">
         @csrf
         @method('DELETE')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
@@ -58,10 +58,6 @@
                                 <div class="col-md-6">
                                     <p class="mb-1 font-weight-bold text-primary">Nama Keahlian:</p>
                                     <h5>{{ $keahlian->keahlian_nama }}</h5>
-                                </div>
-                                <div class="col-md-3">
-                                    <p class="mb-1 font-weight-bold text-warning">Sertifikat:</p>
-                                    <h5>{{ $keahlian->keahlian_sertifikat }}</h5>
                                 </div>
                             </div>
                         </div>

@@ -13,7 +13,6 @@ class Keahlian extends Model
 
     protected $fillable = [
         'keahlian_nama',
-        'keahlian_sertifikat',
         'keahlian_visible',
     ];
 

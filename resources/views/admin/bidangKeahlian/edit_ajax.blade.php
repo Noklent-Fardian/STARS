@@ -52,17 +52,6 @@
                         </div>
                         <small id="error-keahlian_nama" class="error-text form-text text-danger"></small>
                     </div>
-
-                    <div class="form-group">
-                        <label class="font-weight-bold">Sertifikat Keahlian</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text bg-warning text-white"><i class="fas fa-certificate"></i></span>
-                            </div>
-                            <input value="{{ $keahlian->keahlian_sertifikat }}" type="text" name="keahlian_sertifikat" id="keahlian_sertifikat" class="form-control" placeholder="Masukkan nama sertifikat keahlian">
-                        </div>
-                        <small id="error-keahlian_sertifikat" class="error-text form-text text-danger"></small>
-                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" data-dismiss="modal" class="btn btn-outline-secondary">
@@ -98,11 +87,6 @@
                         required: true,
                         minlength: 1,
                         maxlength: 255
-                    },
-                    keahlian_sertifikat: {
-                        required: false,
-                        minlength: 1,
-                        maxlength: 255
                     }
                 },
                 messages: {
@@ -132,8 +116,7 @@
                                 if ($('.card-header:contains("Detail Bidang Keahlian")').length > 0) {
                                     // Update the view with new data without page refresh
                                     updateDetailView({
-                                        nama: $('#keahlian_nama').val(),
-                                        sertifikat: $('#keahlian_sertifikat').val()
+                                        nama: $('#keahlian_nama').val()
                                     });
                                 } else {
                                     // If on index page, just reload the DataTable
@@ -173,12 +156,10 @@
             function updateDetailView(data) {
                 // Update the heading and card info
                 $('h4.font-weight-bold').text(data.nama);
-                $('.badge.badge-warning.px-3.py-2').html('Sertifikat: ' + data.sertifikat);
 
                 // Update the table data
                 let infoItems = $('.user-info-item');
                 $(infoItems[1]).find('.info-value').text(data.nama);
-                $(infoItems[2]).find('.info-value').text(data.sertifikat);
 
                 // Update the timestamp with current time
                 let now = new Date();
