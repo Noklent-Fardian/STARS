@@ -74,7 +74,6 @@ class SemesterController extends Controller
             'semester_nama' => 'required|string|max:255|unique:m_semesters',
             'semester_tahun' => 'required|integer|min:2000|max:' . (date('Y') + 5),
             'semester_jenis' => 'required|in:Ganjil,Genap',
-            'semester_aktif' => 'sometimes|boolean',
         ]);
 
         if ($validator->fails()) {
@@ -85,16 +84,12 @@ class SemesterController extends Controller
             ]);
         }
 
-        // Jika semester yang diinput aktif, nonaktifkan semua semester aktif lainnya
-        if ($request->semester_aktif) {
-            Semester::where('semester_aktif', true)->update(['semester_aktif' => false]);
-        }
 
         Semester::create([
             'semester_nama'    => $request->semester_nama,
             'semester_tahun'  => $request->semester_tahun,
             'semester_jenis'   => $request->semester_jenis,
-            'semester_aktif'   => $request->semester_aktif ?? false,
+            'semester_aktif'   => false,
             'semester_visible' => true,
         ]);
 
@@ -411,8 +406,8 @@ class SemesterController extends Controller
                 'semester_nama' => $rowData['A'],
                 'semester_tahun' => (int)$rowData['B'],
                 'semester_jenis' => $rowData['C'],
-                'semester_aktif' => $isActive ? 1 : 0,
                 'semester_visible' => true,
+                'semester_aktif' => false,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
@@ -473,12 +468,10 @@ class SemesterController extends Controller
         $sheet->setCellValue('A1', 'Nama Semester');
         $sheet->setCellValue('B1', 'Tahun');
         $sheet->setCellValue('C1', 'Jenis (Ganjil/Genap)');
-        $sheet->setCellValue('D1', 'Aktif (true/false)');
 
         $sheet->setCellValue('A2', 'Semester Ganjil 2023');
         $sheet->setCellValue('B2', '2023');
         $sheet->setCellValue('C2', 'Ganjil');
-        $sheet->setCellValue('D2', 'true');
 
         $sheet->getStyle('A1:D1')->getFont()->setBold(true);
         $sheet->getStyle('A1:D1')->getFill()

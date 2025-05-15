@@ -52,7 +52,7 @@
                     <small id="error-semester_jenis" class="error-text form-text text-danger"></small>
                 </div>
 
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <div class="custom-control custom-switch">
                         <input type="checkbox" class="custom-control-input" id="semester_aktif" name="semester_aktif">
                         <label class="custom-control-label font-weight-bold" for="semester_aktif">Aktifkan Semester
@@ -61,7 +61,7 @@
                             yang bisa aktif)</small>
                     </div>
                     <small id="error-semester_aktif" class="error-text form-text text-danger"></small>
-                </div>
+                </div> --}}
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" data-dismiss="modal" class="btn btn-outline-secondary">

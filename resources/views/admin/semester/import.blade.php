@@ -21,13 +21,11 @@
                         <li><strong>Kolom A:</strong> Nama Semester (Contoh: Semester Ganjil 2023)</li>
                         <li><strong>Kolom B:</strong> Tahun (Angka antara 2000-{{ date('Y') + 5 }})</li>
                         <li><strong>Kolom C:</strong> Jenis (Ganjil/Genap)</li>
-                        <li><strong>Kolom D:</strong> Status Aktif (1/0 atau true/false)</li>
                     </ul>
                 </div>
                 <div class="alert alert-warning">
                     <i class="fas fa-exclamation-triangle mr-2"></i> Perhatian:
                     <ul class="mb-0 pl-4 mt-1">
-                        <li>Jika mengimport semester dengan status aktif, semua semester aktif lainnya akan dinonaktifkan</li>
                         <li>Nama semester harus unik</li>
                         <li>Format tahun harus angka 4 digit (contoh: 2023)</li>
                         <li>Jenis semester hanya boleh "Ganjil" atau "Genap"</li>
