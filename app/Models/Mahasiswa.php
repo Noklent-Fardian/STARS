@@ -40,7 +40,7 @@ class Mahasiswa extends Model
         'mahasiswa_kecamatan',
         'mahasiswa_desa',
         'mahasiswa_score',
-        'keahlian_visible',
+        'mahasiswa_visible',
     ];
 
     /**

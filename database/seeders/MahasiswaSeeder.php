@@ -31,7 +31,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kota' => '',
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
-                'keahlian_visible' => true,
+                'mahasiswa_visible' => true,
             ],
             [
                 'user_id' => '13',
@@ -50,7 +50,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kota' => '',
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
-                'keahlian_visible' => true,
+                'mahasiswa_visible' => true,
             ],
             [
                 'user_id' => '14',
@@ -69,7 +69,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kota' => '',
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
-                'keahlian_visible' => true,
+                'mahasiswa_visible' => true,
             ],
             [
                 'user_id' => '15',
@@ -88,7 +88,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kota' => '',
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
-                'keahlian_visible' => true,
+                'mahasiswa_visible' => true,
             ],
             [
                 'user_id' => '16',
@@ -107,7 +107,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kota' => '',
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
-                'keahlian_visible' => true,
+                'mahasiswa_visible' => true,
             ],
         ]);
     }

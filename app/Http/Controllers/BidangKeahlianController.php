@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Keahlian;
@@ -12,6 +13,9 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
+use App\Models\Mahasiswa;
+use App\Models\KeahlianMahasiswa;
+use Illuminate\Support\Facades\DB;
 
 class BidangKeahlianController extends Controller
 {
@@ -125,14 +129,14 @@ class BidangKeahlianController extends Controller
     public function deleteAjax($id)
     {
         $keahlian = Keahlian::find($id);
-        
+
         if (!$keahlian) {
             return response()->json([
                 'status' => false,
                 'message' => 'Data tidak ditemukan'
             ]);
         }
-        
+
         $keahlian->delete();
 
         return response()->json([
@@ -287,9 +291,9 @@ class BidangKeahlianController extends Controller
             }
 
             $insert[] = [
-                'keahlian_nama' => $nama, 
+                'keahlian_nama' => $nama,
                 'keahlian_visible' => true,
-                'created_at' => now(), 
+                'created_at' => now(),
                 'updated_at' => now()
             ];
         }
@@ -314,27 +318,67 @@ class BidangKeahlianController extends Controller
     {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        
+
         $sheet->setCellValue('A1', 'Nama Bidang Keahlian');
         $sheet->setCellValue('A2', 'Contoh Keahlian');
-        
+
         $sheet->getStyle('A1')->getFont()->setBold(true);
         $sheet->getStyle('A1')->getFill()
             ->setFillType(Fill::FILL_SOLID)
             ->getStartColor()->setRGB('102044');
         $sheet->getStyle('A1')->getFont()->getColor()->setRGB('FFFFFF');
-        
+
         $sheet->getColumnDimension('A')->setAutoSize(true);
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $path = public_path('excel/template_bidang_keahlian.xlsx');
-        
+
         if (!file_exists(dirname($path))) {
             mkdir(dirname($path), 0755, true);
         }
-        
+
         $writer->save($path);
-        
+
         return response()->download($path, 'template_bidang_keahlian.xlsx');
+    }
+    public function lihatMahasiswa($id)
+    {
+        $keahlian = Keahlian::find($id);
+
+        if (!$keahlian) {
+            return view('admin.bidangKeahlian.mahasiswa_modal', [
+                'errorMessage' => 'Bidang keahlian tidak ditemukan'
+            ]);
+        }
+
+        $primaryMahasiswas = Mahasiswa::where('keahlian_id', $id)
+            ->with(['prodi'])
+            ->get()
+            ->map(function ($mahasiswa) {
+                $mahasiswa->prodi_nama = $mahasiswa->prodi->prodi_nama ?? 'N/A';
+                return $mahasiswa;
+            });
+
+        // Get mahasiswa with this keahlian as additional skill (t_keahlian_mahasiswas)
+        $additionalMahasiswas = KeahlianMahasiswa::where('keahlian_id', $id)
+            ->with([
+                'mahasiswa' => function ($query) {
+                    $query->with(['prodi']);
+                }
+            ])
+            ->get()
+            ->map(function ($item) {
+                $mahasiswa = $item->mahasiswa;
+                $mahasiswa->prodi_nama = $mahasiswa->prodi->prodi_nama ?? 'N/A';
+                $mahasiswa->keahlian_sertifikat = $item->keahlian_sertifikat;
+                return $mahasiswa;
+            });
+
+        $allMahasiswas = $primaryMahasiswas->concat($additionalMahasiswas)->unique('id');
+        
+        $mahasiswas = $primaryMahasiswas;
+
+
+        return view('admin.bidangKeahlian.mahasiswa_modal', compact('keahlian', 'mahasiswas', 'allMahasiswas'));
     }
 }

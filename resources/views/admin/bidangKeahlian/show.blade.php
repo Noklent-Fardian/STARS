@@ -91,6 +91,9 @@
                 
                 @if(!empty($keahlian))
                 <div>
+                    <button onclick="modalAction('{{ route('admin.master.bidangKeahlian.lihatMahasiswa', $keahlian->id) }}')" class="btn btn-info px-4 mr-2">
+                        <i class="fas fa-eye mr-2"></i> Lihat Mahasiswa
+                    </button>
                     <button onclick="modalAction('{{ route('admin.master.bidangKeahlian.editAjax', $keahlian->id) }}')" class="btn btn-warning px-4 mr-2">
                         <i class="fas fa-edit mr-2"></i> Edit
                     </button>

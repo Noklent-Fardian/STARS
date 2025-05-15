@@ -158,17 +158,18 @@ Route::prefix('master/bidangKeahlian')->name('admin.master.bidangKeahlian.')->gr
     Route::get('/', [BidangKeahlianController::class, 'index'])->name('index');
     Route::get('/list', [BidangKeahlianController::class, 'getBidangKeahlianList'])->name('list');
     
-    // AJAX routes - converted from dash to underscore format
+    // AJAX routes
     Route::get('/create_ajax', [BidangKeahlianController::class, 'createAjax'])->name('createAjax');
     Route::post('/store_ajax', [BidangKeahlianController::class, 'storeAjax'])->name('storeAjax');
     Route::get('/{id}/edit_ajax', [BidangKeahlianController::class, 'editAjax'])->name('editAjax');
     Route::put('/{id}/update_ajax', [BidangKeahlianController::class, 'updateAjax'])->name('updateAjax');
     Route::delete('/{id}/delete_ajax', [BidangKeahlianController::class, 'deleteAjax'])->name('deleteAjax');
     Route::get('/{id}/confirm_ajax', [BidangKeahlianController::class, 'confirmAjax'])->name('confirmAjax');
+     Route::get('/{id}/lihat_mahasiswa', [BidangKeahlianController::class, 'lihatMahasiswa'])->name('lihatMahasiswa');
     
     Route::get('/show/{id}', [BidangKeahlianController::class, 'show'])->name('show');
 
-    // Export/Import routes - converted from dash to underscore format
+    // Export/Import routes -
     Route::get('/export_pdf', [BidangKeahlianController::class, 'exportPDF'])->name('exportPDF');
     Route::get('/import_form', [BidangKeahlianController::class, 'importForm'])->name('importForm');
     Route::post('/import_excel', [BidangKeahlianController::class, 'importExcel'])->name('importExcel');

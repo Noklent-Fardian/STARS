@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Keahlian extends Model
 {
@@ -20,8 +19,4 @@ class Keahlian extends Model
         'keahlian_visible' => 'boolean',
     ];
 
-    public function mahasiswas(): HasMany
-    {
-        return $this->hasMany(Mahasiswa::class, 'keahlian_id');
-    }
 }

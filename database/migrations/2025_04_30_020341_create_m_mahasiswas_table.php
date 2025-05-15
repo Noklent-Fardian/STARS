@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('mahasiswa_kecamatan')->nullable();
             $table->string('mahasiswa_desa')->nullable();
             $table->integer('mahasiswa_score')->default(0);
-            $table->boolean('keahlian_visible')->default(true);
+            $table->boolean('mahasiswa_visible')->default(true);
 
             $table->timestamps();
         });

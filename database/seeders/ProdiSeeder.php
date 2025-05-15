@@ -25,8 +25,20 @@ class ProdiSeeder extends Seeder
                     'prodi_kode' => 'D4-SIB',
                 ],
                 [
-                    'prodi_nama' => 'D-II Pengembangan Piranti Lunak Situs',
-                    'prodi_kode' => 'D-II-PPLS',
+                    'prodi_nama' => 'D-IV Multimedia',
+                    'prodi_kode' => 'D4-MM',
+                ],
+                [
+                    'prodi_nama' => 'Magister Terapan Rekayasa Teknologi Informasi',
+                    'prodi_kode' => 'MTRTI',
+                ],
+                [
+                    'prodi_nama' => 'D-IV Pengembangan Game',
+                    'prodi_kode' => 'D4-PG',
+                ],
+                [
+                    'prodi_nama' => 'D-III Teknik Komputer',
+                    'prodi_kode' => 'D-III-TK',
                 ],
             ]
         );
