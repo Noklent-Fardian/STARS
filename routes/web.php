@@ -9,6 +9,7 @@ use App\Http\Controllers\PeringkatController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\TingkatanController;
 use App\Http\Controllers\BidangKeahlianController;
+use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\LombaController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\AdminManagementController;
@@ -153,28 +154,55 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::get('/generate_template', [ProdiController::class, 'generateTemplate'])->name('generateTemplate');
     });
 
-   // Master Bidang Keahlian Routes
-Route::prefix('master/bidangKeahlian')->name('admin.master.bidangKeahlian.')->group(function () {
-    Route::get('/', [BidangKeahlianController::class, 'index'])->name('index');
-    Route::get('/list', [BidangKeahlianController::class, 'getBidangKeahlianList'])->name('list');
-    
-    // AJAX routes - converted from dash to underscore format
-    Route::get('/create_ajax', [BidangKeahlianController::class, 'createAjax'])->name('createAjax');
-    Route::post('/store_ajax', [BidangKeahlianController::class, 'storeAjax'])->name('storeAjax');
-    Route::get('/{id}/edit_ajax', [BidangKeahlianController::class, 'editAjax'])->name('editAjax');
-    Route::put('/{id}/update_ajax', [BidangKeahlianController::class, 'updateAjax'])->name('updateAjax');
-    Route::delete('/{id}/delete_ajax', [BidangKeahlianController::class, 'deleteAjax'])->name('deleteAjax');
-    Route::get('/{id}/confirm_ajax', [BidangKeahlianController::class, 'confirmAjax'])->name('confirmAjax');
-    
-    Route::get('/show/{id}', [BidangKeahlianController::class, 'show'])->name('show');
+    // Master Bidang Keahlian Routes
+    Route::prefix('master/bidangKeahlian')->name('admin.master.bidangKeahlian.')->group(function () {
+        Route::get('/', [BidangKeahlianController::class, 'index'])->name('index');
+        Route::get('/list', [BidangKeahlianController::class, 'getBidangKeahlianList'])->name('list');
 
-    // Export/Import routes - converted from dash to underscore format
-    Route::get('/export_pdf', [BidangKeahlianController::class, 'exportPDF'])->name('exportPDF');
-    Route::get('/import_form', [BidangKeahlianController::class, 'importForm'])->name('importForm');
-    Route::post('/import_excel', [BidangKeahlianController::class, 'importExcel'])->name('importExcel');
-    Route::get('/export_excel', [BidangKeahlianController::class, 'exportExcel'])->name('exportExcel');
-    Route::get('/generate_template', [BidangKeahlianController::class, 'generateTemplate'])->name('generateTemplate');
-});
+        // AJAX routes - converted from dash to underscore format
+        Route::get('/create_ajax', [BidangKeahlianController::class, 'createAjax'])->name('createAjax');
+        Route::post('/store_ajax', [BidangKeahlianController::class, 'storeAjax'])->name('storeAjax');
+        Route::get('/{id}/edit_ajax', [BidangKeahlianController::class, 'editAjax'])->name('editAjax');
+        Route::put('/{id}/update_ajax', [BidangKeahlianController::class, 'updateAjax'])->name('updateAjax');
+        Route::delete('/{id}/delete_ajax', [BidangKeahlianController::class, 'deleteAjax'])->name('deleteAjax');
+        Route::get('/{id}/confirm_ajax', [BidangKeahlianController::class, 'confirmAjax'])->name('confirmAjax');
+
+        Route::get('/show/{id}', [BidangKeahlianController::class, 'show'])->name('show');
+
+        // Export/Import routes - converted from dash to underscore format
+        Route::get('/export_pdf', [BidangKeahlianController::class, 'exportPDF'])->name('exportPDF');
+        Route::get('/import_form', [BidangKeahlianController::class, 'importForm'])->name('importForm');
+        Route::post('/import_excel', [BidangKeahlianController::class, 'importExcel'])->name('importExcel');
+        Route::get('/export_excel', [BidangKeahlianController::class, 'exportExcel'])->name('exportExcel');
+        Route::get('/generate_template', [BidangKeahlianController::class, 'generateTemplate'])->name('generateTemplate');
+    });
+
+    // Master Semester Routes
+    Route::prefix('master/semester')->name('admin.master.semester.')->group(function () {
+        Route::get('/', [SemesterController::class, 'index'])->name('index');
+        Route::get('/list', [SemesterController::class, 'getSemesterList'])->name('list');
+        Route::post('/', [SemesterController::class, 'store']);
+        Route::get('/show/{id}', [SemesterController::class, 'show']);
+
+        // AJAX routes
+        Route::get('/create_ajax', [SemesterController::class, 'createAjax'])->name('createAjax');
+        Route::post('/ajax', [SemesterController::class, 'storeAjax'])->name('storeAjax');
+        Route::get('/{id}/edit_ajax', [SemesterController::class, 'editAjax'])->name('editAjax');
+        Route::put('/{id}/update_ajax', [SemesterController::class, 'updateAjax'])->name('updateAjax');
+        Route::get('/{id}/confirm_ajax', [SemesterController::class, 'confirmAjax'])->name('confirmAjax');
+        Route::delete('/{id}/delete_ajax', [SemesterController::class, 'destroyAjax'])->name('destroyAjax');
+
+        // Export routes
+        Route::get('/export_pdf', [SemesterController::class, 'exportPDF'])->name('exportPDF');
+        Route::get('/export_excel', [SemesterController::class, 'exportExcel'])->name('exportExcel');
+
+        // Import routes
+        Route::get('/import_form', [SemesterController::class, 'importForm'])->name('importForm');
+        Route::post('/import_excel', [SemesterController::class, 'importExcel'])->name('importExcel');
+        Route::get('/generate_template', [SemesterController::class, 'generateTemplate'])->name('generateTemplate');
+
+    });
+
 
     Route::get('/master/keahlian', [AdminController::class, 'masterKeahlian'])->name('admin.master.keahlian');
 

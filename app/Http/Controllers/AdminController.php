@@ -74,7 +74,7 @@ class AdminController extends Controller
 
     public function masterPeriode()
     {
-        return view('admin.master.periode');
+        return view('admin.semester.index');
     }
 
     public function masterProdi()
