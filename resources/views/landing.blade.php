@@ -459,7 +459,7 @@
                                     <i class="bi bi-telephone flex-shrink-0 pulse-icon"></i>
                                     <div>
                                         <h4>Nomor Telepon</h4>
-                                        <p>+62 878-6192-6248</p>
+                                        <p>+62 878-6630-1810</p>
                                     </div>
                                 </div>
 
@@ -528,7 +528,7 @@
                     <div class="col-lg-3 col-md-6 footer-contact">
                         <h4>Hubungi Kami</h4>
                         <p class="mt-3">
-                            <i class="bi bi-telephone-fill me-2"></i> +62 878-6192-6248<br>
+                            <i class="bi bi-telephone-fill me-2"></i> +62 878-6630-1810<br>
                             <i class="bi bi-envelope-fill me-2"></i> info@sansigma.ac.id<br>
                         </p>
                         <div class="social-links mt-4">
