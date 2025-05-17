@@ -24,17 +24,17 @@
         <thead>
             <tr>
                 <th class="text-center" width="3%">No</th>
-                <th class="text-center" width="6%">ID</th>
-                <th class="text-center" width="6%">Keahlian</th>
-                <th class="text-center" width="6%">Tingkatan</th>
-                <th class="text-center" width="6%">Semester</th>
-                <th class="text-center" width="15%">Nama Lomba</th>
+                <th class="text-center" width="5%">ID</th>
+                <th class="text-center" width="5%">Keahlian</th>
+                <th class="text-center" width="5%">Tingkatan</th>
+                <th class="text-center" width="5%">Semester</th>
+                <th class="text-center" width="12%">Nama Lomba</th>
                 <th class="text-center" width="10%">Penyelenggara</th>
                 <th class="text-center" width="8%">Kategori</th>
-                <th class="text-center" width="10%">Tanggal Mulai</th>
-                <th class="text-center" width="10%">Tanggal Selesai</th>
+                <th class="text-center" width="8%">Tanggal Mulai</th>
+                <th class="text-center" width="8%">Tanggal Selesai</th>
                 <th class="text-center" width="15%">Link Pendaftaran</th>
-                <th class="text-center" width="15%">Link Poster</th>
+                <th class="text-center" width="16%">Link Poster</th>>
             </tr>
         </thead>
         <tbody>
