@@ -68,7 +68,7 @@ class AdminController extends Controller
 
     public function lombaIndex()
     {
-        return view('admin.lomba.index');
+        return view('admin.adminKelolaLomba.index');
     }
 
 

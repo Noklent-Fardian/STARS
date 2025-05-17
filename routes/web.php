@@ -13,6 +13,7 @@ use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\LombaController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\AdminManagementController;
+use App\Http\Controllers\AdminKelolaLombaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -72,6 +73,30 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::get('/prestasi/non-akademik', [AdminController::class, 'prestasiNonAkademik'])->name('admin.prestasi.non-akademik');
     Route::get('/prestasi', [AdminController::class, 'prestasiIndex'])->name('admin.prestasi.index');
     Route::get('/prestasi/report', [AdminController::class, 'prestasiReport'])->name('admin.prestasi.report');
+
+    // Admin Kelola Lomba
+    Route::prefix('adminKelolaLomba')->name('admin.adminKelolaLomba.')->group(function () {
+        Route::get('/', [AdminKelolaLombaController::class, 'index'])->name('index');
+        Route::get('/list', [AdminKelolaLombaController::class, 'getLombaList'])->name('list');
+        Route::get('/show/{id}', [AdminKelolaLombaController::class, 'show'])->name('show');
+
+        // AJAX routes
+        Route::get('/create_ajax', [AdminKelolaLombaController::class, 'createAjax'])->name('createAjax');
+        Route::post('/ajax', [AdminKelolaLombaController::class, 'storeAjax'])->name('storeAjax');
+        Route::get('/{id}/edit_ajax', [AdminKelolaLombaController::class, 'editAjax'])->name('editAjax');
+        Route::put('/{id}/update_ajax', [AdminKelolaLombaController::class, 'updateAjax'])->name('updateAjax');
+        Route::get('/{id}/confirm_ajax', [AdminKelolaLombaController::class, 'confirmAjax'])->name('confirmAjax');
+        Route::delete('/{id}/delete_ajax', [AdminKelolaLombaController::class, 'destroyAjax'])->name('destroyAjax');
+
+        // Export routes
+        Route::get('/export_pdf', [AdminKelolaLombaController::class, 'exportPDF'])->name('exportPDF');
+        Route::get('/export_excel', [AdminKelolaLombaController::class, 'exportExcel'])->name('exportExcel');
+
+        // Import routes
+        Route::get('/import_form', [AdminKelolaLombaController::class, 'importForm'])->name('importForm');
+        Route::post('/import_excel', [AdminKelolaLombaController::class, 'importExcel'])->name('importExcel');
+        Route::get('/generate_template', [AdminKelolaLombaController::class, 'generateTemplate'])->name('generateTemplate');
+    });
 
     // Manajemen Lomba
     Route::get('/lomba/verification', [AdminController::class, 'lombaVerification'])->name('admin.lomba.verification');
