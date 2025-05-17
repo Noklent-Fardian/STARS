@@ -1,8 +1,8 @@
 @extends('layouts.template')
 
-@section('title', 'Data Peringkat Lomba | STARS')
+@section('title', 'Data Lomba | STARS')
 
-@section('page-title', 'Data Peringkat Lomba')
+@section('page-title', 'Data Lomba')
 
 @section('breadcrumb')
 @endsection
@@ -10,7 +10,7 @@
 @section('content')
     <div class="card shadow-sm rounded-lg overflow-hidden">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-white">Daftar Peringkat Lomba</h6>
+            <h6 class="m-0 font-weight-bold text-white">Daftar Lomba</h6>
         </div>
         <div class="card-body">
             @if (session('success'))
@@ -33,19 +33,18 @@
             <div class="row mb-3">
                 <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap">
                     <div class="btn-group-responsive">
-                        <button onclick="modalAction('{{ route('admin.master.peringkatLomba.createAjax') }}')"
+                        <button onclick="modalAction('{{ route('admin.adminKelolaLomba.createAjax') }}')"
                             class="btn btn-primary mb-2 mb-sm-0 mr-2">
-                            <i class="fas fa-plus-circle mr-1"></i> Tambah Peringkat Lomba
+                            <i class="fas fa-plus-circle mr-1"></i> Tambah Lomba
                         </button>
-                        <a href="{{ route('admin.master.peringkatLomba.exportExcel') }}"
+                        <a href="{{ route('admin.adminKelolaLomba.exportExcel') }}"
                             class="btn btn-success mb-2 mb-sm-0 mr-2">
                             <i class="fas fa-file-excel mr-1"></i> Export Excel
                         </a>
-                        <a href="{{ url('/admin/master/peringkatLomba/export_pdf') }}"
-                            class="btn btn-warning mb-2 mb-sm-0 mr-2">
+                        <a href="{{ route('admin.adminKelolaLomba.exportPDF') }}" class="btn btn-warning mb-2 mb-sm-0 mr-2">
                             <i class="fas fa-file-pdf mr-1"></i> Export PDF
                         </a>
-                        <button onclick="modalAction('{{ route('admin.master.peringkatLomba.importForm') }}')"
+                        <button onclick="modalAction('{{ route('admin.adminKelolaLomba.importForm') }}')"
                             class="btn btn-info mb-2 mb-sm-0">
                             <i class="fas fa-file-import mr-1"></i> Import Excel
                         </button>
@@ -54,23 +53,31 @@
                 <div class="ml-auto">
                     <div class="form-group has-search mb-0 ml-auto" style="max-width: 300px;">
                         <span class="fa fa-search form-control-feedback"></span>
-                        <input type="text" class="form-control" id="searchBox" placeholder="Cari Peringkat lomba...">
+                        <input type="text" class="form-control" id="searchBox" placeholder="Cari lomba...">
                     </div>
                 </div>
             </div>
 
             <div class="table-responsive">
-                <table class="table table-hover table-striped" id="table_peringkat">
+                <table class="table table-hover table-striped" id="table_lomba">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nama Peringkat</th>
-                            <th>Bobot</th>
+                            <th>Keahlian</th>
+                            <th>Tingkatan</th>
+                            <th>Semester</th>
+                            <th>Nama Lomba</th>
+                            <th>Penyelenggara</th>
+                            <th>Kategori</th>
+                            <th>Tanggal Mulai</th>
+                            <th>Tanggal Selesai</th>
+                            <th>Link Pendaftaran</th>
+                            <th>Link Poster</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- DataTables will fill this -->
+                        <!-- DataTables akan mengisi ini -->
                     </tbody>
                 </table>
             </div>
@@ -99,11 +106,11 @@
             color: var(--light-text);
         }
 
-        #table_peringkat tbody tr {
+        #table_admin tbody tr {
             transition: all 0.2s ease;
         }
 
-        #table_peringkat tbody tr:hover {
+        #table_admin tbody tr:hover {
             background-color: rgba(var(--primary-color-rgb), 0.05);
         }
 
@@ -171,45 +178,69 @@
 @push('js')
     <script>
         function modalAction(url = '') {
-            $('#myModal').load(url, function() {
+            $('#myModal').load(url, function () {
                 $('#myModal').modal('show');
             });
         }
 
-        var dataPeringkat;
-        $(document).ready(function() {
-            // Initialize DataTable
-            dataPeringkat = $('#table_peringkat').DataTable({
+        var dataAdminKelolaLomba;
+        $(document).ready(function () {
+            dataAdminKelolaLomba = $('#table_lomba').DataTable({
                 serverSide: true,
                 processing: true,
                 ajax: {
-                    "url": "{{ route('admin.master.peringkatLomba.list') }}",
-                    "dataType": "json",
-                    "type": "GET",
+                    url: "{{ route('admin.adminKelolaLomba.list') }}",
+                    dataType: "json",
+                    type: "GET"
                 },
-                columns: [{
-                    data: "id",
-                    className: "text-center",
-                    width: "5%"
-                }, {
-                    data: "peringkat_nama",
-                    width: "15%"
-                }, {
-                    data: "peringkat_bobot",
-                    width: "10%",
-                    render: function(data, type, row) {
-                        if (type === 'display' || type === 'filter') {
-                            return parseFloat(data).toFixed(2);
+                columns: [
+                    { data: "id", className: "text-center", width: "5%" },
+                    { data: "keahlian_nama", className: "text-center", width: "5%" },
+                    { data: "tingkatan_nama", className: "text-center", width: "5%" },
+                    { data: "semester_nama", className: "text-center", width: "5%" },
+                    { data: "lomba_nama", width: "30%" },
+                    { data: "lomba_penyelenggara", width: "20%" },
+                    { data: "lomba_kategori", width: "10%" },
+                    {
+                        data: "lomba_tanggal_mulai",
+                        width: "20%",
+                        render: function (data) {
+                            return data ? new Date(data).toLocaleDateString('id-ID') : '-';
                         }
-                        return data;
+                    },
+                    {
+                        data: "lomba_tanggal_selesai",
+                        width: "20%",
+                        render: function (data) {
+                            return data ? new Date(data).toLocaleDateString('id-ID') : '-';
+                        }
+                    },
+                    {
+                        data: "lomba_link_pendaftaran",
+                        width: "20%",
+                        render: function (data) {
+                            if (!data) return '-';
+                            const url = data.startsWith('http') ? data : `https://${data}`;
+                            return `<a href="${url}" target="_blank" class="text-primary">${truncateText(data, 25)}</a>`;
+                        }
+                    },
+                    {
+                        data: "lomba_link_poster",
+                        width: "20%",
+                        render: function (data) {
+                            if (!data) return '-';
+                            const url = data.startsWith('http') ? data : `https://${data}`;
+                            return `<a href="${url}" target="_blank" class="text-primary">${truncateText(data, 25)}</a>`;
+                        }
+                    },
+                    {
+                        data: "aksi",
+                        className: "text-center",
+                        orderable: false,
+                        searchable: false,
+                        width: "30%"
                     }
-                }, {
-                    data: "aksi",
-                    className: "text-center",
-                    orderable: false,
-                    searchable: false,
-                    width: "15%"
-                }, ],
+                ],
                 language: {
                     processing: '<div class="spinner-border text-primary" role="status"></div>',
                     search: "",
@@ -228,15 +259,19 @@
                 },
                 dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
                     "<'row'<'col-sm-12'tr>>" +
-                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
             });
 
-            // Connect custom search box to DataTable
-            $('#searchBox').on('keyup', function() {
-                dataPeringkat.search(this.value).draw();
+            function truncateText(text, maxLength) {
+                return text.length > maxLength ?
+                    text.substring(0, maxLength) + '...' :
+                    text;
+            }
+
+            $('#searchBox').on('keyup', function () {
+                dataAdminKelolaLomba.search(this.value).draw();
             });
 
-            // Hide default search box
             $('.dataTables_filter').hide();
         });
     </script>
