@@ -5,11 +5,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const contentHeight = document.querySelector("#content").offsetHeight;
         const windowHeight = window.innerHeight;
         const headerHeight = document.querySelector(".topbar").offsetHeight;
-        const footerHeight = document.querySelector('footer.sticky-footer').offsetHeight;
+        const footerHeight = document.querySelector(
+            "footer.sticky-footer"
+        ).offsetHeight;
 
-        if (contentHeight < (windowHeight - headerHeight - footerHeight)) {
-            document.querySelector('.min-content-height').style.minHeight =
-                (windowHeight - headerHeight - footerHeight - 40) + 'px';
+        if (contentHeight < windowHeight - headerHeight - footerHeight) {
+            document.querySelector(".min-content-height").style.minHeight =
+                windowHeight - headerHeight - footerHeight - 40 + "px";
         }
     }
 
@@ -27,6 +29,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
         sidebar.style.minHeight = `${minSidebarHeight}px`;
     }
+    function setStateSidebar() {
+        const sidebarElement = document.getElementById("accordionSidebar");
+        if (!sidebarElement) return;
+
+        const isSidebarToggled =
+            $("body").hasClass("sidebar-toggled") &&
+            $("#accordionSidebar").hasClass("toggled");
+
+        localStorage.setItem("sidebar-toggled", isSidebarToggled.toString());
+    }
+
+    window.setStateSidebar = setStateSidebar;
+    const sidebarElement = document.getElementById("accordionSidebar");
+    if (sidebarElement) {
+        sidebarElement.style.transition = "all 0.2s ease-in-out";
+
+        if (localStorage.getItem("sidebar-toggled") === "true") {
+            $("body").addClass("sidebar-toggled");
+            $(sidebarElement).addClass("toggled");
+        }
+
+
+        setTimeout(() => {
+            sidebarElement.style.transition = "";
+        }, 100);
+    }
+
+    $("#sidebarToggleTop, #sidebarToggle").on("click", function () {
+        setStateSidebar();
+    });
 
     adjustFooterPosition();
     ensureSidebarHeight();
