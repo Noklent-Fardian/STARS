@@ -66,11 +66,11 @@
     <li class="nav-item dropdown no-arrow">
       <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
-        <img class="img-profile rounded-circle" src="{{ asset('RuangAdmin/img/boy.png') }}" alt="Profile Image">
-        <span class="ml-2 d-none d-lg-inline text-white small">
-          {{ Auth::user()->admin->admin_name ?? Auth::user()->dosen->dosen_nama ?? Auth::user()->mahasiswa->mahasiswa_nama ?? Auth::user()->username 
-    }}
-        </span>
+        <img class="img-profile rounded-circle"
+          src="{{Auth::user()->admin && Auth::user()->admin->admin_photo ? asset('storage/admin_photos/' . Auth::user()->admin->admin_photo) : (Auth::user()->dosen && Auth::user()->dosen->dosen_photo ? asset('storage/dosen_photos/' . Auth::user()->dosen->dosen_photo) : (Auth::user()->mahasiswa && Auth::user()->mahasiswa->mahasiswa_photo ? asset('storage/mahasiswa_photos/' . Auth::user()->mahasiswa->mahasiswa_photo) : asset('RuangAdmin/img/boy.png')))}}"
+          alt="Profile Image">
+        <span
+          class="ml-2 d-none d-lg-inline text-white small">{{ Auth::user()->admin->admin_name ?? Auth::user()->dosen->dosen_nama ?? Auth::user()->mahasiswa->mahasiswa_nama ?? Auth::user()->username }}</span>
 
       </a>
       <!-- Dropdown - User Information -->
