@@ -1,4 +1,3 @@
-
 <!-- TopBar -->
 <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
   <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
@@ -67,9 +66,12 @@
     <li class="nav-item dropdown no-arrow">
       <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
-          <img class="img-profile rounded-circle" src="{{ Auth::user()->admin && Auth::user()->admin->admin_photo ? asset('storage/admin_photos/' . Auth::user()->admin->admin_photo) : asset('RuangAdmin/img/boy.png') }}" alt="Profile Image">
-        <span class="ml-2 d-none d-lg-inline text-white small">{{ Auth::user()->admin->admin_name ?? Auth::user()->username }}</span>
-        
+        <img class="img-profile rounded-circle"
+          src="{{Auth::user()->admin && Auth::user()->admin->admin_photo ? asset('storage/admin_photos/' . Auth::user()->admin->admin_photo) : (Auth::user()->dosen && Auth::user()->dosen->dosen_photo ? asset('storage/dosen_photos/' . Auth::user()->dosen->dosen_photo) : (Auth::user()->mahasiswa && Auth::user()->mahasiswa->mahasiswa_photo ? asset('storage/mahasiswa_photos/' . Auth::user()->mahasiswa->mahasiswa_photo) : asset('RuangAdmin/img/boy.png')))}}"
+          alt="Profile Image">
+        <span
+          class="ml-2 d-none d-lg-inline text-white small">{{ Auth::user()->admin->admin_name ?? Auth::user()->dosen->dosen_nama ?? Auth::user()->mahasiswa->mahasiswa_nama ?? Auth::user()->username }}</span>
+
       </a>
       <!-- Dropdown - User Information -->
       <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -77,7 +79,7 @@
           <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
           Profil
         </a>
-      
+
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
           <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
