@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Admin;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -32,7 +34,7 @@ class AdminController extends Controller
 
     public function adminIndex()
     {
-         return redirect()->route('admin.adminManagement.index');
+        return redirect()->route('admin.adminManagement.index');
     }
 
 
@@ -99,27 +101,69 @@ class AdminController extends Controller
     public function profile()
     {
         $admin = Auth::user()->admin;
-        return view('admin.profile', compact('admin'));
+        return view('admin.profile.profile', compact('admin'));
     }
-    
+
     public function editProfile()
     {
         $user = Auth::user();
         $admin = Admin::where('user_id', $user->id)->first();
-        return view('admin.edit_profile', compact('admin'));
+        return view('admin.profile.edit_profile', compact('admin'));
     }
 
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
         $admin = Admin::where('user_id', $user->id)->first();
-    
-        $admin->update([
+
+        $data = [
             'admin_name' => $request->admin_name,
             'admin_nomor_telepon' => $request->admin_nomor_telepon,
             'admin_gender' => $request->admin_gender,
-        ]);
-    
-        return redirect()->route('admin.profile')->with('success', 'Profil berhasil diperbarui.');
+        ];
+
+        $admin->update($data);
+
+        return redirect()->route('admin.profile')->with('success', 'Profile updated successfully.');
+    }
+
+    public function updatePhoto(Request $request)
+    {
+        $messages = [
+            'admin_photo.required' => 'Silakan pilih foto terlebih dahulu.',
+            'admin_photo.image' => 'File harus berupa gambar.',
+            'admin_photo.mimes' => 'Format foto harus jpeg, png, atau jpg.',
+            'admin_photo.max' => 'Ukuran foto tidak boleh lebih dari 2MB.',
+        ];
+
+        $validator = \Validator::make($request->all(), [
+            'admin_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ], $messages);
+
+        if ($validator->fails()) {
+            return redirect()->route('admin.profile')
+                ->with('error', $validator->errors()->first())
+                ->withErrors($validator);
+        }
+
+        $user = Auth::user();
+        $admin = Admin::where('user_id', $user->id)->first();
+        if ($admin->admin_photo && Storage::disk('public')->exists('admin_photos/' . $admin->admin_photo)) {
+            Storage::disk('public')->delete('admin_photos/' . $admin->admin_photo);
+        }
+
+        try {
+            $photo = $request->file('admin_photo');
+            $photoName = time() . '_' . $user->id . '.' . $photo->getClientOriginalExtension();
+            $photo->storeAs('admin_photos', $photoName, 'public');
+
+            $admin->update([
+                'admin_photo' => $photoName
+            ]);
+
+            return redirect()->route('admin.profile')->with('success', 'Foto profil berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.profile')->with('error', 'Terjadi kesalahan saat mengunggah foto. Silakan coba lagi.');
+        }
     }
 }

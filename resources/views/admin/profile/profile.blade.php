@@ -1,0 +1,597 @@
+@extends('layouts.template')
+
+@section('title', 'Profil | STARS')
+
+@section('page-title', 'Profil Saya')
+
+@section('breadcrumb')
+    <li class="breadcrumb-item active">Profil</li>
+@endsection
+
+@section('content')
+    <div class="row">
+        <div class="col-xl-12">
+            <!-- Flash Messages -->
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span>{{ session('success') }}</span>
+                    </div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
+            @if (session('error') || $errors->any())
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        <span>{{ session('error') ?? $errors->first() }}</span>
+                    </div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
+            <div class="card shadow">
+                <div class="card-body">
+
+                    <div class="profile-tabs">
+                        <div class="tabs-wrapper">
+                            <input type="radio" name="profile-tab" id="tab1" checked>
+                            <label for="tab1" class="tab"><i class="fas fa-user mr-2"></i> Informasi Profil</label>
+
+                            <input type="radio" name="profile-tab" id="tab2">
+                            <label for="tab2" class="tab"><i class="fas fa-lock mr-2"></i> Ubah Kata Sandi</label>
+
+                            <div class="tab-content">
+                                <div id="content1" class="content">
+                                    <div class="row">
+                                        <div class="col-md-4 text-center">
+                                            <div class="profile-image-container mb-4" id="viewProfileImage">
+                                                @if ($admin && $admin->admin_photo)
+                                                    <a href="{{ asset('storage/admin_photos/' . $admin->admin_photo) }}"
+                                                        target="_blank" title="View full image">
+                                                        <img src="{{ asset('storage/admin_photos/' . $admin->admin_photo) }}"
+                                                            alt="Foto Profil" class="profile-image" id="profileImage">
+                                                    </a>
+                                                @else
+                                                    <div class="profile-placeholder" id="profileImagePlaceholder">
+                                                        <i class="fas fa-user"></i>
+                                                    </div>
+                                                @endif
+                                            </div>
+
+                                            <div class="profile-image-container mb-4 d-none" id="editProfileImage">
+                                                @if ($admin && $admin->admin_photo)
+                                                    <img src="{{ asset('storage/admin_photos/' . $admin->admin_photo) }}"
+                                                        alt="Foto Profil" class="profile-image" id="previewImage">
+                                                @else
+                                                    <div class="profile-placeholder" id="previewPlaceholder">
+                                                        <i class="fas fa-user"></i>
+                                                    </div>
+                                                @endif
+                                                <div class="image-overlay" id="uploadTrigger">
+                                                    <i class="fas fa-camera"></i>
+                                                    <span>Ubah</span>
+                                                </div>
+                                            </div>
+
+                                            <form id="photoUploadForm" action="{{ route('admin.updatePhoto') }}"
+                                                method="POST" enctype="multipart/form-data" style="display: none;">
+                                                @csrf
+                                                <input type="file" name="admin_photo" id="profilePhotoInput"
+                                                    accept="image/jpeg,image/png,image/jpg">
+                                            </form>
+
+                                            <h4 class="font-weight-bold mb-0">{{ $admin->admin_name ?? 'Admin' }}</h4>
+                                            <p class="text-accent"><i class="fas fa-user-shield mr-1"></i> Administrator</p>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <h5 class="section-heading mb-0">Informasi Pribadi</h5>
+                                            </div>
+
+                                            <div id="viewInfoMode">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="info-item">
+                                                            <span class="info-label">Nama Lengkap</span>
+                                                            <span
+                                                                class="info-value">{{ $admin->admin_name ?? 'Belum diatur' }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="info-item">
+                                                            <span class="info-label">Username</span>
+                                                            <span class="info-value">{{ Auth::user()->username }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="info-item">
+                                                            <span class="info-label">Jenis Kelamin</span>
+                                                            <span class="info-value">
+                                                                @if ($admin && $admin->admin_gender == 'L')
+                                                                    Laki-laki
+                                                                @elseif($admin && $admin->admin_gender == 'P')
+                                                                    Perempuan
+                                                                @else
+                                                                    Belum diatur
+                                                                @endif
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="info-item">
+                                                            <span class="info-label">Nomor Telepon</span>
+                                                            <span
+                                                                class="info-value">{{ $admin->admin_nomor_telepon ?? 'Belum diatur' }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div id="editInfoMode" class="d-none">
+                                                <form action="{{ route('admin.updateProfile') }}" method="POST"
+                                                    enctype="multipart/form-data" id="profileForm">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="form-group row">
+                                                        <label for="admin_name" class="col-sm-3 col-form-label">Nama
+                                                            Lengkap</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control" id="admin_name"
+                                                                name="admin_name" value="{{ $admin->admin_name ?? '' }}">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <label for="username"
+                                                            class="col-sm-3 col-form-label">Username</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control" id="username"
+                                                                value="{{ Auth::user()->username }}" readonly>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <label for="admin_gender" class="col-sm-3 col-form-label">Jenis
+                                                            Kelamin</label>
+                                                        <div class="col-sm-9">
+                                                            <select class="form-control" id="admin_gender"
+                                                                name="admin_gender">
+                                                                <option value="">-- Pilih Jenis Kelamin --</option>
+                                                                <option value="L"
+                                                                    {{ $admin && $admin->admin_gender == 'L' ? 'selected' : '' }}>
+                                                                    Laki-laki</option>
+                                                                <option value="P"
+                                                                    {{ $admin && $admin->admin_gender == 'P' ? 'selected' : '' }}>
+                                                                    Perempuan</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <label for="admin_nomor_telepon"
+                                                            class="col-sm-3 col-form-label">Nomor Telepon</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control"
+                                                                id="admin_nomor_telepon" name="admin_nomor_telepon"
+                                                                value="{{ $admin->admin_nomor_telepon ?? '' }}">
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <h5 class="section-heading mb-0"></h5>
+                                                <div>
+                                                    <button type="button" id="editInfoBtn"
+                                                        class="btn btn-gradient-primary mr-4">
+                                                        <i class="fas fa-edit mr-1"></i> Edit
+                                                    </button>
+                                                    <div class="d-none" id="saveButtons">
+                                                        <button type="submit" form="profileForm"
+                                                            class="btn btn-gradient-success mr-2">
+                                                            <i class="fas fa-save mr-1"></i> Simpan
+                                                        </button>
+                                                        <button type="button" id="cancelEditBtn"
+                                                            class="btn btn-gradient-secondary">
+                                                            <i class="fas fa-times mr-1"></i> Batal
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Change Password Tab -->
+                                <div id="content2" class="content">
+                                    <form action="{{ route('admin.changePassword') }}" method="POST">
+                                        @csrf
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-8">
+                                                <div class="form-group row">
+                                                    <label for="current_password" class="col-sm-4 col-form-label">Kata
+                                                        Sandi Saat Ini</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="input-group">
+                                                            <input type="password" class="form-control"
+                                                                id="current_password" name="current_password">
+                                                            <div class="input-group-append">
+                                                                <button class="btn btn-outline-secondary toggle-password"
+                                                                    type="button" data-target="current_password">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label for="new_password" class="col-sm-4 col-form-label">Kata Sandi
+                                                        Baru</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="input-group">
+                                                            <input type="password" class="form-control" id="new_password"
+                                                                name="new_password">
+                                                            <div class="input-group-append">
+                                                                <button class="btn btn-outline-secondary toggle-password"
+                                                                    type="button" data-target="new_password">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label for="confirm_password"
+                                                        class="col-sm-4 col-form-label">Konfirmasi Kata Sandi Baru</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="input-group">
+                                                            <input type="password" class="form-control"
+                                                                id="confirm_password" name="confirm_password">
+                                                            <div class="input-group-append">
+                                                                <button class="btn btn-outline-secondary toggle-password"
+                                                                    type="button" data-target="confirm_password">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <div class="col-sm-8 offset-sm-4">
+                                                        <button type="submit" class="btn btn-primary">
+                                                            <i class="fas fa-lock mr-2"></i> Ubah Kata Sandi
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@push('css')
+    <style>
+        /* Profile Page Styling */
+        .profile-tabs {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .tabs-wrapper {
+            width: 100%;
+        }
+
+        .tabs-wrapper input[type="radio"] {
+            display: none;
+        }
+
+        .tabs-wrapper label.tab {
+            display: inline-block;
+            padding: 14px 24px;
+            color: var(--light-text);
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .tabs-wrapper label.tab:hover {
+            color: var(--accent-color);
+        }
+
+        .tabs-wrapper input:checked+label {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .tab-content {
+            padding: 30px 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            margin-top: -2px;
+        }
+
+        .content {
+            display: none;
+        }
+
+        #tab1:checked~.tab-content #content1,
+        #tab2:checked~.tab-content #content2 {
+            display: block;
+        }
+
+        .profile-image-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 5px solid rgba(var(--primary-color-rgb), 0.1);
+            box-shadow: var(--shadow);
+            cursor: pointer;
+        }
+
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .image-overlay i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .image-overlay span {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .profile-image-container:hover .image-overlay {
+            opacity: 1;
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+        }
+
+        .info-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-heading {
+            color: var(--heading-color);
+            font-weight: 600;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .info-item {
+            margin-bottom: 1rem;
+        }
+
+        .info-label {
+            display: block;
+            color: var(--light-text);
+            font-size: 0.875rem;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            display: block;
+            color: var(--heading-color);
+            font-weight: 500;
+        }
+
+        .custom-file-upload {
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .custom-file-upload input[type="file"] {
+            display: none;
+        }
+
+        .custom-file-upload label {
+            display: inline-block;
+            padding: 8px 16px;
+            background: var(--accent-color);
+            color: white;
+            border-radius: 30px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .custom-file-upload label:hover {
+            background: var(--accent-color-gradient);
+        }
+
+        .toggle-password {
+            background-color: transparent;
+        }
+
+        .toggle-password:focus {
+            box-shadow: none;
+        }
+
+        .fadeIn {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .btn-gradient-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(16, 32, 68, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient-primary:hover {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            box-shadow: 0 6px 15px rgba(16, 32, 68, 0.3);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-gradient-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient-success:hover {
+            background: linear-gradient(135deg, #20c997, #28a745);
+            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-gradient-secondary {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(108, 117, 125, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient-secondary:hover {
+            background: linear-gradient(135deg, #495057, #6c757d);
+            box-shadow: 0 6px 15px rgba(108, 117, 125, 0.3);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+@endpush
+
+@push('js')
+    <script>
+        $(document).ready(function() {
+            $('#editInfoBtn').click(function() {
+                // Hide view mode elements
+                $('#viewInfoMode').addClass('d-none');
+                $('#editInfoBtn').addClass('d-none');
+                $('#viewProfileImage').addClass('d-none');
+
+                // Show edit mode elements
+                $('#editInfoMode').removeClass('d-none').addClass('fadeIn');
+                $('#saveButtons').removeClass('d-none').addClass('fadeIn');
+                $('#editProfileImage').removeClass('d-none').addClass('fadeIn');
+            });
+
+            // Cancel edit mode
+            $('#cancelEditBtn').click(function() {
+                // Show view mode elements
+                $('#viewInfoMode').removeClass('d-none').addClass('fadeIn');
+                $('#editInfoBtn').removeClass('d-none');
+                $('#viewProfileImage').removeClass('d-none').addClass('fadeIn');
+
+                // Hide edit mode elements
+                $('#editInfoMode').addClass('d-none');
+                $('#saveButtons').addClass('d-none');
+                $('#editProfileImage').addClass('d-none');
+            });
+
+            // New photo upload functionality
+            $('#uploadTrigger').click(function() {
+                $('#profilePhotoInput').click();
+            });
+
+            // Trigger file upload when image is clicked
+            $('#profilePhotoInput').change(function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#profileImage').attr('src', e.target.result);
+                        $('#previewImage').removeClass('d-none').attr('src', e.target.result);
+                        $('#previewPlaceholder').addClass('d-none');
+                        $('#profileImagePlaceholder').addClass('d-none');
+
+                        $('#photoUploadForm').submit();
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Password toggle functionality
+            $('.toggle-password').click(function() {
+                const target = $(this).data('target');
+                const input = $('#' + target);
+
+                if (input.attr('type') === 'password') {
+                    input.attr('type', 'text');
+                    $(this).find('i').removeClass('fa-eye').addClass('fa-eye-slash');
+                } else {
+                    input.attr('type', 'password');
+                    $(this).find('i').removeClass('fa-eye-slash').addClass('fa-eye');
+                }
+            });
+        });
+    </script>
+@endpush
