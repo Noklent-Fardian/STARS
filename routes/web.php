@@ -14,6 +14,7 @@ use App\Http\Controllers\LombaController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\AdminManagementController;
 use App\Http\Controllers\AdminKelolaLombaController;
+use App\Http\Controllers\TingkatanLombaController;
 use Illuminate\Support\Facades\Route;
 
 /*

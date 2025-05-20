@@ -1,6 +1,6 @@
 <!-- Sidebar -->
 <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-    @if(Auth::user()->admin)
+    @if (Auth::user()->admin)
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}">
             <div class="sidebar-brand-icon">
                 <img src="{{ asset('img/logo.svg') }}" style="max-height: 40px">
@@ -89,7 +89,7 @@
                 'admin.master.prodi',
                 'admin.master.keahlian',
                 'admin.master.tingkatanLomba.index',
-                'admin.master.peringkatLomba.index'
+                'admin.master.peringkatLomba.index',
             ];
 
             $isMasterActive = collect($masterRoutes)->contains(function ($route) {
@@ -105,8 +105,8 @@
                 <i class="fas fa-fw fa-database"></i>
                 <span>Master Data</span>
             </a>
-            <div id="collapseMaster" class="collapse {{ $isMasterActive ? 'show' : '' }}" aria-labelledby="headingMaster"
-                data-parent="#accordionSidebar">
+            <div id="collapseMaster" class="collapse {{ $isMasterActive ? 'show' : '' }}"
+                aria-labelledby="headingMaster" data-parent="#accordionSidebar">
                 <div class="py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Data Master:</h6>
                     <a class="collapse-item {{ request()->routeIs('admin.master.periode') ? 'active' : '' }}"
@@ -142,8 +142,9 @@
     @endif
 
 
-    @if(Auth::user()->dosen)
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('dosen.dashboard') }}">
+    @if (Auth::user()->dosen)
+        <a class="sidebar-brand d-flex align-items-center justify-content-center"
+            href="{{ route('dosen.dashboard') }}">
             <div class="sidebar-brand-icon">
                 <img src="{{ asset('img/logo.svg') }}" style="max-height: 40px">
             </div>
@@ -196,8 +197,9 @@
             </a>
         </li>
     @endif
-    @if(Auth::user()->mahasiswa)
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('mahasiswa.dashboard') }}">
+    @if (Auth::user()->mahasiswa)
+        <a class="sidebar-brand d-flex align-items-center justify-content-center"
+            href="{{ route('mahasiswa.dashboard') }}">
             <div class="sidebar-brand-icon">
                 <img src="{{ asset('img/logo.svg') }}" style="max-height: 40px">
             </div>
@@ -243,5 +245,12 @@
             </a>
         </li>
     @endif
+    <hr class="sidebar-divider d-none d-md-block">
+    <li class="nav-item logout-item">
+        <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal">
+            <i class="fas fa-fw fa-sign-out-alt text-danger"></i>
+            <span class="logout-text">Logout</span>
+        </a>
+    </li>
 </ul>
 <!-- End of Sidebar -->
