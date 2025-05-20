@@ -235,6 +235,8 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::get('/profile', [AdminController::class, 'profile'])->name('admin.profile');
     Route::get('/admin/profile/edit', [AdminController::class, 'editProfile'])->name('admin.editProfile');
     Route::put('/admin/profile/update', [AdminController::class, 'updateProfile'])->name('admin.updateProfile');
+    Route::post('/admin/profile/change-password', [AdminController::class, 'changePassword'])->name('admin.changePassword');
+    Route::post('/admin/profile/update-photo', [AdminController::class, 'updatePhoto'])->name('admin.updatePhoto');
 });
 
 // Dosen routes
