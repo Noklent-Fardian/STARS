@@ -11,7 +11,6 @@
 @section('content')
     <div class="row">
         <div class="col-xl-12">
-            <!-- Flash Messages -->
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <div class="d-flex align-items-center">
@@ -63,6 +62,10 @@
                                                         <i class="fas fa-user"></i>
                                                     </div>
                                                 @endif
+                                                <div class="image-overlay" id="reviewTrigger">
+                                                    <i class="fas fa-camera-retro"></i>
+                                                    <span>Lihat Foto</span>
+                                                </div>
                                             </div>
 
                                             <div class="profile-image-container mb-4 d-none" id="editProfileImage">
@@ -114,9 +117,9 @@
                                                         <div class="info-item">
                                                             <span class="info-label">Jenis Kelamin</span>
                                                             <span class="info-value">
-                                                                @if ($admin && $admin->admin_gender == 'L')
+                                                                @if ($admin && $admin->admin_gender == 'Laki-laki')
                                                                     Laki-laki
-                                                                @elseif($admin && $admin->admin_gender == 'P')
+                                                                @elseif($admin && $admin->admin_gender == 'Perempuan')
                                                                     Perempuan
                                                                 @else
                                                                     Belum diatur
@@ -164,11 +167,11 @@
                                                             <select class="form-control" id="admin_gender"
                                                                 name="admin_gender">
                                                                 <option value="">-- Pilih Jenis Kelamin --</option>
-                                                                <option value="L"
-                                                                    {{ $admin && $admin->admin_gender == 'L' ? 'selected' : '' }}>
+                                                                <option value="Laki-laki"
+                                                                    {{ $admin && $admin->admin_gender == 'Laki-laki' ? 'selected' : '' }}>
                                                                     Laki-laki</option>
-                                                                <option value="P"
-                                                                    {{ $admin && $admin->admin_gender == 'P' ? 'selected' : '' }}>
+                                                                <option value="Perempuan"
+                                                                    {{ $admin && $admin->admin_gender == 'Perempuan' ? 'selected' : '' }}>
                                                                     Perempuan</option>
                                                             </select>
                                                         </div>
@@ -287,7 +290,6 @@
 
 @push('css')
     <style>
-        /* Profile Page Styling */
         .profile-tabs {
             width: 100%;
             margin: 0 auto;
@@ -355,7 +357,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8));
             color: white;
             display: flex;
             flex-direction: column;
@@ -538,31 +540,24 @@
                 $('#editInfoBtn').addClass('d-none');
                 $('#viewProfileImage').addClass('d-none');
 
-                // Show edit mode elements
                 $('#editInfoMode').removeClass('d-none').addClass('fadeIn');
                 $('#saveButtons').removeClass('d-none').addClass('fadeIn');
                 $('#editProfileImage').removeClass('d-none').addClass('fadeIn');
             });
 
-            // Cancel edit mode
             $('#cancelEditBtn').click(function() {
-                // Show view mode elements
                 $('#viewInfoMode').removeClass('d-none').addClass('fadeIn');
                 $('#editInfoBtn').removeClass('d-none');
                 $('#viewProfileImage').removeClass('d-none').addClass('fadeIn');
-
-                // Hide edit mode elements
                 $('#editInfoMode').addClass('d-none');
                 $('#saveButtons').addClass('d-none');
                 $('#editProfileImage').addClass('d-none');
             });
 
-            // New photo upload functionality
             $('#uploadTrigger').click(function() {
                 $('#profilePhotoInput').click();
             });
 
-            // Trigger file upload when image is clicked
             $('#profilePhotoInput').change(function() {
                 const file = this.files[0];
                 if (file) {
@@ -590,6 +585,43 @@
                 } else {
                     input.attr('type', 'password');
                     $(this).find('i').removeClass('fa-eye-slash').addClass('fa-eye');
+                }
+            });
+
+            $('#reviewTrigger').click(function() {
+                if ($('#profileImage').length) {
+                    //modal review photo
+                    const imgSrc = $('#profileImage').attr('src');
+                    const modal = `
+            <div class="modal fade" id="profileImageModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Foto Profil</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <img src="${imgSrc}" class="img-fluid" style="max-height: 70vh;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+                    $('body').append(modal);
+                    $('#profileImageModal').modal('show');
+                    $('#profileImageModal').on('hidden.bs.modal', function() {
+                        $(this).remove();
+                    });
+
+                    $('#changePhotoBtn').click(function() {
+                        $('#profileImageModal').modal('hide');
+                        $('#editInfoBtn').click();
+                    });
+                } else {
+                    $('#editInfoBtn').click();
                 }
             });
         });

@@ -113,18 +113,22 @@ class AdminController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $user = Auth::user();
-        $admin = Admin::where('user_id', $user->id)->first();
+        try {
+            $user = Auth::user();
+            $admin = Admin::where('user_id', $user->id)->first();
 
-        $data = [
-            'admin_name' => $request->admin_name,
-            'admin_nomor_telepon' => $request->admin_nomor_telepon,
-            'admin_gender' => $request->admin_gender,
-        ];
+            $data = [
+                'admin_name' => $request->admin_name,
+                'admin_nomor_telepon' => $request->admin_nomor_telepon,
+                'admin_gender' => $request->admin_gender,
+            ];
 
-        $admin->update($data);
+            $admin->update($data);
 
-        return redirect()->route('admin.profile')->with('success', 'Profile updated successfully.');
+            return redirect()->route('admin.profile')->with('success', 'Profil berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.profile')->with('error', 'Terjadi kesalahan saat memperbarui profil. Silakan coba lagi.');
+        }
     }
 
     public function updatePhoto(Request $request)
@@ -136,7 +140,7 @@ class AdminController extends Controller
             'admin_photo.max' => 'Ukuran foto tidak boleh lebih dari 2MB.',
         ];
 
-        $validator = \Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'admin_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ], $messages);
 

@@ -67,7 +67,7 @@
     <li class="nav-item dropdown no-arrow">
       <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
-        <img class="img-profile rounded-circle" src="{{ asset('storage/admin_photos/' . Auth::user()->admin->admin_photo) ?? asset('RuangAdmin/img/boy.png') }}" alt="Profile Image">
+          <img class="img-profile rounded-circle" src="{{ Auth::user()->admin && Auth::user()->admin->admin_photo ? asset('storage/admin_photos/' . Auth::user()->admin->admin_photo) : asset('RuangAdmin/img/boy.png') }}" alt="Profile Image">
         <span class="ml-2 d-none d-lg-inline text-white small">{{ Auth::user()->admin->admin_name ?? Auth::user()->username }}</span>
         
       </a>
