@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -168,6 +169,81 @@ class AdminController extends Controller
             return redirect()->route('admin.profile')->with('success', 'Foto profil berhasil diperbarui.');
         } catch (\Exception $e) {
             return redirect()->route('admin.profile')->with('error', 'Terjadi kesalahan saat mengunggah foto. Silakan coba lagi.');
+        }
+    }
+
+
+    public function changePassword(Request $request)
+    {
+        $messages = [
+            'current_password.required' => 'Kata sandi saat ini diperlukan.',
+            'new_password.required' => 'Kata sandi baru diperlukan.',
+            'new_password.min' => 'Kata sandi baru minimal 6 karakter.',
+            'confirm_password.required' => 'Konfirmasi kata sandi diperlukan.',
+            'confirm_password.same' => 'Konfirmasi kata sandi baru tidak cocok.',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'current_password' => 'required',
+            'new_password' => 'required|min:6',
+            'confirm_password' => 'required|same:new_password',
+        ], $messages);
+
+        if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            return redirect()->route('admin.profile')
+                ->with('error', $validator->errors()->first())
+                ->withErrors($validator);
+        }
+
+        $user = Auth::user();
+
+        // Check if current password matches
+
+        if (!password_verify($request->current_password, $user->user_password)) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => [
+                        'current_password' => ['Kata sandi saat ini tidak valid.']
+                    ]
+                ], 422);
+            }
+
+            return redirect()->route('admin.profile')
+                ->with('error', 'Kata sandi saat ini tidak valid.');
+        }
+
+        try {
+            DB::table('m_users')
+                ->where('id', $user->id)
+                ->update(['user_password' => bcrypt($request->new_password)]);
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Kata sandi berhasil diubah.'
+                ]);
+            }
+
+            return redirect()->route('admin.profile')
+                ->with('success', 'Kata sandi berhasil diubah.');
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan saat mengubah kata sandi. Silakan coba lagi.'
+                ], 500);
+            }
+
+            return redirect()->route('admin.profile')
+                ->with('error', 'Terjadi kesalahan saat mengubah kata sandi. Silakan coba lagi.');
         }
     }
 }

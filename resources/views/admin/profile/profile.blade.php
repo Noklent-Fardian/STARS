@@ -213,65 +213,72 @@
 
                                 <!-- Change Password Tab -->
                                 <div id="content2" class="content">
-                                    <form action="{{ route('admin.changePassword') }}" method="POST">
+                                    <form action="{{ route('admin.changePassword') }}" method="POST" id="passwordForm">
                                         @csrf
                                         <div class="row justify-content-center">
                                             <div class="col-md-8">
-                                                <div class="form-group row">
-                                                    <label for="current_password" class="col-sm-4 col-form-label">Kata
-                                                        Sandi Saat Ini</label>
-                                                    <div class="col-sm-8">
-                                                        <div class="input-group">
-                                                            <input type="password" class="form-control"
-                                                                id="current_password" name="current_password">
-                                                            <div class="input-group-append">
-                                                                <button class="btn btn-outline-secondary toggle-password"
-                                                                    type="button" data-target="current_password">
-                                                                    <i class="fas fa-eye"></i>
-                                                                </button>
-                                                            </div>
+                                                <div class="password-form-container">
+                                                    <div class="password-header">
+                                                        <div class="password-icon">
+                                                            <i class="fas fa-shield-alt"></i>
+                                                        </div>
+                                                        <div>
+                                                            <h4>Keamanan Akun</h4>
+                                                            <p class="text-muted">Perbarui kata sandi untuk meningkatkan
+                                                                keamanan akun Anda</p>
                                                         </div>
                                                     </div>
-                                                </div>
 
-                                                <div class="form-group row">
-                                                    <label for="new_password" class="col-sm-4 col-form-label">Kata Sandi
-                                                        Baru</label>
-                                                    <div class="col-sm-8">
-                                                        <div class="input-group">
-                                                            <input type="password" class="form-control" id="new_password"
-                                                                name="new_password">
-                                                            <div class="input-group-append">
-                                                                <button class="btn btn-outline-secondary toggle-password"
-                                                                    type="button" data-target="new_password">
-                                                                    <i class="fas fa-eye"></i>
-                                                                </button>
-                                                            </div>
+                                                    <div class="password-field">
+                                                        <label for="current_password">
+                                                            <i class="fas fa-key"></i>
+                                                            <span>Kata Sandi Saat Ini</span>
+                                                        </label>
+                                                        <div class="password-input">
+                                                            <input type="password" id="current_password"
+                                                                name="current_password"
+                                                                placeholder="Masukkan kata sandi saat ini">
+                                                            <button type="button" class="toggle-password-btn"
+                                                                data-target="current_password">
+                                                                <i class="fas fa-eye"></i>
+                                                            </button>
                                                         </div>
                                                     </div>
-                                                </div>
 
-                                                <div class="form-group row">
-                                                    <label for="confirm_password"
-                                                        class="col-sm-4 col-form-label">Konfirmasi Kata Sandi Baru</label>
-                                                    <div class="col-sm-8">
-                                                        <div class="input-group">
-                                                            <input type="password" class="form-control"
-                                                                id="confirm_password" name="confirm_password">
-                                                            <div class="input-group-append">
-                                                                <button class="btn btn-outline-secondary toggle-password"
-                                                                    type="button" data-target="confirm_password">
-                                                                    <i class="fas fa-eye"></i>
-                                                                </button>
-                                                            </div>
+                                                    <div class="password-field">
+                                                        <label for="new_password">
+                                                            <i class="fas fa-lock"></i>
+                                                            <span>Kata Sandi Baru</span>
+                                                        </label>
+                                                        <div class="password-input">
+                                                            <input type="password" id="new_password" name="new_password"
+                                                                placeholder="Masukkan kata sandi baru">
+                                                            <button type="button" class="toggle-password-btn"
+                                                                data-target="new_password">
+                                                                <i class="fas fa-eye"></i>
+                                                            </button>
                                                         </div>
                                                     </div>
-                                                </div>
 
-                                                <div class="form-group row">
-                                                    <div class="col-sm-8 offset-sm-4">
-                                                        <button type="submit" class="btn btn-primary">
-                                                            <i class="fas fa-lock mr-2"></i> Ubah Kata Sandi
+                                                    <div class="password-field">
+                                                        <label for="confirm_password">
+                                                            <i class="fas fa-lock-open"></i>
+                                                            <span>Konfirmasi Kata Sandi Baru</span>
+                                                        </label>
+                                                        <div class="password-input">
+                                                            <input type="password" id="confirm_password"
+                                                                name="confirm_password"
+                                                                placeholder="Konfirmasi kata sandi baru">
+                                                            <button type="button" class="toggle-password-btn"
+                                                                data-target="confirm_password">
+                                                                <i class="fas fa-eye"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="password-actions">
+                                                        <button type="submit" class="btn-change-password">
+                                                            <i class="fas fa-lock"></i> Perbarui Kata Sandi
                                                         </button>
                                                     </div>
                                                 </div>
@@ -453,12 +460,199 @@
             background: var(--accent-color-gradient);
         }
 
-        .toggle-password {
-            background-color: transparent;
+        .password-form-container {
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            padding: 2.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .toggle-password:focus {
-            box-shadow: none;
+        .password-form-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .password-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .password-header h4 {
+            color: #293c5d;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .password-header p {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        .password-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 16px;
+            margin-right: 1.5rem;
+            font-size: 1.8rem;
+            box-shadow: 0 8px 16px rgba(16, 32, 68, 0.2);
+        }
+
+        .password-field {
+            margin-bottom: 1.5rem;
+        }
+
+        .password-field label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+            color: #293c5d;
+        }
+
+        .password-field label i {
+            margin-right: 8px;
+            color: var(--accent-color);
+        }
+
+        .password-input {
+            position: relative;
+        }
+
+        .password-input input {
+            width: 100%;
+            padding: 12px 50px 12px 16px;
+            border: 1px solid #e0e6ed;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+        }
+
+        .password-input input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(250, 157, 28, 0.15);
+            background-color: #fff;
+            outline: none;
+        }
+
+        .toggle-password-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #6c757d;
+            cursor: pointer;
+            padding: 5px;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-password-btn:hover,
+        .toggle-password-btn:focus {
+            color: var(--accent-color);
+            outline: none;
+        }
+
+        .password-requirements {
+            background-color: #f8fafc;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .password-requirements h6 {
+            color: #293c5d;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .password-requirements h6 i {
+            color: var(--accent-color);
+            margin-right: 8px;
+        }
+
+        .password-requirements ul {
+            list-style: none;
+            padding-left: 1.5rem;
+            margin-bottom: 0;
+        }
+
+        .password-requirements ul li {
+            margin-bottom: 0.5rem;
+            position: relative;
+            font-size: 0.9rem;
+            color: #495057;
+        }
+
+        .password-requirements ul li i {
+            position: absolute;
+            left: -1.5rem;
+            top: 3px;
+            color: #28a745;
+        }
+
+        .password-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+
+        .btn-change-password {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 28px;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 15px rgba(16, 32, 68, 0.2);
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-change-password i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+
+        .btn-change-password:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(16, 32, 68, 0.3);
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-color-gradient));
+        }
+
+        .btn-change-password:active {
+            transform: translateY(-1px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .password-form-container {
+                padding: 1.5rem;
+            }
+
+            .password-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .password-icon {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
         }
 
         .fadeIn {
@@ -528,6 +722,43 @@
                 opacity: 1;
             }
         }
+
+        .password-error {
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: block;
+            clear: both;
+        }
+
+        .password-field {
+            margin-bottom: 1.75rem;
+            position: relative;
+        }
+
+        .password-input {
+            position: relative;
+        }
+
+        .password-input input.error {
+            border-color: #dc3545;
+        }
+
+        .password-input input:focus.error {
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+        }
+
+        .alert {
+            border-radius: 12px;
+            padding: 12px 16px;
+        }
+
+        .toggle-password-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 5;
+        }
     </style>
 @endpush
 
@@ -574,19 +805,7 @@
                 }
             });
 
-            // Password toggle functionality
-            $('.toggle-password').click(function() {
-                const target = $(this).data('target');
-                const input = $('#' + target);
 
-                if (input.attr('type') === 'password') {
-                    input.attr('type', 'text');
-                    $(this).find('i').removeClass('fa-eye').addClass('fa-eye-slash');
-                } else {
-                    input.attr('type', 'password');
-                    $(this).find('i').removeClass('fa-eye-slash').addClass('fa-eye');
-                }
-            });
 
             $('#reviewTrigger').click(function() {
                 if ($('#profileImage').length) {
@@ -624,6 +843,70 @@
                     $('#editInfoBtn').click();
                 }
             });
+            $('.toggle-password-btn').click(function() {
+                const target = $(this).data('target');
+                const input = $('#' + target);
+                const icon = $(this).find('i');
+
+                if (input.attr('type') === 'password') {
+                    input.attr('type', 'text');
+                    icon.removeClass('fa-eye').addClass('fa-eye-slash');
+                } else {
+                    input.attr('type', 'password');
+                    icon.removeClass('fa-eye-slash').addClass('fa-eye');
+                }
+            });
+
+            // Handle password form submission
+            $('#passwordForm').submit(function(e) {
+                e.preventDefault();
+
+                // Remove previous error messages
+                $('.password-error').remove();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Clear the form
+                            $('#passwordForm')[0].reset();
+
+                            // Show success message
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil!',
+                                text: response.message,
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        }
+                    },
+
+                    error: function(xhr) {
+                        if (xhr.status === 422) {
+                            var errors = xhr.responseJSON.errors;
+                            $.each(errors, function(key, value) {
+                                $('#' + key).addClass('error');
+
+                                $('#' + key).closest('.password-input').after(
+                                    '<span class="password-error text-danger"><small><i class="fas fa-exclamation-circle mr-1"></i>' +
+                                    value[0] + '</small></span>');
+                            });
+                        } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                            $('.password-actions').before(
+                                '<div class="password-error alert alert-danger mt-3 mb-0">' +
+                                xhr.responseJSON.message + '</div>');
+                        }
+                    }
+                });
+            });
+
         });
     </script>
 @endpush
