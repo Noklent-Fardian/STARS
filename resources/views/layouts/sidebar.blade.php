@@ -105,8 +105,8 @@
                 <i class="fas fa-fw fa-database"></i>
                 <span>Master Data</span>
             </a>
-            <div id="collapseMaster" class="collapse {{ $isMasterActive ? 'show' : '' }}"
-                aria-labelledby="headingMaster" data-parent="#accordionSidebar">
+            <div id="collapseMaster" class="collapse {{ $isMasterActive ? 'show' : '' }}" aria-labelledby="headingMaster"
+                data-parent="#accordionSidebar">
                 <div class="py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Data Master:</h6>
                     <a class="collapse-item {{ request()->routeIs('admin.master.periode') ? 'active' : '' }}"
@@ -142,9 +142,8 @@
     @endif
 
 
-    @if (Auth::user()->dosen)
-        <a class="sidebar-brand d-flex align-items-center justify-content-center"
-            href="{{ route('dosen.dashboard') }}">
+    @if(Auth::user()->dosen)
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('dosen.dashboard') }}">
             <div class="sidebar-brand-icon">
                 <img src="{{ asset('img/logo.svg') }}" style="max-height: 40px">
             </div>
@@ -165,22 +164,15 @@
 
         <div class="sidebar-heading">Manajemen</div>
 
-        <li class="nav-item {{ request()->routeIs('lomba.create') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('lomba.create') }}">
-                <i class="nav-icon fas fa-plus-circle"></i>
+        <li class="nav-item {{ request()->routeIs('dosen.lomba.index') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('dosen.lomba.index') }}">
+                <i class="nav-icon fas fa-list"></i>
                 <span>Lihat Lomba</span>
             </a>
         </li>
 
-        <li class="nav-item {{ request()->routeIs('dosen.prestasi.create') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('dosen.prestasi.create') }}">
-                <i class="nav-icon fas fa-trophy"></i>
-                <span>Tambah Prestasi</span>
-            </a>
-        </li>
-
-        <li class="nav-item {{ request()->routeIs('bimbingan.index') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('bimbingan.index') }}">
+        <li class="nav-item {{ request()->routeIs('dosen.bimbingan.index') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('dosen.bimbingan.index') }}">
                 <i class="nav-icon fas fa-users"></i>
                 <span>Bimbingan</span>
             </a>
@@ -190,16 +182,15 @@
 
         <div class="sidebar-heading">Pengaturan</div>
 
-        <li class="nav-item {{ request()->routeIs('profil.index') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('profil.index') }}">
+        <li class="nav-item {{ request()->routeIs('dosen.profile') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('dosen.profile') }}">
                 <i class="nav-icon fas fa-user"></i>
                 <span>Profil</span>
             </a>
         </li>
     @endif
     @if (Auth::user()->mahasiswa)
-        <a class="sidebar-brand d-flex align-items-center justify-content-center"
-            href="{{ route('mahasiswa.dashboard') }}">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('mahasiswa.dashboard') }}">
             <div class="sidebar-brand-icon">
                 <img src="{{ asset('img/logo.svg') }}" style="max-height: 40px">
             </div>
@@ -227,8 +218,8 @@
             </a>
         </li>
 
-        <li class="nav-item {{ request()->routeIs('mahasiswa.prestasi.create') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('mahasiswa.prestasi.create') }}">
+        <li class="nav-item {{ request()->routeIs('mahasiswa.prestasi') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('mahasiswa.prestasi.index') }}">
                 <i class="nav-icon fas fa-plus-circle"></i>
                 <span>Pencatatan Prestasi</span>
             </a>
@@ -238,8 +229,8 @@
 
         <div class="sidebar-heading">Pengaturan</div>
 
-        <li class="nav-item {{ request()->routeIs('mahasiswa.profil') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('mahasiswa.profil') }}">
+        <li class="nav-item {{ request()->routeIs('mahasiswa.profile') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('mahasiswa.profile') }}">
                 <i class="nav-icon fas fa-user"></i>
                 <span>Profil</span>
             </a>
