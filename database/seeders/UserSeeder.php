@@ -30,10 +30,15 @@ class UserSeeder extends Seeder
                 'user_password' => Hash::make('12345'),
                 'user_role' => 'Admin',
             ],
-                [
+            [
                 'username' => 'admin4',
                 'user_password' => Hash::make('12345'),
                 'user_role' => 'Admin',
+            ],
+            [
+                'username' => 'admin5',
+                'user_password' => Hash::make('12345'),
+                'user_role' => 'Dosen',
             ],
             [
                 'username' => 'dosen1',
@@ -62,16 +67,6 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'dosen6',
-                'user_password' => Hash::make('12345'),
-                'user_role' => 'Dosen',
-            ],
-            [
-                'username' => 'dosen7',
-                'user_password' => Hash::make('12345'),
-                'user_role' => 'Dosen',
-            ],
-            [
-                'username' => 'dosen8',
                 'user_password' => Hash::make('12345'),
                 'user_role' => 'Dosen',
             ],

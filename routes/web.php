@@ -15,6 +15,7 @@ use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\AdminManagementController;
 use App\Http\Controllers\AdminKelolaPrestasiController;
 use App\Http\Controllers\AdminKelolaLombaController;
+use App\Http\Controllers\TingkatanLombaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -261,20 +262,71 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::get('/profile', [AdminController::class, 'profile'])->name('admin.profile');
     Route::get('/admin/profile/edit', [AdminController::class, 'editProfile'])->name('admin.editProfile');
     Route::put('/admin/profile/update', [AdminController::class, 'updateProfile'])->name('admin.updateProfile');
+    Route::post('/admin/profile/change-password', [AdminController::class, 'changePassword'])->name('admin.changePassword');
+    Route::post('/admin/profile/update-photo', [AdminController::class, 'updatePhoto'])->name('admin.updatePhoto');
 });
 
 // Dosen routes
-Route::middleware(['auth', 'role:Dosen'])->prefix('dosen')->group(function () {
-    Route::get('/dashboard', [DosenController::class, 'index'])->name('dosen.dashboard');
-    // Add other dosen routes here
+Route::middleware(['auth', 'role:Dosen'])->prefix('dosen')->name('dosen.')->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [DosenController::class, 'index'])->name('dashboard');
+
+    // Lihat Lomba dan Tambah
+    Route::prefix('lomba')->name('lomba.')->group(function () {
+        Route::get('/', [LombaController::class, 'lombaIndex'])->name('index');
+        Route::get('/show/{id}', [LombaController::class, 'lombaShow'])->name('show');
+        Route::get('/create_ajax', [LombaController::class, 'createAjax'])->name('createAjax');
+        Route::post('/ajax', [LombaController::class, 'storeAjax'])->name('storeAjax');
+    });
+
+    // Bimbingan Mahasiswa
+    Route::get('/bimbingan', [DosenController::class, 'bimbinganIndex'])->name('bimbingan.index');
+
+    // Profil Dosen
+    Route::get('/profile', [DosenController::class, 'profile'])->name('profile');
+    Route::get('/profile/edit', [DosenController::class, 'editProfile'])->name('editProfile');
+    Route::put('/profile/update', [DosenController::class, 'updateProfile'])->name('updateProfile');
+    Route::post('/profile/change-password', [DosenController::class, 'changePassword'])->name('changePassword');
+    Route::post('/profile/update-photo', [DosenController::class, 'updatePhoto'])->name('updatePhoto');
 });
 
 // Mahasiswa routes
-Route::middleware(['auth', 'role:Mahasiswa'])->prefix('mahasiswa')->group(function () {
-    Route::get('/dashboard', [MahasiswaController::class, 'index'])->name('mahasiswa.dashboard');
-    // Add other mahasiswa routes here
-});
+Route::middleware(['auth', 'role:Mahasiswa'])->prefix('mahasiswa')->name('mahasiswa.')->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [MahasiswaController::class, 'index'])->name('dashboard');
 
+    // Lihat Lomba
+    Route::prefix('lomba')->name('lomba.')->group(function () {
+        Route::get('/', [MahasiswaController::class, 'lombaIndex'])->name('index');
+        Route::get('/show/{id}', [MahasiswaController::class, 'lombaShow'])->name('show');
+        Route::post('/daftar', [MahasiswaController::class, 'daftarLomba'])->name('daftar');
+    });
+
+    // Lihat Lomba dan Tambah
+    Route::prefix('lomba')->name('lomba.')->group(function () {
+        Route::get('/', [LombaController::class, 'lombaIndex'])->name('index');
+        Route::get('/show/{id}', [LombaController::class, 'lombaShow'])->name('show');
+        Route::post('/daftar', [LombaController::class, 'daftarLomba'])->name('daftar');
+        Route::get('/create_ajax', [LombaController::class, 'createAjax'])->name('createAjax');
+        Route::post('/ajax', [LombaController::class, 'storeAjax'])->name('storeAjax');
+    });
+
+    // Manajemen Prestasi
+    Route::prefix('prestasi')->name('prestasi.')->group(function () {
+        Route::get('/', [MahasiswaController::class, 'index'])->name('index');
+        Route::get('/list', [MahasiswaController::class, 'prestasiListAjax'])->name('list');
+        Route::get('/create_ajax', [MahasiswaController::class, 'prestasiCreateAjax'])->name('createAjax');
+        Route::post('/ajax', [MahasiswaController::class, 'prestasiStoreAjax'])->name('storeAjax');
+        Route::get('/show_ajax/{id}', [MahasiswaController::class, 'prestasiShowAjax'])->name('showAjax');
+    });
+
+    // Profil Mahasiswa
+    Route::get('/profile', [MahasiswaController::class, 'profile'])->name('profile');
+    Route::get('/profile/edit', [MahasiswaController::class, 'editProfile'])->name('editProfile');
+    Route::put('/profile/update', [MahasiswaController::class, 'updateProfile'])->name('updateProfile');
+    Route::post('/profile/change-password', [MahasiswaController::class, 'changePassword'])->name('changePassword');
+    Route::post('/profile/update-photo', [MahasiswaController::class, 'updatePhoto'])->name('updatePhoto');
+});
 // Fallback for unauthorized access
 Route::fallback(function () {
     return redirect('/login');
