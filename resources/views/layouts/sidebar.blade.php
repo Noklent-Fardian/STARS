@@ -1,6 +1,6 @@
 <!-- Sidebar -->
 <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-    @if(Auth::user()->admin)
+    @if (Auth::user()->admin)
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}">
             <div class="sidebar-brand-icon">
                 <img src="{{ asset('img/logo.svg') }}" style="max-height: 40px">
@@ -89,7 +89,7 @@
                 'admin.master.prodi',
                 'admin.master.keahlian',
                 'admin.master.tingkatanLomba.index',
-                'admin.master.peringkatLomba.index'
+                'admin.master.peringkatLomba.index',
             ];
 
             $isMasterActive = collect($masterRoutes)->contains(function ($route) {
@@ -164,22 +164,15 @@
 
         <div class="sidebar-heading">Manajemen</div>
 
-        <li class="nav-item {{ request()->routeIs('lomba.create') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('lomba.create') }}">
-                <i class="nav-icon fas fa-plus-circle"></i>
+        <li class="nav-item {{ request()->routeIs('dosen.lomba.index') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('dosen.lomba.index') }}">
+                <i class="nav-icon fas fa-list"></i>
                 <span>Lihat Lomba</span>
             </a>
         </li>
 
-        <li class="nav-item {{ request()->routeIs('dosen.prestasi.create') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('dosen.prestasi.create') }}">
-                <i class="nav-icon fas fa-trophy"></i>
-                <span>Tambah Prestasi</span>
-            </a>
-        </li>
-
-        <li class="nav-item {{ request()->routeIs('bimbingan.index') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('bimbingan.index') }}">
+        <li class="nav-item {{ request()->routeIs('dosen.bimbingan.index') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('dosen.bimbingan.index') }}">
                 <i class="nav-icon fas fa-users"></i>
                 <span>Bimbingan</span>
             </a>
@@ -189,14 +182,14 @@
 
         <div class="sidebar-heading">Pengaturan</div>
 
-        <li class="nav-item {{ request()->routeIs('profil.index') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('profil.index') }}">
+        <li class="nav-item {{ request()->routeIs('dosen.profile') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('dosen.profile') }}">
                 <i class="nav-icon fas fa-user"></i>
                 <span>Profil</span>
             </a>
         </li>
     @endif
-    @if(Auth::user()->mahasiswa)
+    @if (Auth::user()->mahasiswa)
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('mahasiswa.dashboard') }}">
             <div class="sidebar-brand-icon">
                 <img src="{{ asset('img/logo.svg') }}" style="max-height: 40px">
@@ -225,8 +218,8 @@
             </a>
         </li>
 
-        <li class="nav-item {{ request()->routeIs('mahasiswa.prestasi.create') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('mahasiswa.prestasi.create') }}">
+        <li class="nav-item {{ request()->routeIs('mahasiswa.prestasi') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('mahasiswa.prestasi.index') }}">
                 <i class="nav-icon fas fa-plus-circle"></i>
                 <span>Pencatatan Prestasi</span>
             </a>
@@ -236,12 +229,19 @@
 
         <div class="sidebar-heading">Pengaturan</div>
 
-        <li class="nav-item {{ request()->routeIs('mahasiswa.profil') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('mahasiswa.profil') }}">
+        <li class="nav-item {{ request()->routeIs('mahasiswa.profile') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('mahasiswa.profile') }}">
                 <i class="nav-icon fas fa-user"></i>
                 <span>Profil</span>
             </a>
         </li>
     @endif
+    <hr class="sidebar-divider d-none d-md-block">
+    <li class="nav-item logout-item">
+        <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal">
+            <i class="fas fa-fw fa-sign-out-alt text-danger"></i>
+            <span class="logout-text">Logout</span>
+        </a>
+    </li>
 </ul>
 <!-- End of Sidebar -->

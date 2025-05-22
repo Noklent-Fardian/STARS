@@ -35,21 +35,30 @@ class AdminManagementController extends Controller
      */
     public function getAdminList(Request $request)
     {
-        $admins = Admin::select('m_admins.id', 'm_admins.admin_name', 'm_admins.admin_gender',
-            'm_admins.admin_nomor_telepon', 'm_admins.admin_photo', 'm_admins.admin_visible',
-            'users.username')
+        $admins = Admin::select(
+            'm_admins.id',
+            'm_admins.admin_name',
+            'm_admins.admin_gender',
+            'm_admins.admin_nomor_telepon',
+            'm_admins.admin_photo',
+            'm_admins.admin_visible',
+            'users.username'
+        )
             ->join('m_users as users', 'users.id', '=', 'm_admins.user_id')
             ->where('m_admins.admin_visible', true);
 
         return DataTables::of($admins)
+            ->filterColumn('username', function ($query, $keyword) {
+                $query->whereRaw("LOWER(users.username) LIKE ?", ["%" . strtolower($keyword) . "%"]);
+            })
             ->addColumn('aksi', function ($admin) {
                 $view = '<a href="' . url('/admin/adminManagement/show/' . $admin->id) . '" class="btn btn-sm btn-info mr-1"><i class="fas fa-eye"></i> Detail</a>';
                 $edit = '<button onclick="modalAction(\'' . route('admin.adminManagement.editAjax', $admin->id) . '\')" class="btn btn-sm btn-warning mr-2">
-                            <i class="fas fa-edit mr-1"></i> Edit
-                        </button>';
+                        <i class="fas fa-edit mr-1"></i> Edit
+                    </button>';
                 $delete = '<button onclick="modalAction(\'' . route('admin.adminManagement.confirmAjax', $admin->id) . '\')" class="btn btn-sm btn-danger mr-2">
-                            <i class="fas fa-trash-alt mr-1"></i> Hapus
-                        </button>';
+                        <i class="fas fa-trash-alt mr-1"></i> Hapus
+                    </button>';
 
                 return $view . $edit . $delete;
             })
@@ -59,7 +68,7 @@ class AdminManagementController extends Controller
             ->editColumn('admin_photo', function ($admin) {
                 if ($admin->admin_photo) {
                     return '<img src="' . asset('storage/admin_photos/' . $admin->admin_photo) . '"
-                            alt="' . $admin->admin_name . '" class="img-thumbnail" style="max-width: 50px;">';
+                        alt="' . $admin->admin_name . '" class="img-thumbnail" style="max-width: 50px;">';
                 }
                 return '<span class="badge badge-secondary">No Photo</span>';
             })

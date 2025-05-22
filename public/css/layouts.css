@@ -525,9 +525,8 @@ body.sidebar-toggled .sidebar-overlay {
         overflow-y: auto;
     }
 
-
     .sidebar::-webkit-scrollbar {
-        width: 0px
+        width: 0px;
     }
 
     .sidebar::-webkit-scrollbar-track {
@@ -538,7 +537,6 @@ body.sidebar-toggled .sidebar-overlay {
         background-color: rgba(255, 255, 255, 0.2);
         border-radius: 10px;
     }
-
 
     #content-wrapper {
         height: auto;
@@ -621,7 +619,6 @@ body.sidebar-toggled .sidebar-overlay {
     margin-bottom: 0.5rem !important;
 }
 @media (max-width: 575.98px) {
-
     .container-fluid {
         padding: 0 10px;
     }
@@ -694,4 +691,41 @@ table.dataTable {
     margin-left: 0;
     width: 100%;
 }
+/* Logout button styling */
+.logout-item {
+    margin-top: auto;
+}
 
+.logout-item .nav-link {
+    background: linear-gradient(to right, rgba(255, 0, 0, 0.05), transparent);
+    border-left: 3px solid #e74a3b;
+    transition: all 0.3s ease;
+}
+
+.logout-item .nav-link:hover {
+    background: linear-gradient(to right, rgba(255, 0, 0, 0.1), transparent);
+    padding-left: 1.2rem;
+}
+
+.logout-item .nav-link i {
+    font-size: 1.1rem;
+}
+
+.logout-text {
+    font-weight: 600;
+    color: #e74a3b;
+}
+
+/* Handle sidebar toggled state */
+.sidebar.toggled .logout-item .nav-link {
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+    border-left: none;
+    border-radius: 0;
+}
+
+.sidebar.toggled .logout-item .nav-link i {
+    margin-right: 0;
+    font-size: 1.2rem;
+}

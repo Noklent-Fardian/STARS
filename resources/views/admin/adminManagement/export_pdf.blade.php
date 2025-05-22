@@ -7,13 +7,21 @@
 
 <body>
     <table class="letterhead">
-        <tr>
+       <tr>
+            <td width="15%" class="text-center">
+                <img src="{{ public_path('img/poltek100.png') }}" alt="Logo Polinema" class="logo"
+                    style="width: auto; height: 70px;">
+            </td>
             <td width="70%" class="text-center">
-                <div class="ministry">STARS-Student Achievement Record System</div>
+                <div class="ministry">STARS - Student Achievement Record System</div>
                 <div class="institution">POLITEKNIK NEGERI MALANG</div>
                 <div class="address">Jl. Soekarno-Hatta No. 9 Malang 65141</div>
                 <div class="address">Telepon (0341) 404424 Pes. 101-105, 0341-404420, Fax. (0341) 404420</div>
                 <div class="address">Laman: www.polinema.ac.id</div>
+            </td>
+            <td width="15%" class="text-center">
+                <img src="{{ public_path('img/logo100.png') }}" alt="Logo Stars" class="logo"
+                    style="width: auto; height: 70px;">
             </td>
         </tr>
     </table>
