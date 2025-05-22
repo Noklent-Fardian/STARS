@@ -36,21 +36,30 @@ class AdminManagementController extends Controller
      */
     public function getAdminList(Request $request)
     {
-        $admins = Admin::select('m_admins.id', 'm_admins.admin_name', 'm_admins.admin_gender', 
-                              'm_admins.admin_nomor_telepon', 'm_admins.admin_photo', 'm_admins.admin_visible', 
-                              'users.username')
+        $admins = Admin::select(
+            'm_admins.id',
+            'm_admins.admin_name',
+            'm_admins.admin_gender',
+            'm_admins.admin_nomor_telepon',
+            'm_admins.admin_photo',
+            'm_admins.admin_visible',
+            'users.username'
+        )
             ->join('m_users as users', 'users.id', '=', 'm_admins.user_id')
             ->where('m_admins.admin_visible', true);
 
         return DataTables::of($admins)
+            ->filterColumn('username', function ($query, $keyword) {
+                $query->whereRaw("LOWER(users.username) LIKE ?", ["%" . strtolower($keyword) . "%"]);
+            })
             ->addColumn('aksi', function ($admin) {
                 $view = '<a href="' . url('/admin/adminManagement/show/' . $admin->id) . '" class="btn btn-sm btn-info mr-1"><i class="fas fa-eye"></i> Detail</a>';
                 $edit = '<button onclick="modalAction(\'' . route('admin.adminManagement.editAjax', $admin->id) . '\')" class="btn btn-sm btn-warning mr-2">
-                            <i class="fas fa-edit mr-1"></i> Edit
-                        </button>';
+                        <i class="fas fa-edit mr-1"></i> Edit
+                    </button>';
                 $delete = '<button onclick="modalAction(\'' . route('admin.adminManagement.confirmAjax', $admin->id) . '\')" class="btn btn-sm btn-danger mr-2">
-                            <i class="fas fa-trash-alt mr-1"></i> Hapus
-                        </button>';
+                        <i class="fas fa-trash-alt mr-1"></i> Hapus
+                    </button>';
 
                 return $view . $edit . $delete;
             })
@@ -60,7 +69,7 @@ class AdminManagementController extends Controller
             ->editColumn('admin_photo', function ($admin) {
                 if ($admin->admin_photo) {
                     return '<img src="' . asset('storage/admin_photos/' . $admin->admin_photo) . '" 
-                            alt="' . $admin->admin_name . '" class="img-thumbnail" style="max-width: 50px;">';
+                        alt="' . $admin->admin_name . '" class="img-thumbnail" style="max-width: 50px;">';
                 }
                 return '<span class="badge badge-secondary">No Photo</span>';
             })
@@ -187,12 +196,12 @@ class AdminManagementController extends Controller
             $userData = [
                 'username' => $request->username,
             ];
-            
+
             // Only update password if provided
             if (!empty($request->password)) {
                 $userData['user_password'] = Hash::make($request->password);
             }
-            
+
             $admin->user->update($userData);
 
             // Update admin profile
@@ -231,44 +240,44 @@ class AdminManagementController extends Controller
      * Remove the specified resource from storage with AJAX.
      */
     public function destroyAjax($id)
-{
-    $admin = Admin::with('user')->find($id);
+    {
+        $admin = Admin::with('user')->find($id);
 
-    if (!$admin) {
-        return response()->json([
-            'status'  => false,
-            'message' => 'Admin tidak ditemukan',
-        ]);
-    }
-
-    DB::beginTransaction();
-    try {
-        // Mark admin as invisible
-        $admin->update([
-            'admin_name' => $admin->admin_name . ' (Dihapus pada ' . date('H:i d/m/Y') . ')',
-            'admin_visible' => false,
-        ]);
-
-        if ($admin->user) {
-            $admin->user->update([
-                'username' => $admin->user->username . 'Dihapus pada ' . time(),
-                'user_visible' => false,
+        if (!$admin) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Admin tidak ditemukan',
             ]);
         }
 
-        DB::commit();
-        return response()->json([
-            'status'  => true,
-            'message' => 'Admin berhasil dihapus',
-        ]);
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return response()->json([
-            'status'  => false,
-            'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
-        ]);
+        DB::beginTransaction();
+        try {
+            // Mark admin as invisible
+            $admin->update([
+                'admin_name' => $admin->admin_name . ' (Dihapus pada ' . date('H:i d/m/Y') . ')',
+                'admin_visible' => false,
+            ]);
+
+            if ($admin->user) {
+                $admin->user->update([
+                    'username' => $admin->user->username . 'Dihapus pada ' . time(),
+                    'user_visible' => false,
+                ]);
+            }
+
+            DB::commit();
+            return response()->json([
+                'status'  => true,
+                'message' => 'Admin berhasil dihapus',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status'  => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
+            ]);
+        }
     }
-}
 
     /**
      * Export data to PDF.
@@ -279,12 +288,12 @@ class AdminManagementController extends Controller
             ->where('admin_visible', true)
             ->orderBy('admin_name', 'asc')
             ->get();
-            
+
         $pdf = PDF::loadView('admin.adminManagement.export_pdf', compact('admins'));
 
         return $pdf->download('data-admin.pdf');
     }
-    
+
     /**
      * Export data to Excel.
      */
@@ -429,7 +438,7 @@ class AdminManagementController extends Controller
         $row = 1;
 
         DB::beginTransaction();
-        
+
         try {
             foreach ($data as $index => $rowData) {
                 $row++;
@@ -512,36 +521,36 @@ class AdminManagementController extends Controller
     {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        
+
         $sheet->setCellValue('A1', 'Nama Admin');
         $sheet->setCellValue('B1', 'Username');
         $sheet->setCellValue('C1', 'Jenis Kelamin (L/P)');
         $sheet->setCellValue('D1', 'Nomor Telepon');
-        
+
         $sheet->setCellValue('A2', 'Admin Contoh');
         $sheet->setCellValue('B2', 'admin_username');
         $sheet->setCellValue('C2', 'L');
         $sheet->setCellValue('D2', '081234567890');
-        
+
         $sheet->getStyle('A1:D1')->getFont()->setBold(true);
         $sheet->getStyle('A1:D1')->getFill()
             ->setFillType(Fill::FILL_SOLID)
             ->getStartColor()->setRGB('102044');
         $sheet->getStyle('A1:D1')->getFont()->getColor()->setRGB('FFFFFF');
-        
+
         foreach (range('A', 'D') as $column) {
             $sheet->getColumnDimension($column)->setAutoSize(true);
         }
-        
+
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $path = public_path('excel/template_admin.xlsx');
-        
+
         if (!file_exists(dirname($path))) {
             mkdir(dirname($path), 0755, true);
         }
-        
+
         $writer->save($path);
-        
+
         return response()->download($path, 'template_admin.xlsx');
     }
 }
