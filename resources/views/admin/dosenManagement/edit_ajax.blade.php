@@ -331,6 +331,18 @@
                 let fileName = $(this).val().split('\\').pop();
                 $(this).next('.custom-file-label').addClass("selected").html(fileName);
             });
+            $('#dosen_photo').change(function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        // Tampilkan preview
+                        $('.img-thumbnail').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
             $.validator.addMethod('filesize', function(value, element, param) {
                 if (element.files.length === 0) return true; // Skip jika tidak ada file
                 
@@ -396,48 +408,61 @@
                     }
                 },
                 submitHandler: function(form) {
-                    let formData = new FormData(form);
-
-                    $.ajax({
-                        url: form.action,
+                let formData = new FormData(form);
+                
+                $.ajax({
+                    url: form.action,
                     type: form.method,
-                    data: $(form).serialize(),
-                        success: function(response) {
-                            if (response.status) {
-                                $('#myModal').modal('hide');
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil',
-                                    text: response.message,
-                                    timer: 1500,
-                                    showConfirmButton: false
-                                });
-
-                                // Reload DataTable
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json', // Pastikan kita mengharapkan JSON
+                    success: function(response) {
+                        if (response.status) {
+                            $('#myModal').modal('hide');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: response.message,
+                                timer: 1500,
+                                showConfirmButton: false
+                            }).then(() => {
                                 if (typeof dataDosen !== 'undefined') {
-                                    dataDosen.ajax.reload();
+                                    dataDosen.ajax.reload(null, false); 
                                 }
-                            } else {
-                                $('.error-text').text('');
-                                $.each(response.msgField, function(prefix, val) {
-                                    $('#error-' + prefix).text(val[0]);
-                                });
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Terjadi Kesalahan',
-                                    text: response.message
-                                });
-                            }
-                        },
-                        error: function(xhr) {
+                            });
+                        } else {
+                            showValidationErrors(response.msgField);
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Error',
-                                text: 'Terjadi kesalahan pada server'
+                                title: 'Gagal',
+                                text: response.message
                             });
                         }
-                    });
-                    return false;
+                    },
+                    error: function(xhr, status, error) {
+                        let msg = 'Terjadi kesalahan pada server';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            msg = xhr.responseJSON.message;
+                        }
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: msg
+                        });
+                    }
+                });
+                return false;
+            },
+                invalidHandler: function(event, validator) {
+                    const errors = validator.numberOfInvalids();
+                    if (errors) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Kesalahan',
+                            text: 'Terdapat kesalahan pada form. Silakan periksa kembali.'
+                        });
+                    }
                 },
                 errorElement: 'span',
                 errorPlacement: function(error, element) {

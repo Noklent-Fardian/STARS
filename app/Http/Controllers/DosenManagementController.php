@@ -8,6 +8,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -266,7 +267,6 @@ class DosenManagementController extends Controller
                 'username' => $request->username,
             ];
 
-            // Only update password if provided
             if (! empty($request->password)) {
                 $userData['user_password'] = Hash::make($request->password);
             }
@@ -277,13 +277,20 @@ class DosenManagementController extends Controller
             $photoName = $dosen->dosen_photo;
             if ($request->hasFile('dosen_photo')) {
                 // Delete old photo if exists
-                if ($photoName && file_exists(storage_path('app/public/dosen_photos/' . $photoName))) {
-                    unlink(storage_path('app/public/dosen_photos/' . $photoName));
+                if ($photoName && Storage::exists('public/dosen_photos/' . $photoName)) {
+                    Storage::delete('public/dosen_photos/' . $photoName);
                 }
 
                 $photo     = $request->file('dosen_photo');
                 $photoName = time() . '_' . $photo->getClientOriginalName();
-                $photo->storeAs('public/dosen_photos', $photoName);
+
+                // Simpan file menggunakan Storage facade
+                $path = $photo->storeAs('public/dosen_photos', $photoName);
+
+                // Pastikan file tersimpan
+                if (! $path) {
+                    throw new \Exception('Gagal menyimpan file foto');
+                }
             }
 
             // Update dosen profile
@@ -307,13 +314,14 @@ class DosenManagementController extends Controller
                 'status'  => true,
                 'message' => 'Dosen berhasil diperbarui',
                 'self'    => true,
-            ]);
+            ], 200, ['Content-Type' => 'application/json']); // Tambahkan header JSON
+
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
                 'status'  => false,
                 'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
-            ]);
+            ], 500, ['Content-Type' => 'application/json']);
         }
     }
 
