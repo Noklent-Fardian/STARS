@@ -63,7 +63,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Nama Keahlian</th>
-                            <th class="text-center">Aksi</th>
+                            <th class="text-center text-nowrap">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>

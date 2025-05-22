@@ -331,6 +331,13 @@
                 let fileName = $(this).val().split('\\').pop();
                 $(this).next('.custom-file-label').addClass("selected").html(fileName);
             });
+            $.validator.addMethod('filesize', function(value, element, param) {
+                if (element.files.length === 0) return true; // Skip jika tidak ada file
+                
+                const fileSize = element.files[0].size; // dalam bytes
+                const maxSize = param * 1024 * 1024; // konversi MB ke bytes
+                return this.optional(element) || (fileSize <= maxSize);
+            }, 'Ukuran file maksimal {0}MB');
 
             $("#form-edit").validate({
                 rules: {
@@ -342,17 +349,7 @@
                     dosen_nip: {
                         required: true,
                         minlength: 10,
-                        maxlength: 20,
-                        remote: {
-                            url: "{{ route('admin.dosenManagement.checkNip') }}",
-                            type: "GET",
-                            data: {
-                                dosen_nip: function() {
-                                    return $("#dosen_nip").val();
-                                },
-                                id: "{{ $dosen->id }}"
-                            }
-                        }
+                        maxlength: 20
                     },
                     dosen_status: {
                         required: true
@@ -384,23 +381,18 @@
                         required: true,
                         minlength: 3,
                         maxlength: 255,
-                        remote: {
-                            url: "{{ route('admin.dosenManagement.checkUsername') }}",
-                            type: "GET",
-                            data: {
-                                username: function() {
-                                    return $("#username").val();
-                                },
-                                user_id: "{{ $dosen->user_id }}"
-                            }
-                        }
                     },
                     password: {
                         minlength: 8
                     },
                     dosen_photo: {
-                        accept: "Format file harus berupa gambar (JPEG, PNG, JPG, GIF)",
-                        filesize: "Ukuran file maksimal 2MB"
+                    accept: "image/jpeg,image/png,image/jpg,image/gif",
+                    filesize: 2 
+                }
+                },
+                messages: {
+                    dosen_photo: {
+                        accept: "Hanya file gambar (JPEG, PNG, JPG, GIF) yang diperbolehkan"
                     }
                 },
                 submitHandler: function(form) {
@@ -408,10 +400,8 @@
 
                     $.ajax({
                         url: form.action,
-                        type: form.method,
-                        data: formData,
-                        processData: false,
-                        contentType: false,
+                    type: form.method,
+                    data: $(form).serialize(),
                         success: function(response) {
                             if (response.status) {
                                 $('#myModal').modal('hide');
@@ -463,3 +453,4 @@
             });
         });
     </script>
+@endif

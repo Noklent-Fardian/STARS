@@ -231,193 +231,211 @@
 </form>
 
 <script>
-    $(document).ready(function() {
-        // Add animation to form elements when modal loads
-        $('.form-group').each(function(i) {
-            $(this).css({
-                'opacity': 0,
-                'transform': 'translateY(20px)'
+$(document).ready(function() {
+    // Add animation to form elements when modal loads
+    $('.form-group').each(function(i) {
+        $(this).css({
+            'opacity': 0,
+            'transform': 'translateY(20px)'
+        });
+
+        setTimeout(function() {
+            $('.form-group').eq(i).css({
+                'opacity': 1,
+                'transform': 'translateY(0)',
+                'transition': 'all 0.4s ease-out'
             });
+        }, 100 * (i + 1));
+    });
 
-            setTimeout(function() {
-                $('.form-group').eq(i).css({
-                    'opacity': 1,
-                    'transform': 'translateY(0)',
-                    'transition': 'all 0.4s ease-out'
-                });
-            }, 100 * (i + 1));
-        });
+    // Show/hide password
+    $('.toggle-password').click(function() {
+        const passwordField = $('#password');
+        const passwordFieldType = passwordField.attr('type');
 
-        // Show/hide password
-        $('.toggle-password').click(function() {
-            const passwordField = $('#password');
-            const passwordFieldType = passwordField.attr('type');
+        if (passwordFieldType === 'password') {
+            passwordField.attr('type', 'text');
+            $(this).find('i').removeClass('fa-eye').addClass('fa-eye-slash');
+        } else {
+            passwordField.attr('type', 'password');
+            $(this).find('i').removeClass('fa-eye-slash').addClass('fa-eye');
+        }
+    });
 
-            if (passwordFieldType === 'password') {
-                passwordField.attr('type', 'text');
-                $(this).find('i').removeClass('fa-eye').addClass('fa-eye-slash');
-            } else {
-                passwordField.attr('type', 'password');
-                $(this).find('i').removeClass('fa-eye-slash').addClass('fa-eye');
+    // Custom file input
+    $('.custom-file-input').on('change', function() {
+        let fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    });
+
+    $.validator.addMethod('filesize', function(value, element, param) {
+                if (element.files.length === 0) return true; // Skip jika tidak ada file
+                
+                const fileSize = element.files[0].size; // dalam bytes
+                const maxSize = param * 1024 * 1024; // konversi MB ke bytes
+                return this.optional(element) || (fileSize <= maxSize);
+            }, 'Ukuran file maksimal {0}MB');
+
+    $("#form-tambah").validate({
+        rules: {
+            dosen_nama: {
+                required: true,
+                minlength: 3,
+                maxlength: 255
+            },
+            dosen_nip: {
+                required: true,
+                minlength: 10,
+                maxlength: 20,
+            },
+            dosen_status: {
+                required: true
+            },
+            dosen_gender: {
+                required: true
+            },
+            dosen_nomor_telepon: {
+                required: true,
+                minlength: 10,
+                maxlength: 15
+            },
+            dosen_agama: {
+                maxlength: 50
+            },
+            dosen_provinsi: {
+                maxlength: 255
+            },
+            dosen_kota: {
+                maxlength: 255
+            },
+            dosen_kecamatan: {
+                maxlength: 255
+            },
+            dosen_desa: {
+                maxlength: 255
+            },
+            username: {
+                required: true,
+                minlength: 3,
+                maxlength: 255,
+            },
+            password: {
+                required: true,
+                minlength: 8
+            },
+            dosen_photo: {
+                accept: "image/jpeg,image/png,image/jpg,image/gif",
+                filesize: 2 
             }
-        });
-
-        // Custom file input
-        $('.custom-file-input').on('change', function() {
-            let fileName = $(this).val().split('\\').pop();
-            $(this).next('.custom-file-label').addClass("selected").html(fileName);
-        });
-
-        $("#form-tambah").validate({
-            rules: {
-                dosen_nama: {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 255
-                },
-                dosen_nip: {
-                    required: true,
-                    minlength: 10,
-                    maxlength: 20,
-                },
-                dosen_status: {
-                    required: true
-                },
-                dosen_gender: {
-                    required: true
-                },
-                dosen_nomor_telepon: {
-                    required: true,
-                    minlength: 10,
-                    maxlength: 15
-                },
-                dosen_agama: {
-                    maxlength: 50
-                },
-                dosen_provinsi: {
-                    maxlength: 255
-                },
-                dosen_kota: {
-                    maxlength: 255
-                },
-                dosen_kecamatan: {
-                    maxlength: 255
-                },
-                dosen_desa: {
-                    maxlength: 255
-                },
-                username: {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 255,
-                },
-                password: {
-                    required: true,
-                    minlength: 8
-                },
-                dosen_photo: {
-                    accept: "image/jpeg,image/png,image/jpg,image/gif",
-                    filesize: 2048
-                }
+        },
+        messages: {
+            dosen_nama: {
+                required: "Nama dosen tidak boleh kosong",
+                minlength: "Nama dosen minimal 3 karakter",
+                maxlength: "Nama dosen maksimal 255 karakter"
             },
-            messages: {
-                dosen_nama: {
-                    required: "Nama dosen tidak boleh kosong",
-                    minlength: "Nama dosen minimal 3 karakter",
-                    maxlength: "Nama dosen maksimal 255 karakter"
-                },
-                dosen_nip: {
-                    required: "NIP tidak boleh kosong",
-                    minlength: "NIP minimal 10 karakter",
-                    maxlength: "NIP maksimal 20 karakter",
-                    remote: "NIP sudah digunakan"
-                },
-                dosen_status: {
-                    required: "Status tidak boleh kosong"
-                },
-                dosen_gender: {
-                    required: "Jenis kelamin tidak boleh kosong"
-                },
-                dosen_nomor_telepon: {
-                    required: "Nomor telepon tidak boleh kosong",
-                    minlength: "Nomor telepon minimal 10 karakter",
-                    maxlength: "Nomor telepon maksimal 15 karakter"
-                },
-                dosen_agama: {
-                    maxlength: "Agama maksimal 50 karakter"
-                },
-                username: {
-                    required: "Username tidak boleh kosong",
-                    minlength: "Username minimal 3 karakter",
-                    maxlength: "Username maksimal 255 karakter",
-                    remote: "Username sudah digunakan"
-                },
-                password: {
-                    required: "Password tidak boleh kosong",
-                    minlength: "Password minimal 8 karakter"
-                },
-                dosen_photo: {
-                    accept: "Format file harus berupa gambar (JPEG, PNG, JPG, GIF)",
-                    filesize: "Ukuran file maksimal 2MB"
-                }
+            dosen_nip: {
+                required: "NIP tidak boleh kosong",
+                minlength: "NIP minimal 10 karakter",
+                maxlength: "NIP maksimal 20 karakter",
+                remote: "NIP sudah digunakan"
             },
-            submitHandler: function(form) {
-                let formData = new FormData(form);
+            dosen_status: {
+                required: "Status tidak boleh kosong"
+            },
+            dosen_gender: {
+                required: "Jenis kelamin tidak boleh kosong"
+            },
+            dosen_nomor_telepon: {
+                required: "Nomor telepon tidak boleh kosong",
+                minlength: "Nomor telepon minimal 10 karakter",
+                maxlength: "Nomor telepon maksimal 15 karakter"
+            },
+            dosen_agama: {
+                maxlength: "Agama maksimal 50 karakter"
+            },
+            username: {
+                required: "Username tidak boleh kosong",
+                minlength: "Username minimal 3 karakter",
+                maxlength: "Username maksimal 255 karakter",
+                remote: "Username sudah digunakan"
+            },
+            password: {
+                required: "Password tidak boleh kosong",
+                minlength: "Password minimal 8 karakter"
+            },
+            dosen_photo: {
+                accept: "Format file harus berupa gambar (JPEG, PNG, JPG, GIF)",
+                filesize: "Ukuran file maksimal 2MB"
+            }
+        },
+        submitHandler: function(form) {
+            let formData = new FormData(form);
 
-                $.ajax({
-                    url: form.action,
-                    type: form.method,
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        if (response.status) {
-                            $('#myModal').modal('hide');
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: response.message,
-                                timer: 1500,
-                                showConfirmButton: false
-                            });
+            $.ajax({
+                url: form.action,
+                type: form.method,
+                data: formData,
+                processData: false,
+                contentType: false,
+                dataType: 'json', // Explicitly set the expected response type to JSON
+                success: function(response) {
+                    if (response.status) {
+                        // Find the modal and hide it properly
+                        // This selects any parent modal that contains this form
+                        $(form).closest('.modal').modal('hide');
+                        
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: response.message,
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            // Ensure the page reloads after SweetAlert is closed
+                            window.location.href = window.location.href;
+                        });
 
-                            // Reload DataTable
-                            if (typeof dataDosen !== 'undefined') {
-                                dataDosen.ajax.reload();
-                            }
-                        } else {
-                            $('.error-text').text('');
+                        // Reload DataTable if it exists
+                        if (typeof dataDosen !== 'undefined') {
+                            dataDosen.ajax.reload();
+                        }
+                    } else {
+                        $('.error-text').text('');
+                        if (response.msgField) {
                             $.each(response.msgField, function(prefix, val) {
                                 $('#error-' + prefix).text(val[0]);
                             });
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Terjadi Kesalahan',
-                                text: response.message
-                            });
                         }
-                    },
-                    error: function(xhr) {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Error',
-                            text: 'Terjadi kesalahan pada server'
+                            title: 'Terjadi Kesalahan',
+                            text: response.message
                         });
                     }
-                });
-                return false;
-            },
-            errorElement: 'span',
-            errorPlacement: function(error, element) {
-                error.addClass('invalid-feedback');
-                element.closest('.form-group').append(error);
-            },
-            highlight: function(element, errorClass, validClass) {
-                $(element).addClass('is-invalid');
-            },
-            unhighlight: function(element, errorClass, validClass) {
-                $(element).removeClass('is-invalid');
-            }
-        });
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error:", xhr.responseText);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Terjadi kesalahan pada server: ' + error
+                    });
+                }
+            });
+            return false;
+        },
+        errorElement: 'span',
+        errorPlacement: function(error, element) {
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
+        },
+        highlight: function(element, errorClass, validClass) {
+            $(element).addClass('is-invalid');
+        },
+        unhighlight: function(element, errorClass, validClass) {
+            $(element).removeClass('is-invalid');
+        }
     });
+});
 </script>

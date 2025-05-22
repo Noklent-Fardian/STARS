@@ -66,7 +66,7 @@
                             <th>ID</th>
                             <th>Nama Peringkat</th>
                             <th>Bobot</th>
-                            <th class="text-center">Aksi</th>
+                            <th class="text-center text-nowrap">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
