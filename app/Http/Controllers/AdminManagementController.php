@@ -284,12 +284,14 @@ class AdminManagementController extends Controller
      */
     public function exportPDF()
     {
+         $pdfSetting = \App\Models\PdfSetting::first();
         $admins = Admin::with('user')
             ->where('admin_visible', true)
             ->orderBy('admin_name', 'asc')
             ->get();
 
-        $pdf = PDF::loadView('admin.adminManagement.export_pdf', compact('admins'));
+        $pdf = PDF::loadView('admin.adminManagement.export_pdf', compact('admins', 'pdfSetting'))
+            ->setPaper('A4', 'portrait');
 
         return $pdf->download('data-admin.pdf');
     }

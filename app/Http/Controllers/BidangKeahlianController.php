@@ -153,9 +153,10 @@ class BidangKeahlianController extends Controller
 
     public function exportPdf()
     {
+         $pdfSetting = \App\Models\PdfSetting::first();
         $keahlians = Keahlian::orderBy('keahlian_nama')->get();
 
-        $pdf = Pdf::loadView('admin.bidangKeahlian.export_pdf', compact('keahlians'))
+        $pdf = Pdf::loadView('admin.bidangKeahlian.export_pdf', compact('keahlians', 'pdfSetting'))
             ->setPaper('a4', 'portrait');
 
         return $pdf->download('Laporan_Bidang_Keahlian.pdf');

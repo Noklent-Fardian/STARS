@@ -194,8 +194,9 @@ class TingkatanController extends Controller
      */
     public function exportPDF()
     {
+         $pdfSetting = \App\Models\PdfSetting::first();
         $tingkatans = Tingkatan::where('tingkatan_visible', true)->orderBy('id', 'asc')->get();
-        $pdf        = PDF::loadView('admin.tingkatanLomba.export_pdf', compact('tingkatans'));
+        $pdf        = PDF::loadView('admin.tingkatanLomba.export_pdf', compact('tingkatans', 'pdfSetting'));
 
         return $pdf->download('data-tingkatan-lomba.pdf');
     }

@@ -14,6 +14,7 @@ use App\Http\Controllers\LombaController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\AdminManagementController;
 use App\Http\Controllers\AdminKelolaLombaController;
+use App\Http\Controllers\SystemController;
 use App\Http\Controllers\TingkatanLombaController;
 use Illuminate\Support\Facades\Route;
 
@@ -232,12 +233,24 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
 
     Route::get('/master/keahlian', [AdminController::class, 'masterKeahlian'])->name('admin.master.keahlian');
 
-    // Settings
+    // Settings profile
     Route::get('/profile', [AdminController::class, 'profile'])->name('admin.profile');
     Route::get('/admin/profile/edit', [AdminController::class, 'editProfile'])->name('admin.editProfile');
     Route::put('/admin/profile/update', [AdminController::class, 'updateProfile'])->name('admin.updateProfile');
     Route::post('/admin/profile/change-password', [AdminController::class, 'changePassword'])->name('admin.changePassword');
     Route::post('/admin/profile/update-photo', [AdminController::class, 'updatePhoto'])->name('admin.updatePhoto');
+
+    Route::prefix('system')->name('admin.system.')->group(function () {
+        Route::get('/', [SystemController::class, 'system'])->name('index');
+        Route::post('/pdf-settings', [SystemController::class, 'updatePdfSettings'])->name('updatePdfSettings');
+
+        // Banner routes
+        Route::post('/banner', [SystemController::class, 'storeBanner'])->name('storeBanner');
+        Route::put('/banner/{id}', [SystemController::class, 'updateBanner'])->name('updateBanner');
+        Route::delete('/banner/{id}', [SystemController::class, 'deleteBanner'])->name('deleteBanner');
+        Route::get('/banner/{id}/edit', [SystemController::class, 'editBannerModal'])->name('editBannerModal');
+        Route::get('/banner/{id}/confirm', [SystemController::class, 'confirmDeleteBannerModal'])->name('confirmDeleteBannerModal');
+    });
 });
 
 // Dosen routes

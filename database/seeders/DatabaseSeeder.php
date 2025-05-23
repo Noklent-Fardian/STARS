@@ -30,6 +30,8 @@ class DatabaseSeeder extends Seeder
             PenghargaanSeeder::class,
             TambahLombaSeeder::class,
             VerifikasiSeeder::class,
+            PdfSettingSeeder::class,
+            BannerSeeder::class,
         ]);
     }
 }

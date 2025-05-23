@@ -210,12 +210,19 @@ class SemesterController extends Controller
      */
     public function exportPDF()
     {
+         $pdfSetting = \App\Models\PdfSetting::first();
         $semesters = Semester::where('semester_visible', true)
             ->orderBy('semester_tahun', 'desc')
             ->orderBy('semester_jenis', 'desc')
             ->get();
 
-        $pdf = PDF::loadView('admin.semester.export_pdf', compact('semesters'));
+        $pdf = PDF::loadView('admin.semester.export_pdf', compact('semesters', 'pdfSetting'))
+            ->setPaper('A4', 'landscape')
+            ->setOptions([
+                'defaultFont' => 'sans-serif',
+                'isHtml5ParserEnabled' => true,
+                'isRemoteEnabled' => true,
+            ]);
 
         return $pdf->download('data-semester.pdf');
     }

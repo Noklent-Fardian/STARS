@@ -196,8 +196,9 @@ class ProdiController extends Controller
      */
     public function exportPDF()
     {
+         $pdfSetting = \App\Models\PdfSetting::first();
         $prodis = Prodi::where('prodi_visible', true)->orderBy('prodi_nama', 'asc')->get();
-        $pdf    = PDF::loadView('admin.prodi.export_pdf', compact('prodis'));
+        $pdf    = PDF::loadView('admin.prodi.export_pdf', compact('prodis', 'pdfSetting'));
 
         return $pdf->download('data-prodi.pdf');
     }
