@@ -209,7 +209,8 @@ class AdminKelolaPrestasiController extends Controller
             ->where('penghargaan_visible', true)
             ->get();
 
-        $pdf = Pdf::loadView('admin.adminKelolaPrestasi.export_pdf', compact('prestasi'));
+        $pdf = Pdf::loadView('admin.adminKelolaPrestasi.export_pdf', compact('prestasi'))
+            ->setPaper('a4', 'landscape');;
         return $pdf->download('data_prestasi.pdf');
     }
 
