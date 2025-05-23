@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('penghargaan_file_sertifikat');
             $table->string('penghargaan_file_poster');
             $table->string('penghargaan_photo_kegiatan');
-            $table->integer('penghargaan_score');
+            $table->integer('penghargaan_score')->default(0);
             $table->boolean('penghargaan_visible');
             $table->timestamps();
         });

@@ -31,7 +31,6 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_file_sertifikat' => '',
                 'penghargaan_file_poster' => '',
                 'penghargaan_photo_kegiatan' => '',
-                'penghargaan_score' => 95,
                 'penghargaan_visible' => true,
             ],
             [
@@ -52,7 +51,6 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_file_sertifikat' => '',
                 'penghargaan_file_poster' => '',
                 'penghargaan_photo_kegiatan' => '',
-                'penghargaan_score' => 88,
                 'penghargaan_visible' => true,
             ],
         ]);
