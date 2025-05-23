@@ -1,4 +1,4 @@
-@empty($lomba)
+@empty($prestasi)
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-danger">
@@ -115,7 +115,7 @@
                         <label class="font-weight-bold">{{ $label }}</label>
                         <input type="{{ str_contains($field, 'tanggal') ? 'date' : 'text' }}" name="{{ $field }}"
                             id="{{ $field }}" class="form-control" placeholder="Masukkan {{ strtolower($label) }}"
-                            value="{{ old($field, $lomba->$field) }}" required>
+                            value="{{ old($field, $prestasi->$field) }}" required>
                         <small id="error-{{ $field }}" class="error-text form-text text-danger"></small>
                     </div>
                 @endforeach
@@ -174,7 +174,7 @@
             console.error('jQuery Validation plugin is not loaded');
         }
 
-        $("#form-edit-lomba").validate({
+        $("#form-edit-prestasi").validate({
             rules: {
                 mahasiswa_id: { required: true },
                 lomba_id: { required: true },

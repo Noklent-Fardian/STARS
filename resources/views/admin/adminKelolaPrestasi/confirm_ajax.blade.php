@@ -1,4 +1,4 @@
-@empty($lomba)
+@empty($prestasi)
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-danger">
@@ -28,7 +28,7 @@
         </div>
     </div>
 @else
-    <form action="{{ route('admin.adminKelolaPrestasi.destroyAjax', $lomba->id) }}" method="POST" id="form-delete">
+    <form action="{{ route('admin.adminKelolaPrestasi.destroyAjax', $prestasi->id) }}" method="POST" id="form-delete">
         @csrf
         @method('DELETE')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
@@ -226,8 +226,8 @@
                                         timer: 1500,
                                         showConfirmButton: false
                                     });
-                                    if (typeof dataLomba !== 'undefined') {
-                                        dataLomba.ajax.reload();
+                                    if (typeof dataPrestasi !== 'undefined') {
+                                        dataPrestasi.ajax.reload();
                                     }
                                 } else {
                                     Swal.fire({
