@@ -17,8 +17,6 @@ class PdfSettingSeeder extends Seeder
             [
                 'pdf_instansi1' => 'STARS - Student Achievement Record System',
                 'pdf_instansi2' => 'POLITEKNIK NEGERI MALANG',
-                'pdf_logo_kiri' => 'pdf_logos/poltek100.png',
-                'pdf_logo_kanan' => 'pdf_logos/logo100.png',
                 'pdf_alamat' => 'Jl. Soekarno-Hatta No. 9 Malang 65141',
                 'pdf_telepon' => '(0341) 404424',
                 'pdf_fax' => '(0341) 404420',

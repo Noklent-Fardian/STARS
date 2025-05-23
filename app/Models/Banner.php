@@ -27,6 +27,7 @@ class Banner extends Model
         'banner_gambar',
     ];
     
+    
     /**
      * Indicates if the model should be timestamped.
      *

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Dosen;
@@ -31,7 +32,6 @@ class DosenManagementController extends Controller
 
         $prodis = Prodi::where('prodi_visible', true)->get();
         return view('admin.dosenManagement.index', compact('page', 'prodis'));
-
     }
 
     /**
@@ -71,16 +71,16 @@ class DosenManagementController extends Controller
                     });
                 }
             })->addColumn('aksi', function ($dosen) {
-            $view = '<a href="' . url('/admin/dosenManagement/show/' . $dosen->id) . '" class="btn btn-sm btn-info mr-1"><i class="fas fa-eye"></i> Detail</a>';
-            $edit = '<button onclick="modalAction(\'' . route('admin.dosenManagement.editAjax', $dosen->id) . '\')" class="btn btn-sm btn-warning mr-2">
+                $view = '<a href="' . url('/admin/dosenManagement/show/' . $dosen->id) . '" class="btn btn-sm btn-info mr-1"><i class="fas fa-eye"></i> Detail</a>';
+                $edit = '<button onclick="modalAction(\'' . route('admin.dosenManagement.editAjax', $dosen->id) . '\')" class="btn btn-sm btn-warning mr-2">
                             <i class="fas fa-edit mr-1"></i> Edit
                         </button>';
-            $delete = '<button onclick="modalAction(\'' . route('admin.dosenManagement.confirmAjax', $dosen->id) . '\')" class="btn btn-sm btn-danger mr-2">
+                $delete = '<button onclick="modalAction(\'' . route('admin.dosenManagement.confirmAjax', $dosen->id) . '\')" class="btn btn-sm btn-danger mr-2">
                             <i class="fas fa-trash-alt mr-1"></i> Hapus
                         </button>';
 
-            return $view . $edit . $delete;
-        })
+                return $view . $edit . $delete;
+            })
             ->editColumn('dosen_gender', function ($dosen) {
                 return $dosen->dosen_gender == 'Laki-laki' ? 'Laki-laki' : 'Perempuan';
             })
@@ -390,12 +390,14 @@ class DosenManagementController extends Controller
      */
     public function exportPDF()
     {
+        $pdfSetting = \App\Models\PdfSetting::first();
         $dosens = Dosen::with(['user', 'prodi'])
             ->where('dosen_visible', true)
             ->orderBy('dosen_nama', 'asc')
             ->get();
 
-        $pdf = PDF::loadView('admin.dosenManagement.export_pdf', compact('dosens'));
+        $pdf = PDF::loadView('admin.dosenManagement.export_pdf', compact('dosens', 'pdfSetting'))
+            ->setPaper('A4', 'landscape');
 
         return $pdf->download('data-dosen.pdf');
     }
@@ -532,9 +534,9 @@ class DosenManagementController extends Controller
         return view('admin.dosenManagement.import');
     }
 
-/**
- * Import data from Excel
- */
+    /**
+     * Import data from Excel
+     */
     public function importExcel(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -561,8 +563,8 @@ class DosenManagementController extends Controller
         $insertData      = [];
         $row             = 1;
 
-                             // Anda mungkin perlu mendapatkan prodi_id default dari suatu tempat
-                             // Misalnya dari config atau request tambahan
+        // Anda mungkin perlu mendapatkan prodi_id default dari suatu tempat
+        // Misalnya dari config atau request tambahan
         $defaultProdiId = 1; // Ganti dengan logika untuk mendapatkan prodi_id yang sesuai
 
         DB::beginTransaction();
@@ -575,7 +577,7 @@ class DosenManagementController extends Controller
                     continue; // Skip header row
                 }
 
-                                                             // Validate required fields
+                // Validate required fields
                 $requiredFields = ['A', 'B', 'C', 'D', 'L']; // Kolom A-D dan L (prodi_id)
                 foreach ($requiredFields as $col) {
                     if (empty($rowData[$col])) {
@@ -666,9 +668,9 @@ class DosenManagementController extends Controller
         }
     }
 
-/**
- * Generate Excel template for import
- */
+    /**
+     * Generate Excel template for import
+     */
     public function generateTemplate()
     {
         $spreadsheet = new Spreadsheet();
@@ -737,7 +739,7 @@ class DosenManagementController extends Controller
         return response()->download($path, 'template_dosen.xlsx');
     }
 
-// Helper function untuk mendapatkan nama kolom
+    // Helper function untuk mendapatkan nama kolom
     private function getColumnName($column)
     {
         $headers = [
@@ -757,5 +759,4 @@ class DosenManagementController extends Controller
 
         return $headers[$column] ?? $column;
     }
-
 }
