@@ -10,6 +10,7 @@ use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\TingkatanController;
 use App\Http\Controllers\BidangKeahlianController;
 use App\Http\Controllers\SemesterController;
+use App\Http\Controllers\DosenManagementController;
 use App\Http\Controllers\LombaController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\AdminManagementController;
@@ -63,6 +64,31 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::post('/import_excel', [AdminManagementController::class, 'importExcel'])->name('importExcel');
         Route::get('/generate_template', [AdminManagementController::class, 'generateTemplate'])->name('generateTemplate');
     });
+
+    // Dosen Management Routes
+    Route::prefix('dosenManagement')->name('admin.dosenManagement.')->group(function () {
+        Route::get('/', [DosenManagementController::class, 'index'])->name('index');
+        Route::get('/list', [DosenManagementController::class, 'getDosenList'])->name('list');
+        Route::get('/show/{id}', [DosenManagementController::class, 'show'])->name('show');
+
+        // AJAX routes
+        Route::get('/create_ajax', [DosenManagementController::class, 'createAjax'])->name('createAjax');
+        Route::post('/ajax', [DosenManagementController::class, 'storeAjax'])->name('storeAjax');
+        Route::get('/{id}/edit_ajax', [DosenManagementController::class, 'editAjax'])->name('editAjax');
+        Route::put('/{id}/update_ajax', [DosenManagementController::class, 'updateAjax'])->name('updateAjax');
+        Route::get('/{id}/confirm_ajax', [DosenManagementController::class, 'confirmAjax'])->name('confirmAjax');
+        Route::delete('/{id}/delete_ajax', [DosenManagementController::class, 'destroyAjax'])->name('destroyAjax');
+
+        // Export routes
+        Route::get('/export_pdf', [DosenManagementController::class, 'exportPDF'])->name('exportPDF');
+        Route::get('/export_excel', [DosenManagementController::class, 'exportExcel'])->name('exportExcel');
+
+        // Import routes
+        Route::get('/import_form', [DosenManagementController::class, 'importForm'])->name('importForm');
+        Route::post('/import_excel', [DosenManagementController::class, 'importExcel'])->name('importExcel');
+        Route::get('/generate_template', [DosenManagementController::class, 'generateTemplate'])->name('generateTemplate');
+    });
+
 
     // Manajemen Pengguna
     Route::get('/mahasiswa', [AdminController::class, 'mahasiswaIndex'])->name('admin.mahasiswa.index');

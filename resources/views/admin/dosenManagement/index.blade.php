@@ -1,14 +1,16 @@
 @extends('layouts.template')
 
-@section('title', 'Data Bidang Keahlian | STARS')
-@section('page-title', 'Data Bidang Keahlian')
+@section('title', 'Data Dosen | STARS')
+
+@section('page-title', 'Data Dosen')
+
 @section('breadcrumb')
 @endsection
 
 @section('content')
     <div class="card shadow-sm rounded-lg overflow-hidden">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-white">Daftar Bidang Keahlian</h6>
+            <h6 class="m-0 font-weight-bold text-white">Daftar Dosen</h6>
         </div>
         <div class="card-body">
             @if (session('success'))
@@ -31,19 +33,18 @@
             <div class="row mb-3">
                 <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap">
                     <div class="btn-group-responsive">
-                        <button onclick="modalAction('{{ route('admin.master.bidangKeahlian.createAjax') }}')"
+                        <button onclick="modalAction('{{ route('admin.dosenManagement.createAjax') }}')"
                             class="btn btn-primary mb-2 mb-sm-0 mr-2">
-                            <i class="fas fa-plus-circle mr-1"></i> Tambah Bidang Keahlian
+                            <i class="fas fa-plus-circle mr-1"></i> Tambah Dosen
                         </button>
-                        <a href="{{ route('admin.master.bidangKeahlian.exportExcel') }}"
+                        <a href="{{ route('admin.dosenManagement.exportExcel') }}"
                             class="btn btn-success mb-2 mb-sm-0 mr-2">
                             <i class="fas fa-file-excel mr-1"></i> Export Excel
                         </a>
-                        <a href="{{ route('admin.master.bidangKeahlian.exportPDF') }}"
-                            class="btn btn-warning mb-2 mb-sm-0 mr-2">
+                        <a href="{{ route('admin.dosenManagement.exportPDF') }}" class="btn btn-warning mb-2 mb-sm-0 mr-2">
                             <i class="fas fa-file-pdf mr-1"></i> Export PDF
                         </a>
-                        <button onclick="modalAction('{{ route('admin.master.bidangKeahlian.importForm') }}')"
+                        <button onclick="modalAction('{{ route('admin.dosenManagement.importForm') }}')"
                             class="btn btn-info mb-2 mb-sm-0">
                             <i class="fas fa-file-import mr-1"></i> Import Excel
                         </button>
@@ -52,22 +53,25 @@
                 <div class="ml-auto">
                     <div class="form-group has-search mb-0 ml-auto" style="max-width: 300px;">
                         <span class="fa fa-search form-control-feedback"></span>
-                        <input type="text" class="form-control" id="searchBox" placeholder="Cari bidang keahlian...">
+                        <input type="text" class="form-control" id="searchBox" placeholder="Cari dosen...">
                     </div>
                 </div>
             </div>
 
             <div class="table-responsive">
-                <table class="table table-hover table-striped" id="table_keahlian">
+                <table class="table table-hover table-striped" id="table_dosen">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nama Keahlian</th>
+                            <th>Nama Dosen</th>
+                            <th>NIP</th>
+                            <th>Username</th>
+                            <th>Program Studi</th>
                             <th class="text-center text-nowrap">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- DataTables will populate --}}
+                        <!-- DataTables akan mengisi ini -->
                     </tbody>
                 </table>
             </div>
@@ -96,11 +100,11 @@
             color: var(--light-text);
         }
 
-        #table_keahlian tbody tr {
+        #table_dosen tbody tr {
             transition: all 0.2s ease;
         }
 
-        #table_keahlian tbody tr:hover {
+        #table_dosen tbody tr:hover {
             background-color: rgba(var(--primary-color-rgb), 0.05);
         }
 
@@ -173,39 +177,51 @@
             });
         }
 
-        var dataKeahlian;
-        
+        var dataDosen;
         $(document).ready(function() {
-            dataKeahlian = $('#table_keahlian').DataTable({
+            dataDosen = $('#table_dosen').DataTable({
                 serverSide: true,
                 processing: true,
                 ajax: {
-                    url: "{{ route('admin.master.bidangKeahlian.list') }}",
+                    url: "{{ route('admin.dosenManagement.list') }}",
+                    dataType: "json",
                     type: "GET"
                 },
                 columns: [{
-                        data: 'id',
-                        className: 'text-center',
-                        width: '5%'
+                        data: "id",
+                        className: "text-center",
+                        width: "5%"
                     },
                     {
-                        data: 'keahlian_nama',
-                        width: '65%'
+                        data: "dosen_nama",
+                        width: "25%"
                     },
                     {
-                        data: 'aksi',
-                        className: 'text-center',
+                        data: "dosen_nip",
+                        width: "20%"
+                    },
+                    {
+                        data: "username",
+                        width: "15%"
+                    },
+                    {
+                        data: "prodi_nama",
+                        width: "15%"
+                    },
+                    {
+                        data: "aksi",
+                        className: "text-center text-nowrap",
                         orderable: false,
                         searchable: false,
-                        width: '30%'
-                    },
+                        width: "20%"
+                    }
                 ],
                 language: {
                     processing: '<div class="spinner-border text-primary" role="status"></div>',
                     search: "",
                     searchPlaceholder: "Cari...",
                     lengthMenu: "Tampilkan _MENU_ data per halaman",
-                    zeroRecords: "Tidak ada data ditemukan",
+                    zeroRecords: "Tidak ada data yang tersedia",
                     info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
                     infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
                     infoFiltered: "(difilter dari _MAX_ total data)",
@@ -218,11 +234,11 @@
                 },
                 dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
                     "<'row'<'col-sm-12'tr>>" +
-                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
             });
 
             $('#searchBox').on('keyup', function() {
-                dataKeahlian.search(this.value).draw();
+                dataDosen.search(this.value).draw();
             });
 
             $('.dataTables_filter').hide();
