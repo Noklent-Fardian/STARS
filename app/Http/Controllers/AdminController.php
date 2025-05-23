@@ -56,7 +56,7 @@ class AdminController extends Controller
 
     public function prestasiIndex()
     {
-        return view('admin.prestasi.index');
+        return view('admin.adminKelolaPrestasi.index');
     }
 
     public function prestasiReport()

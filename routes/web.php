@@ -14,6 +14,7 @@ use App\Http\Controllers\DosenManagementController;
 use App\Http\Controllers\LombaController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\AdminManagementController;
+use App\Http\Controllers\AdminKelolaPrestasiController;
 use App\Http\Controllers\AdminKelolaLombaController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\TingkatanLombaController;
@@ -101,6 +102,31 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::get('/prestasi/non-akademik', [AdminController::class, 'prestasiNonAkademik'])->name('admin.prestasi.non-akademik');
     Route::get('/prestasi', [AdminController::class, 'prestasiIndex'])->name('admin.prestasi.index');
     Route::get('/prestasi/report', [AdminController::class, 'prestasiReport'])->name('admin.prestasi.report');
+
+    // Admin Kelola Prestasi
+    Route::prefix('adminKelolaPrestasi')->name('admin.adminKelolaPrestasi.')->group(function () {
+        Route::get('/', [AdminKelolaPrestasiController::class, 'index'])->name('index');
+        Route::get('/list', [AdminKelolaPrestasiController::class, 'getPrestasiList'])->name('list');
+        Route::get('/show/{id}', [AdminKelolaPrestasiController::class, 'show'])->name('show');
+
+        // AJAX routes
+        Route::get('/create_ajax', [AdminKelolaPrestasiController::class, 'createAjax'])->name('createAjax');
+        Route::post('/ajax', [AdminKelolaPrestasiController::class, 'storeAjax'])->name('storeAjax');
+        Route::get('/{id}/edit_ajax', [AdminKelolaPrestasiController::class, 'editAjax'])->name('editAjax');
+        Route::put('/{id}/update_ajax', [AdminKelolaPrestasiController::class, 'updateAjax'])->name('updateAjax');
+        Route::get('/{id}/confirm_ajax', [AdminKelolaPrestasiController::class, 'confirmAjax'])->name('confirmAjax');
+        Route::delete('/{id}/delete_ajax', [AdminKelolaPrestasiController::class, 'destroyAjax'])->name('destroyAjax');
+
+        // Export routes
+        Route::get('/export_pdf', [AdminKelolaPrestasiController::class, 'exportPDF'])->name('exportPDF');
+        Route::get('/export_excel', [AdminKelolaPrestasiController::class, 'exportExcel'])->name('exportExcel');
+
+        // Import routes
+        Route::get('/import_form', [AdminKelolaPrestasiController::class, 'importForm'])->name('importForm');
+        Route::post('/import_excel', [AdminKelolaPrestasiController::class, 'importExcel'])->name('importExcel');
+        Route::get('/generate_template', [AdminKelolaPrestasiController::class, 'generateTemplate'])->name('generateTemplate');
+    });
+
 
     // Admin Kelola Lomba
     Route::prefix('adminKelolaLomba')->name('admin.adminKelolaLomba.')->group(function () {
