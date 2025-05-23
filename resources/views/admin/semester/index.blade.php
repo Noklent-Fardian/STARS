@@ -67,7 +67,7 @@
                             <th>Tahun</th>
                             <th>Jenis</th>
                             <th>Status</th>
-                            <th class="text-center">Aksi</th>
+                            <th class="text-center text-nowrap">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -226,7 +226,7 @@
                     },
                     {
                         data: "aksi",
-                        className: "text-center",
+                        className: "text-center text-nowrap",
                         orderable: false,
                         searchable: false,
                         width: "25%"

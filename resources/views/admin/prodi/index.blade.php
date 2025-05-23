@@ -66,7 +66,7 @@
                             <th>ID</th>
                             <th>Kode Prodi</th>
                             <th>Nama Prodi</th>
-                            <th class="text-center">Aksi</th>
+                            <th class="text-center text-nowrap">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>

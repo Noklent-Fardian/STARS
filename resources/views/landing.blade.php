@@ -78,7 +78,8 @@
                                     class="bi bi-play-circle"></i><span>Watch Video</span></a>
                         </div>
                     </div>
-                    <div class="col-lg-6 order-1 order-lg-2 hero-img text-center d-flex align-items-center justify-content-center">
+                    <div
+                        class="col-lg-6 order-1 order-lg-2 hero-img text-center d-flex align-items-center justify-content-center">
                         <img src="{{ asset('img/logo.svg') }}" class="img-fluid animated mx-auto d-block" alt=""
                             style="width: 61%;">
                     </div>
@@ -116,31 +117,67 @@
                         }
                         </script>
                     <div class="swiper-wrapper align-items-center">
-                        <div class="swiper-slide"><img src="{{ asset('img/clients/pimnas.png') }}" class="img-fluid"
-                                target="_blank" onClick="window.open('https://pimnas37.unair.ac.id/');" alt="">
-                        </div>
-                        <div class="swiper-slide"><img src="{{ asset('img/clients/kmipn.png') }}" class="img-fluid"
-                                target="_blank" onClick="window.open('https://www.instagram.com/kmipn2024_pnj/');"
-                                alt=""></div>
-                        <div class="swiper-slide"><img src="{{ asset('img/clients/codejam.png') }}" class="img-fluid"
-                                target="_blank" onClick="window.open('https://en.wikipedia.org/wiki/Google_Code_Jam');"
-                                alt=""></div>
-                        <div class="swiper-slide"><img src="{{ asset('img/clients/gemastik.png') }}" class="img-fluid"
-                                target="_blank" onClick="window.open('https://gemastik.kemdikbud.go.id/');"
-                                alt=""></div>
-                        <div class="swiper-slide"><img src="{{ asset('img/clients/playit.png') }}" class="img-fluid"
-                                target="_blank" onClick="window.open('https://jti.polinema.ac.id/playit2024/');"
-                                alt=""></div>
-                        <div class="swiper-slide"><img src="{{ asset('img/clients/pkm.png') }}" class="img-fluid"
-                                target="_blank"
-                                onClick="window.open('https://lldikti6.kemdikbud.go.id/program-kreativitas-mahasiswa-pkm-5-bidang/');"
-                                alt=""></div>
-                        <div class="swiper-slide"><img src="{{ asset('img/clients/porseni.png') }}"
-                                class="img-fluid" target="_blank"
-                                onClick="window.open('http://porseni.polinema.ac.id/');" alt=""></div>
-                        <div class="swiper-slide"><img src="{{ asset('img/clients/worldskill.png') }}"
-                                class="img-fluid" target="_blank" onClick="window.open('https://worldskills.org/');"
-                                alt=""></div>
+                        @forelse($banners as $banner)
+                            <div class="swiper-slide">
+                                <a href="{{ $banner->banner_link }}" target="_blank" rel="noopener noreferrer">
+                                    <img src="{{ asset('storage/' . $banner->banner_gambar) }}" class="img-fluid"
+                                        alt="{{ $banner->banner_nama }}">
+                                </a>
+                            </div>
+                        @empty
+                            <!-- Fallback to default competition links if no banners in database -->
+                            <div class="swiper-slide">
+                                <a href="https://pimnas37.unair.ac.id/" target="_blank" rel="noopener noreferrer">
+                                    <img src="{{ asset('img/clients/pimnas.png') }}" class="img-fluid" alt="PIMNAS">
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a href="https://www.instagram.com/kmipn2024_pnj/" target="_blank"
+                                    rel="noopener noreferrer">
+                                    <img src="{{ asset('img/clients/kmipn.png') }}" class="img-fluid"
+                                        alt="KMIPN">
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a href="https://en.wikipedia.org/wiki/Google_Code_Jam" target="_blank"
+                                    rel="noopener noreferrer">
+                                    <img src="{{ asset('img/clients/codejam.png') }}" class="img-fluid"
+                                        alt="Google Code Jam">
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a href="https://gemastik.kemdikbud.go.id/" target="_blank"
+                                    rel="noopener noreferrer">
+                                    <img src="{{ asset('img/clients/gemastik.png') }}" class="img-fluid"
+                                        alt="GEMASTIK">
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a href="https://jti.polinema.ac.id/playit2024/" target="_blank"
+                                    rel="noopener noreferrer">
+                                    <img src="{{ asset('img/clients/playit.png') }}" class="img-fluid"
+                                        alt="PLAYIT">
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a href="https://lldikti6.kemdikbud.go.id/program-kreativitas-mahasiswa-pkm-5-bidang/"
+                                    target="_blank" rel="noopener noreferrer">
+                                    <img src="{{ asset('img/clients/pkm.png') }}" class="img-fluid" alt="PKM">
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a href="http://porseni.polinema.ac.id/" target="_blank" rel="noopener noreferrer">
+                                    <img src="{{ asset('img/clients/porseni.png') }}" class="img-fluid"
+                                        alt="PORSENI">
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a href="https://worldskills.org/" target="_blank" rel="noopener noreferrer">
+                                    <img src="{{ asset('img/clients/worldskill.png') }}" class="img-fluid"
+                                        alt="World Skills">
+                                </a>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
 
@@ -161,7 +198,8 @@
                         <div class="about-content-box">
                             <p class="lead-text">
                                 STARS atau Student Achievement Record Sistem ini dirancang untuk mencatat
-                                dan mengelola informasi prestasi mahasiswa Jurusan Teknologi Informasi Polinema secara terpusat dan terstruktur.
+                                dan mengelola informasi prestasi mahasiswa Jurusan Teknologi Informasi Polinema secara
+                                terpusat dan terstruktur.
                             </p>
 
                             <div class="team-section">

@@ -71,7 +71,7 @@
                                         <i class="fas fa-venus-mars text-warning"></i>
                                         <span>Jenis Kelamin</span>
                                     </div>
-                                    <div class="info-value">{{ $admin->admin_gender == 'L' ? 'Laki-laki' : 'Perempuan' }}</div>
+                                    <div class="info-value">{{ $admin->admin_gender == 'Laki-laki' ? 'Laki-laki' : 'Perempuan' }}</div>
                                 </div>
                                 <div class="user-info-item">
                                     <div class="info-label">

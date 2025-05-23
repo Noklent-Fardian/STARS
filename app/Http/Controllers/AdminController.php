@@ -29,7 +29,7 @@ class AdminController extends Controller
 
     public function dosenIndex()
     {
-        return view('admin.dosen.index');
+        return view('admin.dosenManagement.index');
     }
 
 

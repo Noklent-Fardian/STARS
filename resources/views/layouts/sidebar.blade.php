@@ -136,7 +136,13 @@
         <li class="nav-item {{ request()->routeIs('admin.profile') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.profile') }}">
                 <i class="fas fa-fw fa-user"></i>
-                <span>Profil Saya</span>
+                <span>Profil</span>
+            </a>
+        </li>
+        <li class="nav-item {{ request()->routeIs('admin.system.index') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.system.index') }}">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>System</span>
             </a>
         </li>
     @endif

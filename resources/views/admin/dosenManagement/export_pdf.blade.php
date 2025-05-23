@@ -48,22 +48,29 @@
             </td>
         </tr>
     </table>
-    <div class="document-title">Laporan Data Peringkat Lomba</div>
+
+    <div class="document-title">Laporan Data Dosen</div>
 
     <table class="data-table">
         <thead>
             <tr>
-                <th class="text-center" width="5%" style="text-align: center;">No</th>
-                <th class="text-center" width="50%" style="text-align: center;">Nama Peringkat</th>
-                <th class="text-center" width="45%" style="text-align: center;">Bobot</th>
+                <th class="text-center" width="5%">No</th>
+                <th class="text-center" width="15%">NIDN/NIP</th>
+                <th class="text-center" width="30%">Nama Dosen</th>
+                <th class="text-center" width="20%">Program Studi</th>
+                <th class="text-center" width="15%">Status</th>
+                <th class="text-center" width="15%">Telepon</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($peringkats as $peringkat)
+            @foreach ($dosens as $dosen)
                 <tr>
                     <td class="text-center">{{ $loop->iteration }}</td>
-                    <td>{{ $peringkat->peringkat_nama }}</td>
-                    <td class="text-center">{{ $peringkat->peringkat_bobot }}</td>
+                    <td>{{ $dosen->dosen_nip }}</td>
+                    <td>{{ $dosen->dosen_nama }}</td>
+                    <td>{{ $dosen->prodi->prodi_nama ?? '-' }}</td>
+                    <td class="text-center">{{ $dosen->dosen_visible ? 'Aktif' : 'Non-Aktif' }}</td>
+                    <td>{{ $dosen->dosen_nomor_telepon ?? '-' }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -74,7 +81,7 @@
     </div>
 
     <div class="page-number">
-        Halaman 1
+        Halaman <span class="page-number"></span>
     </div>
 
     <div class="watermark">

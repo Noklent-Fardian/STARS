@@ -10,11 +10,13 @@ use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\TingkatanController;
 use App\Http\Controllers\BidangKeahlianController;
 use App\Http\Controllers\SemesterController;
+use App\Http\Controllers\DosenManagementController;
 use App\Http\Controllers\LombaController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\AdminManagementController;
 use App\Http\Controllers\AdminKelolaPrestasiController;
 use App\Http\Controllers\AdminKelolaLombaController;
+use App\Http\Controllers\SystemController;
 use App\Http\Controllers\TingkatanLombaController;
 use Illuminate\Support\Facades\Route;
 
@@ -63,6 +65,31 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::post('/import_excel', [AdminManagementController::class, 'importExcel'])->name('importExcel');
         Route::get('/generate_template', [AdminManagementController::class, 'generateTemplate'])->name('generateTemplate');
     });
+
+    // Dosen Management Routes
+    Route::prefix('dosenManagement')->name('admin.dosenManagement.')->group(function () {
+        Route::get('/', [DosenManagementController::class, 'index'])->name('index');
+        Route::get('/list', [DosenManagementController::class, 'getDosenList'])->name('list');
+        Route::get('/show/{id}', [DosenManagementController::class, 'show'])->name('show');
+
+        // AJAX routes
+        Route::get('/create_ajax', [DosenManagementController::class, 'createAjax'])->name('createAjax');
+        Route::post('/ajax', [DosenManagementController::class, 'storeAjax'])->name('storeAjax');
+        Route::get('/{id}/edit_ajax', [DosenManagementController::class, 'editAjax'])->name('editAjax');
+        Route::put('/{id}/update_ajax', [DosenManagementController::class, 'updateAjax'])->name('updateAjax');
+        Route::get('/{id}/confirm_ajax', [DosenManagementController::class, 'confirmAjax'])->name('confirmAjax');
+        Route::delete('/{id}/delete_ajax', [DosenManagementController::class, 'destroyAjax'])->name('destroyAjax');
+
+        // Export routes
+        Route::get('/export_pdf', [DosenManagementController::class, 'exportPDF'])->name('exportPDF');
+        Route::get('/export_excel', [DosenManagementController::class, 'exportExcel'])->name('exportExcel');
+
+        // Import routes
+        Route::get('/import_form', [DosenManagementController::class, 'importForm'])->name('importForm');
+        Route::post('/import_excel', [DosenManagementController::class, 'importExcel'])->name('importExcel');
+        Route::get('/generate_template', [DosenManagementController::class, 'generateTemplate'])->name('generateTemplate');
+    });
+
 
     // Manajemen Pengguna
     Route::get('/mahasiswa', [AdminController::class, 'mahasiswaIndex'])->name('admin.mahasiswa.index');
@@ -258,12 +285,24 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
 
     Route::get('/master/keahlian', [AdminController::class, 'masterKeahlian'])->name('admin.master.keahlian');
 
-    // Settings
+    // Settings profile
     Route::get('/profile', [AdminController::class, 'profile'])->name('admin.profile');
     Route::get('/admin/profile/edit', [AdminController::class, 'editProfile'])->name('admin.editProfile');
     Route::put('/admin/profile/update', [AdminController::class, 'updateProfile'])->name('admin.updateProfile');
     Route::post('/admin/profile/change-password', [AdminController::class, 'changePassword'])->name('admin.changePassword');
     Route::post('/admin/profile/update-photo', [AdminController::class, 'updatePhoto'])->name('admin.updatePhoto');
+
+    Route::prefix('system')->name('admin.system.')->group(function () {
+        Route::get('/', [SystemController::class, 'system'])->name('index');
+        Route::post('/pdf-settings', [SystemController::class, 'updatePdfSettings'])->name('updatePdfSettings');
+
+        // Banner routes
+        Route::post('/banner', [SystemController::class, 'storeBanner'])->name('storeBanner');
+        Route::put('/banner/{id}', [SystemController::class, 'updateBanner'])->name('updateBanner');
+        Route::delete('/banner/{id}', [SystemController::class, 'deleteBanner'])->name('deleteBanner');
+        Route::get('/banner/{id}/edit', [SystemController::class, 'editBannerModal'])->name('editBannerModal');
+        Route::get('/banner/{id}/confirm', [SystemController::class, 'confirmDeleteBannerModal'])->name('confirmDeleteBannerModal');
+    });
 });
 
 // Dosen routes

@@ -222,12 +222,13 @@ class AdminKelolaLombaController extends Controller
 
     public function exportPDF()
 {
+     $pdfSetting = \App\Models\PdfSetting::first();
     $lombas = AdminKelolaLomba::with(['keahlian', 'tingkatan', 'semester'])
         ->where('lomba_visible', true)
         ->orderBy('id', 'asc')
         ->get();
 
-    $pdf = PDF::loadView('admin.adminKelolaLomba.export_pdf', compact('lombas'))
+    $pdf = PDF::loadView('admin.adminKelolaLomba.export_pdf', compact('lombas', 'pdfSetting'))
         ->setPaper('a3', 'landscape');
 
     return $pdf->download('data-lomba.pdf');

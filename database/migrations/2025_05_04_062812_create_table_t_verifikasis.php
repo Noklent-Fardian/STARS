@@ -21,9 +21,10 @@ return new class extends Migration
             $table->enum('verifikasi_dosen_status', ['Menunggu', 'Diterima', 'Ditolak'])->default('Menunggu');
             $table->string('verifikasi_admin_keterangan')->nullable();
             $table->string('verifikasi_dosen_keterangan')->nullable();
-            $table->string('verifikasi_admin_tanggal')->nullable();
-            $table->string('verifikasi_dosen_tanggal')->nullable();
+            $table->dateTime('verifikasi_admin_tanggal')->nullable();
+            $table->dateTime('verifikasi_dosen_tanggal')->nullable();
             $table->boolean('verifikasi_visible')->default(true);
+            $table->dateTime('verifikasi_verified_at')->nullable();
             $table->timestamps();
         });
     }
