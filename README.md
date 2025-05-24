@@ -58,6 +58,10 @@ Untuk menjalankan proyek ini secara lokal, ikuti langkah-langkah instalasi berik
 # Generate application key
  php artisan key:generate
 
+# Buat Symbolic link storage 
+  php artisan storage:link
+
+
 # Jalankan migrasi database
  php artisan migrate --seed
 
