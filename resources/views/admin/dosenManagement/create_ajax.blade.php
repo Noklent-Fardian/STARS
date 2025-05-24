@@ -1,234 +1,216 @@
-<form action="{{ route('admin.dosenManagement.storeAjax') }}" method="POST" id="form-tambah" enctype="multipart/form-data">
-    @csrf
-    <div id="modal-master" class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-primary">
-                <h5 class="modal-title text-white font-weight-bold">
-                    <i class="fas fa-plus-circle mr-2"></i> Tambah Dosen
-                </h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body p-4">
-                <!-- Basic Information Section -->
-                <h5 class="font-weight-bold mb-3">Informasi Dasar</h5>
-
-                <div class="form-group">
-                    <label class="font-weight-bold">Nama Dosen</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-primary text-white"><i class="fas fa-user"></i></span>
-                        </div>
-                        <input type="text" name="dosen_nama" id="dosen_nama" class="form-control"
-                            placeholder="Masukkan nama dosen" required>
-                    </div>
-                    <small id="error-dosen_nama" class="error-text form-text text-danger"></small>
-                </div>
-
-                <div class="form-group">
-                    <label class="font-weight-bold">NIP</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-info text-white"><i class="fas fa-id-card"></i></span>
-                        </div>
-                        <input type="text" name="dosen_nip" id="dosen_nip" class="form-control"
-                            placeholder="Masukkan NIP dosen" required>
-                    </div>
-                    <small id="error-dosen_nip" class="error-text form-text text-danger"></small>
-                </div>
-
-                <div class="form-group">
-                    <label class="font-weight-bold">Status</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-secondary text-white"><i
-                                    class="fas fa-info-circle"></i></span>
-                        </div>
-                        <select name="dosen_status" id="dosen_status" class="form-control" required>
-                            <option value="">Pilih Status</option>
-                            <option value="Aktif">Aktif</option>
-                            <option value="Cuti">Cuti</option>
-                            <option value="Resign">Resign</option>
-                            <option value="Pensiun">Pensiun</option>
-                        </select>
-                    </div>
-                    <small id="error-dosen_status" class="error-text form-text text-danger"></small>
-                </div>
-
-                <div class="form-group">
-                    <label class="font-weight-bold">Jenis Kelamin</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-info text-white"><i class="fas fa-venus-mars"></i></span>
-                        </div>
-                        <select name="dosen_gender" id="dosen_gender" class="form-control" required>
-                            <option value="">Pilih Jenis Kelamin</option>
-                            <option value="Laki-laki">Laki-laki</option>
-                            <option value="Perempuan">Perempuan</option>
-                        </select>
-                    </div>
-                    <small id="error-dosen_gender" class="error-text form-text text-danger"></small>
-                </div>
-
-                <div class="form-group">
-                    <label class="font-weight-bold">Nomor Telepon</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-success text-white"><i class="fas fa-phone"></i></span>
-                        </div>
-                        <input type="text" name="dosen_nomor_telepon" id="dosen_nomor_telepon" class="form-control"
-                            placeholder="Masukkan nomor telepon" required>
-                    </div>
-                    <small id="error-dosen_nomor_telepon" class="error-text form-text text-danger"></small>
-                </div>
-
-                <div class="form-group">
-                    <label class="font-weight-bold">Agama</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-warning text-white"><i class="fas fa-pray"></i></span>
-                        </div>
-                        <input type="text" name="dosen_agama" id="dosen_agama" class="form-control"
-                            placeholder="Masukkan agama">
-                    </div>
-                    <small id="error-dosen_agama" class="error-text form-text text-danger"></small>
-                </div>
-
-                <!-- Address Information Section -->
-                <h5 class="font-weight-bold mb-3 mt-4">Informasi Alamat</h5>
-
-                <div class="form-group">
-                    <label class="font-weight-bold">Provinsi</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-info text-white"><i
-                                    class="fas fa-map-marker-alt"></i></span>
-                        </div>
-                        <input type="text" name="dosen_provinsi" id="dosen_provinsi" class="form-control"
-                            placeholder="Masukkan provinsi">
-                    </div>
-                    <small id="error-dosen_provinsi" class="error-text form-text text-danger"></small>
-                </div>
-
-                <div class="form-group">
-                    <label class="font-weight-bold">Kota/Kabupaten</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-info text-white"><i
-                                    class="fas fa-map-marker-alt"></i></span>
-                        </div>
-                        <input type="text" name="dosen_kota" id="dosen_kota" class="form-control"
-                            placeholder="Masukkan kota/kabupaten">
-                    </div>
-                    <small id="error-dosen_kota" class="error-text form-text text-danger"></small>
-                </div>
-
-                <div class="form-group">
-                    <label class="font-weight-bold">Kecamatan</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-info text-white"><i
-                                    class="fas fa-map-marker-alt"></i></span>
-                        </div>
-                        <input type="text" name="dosen_kecamatan" id="dosen_kecamatan" class="form-control"
-                            placeholder="Masukkan kecamatan">
-                    </div>
-                    <small id="error-dosen_kecamatan" class="error-text form-text text-danger"></small>
-                </div>
-
-                <div class="form-group">
-                    <label class="font-weight-bold">Desa/Kelurahan</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-info text-white"><i
-                                    class="fas fa-map-marker-alt"></i></span>
-                        </div>
-                        <input type="text" name="dosen_desa" id="dosen_desa" class="form-control"
-                            placeholder="Masukkan desa/kelurahan">
-                    </div>
-                    <small id="error-dosen_desa" class="error-text form-text text-danger"></small>
-                </div>
-
-                <!-- Academic Information Section -->
-                <h5 class="font-weight-bold mb-3 mt-4">Informasi Akademik</h5>
-
-                <div class="form-group">
-                    <label class="font-weight-bold">Program Studi</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-secondary text-white"><i
-                                    class="fas fa-graduation-cap"></i></span>
-                        </div>
-                        <select name="prodi_id" id="prodi_id" class="form-control">
-                            <option value="">Pilih Program Studi</option>
-                            @foreach ($prodis as $prodi)
-                                <option value="{{ $prodi->id }}">{{ $prodi->prodi_nama }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <small id="error-prodi_id" class="error-text form-text text-danger"></small>
-                </div>
-
-                <!-- Photo Upload Section -->
-                <h5 class="font-weight-bold mb-3 mt-4">Foto Profil</h5>
-
-                <div class="form-group">
-                    <label class="font-weight-bold">Upload Foto</label>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="dosen_photo" name="dosen_photo"
-                            accept="image/*">
-                        <label class="custom-file-label" for="dosen_photo">Pilih file foto (maks. 2MB)</label>
-                    </div>
-                    <small class="form-text text-muted">Format: JPEG, PNG, JPG, GIF (Maksimal 2MB)</small>
-                    <small id="error-dosen_photo" class="error-text form-text text-danger"></small>
-                </div>
-
-                <!-- Account Information Section -->
-                <h5 class="font-weight-bold mb-3 mt-4">Informasi Akun</h5>
-
-                <div class="form-group">
-                    <label class="font-weight-bold">Username</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-primary text-white"><i
-                                    class="fas fa-user-circle"></i></span>
-                        </div>
-                        <input type="text" name="username" id="username" class="form-control"
-                            placeholder="Masukkan username" required>
-                    </div>
-                    <small id="error-username" class="error-text form-text text-danger"></small>
-                </div>
-
-                <div class="form-group">
-                    <label class="font-weight-bold">Password</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-danger text-white"><i class="fas fa-lock"></i></span>
-                        </div>
-                        <input type="password" name="password" id="password" class="form-control"
-                            placeholder="Masukkan password" required>
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary toggle-password" type="button">
-                                <i class="fas fa-eye"></i>
-                            </button>
+<div id="modal-master" class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header bg-primary text-white">
+            <h4 class="modal-title font-weight-bold">
+                <i class="fas fa-user-plus mr-2"></i> Tambah Data Dosen
+            </h4>
+            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <!-- Modal Body -->
+        <div class="modal-body p-4">
+            <form action="{{ route('admin.dosenManagement.storeAjax') }}" method="POST" id="form-tambah" enctype="multipart/form-data">
+                @csrf
+                <div class="row">
+                    <!-- Card: Informasi Dasar -->
+                    <div class="col-12">
+                        <div class="card card-primary card-outline mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title font-weight-bold mb-0 text-white">
+                                    <i class="fas fa-id-card mr-2"></i> Informasi Dasar
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <!-- Nama Dosen -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Nama Dosen <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text bg-primary text-white"><i class="fas fa-user"></i></span>
+                                                </div>
+                                                <input type="text" name="dosen_nama" id="dosen_nama" class="form-control"
+                                                    placeholder="Masukkan nama dosen" required>
+                                            </div>
+                                            <small id="error-dosen_nama" class="error-text form-text text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- NIP -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">NIP <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text bg-info text-white"><i class="fas fa-id-card"></i></span>
+                                                </div>
+                                                <input type="text" name="dosen_nip" id="dosen_nip" class="form-control"
+                                                    placeholder="Masukkan NIP dosen" required>
+                                            </div>
+                                            <small id="error-dosen_nip" class="error-text form-text text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <!-- Program Studi (mengganti Status) -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Program Studi <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text bg-secondary text-white"><i class="fas fa-graduation-cap"></i></span>
+                                                </div>
+                                                <select name="prodi_id" id="prodi_id" class="form-control" required>
+                                                    <option value="">Pilih Program Studi Homebase</option>
+                                                    @foreach ($prodis as $prodi)
+                                                        <option value="{{ $prodi->id }}">
+                                                            {{ $prodi->prodi_nama }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <small id="error-prodi_id" class="error-text form-text text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- Jenis Kelamin -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Jenis Kelamin <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text bg-info text-white"><i class="fas fa-venus-mars"></i></span>
+                                                </div>
+                                                <select name="dosen_gender" id="dosen_gender" class="form-control" required>
+                                                    <option value="">Pilih Jenis Kelamin</option>
+                                                    <option value="Laki-laki">Laki-laki</option>
+                                                    <option value="Perempuan">Perempuan</option>
+                                                </select>
+                                            </div>
+                                            <small id="error-dosen_gender" class="error-text form-text text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <!-- Nomor Telepon -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Nomor Telepon <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text bg-success text-white"><i class="fas fa-phone"></i></span>
+                                                </div>
+                                                <input type="text" name="dosen_nomor_telepon" id="dosen_nomor_telepon" class="form-control"
+                                                    placeholder="Masukkan nomor telepon" required>
+                                            </div>
+                                            <small id="error-dosen_nomor_telepon" class="error-text form-text text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- Agama -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Agama</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text bg-warning text-white"><i class="fas fa-pray"></i></span>
+                                                </div>
+                                                <input type="text" name="dosen_agama" id="dosen_agama" class="form-control"
+                                                    placeholder="Masukkan agama">
+                                            </div>
+                                            <small id="error-dosen_agama" class="error-text form-text text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <small id="error-password" class="error-text form-text text-danger"></small>
-                    <small class="form-text text-muted">Password minimal 8 karakter.</small>
+                    <!-- Card: Alamat -->
+                    <div class="col-12">
+                        <div class="card card-success card-outline mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title font-weight-bold mb-0 text-white">
+                                    <i class="fas fa-map-marker-alt mr-2"></i> Alamat
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <!-- Provinsi -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Provinsi</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text bg-info text-white"><i class="fas fa-map-marker-alt"></i></span>
+                                                </div>
+                                                <input type="text" name="dosen_provinsi" id="dosen_provinsi" class="form-control"
+                                                    placeholder="Masukkan provinsi">
+                                            </div>
+                                            <small id="error-dosen_provinsi" class="error-text form-text text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- Kota/Kabupaten -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Kota/Kabupaten</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text bg-info text-white"><i class="fas fa-map-marker-alt"></i></span>
+                                                </div>
+                                                <input type="text" name="dosen_kota" id="dosen_kota" class="form-control"
+                                                    placeholder="Masukkan kota/kabupaten">
+                                            </div>
+                                            <small id="error-dosen_kota" class="error-text form-text text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <!-- Kecamatan -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Kecamatan</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text bg-info text-white"><i class="fas fa-map-marker-alt"></i></span>
+                                                </div>
+                                                <input type="text" name="dosen_kecamatan" id="dosen_kecamatan" class="form-control"
+                                                    placeholder="Masukkan kecamatan">
+                                            </div>
+                                            <small id="error-dosen_kecamatan" class="error-text form-text text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- Desa/Kelurahan -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Desa/Kelurahan</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text bg-info text-white"><i class="fas fa-map-marker-alt"></i></span>
+                                                </div>
+                                                <input type="text" name="dosen_desa" id="dosen_desa" class="form-control"
+                                                    placeholder="Masukkan desa/kelurahan">
+                                            </div>
+                                            <small id="error-dosen_desa" class="error-text form-text text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" data-dismiss="modal" class="btn btn-outline-secondary">
-                    <i class="fas fa-times mr-2"></i> Batal
-                </button>
-                <button type="submit" class="btn btn-primary px-4">
-                    <i class="fas fa-save mr-2"></i> Simpan
-                </button>
-            </div>
+                <!-- Modal Footer -->
+                <div class="modal-footer justify-content-between">
+                    <button type="button" data-dismiss="modal" class="btn btn-outline-secondary">
+                        <i class="fas fa-times mr-2"></i> Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="fas fa-save mr-2"></i> Simpan
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
-</form>
+</div>
 
 <script>
 $(document).ready(function() {
@@ -248,34 +230,6 @@ $(document).ready(function() {
         }, 100 * (i + 1));
     });
 
-    // Show/hide password
-    $('.toggle-password').click(function() {
-        const passwordField = $('#password');
-        const passwordFieldType = passwordField.attr('type');
-
-        if (passwordFieldType === 'password') {
-            passwordField.attr('type', 'text');
-            $(this).find('i').removeClass('fa-eye').addClass('fa-eye-slash');
-        } else {
-            passwordField.attr('type', 'password');
-            $(this).find('i').removeClass('fa-eye-slash').addClass('fa-eye');
-        }
-    });
-
-    // Custom file input
-    $('.custom-file-input').on('change', function() {
-        let fileName = $(this).val().split('\\').pop();
-        $(this).next('.custom-file-label').addClass("selected").html(fileName);
-    });
-
-    $.validator.addMethod('filesize', function(value, element, param) {
-                if (element.files.length === 0) return true; // Skip jika tidak ada file
-                
-                const fileSize = element.files[0].size; // dalam bytes
-                const maxSize = param * 1024 * 1024; // konversi MB ke bytes
-                return this.optional(element) || (fileSize <= maxSize);
-            }, 'Ukuran file maksimal {0}MB');
-
     $("#form-tambah").validate({
         rules: {
             dosen_nama: {
@@ -288,7 +242,7 @@ $(document).ready(function() {
                 minlength: 10,
                 maxlength: 20,
             },
-            dosen_status: {
+            prodi_id: {
                 required: true
             },
             dosen_gender: {
@@ -313,19 +267,6 @@ $(document).ready(function() {
             },
             dosen_desa: {
                 maxlength: 255
-            },
-            username: {
-                required: true,
-                minlength: 3,
-                maxlength: 255,
-            },
-            password: {
-                required: true,
-                minlength: 8
-            },
-            dosen_photo: {
-                accept: "image/jpeg,image/png,image/jpg,image/gif",
-                filesize: 2 
             }
         },
         messages: {
@@ -340,8 +281,8 @@ $(document).ready(function() {
                 maxlength: "NIP maksimal 20 karakter",
                 remote: "NIP sudah digunakan"
             },
-            dosen_status: {
-                required: "Status tidak boleh kosong"
+            prodi_id: {
+                required: "Program Studi tidak boleh kosong"
             },
             dosen_gender: {
                 required: "Jenis kelamin tidak boleh kosong"
@@ -353,20 +294,6 @@ $(document).ready(function() {
             },
             dosen_agama: {
                 maxlength: "Agama maksimal 50 karakter"
-            },
-            username: {
-                required: "Username tidak boleh kosong",
-                minlength: "Username minimal 3 karakter",
-                maxlength: "Username maksimal 255 karakter",
-                remote: "Username sudah digunakan"
-            },
-            password: {
-                required: "Password tidak boleh kosong",
-                minlength: "Password minimal 8 karakter"
-            },
-            dosen_photo: {
-                accept: "Format file harus berupa gambar (JPEG, PNG, JPG, GIF)",
-                filesize: "Ukuran file maksimal 2MB"
             }
         },
         submitHandler: function(form) {
@@ -378,11 +305,9 @@ $(document).ready(function() {
                 data: formData,
                 processData: false,
                 contentType: false,
-                dataType: 'json', // Explicitly set the expected response type to JSON
+                dataType: 'json',
                 success: function(response) {
                     if (response.status) {
-                        // Find the modal and hide it properly
-                        // This selects any parent modal that contains this form
                         $(form).closest('.modal').modal('hide');
                         
                         Swal.fire({
@@ -392,11 +317,9 @@ $(document).ready(function() {
                             timer: 1500,
                             showConfirmButton: false
                         }).then(() => {
-                            // Ensure the page reloads after SweetAlert is closed
                             window.location.href = window.location.href;
                         });
 
-                        // Reload DataTable if it exists
                         if (typeof dataDosen !== 'undefined') {
                             dataDosen.ajax.reload();
                         }
