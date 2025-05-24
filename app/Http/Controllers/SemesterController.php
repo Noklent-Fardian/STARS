@@ -210,19 +210,14 @@ class SemesterController extends Controller
      */
     public function exportPDF()
     {
-         $pdfSetting = \App\Models\PdfSetting::first();
+        $pdfSetting = \App\Models\PdfSetting::first();
         $semesters = Semester::where('semester_visible', true)
             ->orderBy('semester_tahun', 'desc')
             ->orderBy('semester_jenis', 'desc')
             ->get();
 
         $pdf = PDF::loadView('admin.semester.export_pdf', compact('semesters', 'pdfSetting'))
-            ->setPaper('A4', 'landscape')
-            ->setOptions([
-                'defaultFont' => 'sans-serif',
-                'isHtml5ParserEnabled' => true,
-                'isRemoteEnabled' => true,
-            ]);
+            ->setPaper('A4', 'landscape');
 
         return $pdf->download('data-semester.pdf');
     }
@@ -462,7 +457,7 @@ class SemesterController extends Controller
                 'message' => 'Gagal mengimport data: ' . $e->getMessage()
             ]);
         }
-    }   
+    }
 
     /**
      * Generate Excel template for import
