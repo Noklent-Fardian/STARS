@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             VerifikasiSeeder::class,
             PdfSettingSeeder::class,
             BannerSeeder::class,
+            MovePublicFilesSeeder::class,
         ]);
     }
 }
