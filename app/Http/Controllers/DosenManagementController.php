@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Dosen;
@@ -71,16 +70,16 @@ class DosenManagementController extends Controller
                     });
                 }
             })->addColumn('aksi', function ($dosen) {
-                $view = '<a href="' . url('/admin/dosenManagement/show/' . $dosen->id) . '" class="btn btn-sm btn-info mr-1"><i class="fas fa-eye"></i> Detail</a>';
-                $edit = '<button onclick="modalAction(\'' . route('admin.dosenManagement.editAjax', $dosen->id) . '\')" class="btn btn-sm btn-warning mr-2">
+            $view = '<a href="' . url('/admin/dosenManagement/show/' . $dosen->id) . '" class="btn btn-sm btn-info mr-1"><i class="fas fa-eye"></i> Detail</a>';
+            $edit = '<button onclick="modalAction(\'' . route('admin.dosenManagement.editAjax', $dosen->id) . '\')" class="btn btn-sm btn-warning mr-2">
                             <i class="fas fa-edit mr-1"></i> Edit
                         </button>';
-                $delete = '<button onclick="modalAction(\'' . route('admin.dosenManagement.confirmAjax', $dosen->id) . '\')" class="btn btn-sm btn-danger mr-2">
+            $delete = '<button onclick="modalAction(\'' . route('admin.dosenManagement.confirmAjax', $dosen->id) . '\')" class="btn btn-sm btn-danger mr-2">
                             <i class="fas fa-trash-alt mr-1"></i> Hapus
                         </button>';
 
-                return $view . $edit . $delete;
-            })
+            return $view . $edit . $delete;
+        })
             ->editColumn('dosen_gender', function ($dosen) {
                 return $dosen->dosen_gender == 'Laki-laki' ? 'Laki-laki' : 'Perempuan';
             })
@@ -122,7 +121,6 @@ class DosenManagementController extends Controller
         $validator = Validator::make($request->all(), [
             'dosen_nama'          => 'required|string|max:255',
             'dosen_nip'           => 'required|string|max:255|unique:m_dosens',
-            'dosen_status'        => 'required|in:Aktif,Cuti,Resign,Pensiun',
             'dosen_gender'        => 'required|in:Laki-laki,Perempuan',
             'dosen_nomor_telepon' => 'required|string|max:15',
             'dosen_agama'         => 'nullable|string|max:255',
@@ -131,9 +129,7 @@ class DosenManagementController extends Controller
             'dosen_kecamatan'     => 'nullable|string|max:255',
             'dosen_desa'          => 'nullable|string|max:255',
             'prodi_id'            => 'nullable|exists:m_prodis,id',
-            'username'            => 'required|string|max:255|unique:m_users',
-            'password'            => 'required|string|min:8',
-            'dosen_photo'         => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            // Hapus validasi untuk username, password, dan dosen_photo
         ]);
 
         if ($validator->fails()) {
@@ -146,29 +142,21 @@ class DosenManagementController extends Controller
 
         DB::beginTransaction();
         try {
-            // Create user account
+            // Create user account dengan username dan password dari NIP
             $user = User::create([
-                'username'      => $request->username,
-                'user_password' => Hash::make($request->password),
+                'username'      => $request->dosen_nip,             // Gunakan NIP sebagai username
+                'user_password' => Hash::make($request->dosen_nip), // Gunakan NIP sebagai password default
                 'user_role'     => 'Dosen',
                 'user_visible'  => true,
             ]);
 
-            // Handle photo upload
-            $photoName = null;
-            if ($request->hasFile('dosen_photo')) {
-                $photo     = $request->file('dosen_photo');
-                $photoName = time() . '_' . $photo->getClientOriginalName();
-                $photo->storeAs('public/dosen_photos', $photoName);
-            }
-
-            // Create dosen profile
+            // Create dosen profile dengan status otomatis "Aktif"
             Dosen::create([
                 'user_id'             => $user->id,
                 'prodi_id'            => $request->prodi_id,
                 'dosen_nama'          => $request->dosen_nama,
                 'dosen_nip'           => $request->dosen_nip,
-                'dosen_status'        => $request->dosen_status,
+                'dosen_status'        => 'Aktif', // Set default status ke Aktif
                 'dosen_gender'        => $request->dosen_gender,
                 'dosen_nomor_telepon' => $request->dosen_nomor_telepon,
                 'dosen_agama'         => $request->dosen_agama,
@@ -176,7 +164,7 @@ class DosenManagementController extends Controller
                 'dosen_kota'          => $request->dosen_kota,
                 'dosen_kecamatan'     => $request->dosen_kecamatan,
                 'dosen_desa'          => $request->dosen_desa,
-                'dosen_photo'         => $photoName,
+                'dosen_photo'         => null, // Tidak perlu upload foto
                 'dosen_visible'       => true,
             ]);
 
@@ -193,7 +181,6 @@ class DosenManagementController extends Controller
             ]);
         }
     }
-
     /**
      * Display the specified resource.
      */
@@ -391,7 +378,7 @@ class DosenManagementController extends Controller
     public function exportPDF()
     {
         $pdfSetting = \App\Models\PdfSetting::first();
-        $dosens = Dosen::with(['user', 'prodi'])
+        $dosens     = Dosen::with(['user', 'prodi'])
             ->where('dosen_visible', true)
             ->orderBy('dosen_nama', 'asc')
             ->get();
@@ -563,8 +550,8 @@ class DosenManagementController extends Controller
         $insertData      = [];
         $row             = 1;
 
-        // Anda mungkin perlu mendapatkan prodi_id default dari suatu tempat
-        // Misalnya dari config atau request tambahan
+                             // Anda mungkin perlu mendapatkan prodi_id default dari suatu tempat
+                             // Misalnya dari config atau request tambahan
         $defaultProdiId = 1; // Ganti dengan logika untuk mendapatkan prodi_id yang sesuai
 
         DB::beginTransaction();
@@ -577,7 +564,7 @@ class DosenManagementController extends Controller
                     continue; // Skip header row
                 }
 
-                // Validate required fields
+                                                             // Validate required fields
                 $requiredFields = ['A', 'B', 'C', 'D', 'L']; // Kolom A-D dan L (prodi_id)
                 foreach ($requiredFields as $col) {
                     if (empty($rowData[$col])) {
