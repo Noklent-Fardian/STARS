@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Semester extends Model
 {
@@ -26,16 +27,7 @@ class Semester extends Model
         'semester_tahun',
         'semester_jenis',
         'semester_aktif',
-        'semester_visible'
-    ];
-
-    /**
-     * Kolom yang harus disembunyikan saat serialisasi.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        // Tambahkan kolom yang ingin disembunyikan jika ada
+        'semester_visible',
     ];
 
     /**
@@ -46,8 +38,27 @@ class Semester extends Model
     protected $casts = [
         'semester_aktif' => 'boolean',
         'semester_visible' => 'boolean',
-        'semester_tahun' => 'integer',
     ];
+
+    /**
+     * Mendapatkan semua lomba yang terkait dengan semester ini.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function lombas(): HasMany
+    {
+        return $this->hasMany(Lomba::class, 'semester_id');
+    }
+
+    /**
+     * Mendapatkan semua mahasiswa yang terkait dengan semester ini.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function mahasiswas(): HasMany
+    {
+        return $this->hasMany(Mahasiswa::class, 'semester_id');
+    }
 
     /**
      * Scope untuk semester aktif

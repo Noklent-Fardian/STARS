@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminKelolaPrestasiController;
 use App\Http\Controllers\AdminManagementController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BidangKeahlianController;
+use App\Http\Controllers\CompetitionSubmissionController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\DosenManagementController;
 use App\Http\Controllers\LandingController;
@@ -362,6 +363,15 @@ Route::middleware(['auth', 'role:Mahasiswa'])->prefix('mahasiswa')->name('mahasi
     Route::post('/profile/change-password', [MahasiswaController::class, 'changePassword'])->name('changePassword');
     Route::post('/profile/update-photo', [MahasiswaController::class, 'updatePhoto'])->name('updatePhoto');
 });
+
+// Achievement Verification Process - Outside mahasiswa prefix
+Route::middleware(['auth', 'role:Mahasiswa'])->prefix('student/achievement')->name('student.achievement.')->group(function () {
+    Route::get('/create', [CompetitionSubmissionController::class, 'create'])->name('create');
+    Route::post('/select-competition', [CompetitionSubmissionController::class, 'selectCompetition'])->name('select-competition');
+    Route::post('/store', [CompetitionSubmissionController::class, 'store'])->name('store');
+    Route::post('/finalize', [CompetitionSubmissionController::class, 'finalizeSubmission'])->name('finalize');
+});
+
 // Fallback for unauthorized access
 Route::fallback(function () {
     return redirect('/login');

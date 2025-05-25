@@ -28,5 +28,17 @@ class Tingkatan extends Model
         'tingkatan_visible'
     ];
 
-   
+    protected $casts = [
+        'tingkatan_visible' => 'boolean',
+    ];
+
+    public function lombas(): HasMany
+    {
+        return $this->hasMany(Lomba::class, 'tingkatan_id');
+    }
+
+    public function penghargaans(): HasMany
+    {
+        return $this->hasMany(Penghargaan::class, 'tingkatan_id');
+    }
 }

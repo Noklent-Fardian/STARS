@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('m_lombas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('keahlian_id')->constrained('m_keahlians')->onDelete('cascade');
+            // $table->foreignId('keahlian_id')->constrained('m_keahlians')->onDelete('cascade');
             $table->foreignId('tingkatan_id')->constrained('m_tingkatans')->onDelete('cascade');
             $table->foreignId('semester_id')->constrained('m_semesters')->onDelete('cascade');
             $table->string('lomba_nama');;
@@ -23,6 +23,7 @@ return new class extends Migration
             $table->date('lomba_tanggal_selesai');
             $table->string('lomba_link_pendaftaran');
             $table->string('lomba_link_poster');
+            $table->boolean('lomba_terverifikasi')->default(true);
             $table->boolean('lomba_visible')->default(true);
 
             $table->timestamps();
