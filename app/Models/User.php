@@ -3,14 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable;
 
     /**
      * The table associated with the model.
@@ -60,11 +59,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the mahasiswa associated with the user.
+     * Get the admin associated with the user.
      */
-    public function mahasiswa(): HasOne
+    public function admin(): HasOne
     {
-        return $this->hasOne(Mahasiswa::class, 'user_id');
+        return $this->hasOne(Admin::class, 'user_id');
     }
 
     /**
@@ -76,11 +75,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the admin associated with the user.
+     * Get the mahasiswa associated with the user.
      */
-    public function admin(): HasOne
+    public function mahasiswa(): HasOne
     {
-        return $this->hasOne(Admin::class, 'user_id');
+        return $this->hasOne(Mahasiswa::class, 'user_id');
     }
 
     /**

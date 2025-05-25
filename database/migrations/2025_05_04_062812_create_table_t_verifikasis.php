@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('mahasiswa_id')->constrained('m_mahasiswas')->onDelete('cascade');
             $table->foreignId('penghargaan_id')->constrained('m_penghargaans')->onDelete('cascade');
             $table->foreignId('dosen_id')->constrained('m_dosens')->onDelete('cascade');
-            $table->foreignId('admin_id')->constrained('m_admins')->onDelete('cascade');
+            $table->foreignId('admin_id')->nullable()->constrained('m_admins')->onDelete('cascade');
             $table->enum('verifikasi_admin_status', ['Menunggu', 'Diterima', 'Ditolak'])->default('Menunggu');
             $table->enum('verifikasi_dosen_status', ['Menunggu', 'Diterima', 'Ditolak'])->default('Menunggu');
             $table->string('verifikasi_admin_keterangan')->nullable();

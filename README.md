@@ -51,16 +51,15 @@ Untuk menjalankan proyek ini secara lokal, ikuti langkah-langkah instalasi berik
 # Salin file .env
  cp .env.example .env
 
-# Atur konfigurasi database di file .env
-
 # Buat database baru dengan nama 'star_student'
+
+# Atur konfigurasi database di file .env
 
 # Generate application key
  php artisan key:generate
 
 # Buat Symbolic link storage 
-  php artisan storage:link
-
+ php artisan storage:link
 
 # Jalankan migrasi database
  php artisan migrate --seed

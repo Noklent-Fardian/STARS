@@ -15,7 +15,7 @@ class LombaSeeder extends Seeder
     {
         DB::table('m_lombas')->insert([
             [
-                'keahlian_id' => 1,
+                // 'keahlian_id' => 1,
                 'tingkatan_id' => 2,
                 'semester_id' => 7,
                 'lomba_nama' => 'Lomba Frontend Web Design',
@@ -27,7 +27,7 @@ class LombaSeeder extends Seeder
                 'lomba_link_poster' => '',
             ],
             [
-                'keahlian_id' => 2,
+                // 'keahlian_id' => 2,
                 'tingkatan_id' => 3,
                 'semester_id' => 8,
                 'lomba_nama' => 'Backend API Development Contest',
@@ -39,7 +39,7 @@ class LombaSeeder extends Seeder
                 'lomba_link_poster' => '',
             ],
             [
-                'keahlian_id' => 3,
+                // 'keahlian_id' => 3,
                 'tingkatan_id' => 2,
                 'semester_id' => 8,
                 'lomba_nama' => 'Indie Game Development Jam',
