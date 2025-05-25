@@ -1,23 +1,21 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminKelolaLombaController;
+use App\Http\Controllers\AdminKelolaPrestasiController;
+use App\Http\Controllers\AdminManagementController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BidangKeahlianController;
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\DosenManagementController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\LombaController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\PeringkatController;
 use App\Http\Controllers\ProdiController;
-use App\Http\Controllers\TingkatanController;
-use App\Http\Controllers\BidangKeahlianController;
 use App\Http\Controllers\SemesterController;
-use App\Http\Controllers\DosenManagementController;
-use App\Http\Controllers\LombaController;
-use App\Http\Controllers\PrestasiController;
-use App\Http\Controllers\AdminManagementController;
-use App\Http\Controllers\AdminKelolaPrestasiController;
-use App\Http\Controllers\AdminKelolaLombaController;
 use App\Http\Controllers\SystemController;
-use App\Http\Controllers\TingkatanLombaController;
+use App\Http\Controllers\TingkatanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -71,6 +69,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::get('/', [DosenManagementController::class, 'index'])->name('index');
         Route::get('/list', [DosenManagementController::class, 'getDosenList'])->name('list');
         Route::get('/show/{id}', [DosenManagementController::class, 'show'])->name('show');
+        Route::put('/{id}/reset-password', [DosenManagementController::class, 'resetPassword'])->name('resetPassword');
 
         // AJAX routes
         Route::get('/create_ajax', [DosenManagementController::class, 'createAjax'])->name('createAjax');
@@ -89,7 +88,6 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::post('/import_excel', [DosenManagementController::class, 'importExcel'])->name('importExcel');
         Route::get('/generate_template', [DosenManagementController::class, 'generateTemplate'])->name('generateTemplate');
     });
-
 
     // Manajemen Pengguna
     Route::get('/mahasiswa', [AdminController::class, 'mahasiswaIndex'])->name('admin.mahasiswa.index');
@@ -126,7 +124,6 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::post('/import_excel', [AdminKelolaPrestasiController::class, 'importExcel'])->name('importExcel');
         Route::get('/generate_template', [AdminKelolaPrestasiController::class, 'generateTemplate'])->name('generateTemplate');
     });
-
 
     // Admin Kelola Lomba
     Route::prefix('adminKelolaLomba')->name('admin.adminKelolaLomba.')->group(function () {
@@ -281,7 +278,6 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::post('/import_excel', [SemesterController::class, 'importExcel'])->name('importExcel');
         Route::get('/generate_template', [SemesterController::class, 'generateTemplate'])->name('generateTemplate');
     });
-
 
     Route::get('/master/keahlian', [AdminController::class, 'masterKeahlian'])->name('admin.master.keahlian');
 

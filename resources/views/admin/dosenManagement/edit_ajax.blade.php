@@ -48,7 +48,7 @@
                         <!-- Card: Informasi Dasar -->
                         <div class="col-12">
                             <div class="card card-primary card-outline mb-4">
-                                <div class="card-header bg-light">
+                                <div class="card-header bg-primary">
                                     <h5 class="card-title font-weight-bold mb-0 text-white">
                                         <i class="fas fa-id-card mr-2"></i> Informasi Dasar
                                     </h5>
@@ -155,7 +155,7 @@
                         <!-- Card: Alamat -->
                         <div class="col-12">
                             <div class="card card-success card-outline mb-4">
-                                <div class="card-header bg-light">
+                                <div class="card-header bg-success">
                                     <h5 class="card-title font-weight-bold mb-0 text-white">
                                         <i class="fas fa-map-marker-alt mr-2"></i> Alamat
                                     </h5>
@@ -220,55 +220,93 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Card: Status Dosen -->
-                <div class="col-12">
-                    <div class="card card-info card-outline mb-4">
-                        <div class="card-header bg-light">
-                            <h5 class="card-title font-weight-bold mb-0 text-white">
-                                <i class="fas fa-user-check mr-2"></i> Status Dosen
-                            </h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <!-- Status -->                                 
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Status</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-primary text-white"><i
-                                                    class="fas fa-user-tag"></i></span>
+                        <!-- Card: Status dan Reset Password -->
+                        <div class="col-12">
+                            <div class="card card-info card-outline mb-4">
+                                <div class="card-header bg-info">
+                                    <h5 class="card-title font-weight-bold mb-0 text-white">
+                                        <i class="fas fa-user-check mr-2"></i> Status dan Reset Password
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <!-- Reset Password -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">Username <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text bg-primary text-white"><i class="fas fa-user-circle"></i></span>
+                                                    </div>
+                                                    <input value="{{ $dosen->user->username }}" type="text" name="username" id="username" class="form-control" placeholder="Masukkan username" required>
+                                                </div>
+                                                <small id="error-username" class="error-text form-text text-danger"></small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">Password <span class="text-muted">(Kosongkan jika tidak ingin mengubah)</span></label>
+                                                <div class="input-group shadow-sm">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text bg-gradient-danger text-white border-0">
+                                                            <i class="fas fa-lock fa-fw"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input type="password" name="password" id="password" class="form-control border-0 py-2" style="transition: all 0.3s" placeholder="Masukkan password baru">
+                                                    <div class="input-group-append m-0">
+                                                        <button class="btn btn-outline-secondary border-0 toggle-password m-0" type="button" style="transition: all 0.3s; margin: 0;" title="Lihat/Sembunyikan Password">
+                                                            <i class="fas fa-eye fa-fw"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="password-strength-meter mt-2 d-none">
+                                                    <div class="progress" style="height: 5px">
+                                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 0%"></div>
+                                                    </div>
+                                                    <small class="text-muted mt-1 d-block">Kekuatan password: <span class="strength-text">Belum diisi</span></small>
+                                                </div>
+                                                <small id="error-password" class="error-text form-text text-danger"></small>
+                                                <small class="form-text text-muted">Password minimal 8 karakter. Biarkan kosong jika tidak ingin mengubah password.</small>
+                                            </div>
                                         </div>
-                                        <select name="dosen_status" id="dosen_status" class="form-control" required>
-                                            <option value="">Pilih Status</option>
-                                            <option value="Aktif" {{ $dosen->dosen_status === 'Aktif' ? 'selected' : '' }}>Aktif
-                                            </option>
-                                            <option value="Cuti" {{ $dosen->dosen_status === 'Cuti' ? 'selected' : '' }}>Cuti</option>
-                                            <option value="Resign" {{ $dosen->dosen_status === 'Resign' ? 'selected' : '' }}>Resign
-                                            </option>
-                                            <option value="Pensiun" {{ $dosen->dosen_status === 'Pensiun' ? 'selected' : '' }}>Pensiun
-                                            </option>
-                                        </select>
+                                        <!-- Status -->
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">Status <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text bg-info text-white"><i class="fas fa-user-check"></i></span>
+                                                    </div>
+                                                    <select name="dosen_status" id="dosen_status" class="form-control" required>
+                                                        <option value="">Pilih Status</option>
+                                                        <option value="Aktif" {{ $dosen->dosen_status === 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                                                        <option value="Tidak Aktif" {{ $dosen->dosen_status === 'Tidak Aktif' ? 'selected' : '' }}>Tidak Aktif</option>
+                                                        <option value="Cuti" {{ $dosen->dosen_status === 'Cuti' ? 'selected' : '' }}>Cuti</option>
+                                                        <option value="Pensiun" {{ $dosen->dosen_status === 'Pensiun' ? 'selected' : '' }}>Pensiun</option>
+                                                    </select>
+                                                </div>
+                                                <small id="error-dosen_status" class="error-text form-text text-danger"></small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2"></div>
                                     </div>
-                                    <small id="error-dosen_status" class="error-text form-text text-danger"></small>
                                 </div>
                             </div>
                         </div>
-                        <input value="{{ $dosen->user->username }}" type="hidden" name="username" id="username">
                     </div>
-        <!-- Modal Footer -->
-        <div class="modal-footer justify-content-between">
-            <button type="button" data-dismiss="modal" class="btn btn-outline-secondary">
-                <i class="fas fa-times mr-2"></i> Batal
-            </button>
-            <button type="submit" class="btn btn-warning px-4">
-                <i class="fas fa-save mr-2"></i> Simpan Perubahan
+                    <!-- Modal Footer -->
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" data-dismiss="modal" class="btn btn-outline-secondary">
+                            <i class="fas fa-times mr-2"></i> Batal
+                        </button>
+                        <button type="submit" class="btn btn-warning px-4">
+                            <i class="fas fa-save mr-2"></i> Simpan Perubahan
                         </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
     <script>
         $(document).ready(function() {
             // Add animation to form elements when modal loads
@@ -284,6 +322,49 @@
                         'transition': 'all 0.4s ease-out'
                     });
                 }, 100 * (i + 1));
+            });
+
+            $(document).on('click', '.toggle-password', function() {
+                const passwordInput = $(this).closest('.input-group').find('input');
+                const icon = $(this).find('i');
+                if (passwordInput.attr('type') === 'password') {
+                    passwordInput.attr('type', 'text');
+                    icon.removeClass('fa-eye').addClass('fa-eye-slash');
+                } else {
+                    passwordInput.attr('type', 'password');
+                    icon.removeClass('fa-eye-slash').addClass('fa-eye');
+                }
+            });
+
+            // Password strength indicator
+            $('#password').on('input', function() {
+                const password = $(this).val();
+                const meter = $(this).closest('.form-group').find('.password-strength-meter');
+                const progressBar = meter.find('.progress-bar');
+                const strengthText = meter.find('.strength-text');
+                if (password.length > 0) {
+                    meter.removeClass('d-none');
+                    // Simple strength calculation
+                    let strength = 0;
+                    if (password.length >= 8) strength += 25;
+                    if (password.match(/[A-Z]/)) strength += 25;
+                    if (password.match(/[0-9]/)) strength += 25;
+                    if (password.match(/[^A-Za-z0-9]/)) strength += 25;
+                    progressBar.css('width', strength + '%');
+                    // Update strength text and color
+                    if (strength < 50) {
+                        progressBar.removeClass('bg-warning bg-success').addClass('bg-danger');
+                        strengthText.text('Lemah');
+                    } else if (strength < 75) {
+                        progressBar.removeClass('bg-danger bg-success').addClass('bg-warning');
+                        strengthText.text('Sedang');
+                    } else {
+                        progressBar.removeClass('bg-danger bg-warning').addClass('bg-success');
+                        strengthText.text('Kuat');
+                    }
+                } else {
+                    meter.addClass('d-none');
+                }
             });
 
             // Validation
@@ -327,6 +408,15 @@
                     },
                     dosen_status: {
                         required: true
+                    },
+                    username: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 50
+                    },
+                    password: {
+                        minlength: 5,
+                        maxlength: 50
                     }
                 },
                 messages: {
@@ -355,58 +445,81 @@
                         maxlength: "Agama maksimal 50 karakter"
                     }
                 },
-                submitHandler: function(form) {
-                    let formData = new FormData(form);
-                    console.log(formData);
-                    $.ajax({
-                        url: form.action,
-                        type: form.method,
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        dataType: 'json',
-                        success: function(response) {
-                            console.log(response);
-                            if (response.status) {
-                                $('#myModal').modal('hide');
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil',
-                                    text: response.message,
-                                    timer: 1500,
-                                    showConfirmButton: false
-                                }).then(() => {
-                                    if (typeof dataDosen !== 'undefined') {
-                                        dataDosen.ajax.reload(null, false);
-                                    }
-                                });
-                            } else {
+                submitHandler: function (form) {
+                $.ajax({
+                    url: form.action,
+                    type: form.method,
+                    data: $(form).serialize(),
+                    success: function (response) {
+                        if (response.status) {
+                            $('#myModal').modal('hide');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: response.message,
+                                timer: 1500,
+                                showConfirmButton: false
+                            })
+                        } else {
                                 $('.error-text').text('');
-                                if (response.msgField) {
-                                    $.each(response.msgField, function(prefix, val) {
-                                        $('#error-' + prefix).text(val[0]);
+                                $('.form-control').removeClass('is-invalid');
+                                
+                                if (response.errors) {
+                                    $.each(response.errors, function(field, messages) {
+                                        $('#error-' + field).text(messages[0]);
+                                        $('[name="' + field + '"]').addClass('is-invalid');
                                     });
                                 }
+                                
                                 Swal.fire({
                                     icon: 'error',
-                                    title: 'Gagal',
-                                    text: response.message
+                                    title: 'Gagal!',
+                                    text: response.message || 'Terjadi kesalahan saat menyimpan data',
+                                    confirmButtonText: 'OK'
                                 });
                             }
                         },
                         error: function(xhr, status, error) {
-                            let msg = 'Terjadi kesalahan pada server';
-                            if (xhr.responseJSON && xhr.responseJSON.message) {
-                                msg = xhr.responseJSON.message;
+                            console.log('XHR:', xhr); 
+                            console.log('Status:', status); 
+                            console.log('Error:', error);
+                            
+                            let errorMessage = "Terjadi kesalahan pada server";
+                            
+                            if (xhr.responseJSON) {
+                                if (xhr.responseJSON.message) {
+                                    errorMessage = xhr.responseJSON.message;
+                                } else if (xhr.responseJSON.errors) {
+                                    $('.error-text').text('');
+                                    $('.form-control').removeClass('is-invalid');
+                                    
+                                    $.each(xhr.responseJSON.errors, function(field, messages) {
+                                        $('#error-' + field).text(messages[0]);
+                                        $('[name="' + field + '"]').addClass('is-invalid');
+                                    });
+                                    errorMessage = "Validasi gagal, periksa kembali data yang dimasukkan";
+                                }
+                            } else if (xhr.status === 500) {
+                                errorMessage = "Terjadi kesalahan internal server";
+                            } else if (xhr.status === 404) {
+                                errorMessage = "Data tidak ditemukan";
+                            } else if (xhr.status === 422) {
+                                errorMessage = "Data yang dikirim tidak valid";
                             }
+                            
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Error',
-                                text: msg
+                                title: 'Error!',
+                                text: errorMessage,
+                                confirmButtonText: 'OK'
                             });
+                        },
+                        complete: function() {
+                            if (Swal.isLoading()) {
+                                Swal.close();
+                            }
                         }
                     });
-                    return false;
                 },
                 errorElement: 'span',
                 errorPlacement: function(error, element) {

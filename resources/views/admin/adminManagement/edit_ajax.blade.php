@@ -215,21 +215,8 @@
                     minlength: "Password minimal 8 karakter"
                 }
             },
-            submitHandler: function (form) {
-                $.ajax({
-                    url: form.action,
-                    type: form.method,
-                    data: $(form).serialize(),
-                    success: function (response) {
-                        if (response.status) {
-                            $('#myModal').modal('hide');
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: response.message,
-                                timer: 1500,
-                                showConfirmButton: false
-                            });
+            
+            
 
                             // Check if we're on the detail/show page by looking for specific elements
                             if ($('.card-header:contains("Detail Admin")').length > 0) {

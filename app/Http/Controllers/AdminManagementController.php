@@ -283,8 +283,8 @@ class AdminManagementController extends Controller
      */
     public function exportPDF()
     {
-         $pdfSetting = \App\Models\PdfSetting::first();
-        $admins = Admin::with('user')
+        $pdfSetting = \App\Models\PdfSetting::first();
+        $admins     = Admin::with('user')
             ->where('admin_visible', true)
             ->orderBy('admin_name', 'asc')
             ->get();

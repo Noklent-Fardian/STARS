@@ -129,7 +129,6 @@ class DosenManagementController extends Controller
             'dosen_kecamatan'     => 'nullable|string|max:255',
             'dosen_desa'          => 'nullable|string|max:255',
             'prodi_id'            => 'nullable|exists:m_prodis,id',
-            // Hapus validasi untuk username, password, dan dosen_photo
         ]);
 
         if ($validator->fails()) {
@@ -142,21 +141,19 @@ class DosenManagementController extends Controller
 
         DB::beginTransaction();
         try {
-            // Create user account dengan username dan password dari NIP
             $user = User::create([
-                'username'      => $request->dosen_nip,             // Gunakan NIP sebagai username
-                'user_password' => Hash::make($request->dosen_nip), // Gunakan NIP sebagai password default
+                'username'      => $request->dosen_nip,
+                'user_password' => Hash::make($request->dosen_nip),
                 'user_role'     => 'Dosen',
                 'user_visible'  => true,
             ]);
 
-            // Create dosen profile dengan status otomatis "Aktif"
             Dosen::create([
                 'user_id'             => $user->id,
                 'prodi_id'            => $request->prodi_id,
                 'dosen_nama'          => $request->dosen_nama,
                 'dosen_nip'           => $request->dosen_nip,
-                'dosen_status'        => 'Aktif', // Set default status ke Aktif
+                'dosen_status'        => 'Aktif',
                 'dosen_gender'        => $request->dosen_gender,
                 'dosen_nomor_telepon' => $request->dosen_nomor_telepon,
                 'dosen_agama'         => $request->dosen_agama,
@@ -164,7 +161,7 @@ class DosenManagementController extends Controller
                 'dosen_kota'          => $request->dosen_kota,
                 'dosen_kecamatan'     => $request->dosen_kecamatan,
                 'dosen_desa'          => $request->dosen_desa,
-                'dosen_photo'         => null, // Tidak perlu upload foto
+                'dosen_photo'         => null,
                 'dosen_visible'       => true,
             ]);
 
@@ -212,6 +209,13 @@ class DosenManagementController extends Controller
     {
         $dosen = Dosen::with('user')->find($id);
 
+        if (! $dosen) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Data dosen tidak ditemukan',
+            ], 404);
+        }
+
         $validator = Validator::make($request->all(), [
             'dosen_nama'          => 'required|string|max:255',
             'dosen_nip'           => [
@@ -220,7 +224,7 @@ class DosenManagementController extends Controller
                 'max:255',
                 Rule::unique('m_dosens')->ignore($dosen->id),
             ],
-            'dosen_status'        => 'required|in:Aktif,Cuti,Resign,Pensiun',
+            'dosen_status'        => 'required|in:Aktif,Tidak Aktif,Cuti,Pensiun',
             'dosen_gender'        => 'required|in:Laki-laki,Perempuan',
             'dosen_nomor_telepon' => 'required|string|max:15',
             'dosen_agama'         => 'nullable|string|max:255',
@@ -241,44 +245,22 @@ class DosenManagementController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'status'   => false,
-                'message'  => 'Validasi gagal. Periksa kembali data Anda.',
-                'msgField' => $validator->errors(),
-            ]);
+                'status'  => false,
+                'message' => 'Validasi gagal',
+                'errors'  => $validator->errors(),
+            ], 422);
         }
 
         DB::beginTransaction();
         try {
             // Update user account
-            $userData = [
-                'username' => $request->username,
-            ];
+            $userData = ['username' => $request->username];
 
             if (! empty($request->password)) {
                 $userData['user_password'] = Hash::make($request->password);
             }
 
             $dosen->user->update($userData);
-
-            // Handle photo upload
-            $photoName = $dosen->dosen_photo;
-            if ($request->hasFile('dosen_photo')) {
-                // Delete old photo if exists
-                if ($photoName && Storage::exists('public/dosen_photos/' . $photoName)) {
-                    Storage::delete('public/dosen_photos/' . $photoName);
-                }
-
-                $photo     = $request->file('dosen_photo');
-                $photoName = time() . '_' . $photo->getClientOriginalName();
-
-                // Simpan file menggunakan Storage facade
-                $path = $photo->storeAs('public/dosen_photos', $photoName);
-
-                // Pastikan file tersimpan
-                if (! $path) {
-                    throw new \Exception('Gagal menyimpan file foto');
-                }
-            }
 
             // Update dosen profile
             $dosen->update([
@@ -293,22 +275,22 @@ class DosenManagementController extends Controller
                 'dosen_kota'          => $request->dosen_kota,
                 'dosen_kecamatan'     => $request->dosen_kecamatan,
                 'dosen_desa'          => $request->dosen_desa,
-                'dosen_photo'         => $photoName,
             ]);
 
             DB::commit();
+
             return response()->json([
                 'status'  => true,
-                'message' => 'Dosen berhasil diperbarui',
+                'message' => 'Data dosen berhasil diperbarui',
                 'self'    => true,
-            ], 200, ['Content-Type' => 'application/json']); // Tambahkan header JSON
+            ], 200);
 
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
                 'status'  => false,
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
-            ], 500, ['Content-Type' => 'application/json']);
+                'message' => 'Gagal memperbarui data: ' . $e->getMessage(),
+            ], 500);
         }
     }
 
