@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('mahasiswa_nim')->unique();
             $table->enum('mahasiswa_status', ['Aktif', 'Tidak Aktif', 'Cuti']);
             $table->enum('mahasiswa_gender', ['Laki-laki', 'Perempuan']);
-            $table->integer('mahasiswa_angakatan')->default(2000);
+            $table->integer('mahasiswa_angkatan')->default(2000);
             $table->string('mahasiswa_nomor_telepon')->nullable();
             $table->string('mahasiswa_photo')->nullable();
             $table->string('mahasiswa_agama')->nullable();
