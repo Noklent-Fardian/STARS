@@ -365,7 +365,7 @@ Route::middleware(['auth', 'role:Mahasiswa'])->prefix('mahasiswa')->name('mahasi
     Route::get('/profile', [MahasiswaController::class, 'profile'])->name('profile');
     Route::get('/profile/edit', [MahasiswaController::class, 'editProfile'])->name('editProfile');
     Route::put('/profile/update', [MahasiswaController::class, 'updateProfile'])->name('updateProfile');
-    Route::post('/profile/change-password', [MahasiswaController::class, 'changePassword'])->name('changePassword');
+    Route::put('/profile/update-password', [MahasiswaController::class, 'updatePassword'])->name('updatePassword');
     Route::post('/profile/update-photo', [MahasiswaController::class, 'updatePhoto'])->name('updatePhoto');
 });
 
