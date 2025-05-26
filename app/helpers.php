@@ -20,7 +20,7 @@ function getUserProfilePhoto(): string
     }
 
     if ($user->mahasiswa && $user->mahasiswa->mahasiswa_photo) {
-        return asset('storage/mahasiswa_photos/' . $user->mahasiswa->mahasiswa_photo);
+        return asset('storage/' . $user->mahasiswa->mahasiswa_photo);
     }
 
     return asset('RuangAdmin/img/boy.png');
