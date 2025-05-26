@@ -183,7 +183,11 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Kategori Lomba <span class="text-danger">*</span></label>
-                                    <input type="text" name="lomba_kategori" class="form-control" required>
+                                    <select name="lomba_kategori" id="lomba_kategori" class="form-control" required>
+                                        <option value=""></option>Pilih Kategori</option>"
+                                        <option value="Akademik">Akademik</option>
+                                        <option value="Non-Akademik">Non-Akademik</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
