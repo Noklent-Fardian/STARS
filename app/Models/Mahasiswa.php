@@ -40,6 +40,7 @@ class Mahasiswa extends Model
         'mahasiswa_desa',
         'mahasiswa_score',
         'mahasiswa_visible',
+        'keahlian_sertifikat',
     ];
 
     /**
@@ -61,8 +62,18 @@ class Mahasiswa extends Model
     /**
      * Get the keahlian that the mahasiswa has.
      */
-    public function keahlian(): BelongsTo
+    public function keahlianUtama()
     {
         return $this->belongsTo(Keahlian::class, 'keahlian_id');
+    }
+
+    public function keahlianTambahan()
+    {
+        return $this->belongsToMany(
+            Keahlian::class,
+            't_keahlian_mahasiswas',
+            'mahasiswa_id',
+            'keahlian_id'
+        )->withPivot('keahlian_sertifikat');
     }
 }
