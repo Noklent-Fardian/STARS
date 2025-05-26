@@ -105,8 +105,8 @@
                 <i class="fas fa-fw fa-database"></i>
                 <span>Master Data</span>
             </a>
-            <div id="collapseMaster" class="collapse {{ $isMasterActive ? 'show' : '' }}" aria-labelledby="headingMaster"
-                data-parent="#accordionSidebar">
+            <div id="collapseMaster" class="collapse {{ $isMasterActive ? 'show' : '' }}"
+                aria-labelledby="headingMaster" data-parent="#accordionSidebar">
                 <div class="py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Data Master:</h6>
                     <a class="collapse-item {{ request()->routeIs('admin.master.periode') ? 'active' : '' }}"
@@ -148,8 +148,9 @@
     @endif
 
 
-    @if(Auth::user()->dosen)
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('dosen.dashboard') }}">
+    @if (Auth::user()->dosen)
+        <a class="sidebar-brand d-flex align-items-center justify-content-center"
+            href="{{ route('dosen.dashboard') }}">
             <div class="sidebar-brand-icon">
                 <img src="{{ asset('img/logo.svg') }}" style="max-height: 40px">
             </div>
@@ -195,8 +196,10 @@
             </a>
         </li>
     @endif
+    
     @if (Auth::user()->mahasiswa)
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('mahasiswa.dashboard') }}">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center"
+            href="{{ route('mahasiswa.dashboard') }}">
             <div class="sidebar-brand-icon">
                 <img src="{{ asset('img/logo.svg') }}" style="max-height: 40px">
             </div>
@@ -224,10 +227,17 @@
             </a>
         </li>
 
-        <li class="nav-item {{ request()->routeIs('mahasiswa.prestasi') ? 'active' : '' }}">
+        <li class="nav-item {{ request()->routeIs('mahasiswa.prestasi.*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('mahasiswa.prestasi.index') }}">
                 <i class="nav-icon fas fa-plus-circle"></i>
                 <span>Pencatatan Prestasi</span>
+            </a>
+        </li>
+
+        <li class="nav-item {{ request()->routeIs('student.achievement.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('student.achievement.create') }}">
+                <i class="nav-icon fas fa-certificate"></i>
+                <span>Ajukan Verifikasi Prestasi</span>
             </a>
         </li>
 
@@ -242,6 +252,7 @@
             </a>
         </li>
     @endif
+    
     <hr class="sidebar-divider d-none d-md-block">
     <li class="nav-item logout-item">
         <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal">

@@ -18,6 +18,8 @@ use App\Http\Controllers\AdminKelolaPrestasiController;
 use App\Http\Controllers\AdminKelolaLombaController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\TingkatanLombaController;
+use App\Http\Controllers\CompetitionSubmissionController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -366,6 +368,15 @@ Route::middleware(['auth', 'role:Mahasiswa'])->prefix('mahasiswa')->name('mahasi
     Route::put('/profile/update-password', [MahasiswaController::class, 'updatePassword'])->name('updatePassword');
     Route::post('/profile/update-photo', [MahasiswaController::class, 'updatePhoto'])->name('updatePhoto');
 });
+
+// Achievement Verification Process - Outside mahasiswa prefix
+Route::middleware(['auth', 'role:Mahasiswa'])->prefix('student/achievement')->name('student.achievement.')->group(function () {
+    Route::get('/create', [CompetitionSubmissionController::class, 'create'])->name('create');
+    Route::post('/select-competition', [CompetitionSubmissionController::class, 'selectCompetition'])->name('select-competition');
+    Route::post('/store', [CompetitionSubmissionController::class, 'store'])->name('store');
+    Route::post('/finalize', [CompetitionSubmissionController::class, 'finalizeSubmission'])->name('finalize');
+});
+
 // Fallback for unauthorized access
 Route::fallback(function () {
     return redirect('/login');
