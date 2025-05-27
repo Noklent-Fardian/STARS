@@ -30,6 +30,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kota' => '',
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
+                'mahasiswa_score' => 5375,
                 'mahasiswa_visible' => true,
             ],
             [
@@ -42,7 +43,6 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_status' => 'Aktif',
                 'mahasiswa_gender' => 'Laki-laki',
                 'mahasiswa_angkatan' => '2023',
-
                 'mahasiswa_nomor_telepon' => '087866301810',
                 'mahasiswa_photo'=>null,
                 'mahasiswa_agama' => 'Islam',
@@ -50,6 +50,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kota' => '',
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
+                'mahasiswa_score' => 5213,
                 'mahasiswa_visible' => true,
             ],
             [
@@ -69,6 +70,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kota' => '',
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
+                'mahasiswa_score' => 5500,
                 'mahasiswa_visible' => true,
             ],
             [
@@ -88,6 +90,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kota' => '',
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
+                'mahasiswa_score' => 10688,
                 'mahasiswa_visible' => true,
             ],
             [
@@ -107,6 +110,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kota' => '',
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
+                'mahasiswa_score' => 3625,
                 'mahasiswa_visible' => true,
             ],
             [
