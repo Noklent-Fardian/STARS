@@ -215,6 +215,7 @@
     </div>
 </div>    
 @endsection
+
 @push('css')
     <style>
         .profile-image-container {
@@ -271,4 +272,40 @@
             display: inline-block;
         }
     </style>
+@endpush
+
+@push('js')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Show success/error messages from session
+    @if(session('success'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: '{{ session('success') }}',
+            timer: 2000,
+            showConfirmButton: false
+        });
+    @endif
+
+    @if(session('error'))
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal!',
+            text: '{{ session('error') }}',
+            confirmButtonText: 'OK'
+        });
+    @endif
+
+    @if($errors->any())
+        Swal.fire({
+            icon: 'error',
+            title: 'Terjadi Kesalahan!',
+            text: '{{ $errors->first() }}',
+            confirmButtonText: 'OK'
+        });
+    @endif
+});
+</script>
 @endpush

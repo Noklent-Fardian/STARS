@@ -77,9 +77,11 @@ class Mahasiswa extends Model
         )->withPivot('keahlian_sertifikat');
     }
 
+    /**
+     * Get the semester that the mahasiswa is enrolled in.
+     */
     public function semester(): BelongsTo
     {
         return $this->belongsTo(Semester::class, 'semester_id');
     }
-
 }

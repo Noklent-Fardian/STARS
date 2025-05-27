@@ -13,7 +13,6 @@ class MahasiswaSeeder extends Seeder
     {
         DB::table('m_mahasiswas')->insert([
             [
-
                 'user_id' => '12',
                 'prodi_id' => 1,
                 'keahlian_id' => '1',
@@ -31,6 +30,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan'     => '',
                 'mahasiswa_desa'          => '',
                 'mahasiswa_visible'       => true,
+                'mahasiswa_score'         => 8745,
             ],
             [
                 'user_id' => '13',
@@ -51,6 +51,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan'     => '',
                 'mahasiswa_desa'          => '',
                 'mahasiswa_visible'       => true,
+                'mahasiswa_score'         => 7892,
             ],
             [
                 'user_id' => '14',
@@ -70,6 +71,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan'     => '',
                 'mahasiswa_desa'          => '',
                 'mahasiswa_visible'       => true,
+                'mahasiswa_score'         => 9123,
             ],
             [
                 'user_id' => '15',
@@ -89,6 +91,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan'     => '',
                 'mahasiswa_desa'          => '',
                 'mahasiswa_visible'       => true,
+                'mahasiswa_score'         => 6534,
             ],
             [
                 'user_id' => '16',
@@ -108,6 +111,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan'     => '',
                 'mahasiswa_desa'          => '',
                 'mahasiswa_visible'       => true,
+                'mahasiswa_score'         => 7298,
             ],
             [
                 'user_id' => '17',
@@ -127,6 +131,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 8456,
             ],
             [
                 'user_id' => '18',
@@ -146,6 +151,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 5789,
             ],
             [
                 'user_id' => '19',
@@ -165,6 +171,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 9012,
             ],
             [
                 'user_id' => '20',
@@ -184,6 +191,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 7634,
             ],
             [
                 'user_id' => '21',
@@ -203,6 +211,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 8201,
             ],
             [
                 'user_id' => '22',
@@ -222,6 +231,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 6945,
             ],
             [
                 'user_id' => '23',
@@ -241,6 +251,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 7512,
             ],
             [
                 'user_id' => '24',
@@ -260,6 +271,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 9356,
             ],
             [
                 'user_id' => '25',
@@ -279,6 +291,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 0,
             ],
             [
                 'user_id' => '26',
@@ -298,6 +311,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 6187,
             ],
             [
                 'user_id' => '27',
@@ -317,6 +331,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 9045,
             ],
             [
                 'user_id' => '28',
@@ -336,6 +351,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 0,
             ],
             [
                 'user_id' => '29',
@@ -355,6 +371,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 8678,
             ],
             [
                 'user_id' => '30',
@@ -374,6 +391,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 9567,
             ],
             [
                 'user_id' => '31',
@@ -393,6 +411,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 6823,
             ],
             [
                 'user_id' => '32',
@@ -412,6 +431,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 8901,
             ],
             [
                 'user_id' => '33',
@@ -431,6 +451,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 7456,
             ],
             [
                 'user_id' => '34',
@@ -450,6 +471,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 5678,
             ],
             [
                 'user_id' => '35',
@@ -469,6 +491,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 9234,
             ],
             [
                 'user_id' => '36',
@@ -488,6 +511,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 8012,
             ],
             [
                 'user_id' => '37',
@@ -507,6 +531,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 6789,
             ],
             [
                 'user_id' => '38',
@@ -526,6 +551,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 8567,
             ],
             [
                 'user_id' => '39',
@@ -545,6 +571,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 7234,
             ],
             [
                 'user_id' => '40',
@@ -564,6 +591,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 9567,
             ],
             [
                 'user_id' => '41',
@@ -583,6 +611,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 5678,
             ],
             [
                 'user_id' => '42',
@@ -602,6 +631,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 9789,
             ],
             [
                 'user_id' => '43',
@@ -621,6 +651,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 6712,
             ],
             [
                 'user_id' => '44',
@@ -640,6 +671,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 8234,
             ],
             [
                 'user_id' => '45',
@@ -659,6 +691,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 7567,
             ],
             [
                 'user_id' => '46',
@@ -678,6 +711,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 9345,
             ],
             [
                 'user_id' => '47',
@@ -697,6 +731,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 6890,
             ],
             [
                 'user_id' => '48',
@@ -716,6 +751,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 8123,
             ],
             [
                 'user_id' => '49',
@@ -735,6 +771,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 5456,
             ],
             [
                 'user_id' => '50',
@@ -754,6 +791,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 7789,
             ],
             [
                 'user_id' => '51',
@@ -773,6 +811,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 9012,
             ],
             [
                 'user_id' => '52',
@@ -792,6 +831,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 6234,
             ],
             [
                 'user_id' => '53',
@@ -811,6 +851,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 8567,
             ],
             [
                 'user_id' => '54',
@@ -830,6 +871,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 7345,
             ],
             [
                 'user_id' => '55',
@@ -849,6 +891,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 9678,
             ],
             [
                 'user_id' => '56',
@@ -868,6 +911,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 5123,
             ],
             [
                 'user_id' => '57',
@@ -887,6 +931,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
+                'mahasiswa_score' => 8890,
             ],
             [
                 'user_id' => '58',
@@ -906,158 +951,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => '',
                 'mahasiswa_desa' => '',
                 'mahasiswa_visible' => true,
-            ],
-            [
-                'user_id' => '59',
-                'prodi_id' => 1,
-                'keahlian_id' => '3',
-                'semester_id' => '8',
-                'mahasiswa_nama' => 'Fajar Eko',
-                'mahasiswa_nim' => '2341720199',
-                'mahasiswa_status' => 'Aktif',
-                'mahasiswa_gender' => 'Laki-laki',
-                'mahasiswa_angkatan' => '2023',
-                'mahasiswa_nomor_telepon' => '08246523666',
-                'mahasiswa_photo' => null,
-                'mahasiswa_agama' => 'Islam',
-                'mahasiswa_provinsi' => '',
-                'mahasiswa_kota' => '',
-                'mahasiswa_kecamatan' => '',
-                'mahasiswa_desa' => '',
-                'mahasiswa_visible' => true,
-            ],
-            [
-                'user_id' => '60',
-                'prodi_id' => 2,
-                'keahlian_id' => '3',
-                'semester_id' => '8',
-                'mahasiswa_nama' => 'Maya Fitri',
-                'mahasiswa_nim' => '2341720156',
-                'mahasiswa_status' => 'Aktif',
-                'mahasiswa_gender' => 'Perempuan',
-                'mahasiswa_angkatan' => '2023',
-                'mahasiswa_nomor_telepon' => '08760545803',
-                'mahasiswa_photo' => null,
-                'mahasiswa_agama' => 'Islam',
-                'mahasiswa_provinsi' => '',
-                'mahasiswa_kota' => '',
-                'mahasiswa_kecamatan' => '',
-                'mahasiswa_desa' => '',
-                'mahasiswa_visible' => true,
-            ],
-            [
-                'user_id' => '61',
-                'prodi_id' => 1,
-                'keahlian_id' => '1',
-                'semester_id' => '8',
-                'mahasiswa_nama' => 'Rizky Gilang',
-                'mahasiswa_nim' => '2341720163',
-                'mahasiswa_status' => 'Aktif',
-                'mahasiswa_gender' => 'Laki-laki',
-                'mahasiswa_angkatan' => '2023',
-                'mahasiswa_nomor_telepon' => '08190185937',
-                'mahasiswa_photo' => null,
-                'mahasiswa_agama' => 'Islam',
-                'mahasiswa_provinsi' => '',
-                'mahasiswa_kota' => '',
-                'mahasiswa_kecamatan' => '',
-                'mahasiswa_desa' => '',
-                'mahasiswa_visible' => true,
-            ],
-            [
-                'user_id' => '62',
-                'prodi_id' => 2,
-                'keahlian_id' => '3',
-                'semester_id' => '8',
-                'mahasiswa_nama' => 'Gita Eka',
-                'mahasiswa_nim' => '2341720897',
-                'mahasiswa_status' => 'Aktif',
-                'mahasiswa_gender' => 'Perempuan',
-                'mahasiswa_angkatan' => '2023',
-                'mahasiswa_nomor_telepon' => '08199292927',
-                'mahasiswa_photo' => null,
-                'mahasiswa_agama' => 'Islam',
-                'mahasiswa_provinsi' => '',
-                'mahasiswa_kota' => '',
-                'mahasiswa_kecamatan' => '',
-                'mahasiswa_desa' => '',
-                'mahasiswa_visible' => true,
-            ],
-            [
-                'user_id' => '63',
-                'prodi_id' => 2,
-                'keahlian_id' => '2',
-                'semester_id' => '8',
-                'mahasiswa_nama' => 'Agus Putra',
-                'mahasiswa_nim' => '2341720701',
-                'mahasiswa_status' => 'Aktif',
-                'mahasiswa_gender' => 'Laki-laki',
-                'mahasiswa_angkatan' => '2023',
-                'mahasiswa_nomor_telepon' => '08227362594',
-                'mahasiswa_photo' => null,
-                'mahasiswa_agama' => 'Islam',
-                'mahasiswa_provinsi' => '',
-                'mahasiswa_kota' => '',
-                'mahasiswa_kecamatan' => '',
-                'mahasiswa_desa' => '',
-                'mahasiswa_visible' => true,
-            ],
-            [
-                'user_id' => '64',
-                'prodi_id' => 2,
-                'keahlian_id' => '3',
-                'semester_id' => '8',
-                'mahasiswa_nama' => 'Kartika Putri',
-                'mahasiswa_nim' => '2341720061',
-                'mahasiswa_status' => 'Aktif',
-                'mahasiswa_gender' => 'Perempuan',
-                'mahasiswa_angkatan' => '2023',
-                'mahasiswa_nomor_telepon' => '08510914609',
-                'mahasiswa_photo' => null,
-                'mahasiswa_agama' => 'Islam',
-                'mahasiswa_provinsi' => '',
-                'mahasiswa_kota' => '',
-                'mahasiswa_kecamatan' => '',
-                'mahasiswa_desa' => '',
-                'mahasiswa_visible' => true,
-            ],
-            [
-                'user_id' => '65',
-                'prodi_id' => 2,
-                'keahlian_id' => '4',
-                'semester_id' => '8',
-                'mahasiswa_nama' => 'Fajar Lukman',
-                'mahasiswa_nim' => '2341720503',
-                'mahasiswa_status' => 'Aktif',
-                'mahasiswa_gender' => 'Laki-laki',
-                'mahasiswa_angkatan' => '2023',
-                'mahasiswa_nomor_telepon' => '08537613714',
-                'mahasiswa_photo' => null,
-                'mahasiswa_agama' => 'Islam',
-                'mahasiswa_provinsi' => '',
-                'mahasiswa_kota' => '',
-                'mahasiswa_kecamatan' => '',
-                'mahasiswa_desa' => '',
-                'mahasiswa_visible' => true,
-            ],
-            [
-                'user_id' => '66',
-                'prodi_id' => 2,
-                'keahlian_id' => '1',
-                'semester_id' => '8',
-                'mahasiswa_nama' => 'Fitri Juwita',
-                'mahasiswa_nim' => '2341720994',
-                'mahasiswa_status' => 'Aktif',
-                'mahasiswa_gender' => 'Perempuan',
-                'mahasiswa_angkatan' => '2023',
-                'mahasiswa_nomor_telepon' => '08712685873',
-                'mahasiswa_photo' => null,
-                'mahasiswa_agama' => 'Katolik',
-                'mahasiswa_provinsi' => '',
-                'mahasiswa_kota' => '',
-                'mahasiswa_kecamatan' => '',
-                'mahasiswa_desa' => '',
-                'mahasiswa_visible' => true,
+                'mahasiswa_score' => 7456,
             ],
         ]);
     }
