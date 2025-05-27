@@ -30,4 +30,8 @@ class Keahlian extends Model
     {
         return $this->hasMany(Mahasiswa::class, 'keahlian_id');
     }
+    public function dosen(): HasMany
+    {
+        return $this->hasMany(Dosen::class, 'keahlian_id');
+    }
 }

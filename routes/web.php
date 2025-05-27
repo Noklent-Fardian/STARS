@@ -330,7 +330,7 @@ Route::middleware(['auth', 'role:Dosen'])->prefix('dosen')->name('dosen.')->grou
     Route::get('/profile', [DosenController::class, 'profile'])->name('profile');
     Route::get('/profile/edit', [DosenController::class, 'editProfile'])->name('editProfile');
     Route::put('/profile/update', [DosenController::class, 'updateProfile'])->name('updateProfile');
-    Route::post('/profile/change-password', [DosenController::class, 'changePassword'])->name('changePassword');
+    Route::put('/profile/update-password', [DosenController::class, 'updatePassword'])->name('updatePassword');
     Route::post('/profile/update-photo', [DosenController::class, 'updatePhoto'])->name('updatePhoto');
 });
 

@@ -16,7 +16,7 @@ function getUserProfilePhoto(): string
     }
 
     if ($user->dosen && $user->dosen->dosen_photo) {
-        return asset('storage/dosen_photos/' . $user->dosen->dosen_photo);
+        return asset('storage/' . $user->dosen->dosen_photo);
     }
 
     if ($user->mahasiswa && $user->mahasiswa->mahasiswa_photo) {
