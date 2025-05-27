@@ -13,11 +13,13 @@
         <!-- Progress Steps -->
         <div class="row mb-4">
             <div class="col-12">
-                <div class="card">
+                <div class="card shadow-sm">
                     <div class="card-body">
                         <div class="step-progress">
                             <div class="step active">
-                                <div class="step-number">1</div>
+                                <div class="step-number">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
                                 <div class="step-title">Pilih Lomba</div>
                             </div>
                             <div class="step-line"></div>
@@ -39,40 +41,50 @@
         <!-- Competition Selection -->
         <div class="row">
             <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">Pilih Lomba</h5>
-                        <small class="text-muted">Pilih lomba yang sudah tersedia atau ajukan lomba baru</small>
+                <div class="card shadow-sm">
+                    <div class="card-header bg-gradient-primary text-white">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-medal mr-2"></i>
+                            <div>
+                                <h5 class="mb-0 text-white">Pilih Lomba</h5>
+                                <small class="text-white-50">Pilih lomba yang sudah tersedia atau ajukan lomba baru</small>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <!-- Search Box -->
+                        <!-- Action Buttons -->
                         <div class="row mb-4">
-                            <div class="col-md-4">
-                                <input type="text" id="searchLomba" class="form-control"
-                                    placeholder="Cari nama lomba...">
+                            <div class="col-md-6">
+                                <div class="d-flex flex-wrap gap-2">
+                                    <button type="button" class="btn btn-primary" onclick="showNewCompetitionForm()">
+                                        <i class="fas fa-plus-circle mr-1"></i>Ajukan Lomba Baru
+                                    </button>
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <select id="statusFilter" class="form-control">
-                                    <option value="">Semua Status</option>
-                                    <option value="verified">Hanya Terverifikasi</option>
-                                    <option value="unverified">Belum Terverifikasi</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4 text-right">
-                                <button type="button" class="btn btn-primary" onclick="showNewCompetitionForm()">
-                                    <i class="fas fa-plus"></i> Ajukan Lomba Baru
-                                </button>
+                            <div class="col-md-6">
+                                <!-- Search and Filter -->
+                                <div class="d-flex flex-wrap gap-2 justify-content-md-end">
+                                    <div class="has-search flex-grow-1" style="max-width: 300px;">
+                                        <span class="fa fa-search form-control-feedback"></span>
+                                        <input type="text" id="searchLomba" class="form-control"
+                                            placeholder="Cari lomba...">
+                                    </div>
+                                    <select id="statusFilter" class="form-control" style="max-width: 200px;">
+                                        <option value="">Semua Status</option>
+                                        <option value="verified">Terverifikasi</option>
+                                        <option value="unverified">Belum Terverifikasi</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Competition List -->
-
                         <div class="row" id="lombaList">
                             @forelse($lombas as $lomba)
                                 <div class="col-md-6 col-lg-4 mb-3 lomba-item"
                                     data-name="{{ strtolower($lomba->lomba_nama) }}">
-                                    <div
-                                        class="card h-100 competition-card {{ $lomba->lomba_terverifikasi ? 'verified' : 'unverified' }}">
+                                    <div class="card h-100 competition-card {{ $lomba->lomba_terverifikasi ? 'verified' : 'unverified' }}"
+                                        onclick="selectCompetition({{ $lomba->id }})">
                                         <!-- Verification Status Badge -->
                                         <div class="verification-badge">
                                             @if ($lomba->lomba_terverifikasi)
@@ -87,22 +99,26 @@
                                         </div>
 
                                         <div class="card-body">
-                                            <h6 class="card-title">{{ $lomba->lomba_nama }}</h6>
+                                            <h6 class="card-title font-weight-bold">{{ $lomba->lomba_nama }}</h6>
                                             <p class="card-text">
                                                 <small class="text-muted">
-                                                    <i class="fas fa-building"></i> {{ $lomba->lomba_penyelenggara }}<br>
-                                                    <i class="fas fa-tag"></i> {{ $lomba->lomba_kategori }}<br>
-                                                    <i class="fas fa-calendar"></i>
+                                                    <i
+                                                        class="fas fa-building mr-1"></i>{{ $lomba->lomba_penyelenggara }}<br>
+                                                    <i class="fas fa-tag mr-1"></i>{{ $lomba->lomba_kategori }}<br>
+                                                    <i class="fas fa-calendar mr-1"></i>
                                                     {{ $lomba->lomba_tanggal_mulai->format('d M Y') }} -
                                                     {{ $lomba->lomba_tanggal_selesai->format('d M Y') }}
                                                 </small>
                                             </p>
                                             <div class="mt-3">
-                                                <span
-                                                    class="badge badge-info">{{ $lomba->tingkatan->tingkatan_nama }}</span>
+                                                <span class="badge badge-info">
+                                                    <i
+                                                        class="fas fa-layer-group mr-1"></i>{{ $lomba->tingkatan->tingkatan_nama }}
+                                                </span>
                                                 @foreach ($lomba->keahlians as $keahlian)
-                                                    <span
-                                                        class="badge badge-secondary">{{ $keahlian->keahlian_nama }}</span>
+                                                    <span class="badge badge-secondary">
+                                                        <i class="fas fa-code mr-1"></i>{{ $keahlian->keahlian_nama }}
+                                                    </span>
                                                 @endforeach
                                             </div>
 
@@ -110,42 +126,43 @@
                                             @if (!$lomba->lomba_terverifikasi)
                                                 <div class="mt-2">
                                                     <small class="text-warning">
-                                                        <i class="fas fa-info-circle"></i>
+                                                        <i class="fas fa-info-circle mr-1"></i>
                                                         Lomba ini sedang menunggu verifikasi admin
                                                     </small>
                                                 </div>
                                             @endif
                                         </div>
-                                        <div class="card-footer">
-                                            <form action="{{ route('student.achievement.select-competition') }}"
-                                                method="POST">
-                                                @csrf
-                                                <input type="hidden" name="lomba_id" value="{{ $lomba->id }}">
-                                                <button type="submit"
-                                                    class="btn btn-sm btn-block {{ $lomba->lomba_terverifikasi ? 'btn-primary' : 'btn-outline-warning' }}">
-                                                    @if ($lomba->lomba_terverifikasi)
-                                                        Pilih Lomba Ini
-                                                    @else
-                                                        Pilih Lomba (Belum Terverifikasi)
-                                                    @endif
-                                                </button>
-                                            </form>
+                                        <div class="card-footer bg-transparent">
+                                            <button type="button"
+                                                class="btn btn-sm btn-block {{ $lomba->lomba_terverifikasi ? 'btn-primary' : 'btn-outline-warning' }}">
+                                                @if ($lomba->lomba_terverifikasi)
+                                                    <i class="fas fa-check mr-1"></i>Pilih Lomba Ini
+                                                @else
+                                                    <i class="fas fa-exclamation-triangle mr-1"></i>Pilih Lomba (Belum
+                                                    Terverifikasi)
+                                                @endif
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             @empty
                                 <div class="col-12">
                                     <div class="text-center py-5">
-                                        <i class="fas fa-trophy fa-3x text-muted mb-3"></i>
-                                        <h5 class="text-muted">Belum ada lomba tersedia</h5>
-                                        <p class="text-muted">Silakan ajukan lomba baru untuk memulai</p>
-                                        <button type="button" class="btn btn-primary" onclick="showNewCompetitionForm()">
-                                            <i class="fas fa-plus"></i> Ajukan Lomba Baru
-                                        </button>
+                                        <div class="empty-state">
+                                            <i class="fas fa-trophy fa-4x text-muted mb-3"></i>
+                                            <h5 class="text-muted">Belum ada lomba tersedia</h5>
+                                            <p class="text-muted">Silakan ajukan lomba baru untuk memulai verifikasi
+                                                prestasi</p>
+                                            <button type="button" class="btn btn-primary"
+                                                onclick="showNewCompetitionForm()">
+                                                <i class="fas fa-plus-circle mr-1"></i>Ajukan Lomba Baru
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             @endforelse
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -153,46 +170,56 @@
     </div>
 
     <!-- New Competition Modal -->
-    <div class="modal fade" id="newCompetitionModal" tabindex="-1" role="dialog">
+    <div class="modal fade" id="newCompetitionModal" tabindex="-1" role="dialog"
+        aria-labelledby="newCompetitionModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Ajukan Lomba Baru</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
+                <div class="modal-header bg-gradient-primary text-white">
+                    <h5 class="modal-title" id="newCompetitionModalLabel">
+                        <i class="fas fa-plus-circle mr-2"></i>Ajukan Lomba Baru
+                    </h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ route('student.achievement.store') }}" method="POST" id="newCompetitionForm">
+                <form id="newCompetitionForm">
                     @csrf
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Nama Lomba <span class="text-danger">*</span></label>
+                                    <label><i class="fas fa-trophy mr-1"></i>Nama Lomba <span
+                                            class="text-danger">*</span></label>
                                     <input type="text" name="lomba_nama" class="form-control" required>
+                                    <div class="invalid-feedback"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Penyelenggara <span class="text-danger">*</span></label>
+                                    <label><i class="fas fa-building mr-1"></i>Penyelenggara <span
+                                            class="text-danger">*</span></label>
                                     <input type="text" name="lomba_penyelenggara" class="form-control" required>
+                                    <div class="invalid-feedback"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Kategori Lomba <span class="text-danger">*</span></label>
-                                    <select name="lomba_kategori" id="lomba_kategori" class="form-control" required>
-                                        <option value=""></option>Pilih Kategori</option>"
+                                    <label><i class="fas fa-tag mr-1"></i>Kategori Lomba <span
+                                            class="text-danger">*</span></label>
+                                    <select name="lomba_kategori" class="form-control" required>
+                                        <option value="">Pilih Kategori</option>
                                         <option value="Akademik">Akademik</option>
                                         <option value="Non-Akademik">Non-Akademik</option>
                                     </select>
+                                    <div class="invalid-feedback"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Tingkatan Lomba <span class="text-danger">*</span></label>
+                                    <label><i class="fas fa-layer-group mr-1"></i>Tingkatan Lomba <span
+                                            class="text-danger">*</span></label>
                                     <select name="lomba_tingkatan_id" class="form-control" required>
                                         <option value="">Pilih Tingkatan</option>
                                         @foreach ($tingkatans as $tingkatan)
@@ -200,63 +227,80 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                    <div class="invalid-feedback"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Bidang Keahlian <span class="text-danger">*</span></label>
+                                    <label><i class="fas fa-code mr-1"></i>Bidang Keahlian <span
+                                            class="text-danger">*</span></label>
                                     <div class="github-topics-container">
-                                        <!-- Input field for typing -->
                                         <div class="topics-input-wrapper">
                                             <div class="selected-topics" id="selectedTopics"></div>
                                             <input type="text" id="topicsInput" class="topics-input"
                                                 placeholder="Ketik bidang keahlian..." autocomplete="off">
                                         </div>
-
-                                        <!-- Dropdown suggestions -->
                                         <div class="topics-dropdown" id="topicsDropdown">
                                             <div class="dropdown-content" id="dropdownContent"></div>
                                         </div>
                                     </div>
-
-                                    <!-- Hidden inputs container -->
                                     <div id="hiddenKeahlianInputs"></div>
-
                                     <small class="text-muted">
+                                        <i class="fas fa-info-circle mr-1"></i>
                                         Ketik untuk mencari bidang keahlian. Tekan Enter untuk menambah bidang baru jika
                                         tidak ditemukan.
                                     </small>
+                                    <div class="invalid-feedback"></div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Link Pendaftaran</label>
-                            <input type="url" name="lomba_link_pendaftaran" class="form-control">
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Tanggal Mulai <span class="text-danger">*</span></label>
+                                    <label><i class="fas fa-calendar-alt mr-1"></i>Tanggal Mulai <span
+                                            class="text-danger">*</span></label>
                                     <input type="date" name="lomba_tanggal_mulai" class="form-control" required>
+                                    <div class="invalid-feedback"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Tanggal Selesai <span class="text-danger">*</span></label>
+                                    <label><i class="fas fa-calendar-check mr-1"></i>Tanggal Selesai <span
+                                            class="text-danger">*</span></label>
                                     <input type="date" name="lomba_tanggal_selesai" class="form-control" required>
+                                    <div class="invalid-feedback"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>Link Poster</label>
-                            <input type="url" name="lomba_link_poster" class="form-control">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-link mr-1"></i>Link Pendaftaran</label>
+                                    <input type="url" name="lomba_link_pendaftaran" class="form-control">
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-image mr-1"></i>Link Poster</label>
+                                    <input type="url" name="lomba_link_poster" class="form-control">
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary" id="submitBtn">Ajukan Lomba</button>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <i class="fas fa-times mr-1"></i>Batal
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <i class="fas fa-paper-plane mr-1"></i>
+                            <span class="submit-text">Ajukan Lomba</span>
+                            <span class="submit-loading" style="display: none;">
+                            </span>
+                        </button>
                     </div>
                 </form>
             </div>
@@ -281,8 +325,8 @@
         }
 
         .step-number {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background-color: #e9ecef;
             color: #6c757d;
@@ -291,87 +335,106 @@
             justify-content: center;
             font-weight: bold;
             margin-bottom: 8px;
+            transition: var(--transition);
+            font-size: 1.1rem;
         }
 
         .step.active .step-number {
-            background-color: #007bff;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
+            box-shadow: var(--shadow);
         }
 
         .step-title {
-            font-size: 12px;
+            font-size: 14px;
             text-align: center;
             color: #6c757d;
+            font-weight: 500;
         }
 
         .step.active .step-title {
-            color: #007bff;
+            color: var(--primary-color);
             font-weight: 600;
         }
 
         .step-line {
             width: 100px;
-            height: 2px;
+            height: 3px;
             background-color: #e9ecef;
             margin: 0 20px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            border-radius: 2px;
         }
 
         .competition-card {
-            transition: transform 0.2s;
+            transition: all 0.3s ease;
             cursor: pointer;
             position: relative;
+            border: 2px solid transparent;
         }
 
-        .competition-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        .competition-card.unverified:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border-color: var(--accent-color);
         }
 
-        /* Verification status styling */
+        .competition-card.verified:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border-color: #28a745;
+        }
+
         .competition-card.verified {
             border-left: 4px solid #28a745;
         }
 
+
         .competition-card.unverified {
-            border-left: 4px solid #ffc107;
+            border-left: 4px solid var(--accent-color);
             background-color: #fffdf5;
         }
 
         .verification-badge {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 1;
+            top: 15px;
+            right: 15px;
+            z-index: 2;
         }
 
         .verification-badge .badge {
-            font-size: 0.7rem;
-            padding: 0.3rem 0.5rem;
-        }
-
-        .badge-success {
-            background-color: #28a745;
-        }
-
-        .badge-warning {
-            background-color: #ffc107;
-            color: #212529;
-        }
-
-        .btn-outline-warning {
-            color: #856404;
-            border-color: #ffc107;
-        }
-
-        .btn-outline-warning:hover {
-            color: #fff;
-            background-color: #ffc107;
-            border-color: #ffc107;
+            font-size: 0.75rem;
+            padding: 0.4rem 0.6rem;
+            border-radius: 20px;
+            font-weight: 600;
         }
 
         .competition-card .card-body {
-            padding-top: 3rem;
+            padding-top: 3.5rem;
+        }
+
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+        }
+
+        .has-search {
+            position: relative;
+        }
+
+        .has-search .form-control-feedback {
+            position: absolute;
+            z-index: 2;
+            display: block;
+            width: 2.375rem;
+            height: 2.375rem;
+            line-height: 2.375rem;
+            text-align: center;
+            pointer-events: none;
+            color: #aaa;
+        }
+
+        .has-search .form-control {
+            padding-left: 2.375rem;
         }
 
         .github-topics-container {
@@ -379,44 +442,46 @@
         }
 
         .topics-input-wrapper {
-            border: 1px solid #ced4da;
-            border-radius: 0.375rem;
-            padding: 8px;
-            min-height: 45px;
+            border: 2px solid #e3e6f0;
+            border-radius: var(--border-radius);
+            padding: 10px;
+            min-height: 50px;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             background: white;
             cursor: text;
+            transition: border-color 0.3s ease;
         }
 
         .topics-input-wrapper:focus-within {
-            border-color: #007bff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(16, 32, 68, 0.25);
         }
 
         .selected-topics {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 8px;
         }
 
         .topic-tag {
-            background-color: #007bff;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             border: none;
-            border-radius: 12px;
-            padding: 4px 8px 4px 12px;
-            font-size: 12px;
+            border-radius: 20px;
+            padding: 6px 10px 6px 14px;
+            font-size: 13px;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            max-width: 200px;
+            gap: 8px;
+            max-width: 250px;
+            font-weight: 500;
         }
 
         .topic-tag.new-topic {
-            background-color: #28a745;
+            background: linear-gradient(135deg, #28a745, #20c997);
         }
 
         .topic-text {
@@ -426,33 +491,33 @@
         }
 
         .topic-remove {
-            background: none;
+            background: rgba(255, 255, 255, 0.2);
             border: none;
             color: white;
             cursor: pointer;
             padding: 0;
             margin: 0;
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 12px;
-            line-height: 1;
+            transition: background-color 0.2s ease;
         }
 
         .topic-remove:hover {
-            background-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.3);
         }
 
         .topics-input {
             border: none;
             outline: none;
             flex: 1;
-            min-width: 120px;
+            min-width: 150px;
             font-size: 14px;
-            padding: 4px;
+            padding: 6px;
         }
 
         .topics-dropdown {
@@ -460,13 +525,14 @@
             left: 0;
             right: 0;
             background: white;
-            border: 1px solid #ced4da;
+            border: 2px solid #e3e6f0;
             border-top: none;
-            border-radius: 0 0 0.375rem 0.375rem;
-            max-height: 200px;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            max-height: 250px;
             overflow-y: auto;
             z-index: 1000;
             display: none;
+            box-shadow: var(--shadow);
         }
 
         .topics-dropdown.show {
@@ -474,41 +540,91 @@
         }
 
         .dropdown-item {
-            padding: 8px 12px;
+            padding: 12px 16px;
             cursor: pointer;
             border-bottom: 1px solid #f8f9fa;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            transition: background-color 0.2s ease;
         }
 
         .dropdown-item:hover {
-            background-color: #f8f9fa;
+            background-color: #f8f9fc;
         }
 
         .dropdown-item.active {
-            background-color: #007bff;
+            background-color: var(--primary-color);
             color: white;
         }
 
         .dropdown-item.create-new {
             color: #28a745;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .dropdown-item.create-new:hover {
             background-color: #e8f5e8;
         }
 
-        .dropdown-item .fa-plus {
-            color: #28a745;
+        .empty-state {
+            padding: 3rem 1rem;
         }
 
-        .empty-state {
-            padding: 12px;
-            text-align: center;
-            color: #6c757d;
-            font-style: italic;
+        .invalid-feedback {
+            display: none;
+            width: 100%;
+            margin-top: 0.25rem;
+            font-size: 0.875rem;
+            color: #dc3545;
+        }
+
+        .is-invalid~.invalid-feedback {
+            display: block;
+        }
+
+        .is-invalid {
+            border-color: #dc3545;
+        }
+
+        .submit-loading {
+            display: none;
+        }
+
+        .spinner-border-sm {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .step-number {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .step-title {
+                font-size: 12px;
+            }
+
+            .step-line {
+                width: 50px;
+                margin: 0 10px;
+                margin-bottom: 20px;
+            }
+
+            .verification-badge {
+                top: 10px;
+                right: 10px;
+            }
+
+            .competition-card .card-body {
+                padding-top: 3rem;
+            }
+
+            .topics-input {
+                min-width: 100px;
+            }
         }
     </style>
 @endpush
@@ -527,6 +643,48 @@
             }, 300);
         }
 
+
+
+        function selectCompetition(lombaId) {
+            Swal.fire({
+                title: 'Konfirmasi',
+                text: 'Apakah Anda yakin ingin memilih lomba ini?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#102044',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fas fa-check mr-1"></i>Ya, Pilih',
+                cancelButtonText: '<i class="fas fa-times mr-1"></i>Batal',
+                showClass: {
+                    popup: 'animate__animated animate__fadeIn'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+
+                    // Create form and submit
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '{{ route('student.achievement.select-competition') }}';
+
+                    const csrfToken = document.createElement('input');
+                    csrfToken.type = 'hidden';
+                    csrfToken.name = '_token';
+                    csrfToken.value = '{{ csrf_token() }}';
+
+                    const lombaInput = document.createElement('input');
+                    lombaInput.type = 'hidden';
+                    lombaInput.name = 'lomba_id';
+                    lombaInput.value = lombaId;
+
+                    form.appendChild(csrfToken);
+                    form.appendChild(lombaInput);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
+
         // Initialize topics input
         document.addEventListener('DOMContentLoaded', function() {
             const topicsInput = document.getElementById('topicsInput');
@@ -534,26 +692,25 @@
             const selectedTopicsContainer = document.getElementById('selectedTopics');
             const inputWrapper = document.querySelector('.topics-input-wrapper');
 
-            // Focus input when clicking wrapper
-            inputWrapper.addEventListener('click', () => {
-                topicsInput.focus();
-            });
+            if (inputWrapper) {
+                inputWrapper.addEventListener('click', () => {
+                    topicsInput.focus();
+                });
 
-            // Handle input events
-            topicsInput.addEventListener('input', handleInput);
-            topicsInput.addEventListener('keydown', handleKeydown);
-            topicsInput.addEventListener('focus', () => {
-                if (topicsInput.value.trim()) {
-                    showDropdown();
-                }
-            });
+                topicsInput.addEventListener('input', handleInput);
+                topicsInput.addEventListener('keydown', handleKeydown);
+                topicsInput.addEventListener('focus', () => {
+                    if (topicsInput.value.trim()) {
+                        showDropdown();
+                    }
+                });
 
-            // Hide dropdown when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.github-topics-container')) {
-                    hideDropdown();
-                }
-            });
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.github-topics-container')) {
+                        hideDropdown();
+                    }
+                });
+            }
         });
 
         function handleInput(e) {
@@ -596,7 +753,6 @@
                     if (currentIndex >= 0 && items[currentIndex]) {
                         items[currentIndex].click();
                     } else {
-                        // Create new keahlian if input has value
                         const value = e.target.value.trim();
                         if (value) {
                             addNewKeahlian(value);
@@ -627,30 +783,27 @@
             const dropdown = document.getElementById('dropdownContent');
             dropdown.innerHTML = '';
 
-            // Add existing keahlians
             filtered.forEach(keahlian => {
-                const item = createDropdownItem(keahlian.keahlian_nama, () => {
+                const item = createDropdownItem(`<i class="fas fa-code mr-2"></i>${keahlian.keahlian_nama}`, () => {
                     addKeahlian(keahlian);
                 });
                 dropdown.appendChild(item);
             });
 
-            // Add "Create new" option if no exact match
             const exactMatch = filtered.some(k => k.keahlian_nama.toLowerCase() === searchValue.toLowerCase());
             if (searchValue && !exactMatch) {
                 const createItem = createDropdownItem(
-                    `<i class="fas fa-plus"></i> Buat "${searchValue}"`,
+                    `<i class="fas fa-plus mr-2"></i> Buat "${searchValue}"`,
                     () => addNewKeahlian(searchValue),
                     'create-new'
                 );
                 dropdown.appendChild(createItem);
             }
 
-            // Show empty state if no results
             if (dropdown.children.length === 0) {
                 const emptyItem = document.createElement('div');
                 emptyItem.className = 'empty-state';
-                emptyItem.textContent = 'Tidak ada hasil ditemukan';
+                emptyItem.innerHTML = '<i class="fas fa-search mr-2"></i>Tidak ada hasil ditemukan';
                 dropdown.appendChild(emptyItem);
             }
         }
@@ -680,7 +833,6 @@
         }
 
         function addNewKeahlian(nama) {
-            // Generate temporary negative ID for new keahlians
             const tempId = -Date.now();
 
             selectedKeahlians.push({
@@ -709,9 +861,9 @@
                 const tag = document.createElement('div');
                 tag.className = `topic-tag ${keahlian.isNew ? 'new-topic' : ''}`;
                 tag.innerHTML = `
-            <span class="topic-text" title="${keahlian.nama}">${keahlian.nama}</span>
-            <button type="button" class="topic-remove" onclick="removeKeahlian(${index})">&times;</button>
-        `;
+                    <span class="topic-text" title="${keahlian.nama}">${keahlian.nama}</span>
+                    <button type="button" class="topic-remove" onclick="removeKeahlian(${index})">&times;</button>
+                `;
                 container.appendChild(tag);
             });
         }
@@ -742,16 +894,130 @@
             currentIndex = -1;
         }
 
-        // Form validation
+        // Clear validation errors
+        function clearValidationErrors() {
+            document.querySelectorAll('.is-invalid').forEach(field => {
+                field.classList.remove('is-invalid');
+            });
+            document.querySelectorAll('.invalid-feedback').forEach(feedback => {
+                feedback.textContent = '';
+            });
+        }
+
+        // Show validation errors
+        function showValidationErrors(errors) {
+            for (const field in errors) {
+                const input = document.querySelector(`[name="${field}"]`);
+                if (input) {
+                    input.classList.add('is-invalid');
+                    const feedback = input.parentNode.querySelector('.invalid-feedback');
+                    if (feedback) {
+                        feedback.textContent = errors[field][0];
+                    }
+                }
+            }
+        }
+
+        // Form submission with AJAX
         document.getElementById('newCompetitionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
             if (selectedKeahlians.length === 0) {
-                e.preventDefault();
-                alert('Silakan pilih minimal satu bidang keahlian!');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Bidang Keahlian Diperlukan',
+                    text: 'Silakan pilih minimal satu bidang keahlian!',
+                    confirmButtonColor: '#102044',
+                    showClass: {
+                        popup: 'animate__animated animate__shakeX'
+                    }
+                });
                 return false;
             }
+
+            clearValidationErrors();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const submitText = submitBtn.querySelector('.submit-text');
+            const submitLoading = submitBtn.querySelector('.submit-loading');
+
+            submitBtn.disabled = true;
+            submitText.style.display = 'none';
+            submitLoading.style.display = 'inline-flex';
+
+            const formData = new FormData(this);
+
+            $.ajax({
+                url: '{{ route('student.achievement.store') }}',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'Accept': 'application/json',
+                },
+                success: function(response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: 'Lomba berhasil diajukan dan akan segera diproses.',
+                        confirmButtonColor: '#102044',
+                        showClass: {
+                            popup: 'animate__animated animate__bounceIn'
+                        }
+                    }).then(() => {
+                        // Create form and submit to select-competition route
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = '{{ route('student.achievement.select-competition') }}';
+
+                        const csrfToken = document.createElement('input');
+                        csrfToken.type = 'hidden';
+                        csrfToken.name = '_token';
+                        csrfToken.value = '{{ csrf_token() }}';
+
+                        const lombaInput = document.createElement('input');
+                        lombaInput.type = 'hidden';
+                        lombaInput.name = 'lomba_id';
+                        lombaInput.value = response.lomba_id;
+
+                        form.appendChild(csrfToken);
+                        form.appendChild(lombaInput);
+                        document.body.appendChild(form);
+                        form.submit();
+                    });
+                },
+                error: function(xhr) {
+                    submitBtn.disabled = false;
+                    submitText.style.display = 'inline';
+                    submitLoading.style.display = 'none';
+
+                    if (xhr.status === 422) {
+                        const errors = xhr.responseJSON.errors;
+                        showValidationErrors(errors);
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Validasi Gagal',
+                            text: 'Silakan periksa kembali form yang Anda isi.',
+                            confirmButtonColor: '#102044',
+                            showClass: {
+                                popup: 'animate__animated animate__shakeX'
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Terjadi Kesalahan',
+                            text: 'Mohon coba lagi beberapa saat.',
+                            confirmButtonColor: '#102044'
+                        });
+                    }
+                }
+            });
         });
 
-        // Search functionality for existing competitions
+        // Search functionality
         document.getElementById('searchLomba').addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase();
             const lombaItems = document.querySelectorAll('.lomba-item');
@@ -766,16 +1032,7 @@
             });
         });
 
-        // Reset form when modal is closed
-        $('#newCompetitionModal').on('hidden.bs.modal', function() {
-            selectedKeahlians = [];
-            updateSelectedTopics();
-            updateHiddenInputs();
-            clearInput();
-            hideDropdown();
-        });
-
-        // Filter competitions by status
+        // Filter by status
         document.getElementById('statusFilter').addEventListener('change', function() {
             const filterValue = this.value;
             const lombaItems = document.querySelectorAll('.lomba-item');
@@ -794,6 +1051,25 @@
                     item.style.display = 'none';
                 }
             });
+        });
+
+        // Reset form when modal is closed
+        $('#newCompetitionModal').on('hidden.bs.modal', function() {
+            selectedKeahlians = [];
+            updateSelectedTopics();
+            updateHiddenInputs();
+            clearInput();
+            hideDropdown();
+            clearValidationErrors();
+            document.getElementById('newCompetitionForm').reset();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const submitText = submitBtn.querySelector('.submit-text');
+            const submitLoading = submitBtn.querySelector('.submit-loading');
+
+            submitBtn.disabled = false;
+            submitText.style.display = 'inline';
+            submitLoading.style.display = 'none';
         });
     </script>
 @endpush

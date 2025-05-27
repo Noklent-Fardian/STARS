@@ -12,7 +12,6 @@ use App\Models\Verifikasi;
 use App\Models\Dosen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class CompetitionSubmissionController extends Controller
 {
@@ -99,11 +98,10 @@ class CompetitionSubmissionController extends Controller
             'lomba_tanggal_selesai' => $request->lomba_tanggal_selesai,
             'lomba_link_pendaftaran' => $request->lomba_link_pendaftaran ?? '',
             'lomba_link_poster' => $request->lomba_link_poster ?? '',
-            'lomba_terverifikasi' => false, 
+            'lomba_terverifikasi' => false,
             'lomba_visible' => true
         ]);
 
-        // THIS LINE ALREADY HANDLES THE t_keahlian_lombas TABLE
         // It creates records in the pivot table linking lomba_id to keahlian_id
         $lomba->keahlians()->attach($keahlianIds);
 
@@ -120,10 +118,19 @@ class CompetitionSubmissionController extends Controller
             'lomba_link_poster' => $request->lomba_link_poster,
             'lomba_tingkatan_id' => $request->lomba_tingkatan_id,
             'pendaftaran_tanggal_pendaftaran' => now(),
-            'lomba_keahlian_ids' => $keahlianIds, 
+            'lomba_keahlian_ids' => $keahlianIds,
             'pendaftaran_status' => 'menunggu',
             'pendaftaran_visible' => true
         ]);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Lomba berhasil diajukan',
+                'redirect' => route('student.achievement.select-competition'),
+                'lomba_id' => $lomba->id
+            ]);
+        }
 
         $peringkats = Peringkat::where('peringkat_visible', true)->get();
         $dosens = Dosen::where('dosen_visible', true)->get();
