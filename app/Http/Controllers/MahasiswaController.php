@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 
 class MahasiswaController extends Controller
@@ -110,33 +113,136 @@ class MahasiswaController extends Controller
         return redirect()->route('mahasiswa.profile')->with('success', 'Password berhasil diubah.');
     }
 
+    public function changePassword(Request $request)
+    {
+        $messages = [
+            'current_password.required' => 'Kata sandi saat ini diperlukan.',
+            'new_password.required'     => 'Kata sandi baru diperlukan.',
+            'new_password.min'          => 'Kata sandi baru minimal 6 karakter.',
+            'confirm_password.required' => 'Konfirmasi kata sandi diperlukan.',
+            'confirm_password.same'     => 'Konfirmasi kata sandi baru tidak cocok.',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'current_password' => 'required',
+            'new_password'     => 'required|min:6',
+            'confirm_password' => 'required|same:new_password',
+        ], $messages);
+
+        if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'errors'  => $validator->errors(),
+                    'message' => $validator->errors()->first(),
+                ], 422);
+            }
+
+            return redirect()->route('mahasiswa.profile')
+                ->with('error', $validator->errors()->first())
+                ->withErrors($validator);
+        }
+
+        $user = Auth::user();
+
+        // Check if current password matches
+        if (!password_verify($request->current_password, $user->user_password)) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'errors'  => [
+                        'current_password' => ['Kata sandi saat ini tidak valid.'],
+                    ],
+                    'message' => 'Kata sandi saat ini tidak valid.',
+                ], 422);
+            }
+
+            return redirect()->route('mahasiswa.profile')
+                ->with('error', 'Kata sandi saat ini tidak valid.');
+        }
+
+        try {
+            DB::table('m_users')
+                ->where('id', $user->id)
+                ->update(['user_password' => bcrypt($request->new_password)]);
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Kata sandi berhasil diubah.',
+                ]);
+            }
+
+            return redirect()->route('mahasiswa.profile')
+                ->with('success', 'Kata sandi berhasil diubah.');
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan saat mengubah kata sandi. Silakan coba lagi.',
+                ], 500);
+            }
+
+            return redirect()->route('mahasiswa.profile')
+                ->with('error', 'Terjadi kesalahan saat mengubah kata sandi. Silakan coba lagi.');
+        }
+    }
+
     public function updatePhoto(Request $request)
     {
-        $request->validate([
+        $messages = [
+            'profile_picture.required' => 'Silakan pilih foto terlebih dahulu.',
+            'profile_picture.image'    => 'File harus berupa gambar.',
+            'profile_picture.mimes'    => 'Format foto harus jpeg, jpg, png, atau webp.',
+            'profile_picture.max'      => 'Ukuran foto tidak boleh lebih dari 2MB.',
+        ];
+
+        $validator = Validator::make($request->all(), [
             'profile_picture' => 'required|image|mimes:jpeg,jpg,png,webp|max:2048',
-        ]);
+        ], $messages);
+
+        if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $validator->errors()->first(),
+                ], 422);
+            }
+            return redirect()->back()->with('error', $validator->errors()->first());
+        }
 
         $mahasiswa = Auth::user()->mahasiswa;
 
-        if ($request->hasFile('profile_picture')) {
-            $file = $request->file('profile_picture');
-            $path = $file->store('mahasiswa_photos', 'public');
-            // Simpan path file ke database
-            $mahasiswa->mahasiswa_photo = $path;
-            // Jika ingin tetap menggunakan getClientOriginalExtension(), bisa untuk logging atau keperluan lain
-            $ext = $file->getClientOriginalExtension();
-            // Contoh: log ekstensi (tidak mempengaruhi penyimpanan path)
-            // \Log::info('Ekstensi file upload: ' . $ext);
-            $mahasiswa->save();
+        // Delete old photo if exists
+        if ($mahasiswa->mahasiswa_photo && Storage::disk('public')->exists($mahasiswa->mahasiswa_photo)) {
+            Storage::disk('public')->delete($mahasiswa->mahasiswa_photo);
         }
 
-        if ($request->ajax()) {
-            return response()->json([
-                'message' => 'Foto profil berhasil diubah.',
-                'photo_url' => asset('storage/' . $mahasiswa->mahasiswa_photo)
-            ]);
-        }
+        try {
+            if ($request->hasFile('profile_picture')) {
+                $file = $request->file('profile_picture');
+                $path = $file->store('mahasiswa_photos', 'public');
+                $mahasiswa->mahasiswa_photo = $path;
+                $mahasiswa->save();
+            }
 
-        return redirect()->back()->with('success', 'Foto profil berhasil diubah.');
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Foto profil berhasil diubah.',
+                    'photo_url' => asset('storage/' . $mahasiswa->mahasiswa_photo)
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'Foto profil berhasil diubah.');
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan saat mengunggah foto. Silakan coba lagi.',
+                ], 500);
+            }
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengunggah foto.');
+        }
     }
 }
