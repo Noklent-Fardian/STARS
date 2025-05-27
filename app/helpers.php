@@ -40,3 +40,21 @@ function getUserDisplayName(): string
         $user->mahasiswa->mahasiswa_nama ??
         $user->username;
 }
+function getUserProfileRoute(): string
+{
+    $user = Auth::user();
+
+    if ($user->admin) {
+        return route('admin.profile');
+    }
+
+    if ($user->dosen) {
+        return route('dosen.profile');
+    }
+
+    if ($user->mahasiswa) {
+        return route('mahasiswa.profile');
+    }
+
+    return route('admin.profile'); 
+}
