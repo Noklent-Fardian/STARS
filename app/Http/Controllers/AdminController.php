@@ -1,13 +1,12 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Admin;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -20,24 +19,20 @@ class AdminController extends Controller
         return view('admin.index', compact('admin'));
     }
 
-
     public function mahasiswaIndex()
     {
-        return view('admin.mahasiswa.index');
+        return view('admin.mahasiswaManagement.index');
     }
-
 
     public function dosenIndex()
     {
         return view('admin.dosenManagement.index');
     }
 
-
     public function adminIndex()
     {
         return redirect()->route('admin.adminManagement.index');
     }
-
 
     public function prestasiVerification()
     {
@@ -74,7 +69,6 @@ class AdminController extends Controller
         return view('admin.adminKelolaLomba.index');
     }
 
-
     public function masterPeriode()
     {
         return view('admin.semester.index');
@@ -107,7 +101,7 @@ class AdminController extends Controller
 
     public function editProfile()
     {
-        $user = Auth::user();
+        $user  = Auth::user();
         $admin = Admin::where('user_id', $user->id)->first();
         return view('admin.profile.edit_profile', compact('admin'));
     }
@@ -115,13 +109,13 @@ class AdminController extends Controller
     public function updateProfile(Request $request)
     {
         try {
-            $user = Auth::user();
+            $user  = Auth::user();
             $admin = Admin::where('user_id', $user->id)->first();
 
             $data = [
-                'admin_name' => $request->admin_name,
+                'admin_name'          => $request->admin_name,
                 'admin_nomor_telepon' => $request->admin_nomor_telepon,
-                'admin_gender' => $request->admin_gender,
+                'admin_gender'        => $request->admin_gender,
             ];
 
             $admin->update($data);
@@ -136,9 +130,9 @@ class AdminController extends Controller
     {
         $messages = [
             'admin_photo.required' => 'Silakan pilih foto terlebih dahulu.',
-            'admin_photo.image' => 'File harus berupa gambar.',
-            'admin_photo.mimes' => 'Format foto harus jpeg, png, atau jpg.',
-            'admin_photo.max' => 'Ukuran foto tidak boleh lebih dari 2MB.',
+            'admin_photo.image'    => 'File harus berupa gambar.',
+            'admin_photo.mimes'    => 'Format foto harus jpeg, png, atau jpg.',
+            'admin_photo.max'      => 'Ukuran foto tidak boleh lebih dari 2MB.',
         ];
 
         $validator = Validator::make($request->all(), [
@@ -151,19 +145,19 @@ class AdminController extends Controller
                 ->withErrors($validator);
         }
 
-        $user = Auth::user();
+        $user  = Auth::user();
         $admin = Admin::where('user_id', $user->id)->first();
         if ($admin->admin_photo && Storage::disk('public')->exists('admin_photos/' . $admin->admin_photo)) {
             Storage::disk('public')->delete('admin_photos/' . $admin->admin_photo);
         }
 
         try {
-            $photo = $request->file('admin_photo');
+            $photo     = $request->file('admin_photo');
             $photoName = time() . '_' . $user->id . '.' . $photo->getClientOriginalExtension();
             $photo->storeAs('admin_photos', $photoName, 'public');
 
             $admin->update([
-                'admin_photo' => $photoName
+                'admin_photo' => $photoName,
             ]);
 
             return redirect()->route('admin.profile')->with('success', 'Foto profil berhasil diperbarui.');
@@ -172,20 +166,19 @@ class AdminController extends Controller
         }
     }
 
-
     public function changePassword(Request $request)
     {
         $messages = [
             'current_password.required' => 'Kata sandi saat ini diperlukan.',
-            'new_password.required' => 'Kata sandi baru diperlukan.',
-            'new_password.min' => 'Kata sandi baru minimal 6 karakter.',
+            'new_password.required'     => 'Kata sandi baru diperlukan.',
+            'new_password.min'          => 'Kata sandi baru minimal 6 karakter.',
             'confirm_password.required' => 'Konfirmasi kata sandi diperlukan.',
-            'confirm_password.same' => 'Konfirmasi kata sandi baru tidak cocok.',
+            'confirm_password.same'     => 'Konfirmasi kata sandi baru tidak cocok.',
         ];
 
         $validator = Validator::make($request->all(), [
             'current_password' => 'required',
-            'new_password' => 'required|min:6',
+            'new_password'     => 'required|min:6',
             'confirm_password' => 'required|same:new_password',
         ], $messages);
 
@@ -193,7 +186,7 @@ class AdminController extends Controller
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => $validator->errors()
+                    'errors'  => $validator->errors(),
                 ], 422);
             }
 
@@ -206,13 +199,13 @@ class AdminController extends Controller
 
         // Check if current password matches
 
-        if (!password_verify($request->current_password, $user->user_password)) {
+        if (! password_verify($request->current_password, $user->user_password)) {
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => [
-                        'current_password' => ['Kata sandi saat ini tidak valid.']
-                    ]
+                    'errors'  => [
+                        'current_password' => ['Kata sandi saat ini tidak valid.'],
+                    ],
                 ], 422);
             }
 
@@ -228,7 +221,7 @@ class AdminController extends Controller
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'Kata sandi berhasil diubah.'
+                    'message' => 'Kata sandi berhasil diubah.',
                 ]);
             }
 
@@ -238,7 +231,7 @@ class AdminController extends Controller
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Terjadi kesalahan saat mengubah kata sandi. Silakan coba lagi.'
+                    'message' => 'Terjadi kesalahan saat mengubah kata sandi. Silakan coba lagi.',
                 ], 500);
             }
 

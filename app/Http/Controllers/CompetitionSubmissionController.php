@@ -12,22 +12,21 @@ use App\Models\Verifikasi;
 use App\Models\Dosen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class CompetitionSubmissionController extends Controller
 {
-public function create()
-{
-    $lombas = Lomba::with(['keahlians', 'tingkatan'])
-        ->where('lomba_visible', true)
-        ->orderBy('lomba_terverifikasi', 'desc') 
-        ->orderBy('created_at', 'desc')
-        ->get();
+    public function create()
+    {
+        $lombas = Lomba::with(['keahlians', 'tingkatan'])
+            ->where('lomba_visible', true)
+            ->orderBy('lomba_terverifikasi', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-    $tingkatans = Tingkatan::where('tingkatan_visible', true)->get();
+        $tingkatans = Tingkatan::where('tingkatan_visible', true)->get();
 
-    return view('mahasiswa.ajukanVerifikasiPrestasi.create-step1', compact('lombas', 'tingkatans'));
-}
+        return view('mahasiswa.ajukanVerifikasiPrestasi.create-step1', compact('lombas', 'tingkatans'));
+    }
 
     public function selectCompetition(Request $request)
     {
@@ -62,6 +61,7 @@ public function create()
 
         $keahlianIds = $request->lomba_keahlian_ids ?? [];
 
+        // Handle new keahlian names
         if ($request->has('new_keahlian_names')) {
             foreach ($request->new_keahlian_names as $newKeahlianName) {
                 // Check if keahlian already exists (case insensitive)
@@ -90,7 +90,7 @@ public function create()
         // Create lomba record with terverifikasi = false
         $lomba = Lomba::create([
             'tingkatan_id' => $request->lomba_tingkatan_id,
-            'semester_id' => 1, // You might want to get the current semester dynamically
+            'semester_id' => 1,
             'lomba_nama' => $request->lomba_nama,
             'lomba_penyelenggara' => $request->lomba_penyelenggara,
             'lomba_kategori' => $request->lomba_kategori,
@@ -98,13 +98,14 @@ public function create()
             'lomba_tanggal_selesai' => $request->lomba_tanggal_selesai,
             'lomba_link_pendaftaran' => $request->lomba_link_pendaftaran ?? '',
             'lomba_link_poster' => $request->lomba_link_poster ?? '',
-            'lomba_terverifikasi' => false, // Set to false for admin verification
+            'lomba_terverifikasi' => false,
             'lomba_visible' => true
         ]);
 
-        // Attach keahlians to the created lomba
+        // It creates records in the pivot table linking lomba_id to keahlian_id
         $lomba->keahlians()->attach($keahlianIds);
 
+        // Create competition submission record
         $competitionSubmission = CompetitionSubmission::create([
             'mahasiswa_id' => Auth::user()->mahasiswa->id,
             'lomba_id' => $lomba->id,
@@ -117,17 +118,25 @@ public function create()
             'lomba_link_poster' => $request->lomba_link_poster,
             'lomba_tingkatan_id' => $request->lomba_tingkatan_id,
             'pendaftaran_tanggal_pendaftaran' => now(),
-            'lomba_keahlian_ids' => $keahlianIds, // Let the model cast handle the JSON conversion
+            'lomba_keahlian_ids' => $keahlianIds,
             'pendaftaran_status' => 'menunggu',
             'pendaftaran_visible' => true
-
         ]);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Lomba berhasil diajukan',
+                'redirect' => route('student.achievement.select-competition'),
+                'lomba_id' => $lomba->id
+            ]);
+        }
 
         $peringkats = Peringkat::where('peringkat_visible', true)->get();
         $dosens = Dosen::where('dosen_visible', true)->get();
 
         return view('mahasiswa.ajukanVerifikasiPrestasi.create-step2')
-            ->with('selectedLomba', $lomba) // Pass the created lomba instead of null
+            ->with('selectedLomba', $lomba)
             ->with('competitionSubmissionId', $competitionSubmission->id)
             ->with('peringkats', $peringkats)
             ->with('dosens', $dosens);

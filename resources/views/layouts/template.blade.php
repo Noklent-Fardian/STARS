@@ -37,12 +37,40 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-
     <!-- Additional CSS -->
     @stack('css')
 
-  
+    <style>
+        .swal2-popup {
+            font-family: "Poppins", sans-serif !important;
+            border-radius: 12px !important;
+        }
 
+        .swal2-title {
+            color: var(--heading-color) !important;
+        }
+
+        .swal2-confirm {
+            background-color: var(--primary-color) !important;
+            border-radius: 8px !important;
+        }
+
+        .swal2-cancel {
+            background-color: #6c757d !important;
+            border-radius: 8px !important;
+        }
+
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -152,6 +180,141 @@
 
     <!-- Additional JS -->
     <script src="{{ asset('js/layouts.js') }}"></script>
+    <script>
+        // Global AJAX setup
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            error: function(xhr, status, error) {
+                $('#loadingOverlay').hide();
+                console.error('AJAX Error:', error);
+
+                if (xhr.status === 422) {
+                    let errors = xhr.responseJSON.errors;
+                    let errorMessage = '';
+                    for (let field in errors) {
+                        errorMessage += `• ${errors[field][0]}\n`;
+                    }
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        html: errorMessage.replace(/\n/g, '<br>'),
+                        confirmButtonColor: '#102044',
+                        showClass: {
+                            popup: 'animate__animated animate__fadeIn'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOut'
+                        }
+                    });
+                } else if (xhr.status === 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Server Error',
+                        text: 'Internal server error occurred. Please try again.',
+                        confirmButtonColor: '#102044'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Something went wrong. Please try again.',
+                        confirmButtonColor: '#102044'
+                    });
+                }
+            }
+        });
+
+        // Enhanced SweetAlert configuration
+        window.showSuccess = function(message, title = 'Success!') {
+            Swal.fire({
+                icon: 'success',
+                title: title,
+                text: message,
+                confirmButtonColor: '#102044',
+                timer: 3000,
+                timerProgressBar: true,
+                showClass: {
+                    popup: 'animate__animated animate__bounceIn'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOut'
+                }
+            });
+        };
+
+        window.showError = function(message, title = 'Error!') {
+            Swal.fire({
+                icon: 'error',
+                title: title,
+                text: message,
+                confirmButtonColor: '#102044',
+                showClass: {
+                    popup: 'animate__animated animate__shakeX'
+                }
+            });
+        };
+
+        window.showWarning = function(message, title = 'Warning!') {
+            Swal.fire({
+                icon: 'warning',
+                title: title,
+                text: message,
+                confirmButtonColor: '#102044',
+                showClass: {
+                    popup: 'animate__animated animate__pulse'
+                }
+            });
+        };
+
+        window.showInfo = function(message, title = 'Information') {
+            Swal.fire({
+                icon: 'info',
+                title: title,
+                text: message,
+                confirmButtonColor: '#102044'
+            });
+        };
+
+        // Enhanced validation handling
+        window.handleValidationErrors = function(errors) {
+            let errorList = '<ul class="text-left">';
+            for (let field in errors) {
+                errorList += `<li>${errors[field][0]}</li>`;
+            }
+            errorList += '</ul>';
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Errors',
+                html: errorList,
+                confirmButtonColor: '#102044',
+                customClass: {
+                    htmlContainer: 'text-left'
+                }
+            });
+        };
+
+        // Loading overlay functions
+        window.showLoading = function(message = 'Processing...') {
+            Swal.fire({
+                title: message,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                allowEnterKey: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        };
+
+        window.hideLoading = function() {
+            Swal.close();
+        };
+    </script>
     @stack('js')
 </body>
 

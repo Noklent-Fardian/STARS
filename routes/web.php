@@ -1,25 +1,23 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminKelolaLombaController;
+use App\Http\Controllers\AdminKelolaPrestasiController;
+use App\Http\Controllers\AdminManagementController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BidangKeahlianController;
+use App\Http\Controllers\CompetitionSubmissionController;
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\DosenManagementController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\LombaController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\MahasiswaManagementController;
 use App\Http\Controllers\PeringkatController;
 use App\Http\Controllers\ProdiController;
-use App\Http\Controllers\TingkatanController;
-use App\Http\Controllers\BidangKeahlianController;
 use App\Http\Controllers\SemesterController;
-use App\Http\Controllers\DosenManagementController;
-use App\Http\Controllers\LombaController;
-use App\Http\Controllers\PrestasiController;
-use App\Http\Controllers\AdminManagementController;
-use App\Http\Controllers\AdminKelolaPrestasiController;
-use App\Http\Controllers\AdminKelolaLombaController;
 use App\Http\Controllers\SystemController;
-use App\Http\Controllers\TingkatanLombaController;
-use App\Http\Controllers\CompetitionSubmissionController;
-
+use App\Http\Controllers\TingkatanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,20 +47,14 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::get('/', [AdminManagementController::class, 'index'])->name('index');
         Route::get('/list', [AdminManagementController::class, 'getAdminList'])->name('list');
         Route::get('/show/{id}', [AdminManagementController::class, 'show'])->name('show');
-
-        // AJAX routes
         Route::get('/create_ajax', [AdminManagementController::class, 'createAjax'])->name('createAjax');
         Route::post('/ajax', [AdminManagementController::class, 'storeAjax'])->name('storeAjax');
         Route::get('/{id}/edit_ajax', [AdminManagementController::class, 'editAjax'])->name('editAjax');
         Route::put('/{id}/update_ajax', [AdminManagementController::class, 'updateAjax'])->name('updateAjax');
         Route::get('/{id}/confirm_ajax', [AdminManagementController::class, 'confirmAjax'])->name('confirmAjax');
         Route::delete('/{id}/delete_ajax', [AdminManagementController::class, 'destroyAjax'])->name('destroyAjax');
-
-        // Export routes
         Route::get('/export_pdf', [AdminManagementController::class, 'exportPDF'])->name('exportPDF');
         Route::get('/export_excel', [AdminManagementController::class, 'exportExcel'])->name('exportExcel');
-
-        // Import routes
         Route::get('/import_form', [AdminManagementController::class, 'importForm'])->name('importForm');
         Route::post('/import_excel', [AdminManagementController::class, 'importExcel'])->name('importExcel');
         Route::get('/generate_template', [AdminManagementController::class, 'generateTemplate'])->name('generateTemplate');
@@ -73,25 +65,38 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::get('/', [DosenManagementController::class, 'index'])->name('index');
         Route::get('/list', [DosenManagementController::class, 'getDosenList'])->name('list');
         Route::get('/show/{id}', [DosenManagementController::class, 'show'])->name('show');
-
-        // AJAX routes
+        Route::put('/{id}/reset-password', [DosenManagementController::class, 'resetPassword'])->name('resetPassword');
         Route::get('/create_ajax', [DosenManagementController::class, 'createAjax'])->name('createAjax');
         Route::post('/ajax', [DosenManagementController::class, 'storeAjax'])->name('storeAjax');
         Route::get('/{id}/edit_ajax', [DosenManagementController::class, 'editAjax'])->name('editAjax');
         Route::put('/{id}/update_ajax', [DosenManagementController::class, 'updateAjax'])->name('updateAjax');
         Route::get('/{id}/confirm_ajax', [DosenManagementController::class, 'confirmAjax'])->name('confirmAjax');
         Route::delete('/{id}/delete_ajax', [DosenManagementController::class, 'destroyAjax'])->name('destroyAjax');
-
-        // Export routes
         Route::get('/export_pdf', [DosenManagementController::class, 'exportPDF'])->name('exportPDF');
         Route::get('/export_excel', [DosenManagementController::class, 'exportExcel'])->name('exportExcel');
-
-        // Import routes
         Route::get('/import_form', [DosenManagementController::class, 'importForm'])->name('importForm');
         Route::post('/import_excel', [DosenManagementController::class, 'importExcel'])->name('importExcel');
         Route::get('/generate_template', [DosenManagementController::class, 'generateTemplate'])->name('generateTemplate');
     });
 
+    // Mahasiswa Management Routes
+    Route::prefix('mahasiswaManagement')->name('admin.mahasiswaManagement.')->group(function () {
+        Route::get('/', [MahasiswaManagementController::class, 'index'])->name('index');
+        Route::get('/list', [MahasiswaManagementController::class, 'getMahasiswaList'])->name('list');
+        Route::get('/show/{id}', [MahasiswaManagementController::class, 'show'])->name('show');
+        Route::put('/{id}/reset-password', [MahasiswaManagementController::class, 'resetPassword'])->name('resetPassword');
+        Route::get('/create_ajax', [MahasiswaManagementController::class, 'createAjax'])->name('createAjax');
+        Route::post('/ajax', [MahasiswaManagementController::class, 'storeAjax'])->name('storeAjax');
+        Route::get('/{id}/edit_ajax', [MahasiswaManagementController::class, 'editAjax'])->name('editAjax');
+        Route::put('/{id}/update_ajax', [MahasiswaManagementController::class, 'updateAjax'])->name('updateAjax');
+        Route::get('/{id}/confirm_ajax', [MahasiswaManagementController::class, 'confirmAjax'])->name('confirmAjax');
+        Route::delete('/{id}/delete_ajax', [MahasiswaManagementController::class, 'destroyAjax'])->name('destroyAjax');
+        Route::get('/export_pdf', [MahasiswaManagementController::class, 'exportPDF'])->name('exportPDF');
+        Route::get('/export_excel', [MahasiswaManagementController::class, 'exportExcel'])->name('exportExcel');
+        Route::get('/import_form', [MahasiswaManagementController::class, 'importForm'])->name('importForm');
+        Route::post('/import_excel', [MahasiswaManagementController::class, 'importExcel'])->name('importExcel');
+        Route::get('/generate_template', [MahasiswaManagementController::class, 'generateTemplate'])->name('generateTemplate');
+    });
 
     // Manajemen Pengguna
     Route::get('/mahasiswa', [AdminController::class, 'mahasiswaIndex'])->name('admin.mahasiswa.index');
@@ -128,7 +133,6 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::post('/import_excel', [AdminKelolaPrestasiController::class, 'importExcel'])->name('importExcel');
         Route::get('/generate_template', [AdminKelolaPrestasiController::class, 'generateTemplate'])->name('generateTemplate');
     });
-
 
     // Admin Kelola Lomba
     Route::prefix('adminKelolaLomba')->name('admin.adminKelolaLomba.')->group(function () {
@@ -283,7 +287,6 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::post('/import_excel', [SemesterController::class, 'importExcel'])->name('importExcel');
         Route::get('/generate_template', [SemesterController::class, 'generateTemplate'])->name('generateTemplate');
     });
-
 
     Route::get('/master/keahlian', [AdminController::class, 'masterKeahlian'])->name('admin.master.keahlian');
 

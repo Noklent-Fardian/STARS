@@ -1,8 +1,6 @@
 <?php
-
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -15,6 +13,7 @@ class MahasiswaSeeder extends Seeder
     {
         DB::table('m_mahasiswas')->insert([
             [
+
                 'user_id' => '12',
                 'prodi_id' => 1,
                 'keahlian_id' => '1',
@@ -25,13 +24,13 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_gender' => 'Laki-laki',
                 'mahasiswa_angkatan' => '2023',
                 'mahasiswa_nomor_telepon' => '085730760115',
-                'mahasiswa_photo' => null,
-                'mahasiswa_agama' => 'Islam',
-                'mahasiswa_provinsi' => '',
-                'mahasiswa_kota' => '',
-                'mahasiswa_kecamatan' => '',
-                'mahasiswa_desa' => '',
-                'mahasiswa_visible' => true,
+                'mahasiswa_photo'         => null,
+                'mahasiswa_agama'         => 'Islam',
+                'mahasiswa_provinsi'      => '',
+                'mahasiswa_kota'          => '',
+                'mahasiswa_kecamatan'     => '',
+                'mahasiswa_desa'          => '',
+                'mahasiswa_visible'       => true,
             ],
             [
                 'user_id' => '13',
@@ -43,14 +42,15 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_status' => 'Aktif',
                 'mahasiswa_gender' => 'Laki-laki',
                 'mahasiswa_angkatan' => '2023',
+
                 'mahasiswa_nomor_telepon' => '087866301810',
-                'mahasiswa_photo'=>null,
-                'mahasiswa_agama' => 'Islam',
-                'mahasiswa_provinsi' => '',
-                'mahasiswa_kota' => '',
-                'mahasiswa_kecamatan' => '',
-                'mahasiswa_desa' => '',
-                'mahasiswa_visible' => true,
+                'mahasiswa_photo'         => null,
+                'mahasiswa_agama'         => 'Islam',
+                'mahasiswa_provinsi'      => '',
+                'mahasiswa_kota'          => '',
+                'mahasiswa_kecamatan'     => '',
+                'mahasiswa_desa'          => '',
+                'mahasiswa_visible'       => true,
             ],
             [
                 'user_id' => '14',
@@ -63,13 +63,13 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_gender' => 'Laki-laki',
                 'mahasiswa_angkatan' => '2023',
                 'mahasiswa_nomor_telepon' => '082131973378',
-                'mahasiswa_photo'=>null,
-                'mahasiswa_agama' => 'Islam',
-                'mahasiswa_provinsi' => '',
-                'mahasiswa_kota' => '',
-                'mahasiswa_kecamatan' => '',
-                'mahasiswa_desa' => '',
-                'mahasiswa_visible' => true,
+                'mahasiswa_photo'         => null,
+                'mahasiswa_agama'         => 'Islam',
+                'mahasiswa_provinsi'      => '',
+                'mahasiswa_kota'          => '',
+                'mahasiswa_kecamatan'     => '',
+                'mahasiswa_desa'          => '',
+                'mahasiswa_visible'       => true,
             ],
             [
                 'user_id' => '15',
@@ -82,13 +82,13 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_gender' => 'Perempuan',
                 'mahasiswa_angkatan' => '2023',
                 'mahasiswa_nomor_telepon' => '082133236984',
-                'mahasiswa_photo'=>null,
-                'mahasiswa_agama' => 'Islam',
-                'mahasiswa_provinsi' => '',
-                'mahasiswa_kota' => '',
-                'mahasiswa_kecamatan' => '',
-                'mahasiswa_desa' => '',
-                'mahasiswa_visible' => true,
+                'mahasiswa_photo'         => null,
+                'mahasiswa_agama'         => 'Islam',
+                'mahasiswa_provinsi'      => '',
+                'mahasiswa_kota'          => '',
+                'mahasiswa_kecamatan'     => '',
+                'mahasiswa_desa'          => '',
+                'mahasiswa_visible'       => true,
             ],
             [
                 'user_id' => '16',
@@ -101,13 +101,13 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_gender' => 'Laki-laki',
                 'mahasiswa_angkatan' => '2023',
                 'mahasiswa_nomor_telepon' => '089517032681',
-                'mahasiswa_photo' => null,
-                'mahasiswa_agama' => 'Islam',
-                'mahasiswa_provinsi' => '',
-                'mahasiswa_kota' => '',
-                'mahasiswa_kecamatan' => '',
-                'mahasiswa_desa' => '',
-                'mahasiswa_visible' => true,
+                'mahasiswa_photo'         => null,
+                'mahasiswa_agama'         => 'Islam',
+                'mahasiswa_provinsi'      => '',
+                'mahasiswa_kota'          => '',
+                'mahasiswa_kecamatan'     => '',
+                'mahasiswa_desa'          => '',
+                'mahasiswa_visible'       => true,
             ],
             [
                 'user_id' => '17',
