@@ -63,10 +63,6 @@
                             <div class="col-sm-8">{{ $dosen->dosen_nip }}</div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-sm-4">NIP</div>
-                            <div class="col-sm-8">{{ $dosen->dosen_nip ?? '-' }}</div>
-                        </div>
-                        <div class="row mb-2">
                             <div class="col-sm-4">No. Telepon</div>
                             <div class="col-sm-8">{{ $dosen->dosen_nomor_telepon }}</div>
                         </div>
