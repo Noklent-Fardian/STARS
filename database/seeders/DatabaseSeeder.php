@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             BimbinganSeeder::class,
             KeahlianLombaSeeder::class,
             KeahlianMahasiswaSeeder::class,
+            KeahlianDosenSeeder::class,
             PenghargaanSeeder::class,
             TambahLombaSeeder::class,
             VerifikasiSeeder::class,

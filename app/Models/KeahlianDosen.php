@@ -26,20 +26,4 @@ class KeahlianDosen extends Model
         'keahlian_id',
         'keahlian_sertifikat',
     ];
-
-    /**
-     * Get the dosen that owns the keahlian.
-     */
-    public function dosen(): BelongsTo
-    {
-        return $this->belongsTo(Dosen::class, 'dosen_id');
-    }
-
-    /**
-     * Get the keahlian associated with the dosen.
-     */
-    public function keahlian(): BelongsTo
-    {
-        return $this->belongsTo(Keahlian::class, 'keahlian_id');
-    }
 }

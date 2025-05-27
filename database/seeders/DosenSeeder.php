@@ -17,6 +17,8 @@ class DosenSeeder extends Seeder
             [
                 'user_id' => 6,
                 'prodi_id' => 1,
+                'keahlian_id' => 1,
+                'keahlian_sertifikat' => null,
                 'dosen_nama' => 'Dimas Wahyu Wibowo, S.T., M.T.',
                 'dosen_nip' => '198410092015041001',
                 'dosen_status' => 'Aktif',
@@ -32,6 +34,8 @@ class DosenSeeder extends Seeder
             [
                 'user_id' => 7,
                 'prodi_id' => 1,
+                'keahlian_id' => 2,
+                'keahlian_sertifikat' => null,
                 'dosen_nama' => 'Ade Ismail, S.Kom., M.TI.',
                 'dosen_nip' => '199107042019031021',
                 'dosen_status' => 'Aktif',
@@ -47,6 +51,8 @@ class DosenSeeder extends Seeder
             [
                 'user_id' => 8,
                 'prodi_id' => 1,
+                'keahlian_id' => 3,
+                'keahlian_sertifikat' => null,
                 'dosen_nama' => 'Eka Larasati Amalia, S.ST., M.T.',
                 'dosen_nip' => '198807112015042005',
                 'dosen_status' => 'Aktif',
@@ -62,6 +68,8 @@ class DosenSeeder extends Seeder
             [
                 'user_id' => 9,
                 'prodi_id' => 1,
+                'keahlian_id' => 4,
+                'keahlian_sertifikat' => null,
                 'dosen_nama' => 'Muhammad Afif Hendrawan, S.Kom., M.T.',
                 'dosen_nip' => '199111282019031013',
                 'dosen_status' => 'Aktif',
@@ -77,6 +85,8 @@ class DosenSeeder extends Seeder
             [
                 'user_id' => 10,
                 'prodi_id' => 1,
+                'keahlian_id' => 5,
+                'keahlian_sertifikat' => null,
                 'dosen_nama' => 'Retno Damayanti, S.Pd., M.T.',
                 'dosen_nip' => '198910042019032023',
                 'dosen_status' => 'Aktif',
@@ -92,6 +102,8 @@ class DosenSeeder extends Seeder
             [
                 'user_id' => 11,
                 'prodi_id' => 1,
+                'keahlian_id' => 6,
+                'keahlian_sertifikat' => null,
                 'dosen_nama' => 'Rizki Putri Ramadhani, S.S., M.Pd.',
                 'dosen_nip' => '199004102019092001',
                 'dosen_status' => 'Aktif',

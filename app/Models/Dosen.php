@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Dosen extends Model
 {
@@ -48,11 +49,22 @@ class Dosen extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    /**
-     * Get the program studi that the dosen belongs to.
-     */
     public function prodi(): BelongsTo
     {
         return $this->belongsTo(Prodi::class, 'prodi_id');
+    }
+    public function keahlianUtama()
+    {
+        return $this->belongsTo(Keahlian::class, 'keahlian_id');
+    }
+
+    public function keahlianTambahan()
+    {
+        return $this->belongsToMany(
+            Keahlian::class,
+            't_keahlian_dosens',
+            'dosen_id',
+            'keahlian_id'
+        )->withPivot('keahlian_sertifikat');
     }
 }
