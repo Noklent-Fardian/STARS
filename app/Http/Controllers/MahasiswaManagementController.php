@@ -107,10 +107,9 @@ class MahasiswaManagementController extends Controller
             })
             ->editColumn('mahasiswa_status', function ($mahasiswa) {
                 $statuses = [
-                    'Aktif'    => 'success',
-                    'Cuti'     => 'warning',
-                    'Drop Out' => 'danger',
-                    'Lulus'    => 'primary',
+                    'Aktif'       => 'success',
+                    'Tidak Aktif' => 'danger',
+                    'Cuti'        => 'warning',
                 ];
                 $color = $statuses[$mahasiswa->mahasiswa_status] ?? 'info';
                 return '<span class="badge badge-' . $color . '">' . $mahasiswa->mahasiswa_status . '</span>';
@@ -221,12 +220,11 @@ class MahasiswaManagementController extends Controller
      */
     public function editAjax($id)
     {
-        $mahasiswa = Mahasiswa::with(['user', 'prodi', 'keahlian', 'semester'])->find($id);
+        $mahasiswa = Mahasiswa::with(['user', 'prodi', 'semester'])->find($id);
         $prodis    = Prodi::where('prodi_visible', true)->get();
-        $keahlians = Keahlian::where('keahlian_visible', true)->get();
-        $semesters = Semester::where('semester_visible', true)->get();
+        $semester  = Semester::where('semester_visible', true)->get();
 
-        return view('admin.mahasiswaManagement.edit_ajax', compact('mahasiswa', 'prodis', 'keahlians', 'semesters'));
+        return view('admin.mahasiswaManagement.edit_ajax', compact('mahasiswa', 'prodis', 'semester'));
     }
 
     /**
@@ -251,7 +249,7 @@ class MahasiswaManagementController extends Controller
                 'max:255',
                 Rule::unique('m_mahasiswas')->ignore($mahasiswa->id),
             ],
-            'mahasiswa_status'        => 'required|in:Aktif,Cuti,Drop Out,Lulus',
+            'mahasiswa_status'        => 'required|in:Aktif,Tidak Aktif,Cuti',
             'mahasiswa_gender'        => 'required|in:Laki-laki,Perempuan',
             'mahasiswa_angkatan'      => 'required|integer|min:2000|max:' . (date('Y') + 5),
             'mahasiswa_nomor_telepon' => 'required|string|max:15',
@@ -390,7 +388,7 @@ class MahasiswaManagementController extends Controller
     public function exportPDF()
     {
         $pdfSetting = \App\Models\PdfSetting::first();
-        $mahasiswas = Mahasiswa::with(['user', 'prodi', 'keahlian', 'semester'])
+        $mahasiswas = Mahasiswa::with(['user', 'prodi', 'keahlianUtama', 'keahlianTambahan', 'semester'])
             ->where('mahasiswa_visible', true)
             ->orderBy('mahasiswa_nama', 'asc')
             ->get();
@@ -406,7 +404,7 @@ class MahasiswaManagementController extends Controller
      */
     public function exportExcel()
     {
-        $mahasiswas = Mahasiswa::with(['user', 'prodi', 'keahlian', 'semester'])
+        $mahasiswas = Mahasiswa::with(['user', 'prodi', 'keahlianUtama', 'keahlianTambahan', 'semester'])
             ->where('mahasiswa_visible', true)
             ->orderBy('mahasiswa_nama', 'asc')
             ->get();
@@ -438,7 +436,7 @@ class MahasiswaManagementController extends Controller
         $sheet->setCellValue('J2', 'Agama');
         $sheet->setCellValue('K2', 'Alamat');
         $sheet->setCellValue('L2', 'Program Studi');
-        $sheet->setCellValue('M2', 'Keahlian');
+        $sheet->setCellValue('M2', 'KeahlianUtama');
 
         $headerStyle = [
             'font'      => [
@@ -486,7 +484,7 @@ class MahasiswaManagementController extends Controller
             $sheet->setCellValue('J' . $row, $mahasiswa->mahasiswa_agama ?? '-');
             $sheet->setCellValue('K' . $row, $alamat ?: '-');
             $sheet->setCellValue('L' . $row, $mahasiswa->prodi ? $mahasiswa->prodi->prodi_nama : '-');
-            $sheet->setCellValue('M' . $row, $mahasiswa->keahlian ? $mahasiswa->keahlian->keahlian_nama : '-');
+            $sheet->setCellValue('M' . $row, $mahasiswa->keahlian ? $mahasiswa->keahlian_id->keahlian_id : '-');
 
             $sheet->getStyle('A' . $row . ':M' . $row)->applyFromArray([
                 'borders' => [
@@ -599,8 +597,8 @@ class MahasiswaManagementController extends Controller
                 }
 
                 // Validate status
-                if (! empty($rowData['E']) && ! in_array($rowData['E'], ['Aktif', 'Cuti', 'Drop Out', 'Lulus'])) {
-                    $errors[] = "Baris $row: Status harus salah satu dari: Aktif, Cuti, Drop Out, Lulus";
+                if (! empty($rowData['E']) && ! in_array($rowData['E'], ['Aktif', 'Tidak Aktif', 'Cuti'])) {
+                    $errors[] = "Baris $row: Status harus salah satu dari: Aktif, Tidak Aktif, Cuti";
                     continue;
                 }
 
@@ -692,7 +690,7 @@ class MahasiswaManagementController extends Controller
             'B' => 'Username',
             'C' => 'Jenis Kelamin (L/P)',
             'D' => 'NIM',
-            'E' => 'Status (Aktif/Cuti/Drop Out/Lulus)',
+            'E' => 'Status (Aktif/Tidak Aktif/Cuti)',
             'F' => 'Nomor Telepon',
             'G' => 'Agama',
             'H' => 'Angkatan',

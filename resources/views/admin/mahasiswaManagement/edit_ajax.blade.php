@@ -83,15 +83,15 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <!-- Program Studi -->
                                             <div class="form-group">
-                                                <label class="font-weight-bold">Program Studi <span class="text-danger">*</span></label>
+                                                <label class="font-weight-bold">Program Studi</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-secondary text-white"><i class="fas fa-graduation-cap"></i></span>
                                                     </div>
-                                                    <select name="prodi_id" id="prodi_id" class="form-control" required>
+                                                    <select name="prodi_id" id="prodi_id" class="form-control">
                                                         <option value="">Pilih Program Studi</option>
                                                         @foreach ($prodis as $prodi)
                                                             <option value="{{ $prodi->id }}" {{ $mahasiswa->prodi_id == $prodi->id ? 'selected' : '' }}>
@@ -103,27 +103,7 @@
                                                 <small id="error-prodi_id" class="error-text form-text text-danger"></small>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <!-- Keahlian -->
-                                            <div class="form-group">
-                                                <label class="font-weight-bold">Keahlian</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text bg-secondary text-white"><i class="fas fa-certificate"></i></span>
-                                                    </div>
-                                                    <select name="keahlian_id" id="keahlian_id" class="form-control">
-                                                        <option value="">Pilih Keahlian</option>
-                                                        @foreach ($keahlians as $keahlian)
-                                                            <option value="{{ $keahlian->id }}" {{ $mahasiswa->keahlian_id == $keahlian->id ? 'selected' : '' }}>
-                                                                {{ $keahlian->keahlian_nama }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <small id="error-keahlian_id" class="error-text form-text text-danger"></small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <!-- Semester -->
                                             <div class="form-group">
                                                 <label class="font-weight-bold">Semester</label>
@@ -133,7 +113,7 @@
                                                     </div>
                                                     <select name="semester_id" id="semester_id" class="form-control">
                                                         <option value="">Pilih Semester</option>
-                                                        @foreach ($semesters as $semester)
+                                                        @foreach ($semester as $semester)
                                                             <option value="{{ $semester->id }}" {{ $mahasiswa->semester_id == $semester->id ? 'selected' : '' }}>
                                                                 {{ $semester->semester_nama }}
                                                             </option>
@@ -145,7 +125,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <!-- Jenis Kelamin -->
                                             <div class="form-group">
                                                 <label class="font-weight-bold">Jenis Kelamin <span class="text-danger">*</span></label>
@@ -162,7 +142,7 @@
                                                 <small id="error-mahasiswa_gender" class="error-text form-text text-danger"></small>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <!-- Angkatan -->
                                             <div class="form-group">
                                                 <label class="font-weight-bold">Angkatan <span class="text-danger">*</span></label>
@@ -170,14 +150,14 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-success text-white"><i class="fas fa-calendar"></i></span>
                                                     </div>
-                                                    <input value="{{ $mahasiswa->mahasiswa_angkatan }}" type="number" name="mahasiswa_angkatan" id="mahasiswa_angkatan" 
-                                                        class="form-control" placeholder="Masukkan tahun angkatan" 
-                                                        min="2000" max="{{ date('Y') + 5 }}" required>
+                                                    <input value="{{ $mahasiswa->mahasiswa_angkatan }}" type="number" name="mahasiswa_angkatan" id="mahasiswa_angkatan" class="form-control" placeholder="Masukkan tahun angkatan" min="2000" max="{{ date('Y') + 5 }}" required>
                                                 </div>
                                                 <small id="error-mahasiswa_angkatan" class="error-text form-text text-danger"></small>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
                                             <!-- Nomor Telepon -->
                                             <div class="form-group">
                                                 <label class="font-weight-bold">Nomor Telepon <span class="text-danger">*</span></label>
@@ -190,8 +170,6 @@
                                                 <small id="error-mahasiswa_nomor_telepon" class="error-text form-text text-danger"></small>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
                                         <div class="col-md-6">
                                             <!-- Agama -->
                                             <div class="form-group">
@@ -203,25 +181,6 @@
                                                     <input value="{{ $mahasiswa->mahasiswa_agama }}" type="text" name="mahasiswa_agama" id="mahasiswa_agama" class="form-control" placeholder="Masukkan agama">
                                                 </div>
                                                 <small id="error-mahasiswa_agama" class="error-text form-text text-danger"></small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <!-- Foto Mahasiswa -->
-                                            <div class="form-group">
-                                                <label class="font-weight-bold">Foto Mahasiswa</label>
-                                                <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="mahasiswa_photo" name="mahasiswa_photo">
-                                                    <label class="custom-file-label" for="mahasiswa_photo">Pilih file foto</label>
-                                                </div>
-                                                @if($mahasiswa->mahasiswa_photo)
-                                                    <small class="form-text text-muted">Foto saat ini: 
-                                                        <a href="{{ asset('storage/mahasiswa_photos/' . $mahasiswa->mahasiswa_photo) }}" target="_blank">
-                                                            {{ $mahasiswa->mahasiswa_photo }}
-                                                        </a>
-                                                    </small>
-                                                @endif
-                                                <small id="error-mahasiswa_photo" class="error-text form-text text-danger"></small>
-                                                <small class="form-text text-muted">Format: JPG/PNG (Maks. 2MB)</small>
                                             </div>
                                         </div>
                                     </div>
@@ -301,7 +260,7 @@
                             <div class="card card-info card-outline mb-4">
                                 <div class="card-header bg-info">
                                     <h5 class="card-title font-weight-bold mb-0 text-white">
-                                        <i class="fas fa-user-check mr-2"></i> Status dan Akun
+                                        <i class="fas fa-user-check mr-2"></i> Status dan Reset Password
                                     </h5>
                                 </div>
                                 <div class="card-body">
@@ -344,7 +303,8 @@
                                             </div>
                                         </div>
                                         <!-- Status -->
-                                        <div class="col-md-6">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label class="font-weight-bold">Status <span class="text-danger">*</span></label>
                                                 <div class="input-group">
@@ -354,14 +314,14 @@
                                                     <select name="mahasiswa_status" id="mahasiswa_status" class="form-control" required>
                                                         <option value="">Pilih Status</option>
                                                         <option value="Aktif" {{ $mahasiswa->mahasiswa_status === 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                                                        <option value="Tidak Aktif" {{ $mahasiswa->mahasiswa_status === 'Tidak Aktif' ? 'selected' : '' }}>Tidak Aktif</option>
                                                         <option value="Cuti" {{ $mahasiswa->mahasiswa_status === 'Cuti' ? 'selected' : '' }}>Cuti</option>
-                                                        <option value="Drop Out" {{ $mahasiswa->mahasiswa_status === 'Drop Out' ? 'selected' : '' }}>Drop Out</option>
-                                                        <option value="Lulus" {{ $mahasiswa->mahasiswa_status === 'Lulus' ? 'selected' : '' }}>Lulus</option>
                                                     </select>
                                                 </div>
                                                 <small id="error-mahasiswa_status" class="error-text form-text text-danger"></small>
                                             </div>
                                         </div>
+                                        <div class="col-md-1"></div>
                                     </div>
                                 </div>
                             </div>
@@ -383,21 +343,20 @@
 
     <script>
         $(document).ready(function() {
-            // Add animation to form elements when modal loads
-            $('.form-group').each(function(i) {
-                $(this).css({
-                    'opacity': 0,
-                    'transform': 'translateY(20px)'
-                });
-                setTimeout(function() {
-                    $('.form-group').eq(i).css({
-                        'opacity': 1,
-                        'transform': 'translateY(0)',
-                        'transition': 'all 0.4s ease-out'
-                    });
-                }, 100 * (i + 1));
+            $('.form-group').each(function (i) {
+            $(this).css({
+                'opacity': 0,
+                'transform': 'translateY(20px)'
             });
-
+            setTimeout(function () {
+                $('.form-group').eq(i).css({
+                    'opacity': 1,
+                    'transform': 'translateY(0)',
+                    'transition': 'all 0.4s ease-out'
+                });
+            }, 100 * (i + 1));
+        });
+            // Toggle password visibility
             $(document).on('click', '.toggle-password', function() {
                 const passwordInput = $(this).closest('.input-group').find('input');
                 const icon = $(this).find('i');
@@ -457,11 +416,8 @@
                     },
                     mahasiswa_nim: {
                         required: true,
-                        minlength: 8,
+                        minlength: 5,
                         maxlength: 20
-                    },
-                    prodi_id: {
-                        required: true
                     },
                     mahasiswa_gender: {
                         required: true
@@ -469,8 +425,7 @@
                     mahasiswa_angkatan: {
                         required: true,
                         min: 2000,
-                        max: {{ date('Y') + 5 }},
-                        digits: true
+                        max: {{ date('Y') + 5 }}
                     },
                     mahasiswa_nomor_telepon: {
                         required: true,
@@ -513,11 +468,8 @@
                     },
                     mahasiswa_nim: {
                         required: "NIM tidak boleh kosong",
-                        minlength: "NIM minimal 8 karakter",
+                        minlength: "NIM minimal 5 karakter",
                         maxlength: "NIM maksimal 20 karakter"
-                    },
-                    prodi_id: {
-                        required: "Program Studi tidak boleh kosong"
                     },
                     mahasiswa_gender: {
                         required: "Jenis kelamin tidak boleh kosong"
@@ -525,32 +477,27 @@
                     mahasiswa_angkatan: {
                         required: "Angkatan tidak boleh kosong",
                         min: "Angkatan minimal tahun 2000",
-                        max: "Angkatan maksimal tahun {{ date('Y') + 5 }}",
-                        digits: "Angkatan harus berupa angka"
+                        max: "Angkatan maksimal tahun {{ date('Y') + 5 }}"
                     },
                     mahasiswa_nomor_telepon: {
                         required: "Nomor telepon tidak boleh kosong",
                         minlength: "Nomor telepon minimal 10 karakter",
                         maxlength: "Nomor telepon maksimal 15 karakter"
-                    },
-                    mahasiswa_agama: {
-                        maxlength: "Agama maksimal 50 karakter"
                     }
                 },
-                submitHandler: function(form) {
+                submitHandler: function (form) {
+                    // Create FormData object for file upload
                     let formData = new FormData(form);
-
+                    
                     $.ajax({
                         url: form.action,
                         type: form.method,
                         data: formData,
                         processData: false,
                         contentType: false,
-                        dataType: 'json',
-                        success: function(response) {
+                        success: function (response) {
                             if (response.status) {
-                                $(form).closest('.modal').modal('hide');
-                                
+                                $('#myModal').modal('hide');
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Berhasil',
@@ -558,12 +505,10 @@
                                     timer: 1500,
                                     showConfirmButton: false
                                 }).then(() => {
-                                    window.location.href = window.location.href;
+                                    if (response.self) {
+                                        location.reload();
+                                    }
                                 });
-
-                                if (typeof dataMahasiswa !== 'undefined') {
-                                    dataMahasiswa.ajax.reload();
-                                }
                             } else {
                                 $('.error-text').text('');
                                 $('.form-control').removeClass('is-invalid');
@@ -584,10 +529,6 @@
                             }
                         },
                         error: function(xhr, status, error) {
-                            console.log('XHR:', xhr); 
-                            console.log('Status:', status); 
-                            console.log('Error:', error);
-                            
                             let errorMessage = "Terjadi kesalahan pada server";
                             
                             if (xhr.responseJSON) {
