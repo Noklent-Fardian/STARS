@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -31,7 +30,7 @@ class Mahasiswa extends Model
         'mahasiswa_nim',
         'mahasiswa_status',
         'mahasiswa_gender',
-        'mahasiswa_angakatan',
+        'mahasiswa_angkatan',
         'mahasiswa_nomor_telepon',
         'mahasiswa_photo',
         'mahasiswa_agama',
@@ -77,4 +76,10 @@ class Mahasiswa extends Model
             'keahlian_id'
         )->withPivot('keahlian_sertifikat');
     }
+
+    public function semester(): BelongsTo
+    {
+        return $this->belongsTo(Semester::class, 'semester_id');
+    }
+
 }

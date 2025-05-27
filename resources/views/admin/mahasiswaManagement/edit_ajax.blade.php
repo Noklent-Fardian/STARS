@@ -1,4 +1,4 @@
-@empty($dosen)
+@empty($mahasiswa)
     <div id="modal-master" class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header bg-danger">
@@ -15,7 +15,7 @@
                         <i class="fas fa-ban fa-2x mr-3"></i>
                         <div>
                             <h5 class="mb-1">Data Tidak Ditemukan</h5>
-                            <p class="mb-0">Maaf, data dosen yang Anda cari tidak ada dalam database.</p>
+                            <p class="mb-0">Maaf, data mahasiswa yang Anda cari tidak ada dalam database.</p>
                         </div>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
             <!-- Modal Header -->
             <div class="modal-header bg-warning text-white">
                 <h4 class="modal-title font-weight-bold">
-                    <i class="fas fa-edit mr-2"></i> Edit Data Dosen
+                    <i class="fas fa-edit mr-2"></i> Edit Data Mahasiswa
                 </h4>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -41,7 +41,7 @@
             </div>
             <!-- Modal Body -->
             <div class="modal-body p-4">
-                <form action="{{ route('admin.dosenManagement.updateAjax', $dosen->id) }}" method="POST" id="form-edit" enctype="multipart/form-data">
+                <form action="{{ route('admin.mahasiswaManagement.updateAjax', $mahasiswa->id) }}" method="POST" id="form-edit" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="row">
@@ -56,29 +56,29 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <!-- Nama Dosen -->
+                                            <!-- Nama Mahasiswa -->
                                             <div class="form-group">
-                                                <label class="font-weight-bold">Nama Dosen <span class="text-danger">*</span></label>
+                                                <label class="font-weight-bold">Nama Mahasiswa <span class="text-danger">*</span></label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-primary text-white"><i class="fas fa-user"></i></span>
                                                     </div>
-                                                    <input value="{{ $dosen->dosen_nama }}" type="text" name="dosen_nama" id="dosen_nama" class="form-control" placeholder="Masukkan nama dosen" required>
+                                                    <input value="{{ $mahasiswa->mahasiswa_nama }}" type="text" name="mahasiswa_nama" id="mahasiswa_nama" class="form-control" placeholder="Masukkan nama mahasiswa" required>
                                                 </div>
-                                                <small id="error-dosen_nama" class="error-text form-text text-danger"></small>
+                                                <small id="error-mahasiswa_nama" class="error-text form-text text-danger"></small>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <!-- NIP -->
+                                            <!-- NIM -->
                                             <div class="form-group">
-                                                <label class="font-weight-bold">NIP <span class="text-danger">*</span></label>
+                                                <label class="font-weight-bold">NIM <span class="text-danger">*</span></label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-info text-white"><i class="fas fa-id-card"></i></span>
                                                     </div>
-                                                    <input value="{{ $dosen->dosen_nip }}" type="text" name="dosen_nip" id="dosen_nip" class="form-control" placeholder="Masukkan NIP dosen" required>
+                                                    <input value="{{ $mahasiswa->mahasiswa_nim }}" type="text" name="mahasiswa_nim" id="mahasiswa_nim" class="form-control" placeholder="Masukkan NIM mahasiswa" required>
                                                 </div>
-                                                <small id="error-dosen_nip" class="error-text form-text text-danger"></small>
+                                                <small id="error-mahasiswa_nim" class="error-text form-text text-danger"></small>
                                             </div>
                                         </div>
                                     </div>
@@ -86,15 +86,15 @@
                                         <div class="col-md-6">
                                             <!-- Program Studi -->
                                             <div class="form-group">
-                                                <label class="font-weight-bold">Program Studi <span class="text-danger">*</span></label>
+                                                <label class="font-weight-bold">Program Studi</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-secondary text-white"><i class="fas fa-graduation-cap"></i></span>
                                                     </div>
-                                                    <select name="prodi_id" id="prodi_id" class="form-control" required>
-                                                        <option value="">Pilih Program Studi Homebase</option>
+                                                    <select name="prodi_id" id="prodi_id" class="form-control">
+                                                        <option value="">Pilih Program Studi</option>
                                                         @foreach ($prodis as $prodi)
-                                                            <option value="{{ $prodi->id }}" {{ $dosen->prodi_id == $prodi->id ? 'selected' : '' }}>
+                                                            <option value="{{ $prodi->id }}" {{ $mahasiswa->prodi_id == $prodi->id ? 'selected' : '' }}>
                                                                 {{ $prodi->prodi_nama }}
                                                             </option>
                                                         @endforeach
@@ -104,6 +104,28 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
+                                            <!-- Semester -->
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">Semester</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text bg-secondary text-white"><i class="fas fa-calendar-alt"></i></span>
+                                                    </div>
+                                                    <select name="semester_id" id="semester_id" class="form-control">
+                                                        <option value="">Pilih Semester</option>
+                                                        @foreach ($semester as $semester)
+                                                            <option value="{{ $semester->id }}" {{ $mahasiswa->semester_id == $semester->id ? 'selected' : '' }}>
+                                                                {{ $semester->semester_nama }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <small id="error-semester_id" class="error-text form-text text-danger"></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
                                             <!-- Jenis Kelamin -->
                                             <div class="form-group">
                                                 <label class="font-weight-bold">Jenis Kelamin <span class="text-danger">*</span></label>
@@ -111,13 +133,26 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-info text-white"><i class="fas fa-venus-mars"></i></span>
                                                     </div>
-                                                    <select name="dosen_gender" id="dosen_gender" class="form-control" required>
+                                                    <select name="mahasiswa_gender" id="mahasiswa_gender" class="form-control" required>
                                                         <option value="">Pilih Jenis Kelamin</option>
-                                                        <option value="Laki-laki" {{ $dosen->dosen_gender === 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                                                        <option value="Perempuan" {{ $dosen->dosen_gender === 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                                                        <option value="Laki-laki" {{ $mahasiswa->mahasiswa_gender === 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                                        <option value="Perempuan" {{ $mahasiswa->mahasiswa_gender === 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                                                     </select>
                                                 </div>
-                                                <small id="error-dosen_gender" class="error-text form-text text-danger"></small>
+                                                <small id="error-mahasiswa_gender" class="error-text form-text text-danger"></small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <!-- Angkatan -->
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">Angkatan <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text bg-success text-white"><i class="fas fa-calendar"></i></span>
+                                                    </div>
+                                                    <input value="{{ $mahasiswa->mahasiswa_angkatan }}" type="number" name="mahasiswa_angkatan" id="mahasiswa_angkatan" class="form-control" placeholder="Masukkan tahun angkatan" min="2000" max="{{ date('Y') + 5 }}" required>
+                                                </div>
+                                                <small id="error-mahasiswa_angkatan" class="error-text form-text text-danger"></small>
                                             </div>
                                         </div>
                                     </div>
@@ -130,9 +165,9 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-success text-white"><i class="fas fa-phone"></i></span>
                                                     </div>
-                                                    <input value="{{ $dosen->dosen_nomor_telepon }}" type="text" name="dosen_nomor_telepon" id="dosen_nomor_telepon" class="form-control" placeholder="Masukkan nomor telepon" required>
+                                                    <input value="{{ $mahasiswa->mahasiswa_nomor_telepon }}" type="text" name="mahasiswa_nomor_telepon" id="mahasiswa_nomor_telepon" class="form-control" placeholder="Masukkan nomor telepon" required>
                                                 </div>
-                                                <small id="error-dosen_nomor_telepon" class="error-text form-text text-danger"></small>
+                                                <small id="error-mahasiswa_nomor_telepon" class="error-text form-text text-danger"></small>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -143,9 +178,9 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-warning text-white"><i class="fas fa-pray"></i></span>
                                                     </div>
-                                                    <input value="{{ $dosen->dosen_agama }}" type="text" name="dosen_agama" id="dosen_agama" class="form-control" placeholder="Masukkan agama">
+                                                    <input value="{{ $mahasiswa->mahasiswa_agama }}" type="text" name="mahasiswa_agama" id="mahasiswa_agama" class="form-control" placeholder="Masukkan agama">
                                                 </div>
-                                                <small id="error-dosen_agama" class="error-text form-text text-danger"></small>
+                                                <small id="error-mahasiswa_agama" class="error-text form-text text-danger"></small>
                                             </div>
                                         </div>
                                     </div>
@@ -170,9 +205,9 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-info text-white"><i class="fas fa-map-marker-alt"></i></span>
                                                     </div>
-                                                    <input value="{{ $dosen->dosen_provinsi }}" type="text" name="dosen_provinsi" id="dosen_provinsi" class="form-control" placeholder="Masukkan provinsi">
+                                                    <input value="{{ $mahasiswa->mahasiswa_provinsi }}" type="text" name="mahasiswa_provinsi" id="mahasiswa_provinsi" class="form-control" placeholder="Masukkan provinsi">
                                                 </div>
-                                                <small id="error-dosen_provinsi" class="error-text form-text text-danger"></small>
+                                                <small id="error-mahasiswa_provinsi" class="error-text form-text text-danger"></small>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -183,9 +218,9 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-info text-white"><i class="fas fa-map-marker-alt"></i></span>
                                                     </div>
-                                                    <input value="{{ $dosen->dosen_kota }}" type="text" name="dosen_kota" id="dosen_kota" class="form-control" placeholder="Masukkan kota/kabupaten">
+                                                    <input value="{{ $mahasiswa->mahasiswa_kota }}" type="text" name="mahasiswa_kota" id="mahasiswa_kota" class="form-control" placeholder="Masukkan kota/kabupaten">
                                                 </div>
-                                                <small id="error-dosen_kota" class="error-text form-text text-danger"></small>
+                                                <small id="error-mahasiswa_kota" class="error-text form-text text-danger"></small>
                                             </div>
                                         </div>
                                     </div>
@@ -198,9 +233,9 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-info text-white"><i class="fas fa-map-marker-alt"></i></span>
                                                     </div>
-                                                    <input value="{{ $dosen->dosen_kecamatan }}" type="text" name="dosen_kecamatan" id="dosen_kecamatan" class="form-control" placeholder="Masukkan kecamatan">
+                                                    <input value="{{ $mahasiswa->mahasiswa_kecamatan }}" type="text" name="mahasiswa_kecamatan" id="mahasiswa_kecamatan" class="form-control" placeholder="Masukkan kecamatan">
                                                 </div>
-                                                <small id="error-dosen_kecamatan" class="error-text form-text text-danger"></small>
+                                                <small id="error-mahasiswa_kecamatan" class="error-text form-text text-danger"></small>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -211,9 +246,9 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-info text-white"><i class="fas fa-map-marker-alt"></i></span>
                                                     </div>
-                                                    <input value="{{ $dosen->dosen_desa }}" type="text" name="dosen_desa" id="dosen_desa" class="form-control" placeholder="Masukkan desa/kelurahan">
+                                                    <input value="{{ $mahasiswa->mahasiswa_desa }}" type="text" name="mahasiswa_desa" id="mahasiswa_desa" class="form-control" placeholder="Masukkan desa/kelurahan">
                                                 </div>
-                                                <small id="error-dosen_desa" class="error-text form-text text-danger"></small>
+                                                <small id="error-mahasiswa_desa" class="error-text form-text text-danger"></small>
                                             </div>
                                         </div>
                                     </div>
@@ -238,7 +273,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-primary text-white"><i class="fas fa-user-circle"></i></span>
                                                     </div>
-                                                    <input value="{{ $dosen->user->username }}" type="text" name="username" id="username" class="form-control" placeholder="Masukkan username" required>
+                                                    <input value="{{ $mahasiswa->user->username }}" type="text" name="username" id="username" class="form-control" placeholder="Masukkan username" required>
                                                 </div>
                                                 <small id="error-username" class="error-text form-text text-danger"></small>
                                             </div>
@@ -276,18 +311,17 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-info text-white"><i class="fas fa-user-check"></i></span>
                                                     </div>
-                                                    <select name="dosen_status" id="dosen_status" class="form-control" required>
+                                                    <select name="mahasiswa_status" id="mahasiswa_status" class="form-control" required>
                                                         <option value="">Pilih Status</option>
-                                                        <option value="Aktif" {{ $dosen->dosen_status === 'Aktif' ? 'selected' : '' }}>Aktif</option>
-                                                        <option value="Tidak Aktif" {{ $dosen->dosen_status === 'Tidak Aktif' ? 'selected' : '' }}>Tidak Aktif</option>
-                                                        <option value="Cuti" {{ $dosen->dosen_status === 'Cuti' ? 'selected' : '' }}>Cuti</option>
-                                                        <option value="Pensiun" {{ $dosen->dosen_status === 'Pensiun' ? 'selected' : '' }}>Pensiun</option>
+                                                        <option value="Aktif" {{ $mahasiswa->mahasiswa_status === 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                                                        <option value="Tidak Aktif" {{ $mahasiswa->mahasiswa_status === 'Tidak Aktif' ? 'selected' : '' }}>Tidak Aktif</option>
+                                                        <option value="Cuti" {{ $mahasiswa->mahasiswa_status === 'Cuti' ? 'selected' : '' }}>Cuti</option>
                                                     </select>
                                                 </div>
-                                                <small id="error-dosen_status" class="error-text form-text text-danger"></small>
+                                                <small id="error-mahasiswa_status" class="error-text form-text text-danger"></small>
                                             </div>
                                         </div>
-                                        <div class="col-md-2"></div>
+                                        <div class="col-md-1"></div>
                                     </div>
                                 </div>
                             </div>
@@ -309,21 +343,20 @@
 
     <script>
         $(document).ready(function() {
-            // Add animation to form elements when modal loads
-            $('.form-group').each(function(i) {
-                $(this).css({
-                    'opacity': 0,
-                    'transform': 'translateY(20px)'
-                });
-                setTimeout(function() {
-                    $('.form-group').eq(i).css({
-                        'opacity': 1,
-                        'transform': 'translateY(0)',
-                        'transition': 'all 0.4s ease-out'
-                    });
-                }, 100 * (i + 1));
+            $('.form-group').each(function (i) {
+            $(this).css({
+                'opacity': 0,
+                'transform': 'translateY(20px)'
             });
-
+            setTimeout(function () {
+                $('.form-group').eq(i).css({
+                    'opacity': 1,
+                    'transform': 'translateY(0)',
+                    'transition': 'all 0.4s ease-out'
+                });
+            }, 100 * (i + 1));
+        });
+            // Toggle password visibility
             $(document).on('click', '.toggle-password', function() {
                 const passwordInput = $(this).closest('.input-group').find('input');
                 const icon = $(this).find('i');
@@ -367,46 +400,54 @@
                 }
             });
 
+            // Custom file input label
+            $('.custom-file-input').on('change', function() {
+                let fileName = $(this).val().split('\\').pop();
+                $(this).next('.custom-file-label').addClass("selected").html(fileName);
+            });
+
             // Validation
             $("#form-edit").validate({
                 rules: {
-                    dosen_nama: {
+                    mahasiswa_nama: {
                         required: true,
                         minlength: 3,
                         maxlength: 255
                     },
-                    dosen_nip: {
+                    mahasiswa_nim: {
                         required: true,
-                        minlength: 10,
+                        minlength: 5,
                         maxlength: 20
                     },
-                    prodi_id: {
+                    mahasiswa_gender: {
                         required: true
                     },
-                    dosen_gender: {
-                        required: true
+                    mahasiswa_angkatan: {
+                        required: true,
+                        min: 2000,
+                        max: {{ date('Y') + 5 }}
                     },
-                    dosen_nomor_telepon: {
+                    mahasiswa_nomor_telepon: {
                         required: true,
                         minlength: 10,
                         maxlength: 15
                     },
-                    dosen_agama: {
+                    mahasiswa_agama: {
                         maxlength: 50
                     },
-                    dosen_provinsi: {
+                    mahasiswa_provinsi: {
                         maxlength: 255
                     },
-                    dosen_kota: {
+                    mahasiswa_kota: {
                         maxlength: 255
                     },
-                    dosen_kecamatan: {
+                    mahasiswa_kecamatan: {
                         maxlength: 255
                     },
-                    dosen_desa: {
+                    mahasiswa_desa: {
                         maxlength: 255
                     },
-                    dosen_status: {
+                    mahasiswa_status: {
                         required: true
                     },
                     username: {
@@ -415,52 +456,60 @@
                         maxlength: 50
                     },
                     password: {
-                        minlength: 5,
+                        minlength: 8,
                         maxlength: 50
                     }
                 },
                 messages: {
-                    dosen_nama: {
-                        required: "Nama dosen tidak boleh kosong",
-                        minlength: "Nama dosen minimal 3 karakter",
-                        maxlength: "Nama dosen maksimal 255 karakter"
+                    mahasiswa_nama: {
+                        required: "Nama mahasiswa tidak boleh kosong",
+                        minlength: "Nama mahasiswa minimal 3 karakter",
+                        maxlength: "Nama mahasiswa maksimal 255 karakter"
                     },
-                    dosen_nip: {
-                        required: "NIP tidak boleh kosong",
-                        minlength: "NIP minimal 10 karakter",
-                        maxlength: "NIP maksimal 20 karakter"
+                    mahasiswa_nim: {
+                        required: "NIM tidak boleh kosong",
+                        minlength: "NIM minimal 5 karakter",
+                        maxlength: "NIM maksimal 20 karakter"
                     },
-                    prodi_id: {
-                        required: "Program Studi tidak boleh kosong"
-                    },
-                    dosen_gender: {
+                    mahasiswa_gender: {
                         required: "Jenis kelamin tidak boleh kosong"
                     },
-                    dosen_nomor_telepon: {
+                    mahasiswa_angkatan: {
+                        required: "Angkatan tidak boleh kosong",
+                        min: "Angkatan minimal tahun 2000",
+                        max: "Angkatan maksimal tahun {{ date('Y') + 5 }}"
+                    },
+                    mahasiswa_nomor_telepon: {
                         required: "Nomor telepon tidak boleh kosong",
                         minlength: "Nomor telepon minimal 10 karakter",
                         maxlength: "Nomor telepon maksimal 15 karakter"
-                    },
-                    dosen_agama: {
-                        maxlength: "Agama maksimal 50 karakter"
                     }
                 },
                 submitHandler: function (form) {
-                $.ajax({
-                    url: form.action,
-                    type: form.method,
-                    data: $(form).serialize(),
-                    success: function (response) {
-                        if (response.status) {
-                            $('#myModal').modal('hide');
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: response.message,
-                                timer: 1500,
-                                showConfirmButton: false
-                            })
-                        } else {
+                    // Create FormData object for file upload
+                    let formData = new FormData(form);
+                    
+                    $.ajax({
+                        url: form.action,
+                        type: form.method,
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            if (response.status) {
+                                $('#myModal').modal('hide');
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: response.message,
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                }).then(() => {
+                                    if (response.self) {
+                                        location.reload();
+                                    }
+                                });
+                            } else {
                                 $('.error-text').text('');
                                 $('.form-control').removeClass('is-invalid');
                                 
@@ -480,10 +529,6 @@
                             }
                         },
                         error: function(xhr, status, error) {
-                            console.log('XHR:', xhr); 
-                            console.log('Status:', status); 
-                            console.log('Error:', error);
-                            
                             let errorMessage = "Terjadi kesalahan pada server";
                             
                             if (xhr.responseJSON) {
