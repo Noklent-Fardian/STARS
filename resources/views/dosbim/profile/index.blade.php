@@ -17,8 +17,17 @@
                     style="background: linear-gradient(135deg, #f8fafc 60%, #e7f1ff 100%);">
                     <div class="card-body d-flex flex-column align-items-center text-center">
                         <div class="mb-3 profile-image-container position-relative">
-                            <img src="{{ $dosen->dosen_photo ? asset('storage/' . $dosen->dosen_photo) : asset('imgs/profile_placeholder.jpg') }}"
-                                alt="Profil" class="shadow">
+                            @if ($dosen->dosen_photo)
+                                <img src="{{ asset('storage/' . $dosen->dosen_photo) }}" alt="Profil" class="shadow"
+                                    style="width: 130px; height: 130px; object-fit: cover; border-radius: 50%;">
+                            @else
+                                <div id="profileImagePlaceholder" class="profile-placeholder"
+                                    style="width: 130px; height: 130px; background-color: #e2e8f0; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                                    <i class="fas fa-user" style="color: #6b7280; font-size: 60px;"></i>
+                                </div>
+                            @endif
+
+
                         </div>
                         <h4 class="fw-bold mb-1 text-primary">
                             {{ $dosen->dosen_nama }}
@@ -135,13 +144,12 @@
                             <div class="col-sm-4">Foto Profil</div>
                             <div class="col-sm-8">
                                 @if ($dosen->dosen_photo)
-                                    <img src="{{ $dosen->dosen_photo ? asset('storage/' . $dosen->dosen_photo) : asset('imgs/profile_placeholder.jpg') }}"
-                                        alt="Foto Profil" class="rounded"
-                                        style="width: 60px; height: 60px; object-fit: cover;">
+                                    <img src="{{ asset('storage/' . $dosen->dosen_photo) }}" alt="Foto Profil"
+                                        class="rounded" style="width: 60px; height: 60px; object-fit: cover;">
                                 @else
-                                    <div id="profileImagePlaceholder" class="profile-placeholder" class="rounded"
-                                        style="width: 60px; height: 60px; object-fit: cover;"> <i class="fas fa-user"
-                                            style="color: #6b7280; font-size: 24px;"></i>
+                                    <div id="profileImagePlaceholder" class="profile-placeholder"
+                                        style="width: 60px; height: 60px; background-color: #e2e8f0; display: flex; align-items: center; justify-content: center; object-fit: cover;border-radius: 5px;">
+                                        <i class="fas fa-user" style="color: #6b7280; font-size: 20px;"></i>
                                     </div>
                                 @endif
                             </div>
