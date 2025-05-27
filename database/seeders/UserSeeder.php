@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -14,7 +13,8 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('m_users')->insert([
+        // Data user statis
+        $users = [
             [
                 'username' => 'admin1',
                 'user_password' => Hash::make('admin123'),
@@ -95,7 +95,17 @@ class UserSeeder extends Seeder
                 'user_password' => Hash::make('12345'),
                 'user_role' => 'Mahasiswa',
             ],
-        ]);
-    }
-}
+        ];
 
+        // Tambahkan user mahasiswa6 sampai mahasiswa55 secara dinamis
+        for ($i = 6; $i <= 55; $i++) {
+            $users[] = [
+                'username' => 'mahasiswa' . $i,
+                'user_password' => Hash::make('12345'),
+                'user_role' => 'Mahasiswa',
+            ];
+        }
+
+        // Insert semua user ke database
+        DB::table('m_users')->insert($users);
+    }}

@@ -33,7 +33,7 @@
                             Semester: <span class="fw-semibold ms-1">{{ $mahasiswa->semester_id }}</span>
                         </li>
                         <li class="mb-2 text-center">
-                            Angkatan: <span class="fw-semibold ms-1">{{ $mahasiswa->mahasiswa_angakatan }}</span>
+                            Angkatan: <span class="fw-semibold ms-1">{{ $mahasiswa->mahasiswa_angkatan }}</span>
                         </li>
                         <li><hr class="my-2"></li>
                         <li class="mb-2 text-center">
@@ -120,7 +120,7 @@
                     </div>
                     <div class="row mb-2">
                         <div class="col-sm-4">Angkatan</div>
-                        <div class="col-sm-8">{{ $mahasiswa->mahasiswa_angakatan }}</div>
+                        <div class="col-sm-8">{{ $mahasiswa->mahasiswa_angkatan }}</div>
                     </div>
                 </div>
             </div>
