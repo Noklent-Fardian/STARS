@@ -378,6 +378,7 @@ Route::middleware(['auth', 'role:Mahasiswa'])->prefix('student/achievement')->na
     Route::post('/select-competition', [CompetitionSubmissionController::class, 'selectCompetition'])->name('select-competition');
     Route::post('/store', [CompetitionSubmissionController::class, 'store'])->name('store');
     Route::post('/finalize', [CompetitionSubmissionController::class, 'finalizeSubmission'])->name('finalize');
+    Route::get('/step3', [CompetitionSubmissionController::class, 'step3'])->name('step3');
 });
 
 // Fallback for unauthorized access

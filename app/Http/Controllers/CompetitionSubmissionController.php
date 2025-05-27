@@ -142,6 +142,7 @@ class CompetitionSubmissionController extends Controller
             ->with('dosens', $dosens);
     }
 
+
     public function finalizeSubmission(Request $request)
     {
         $request->validate([
@@ -162,61 +163,92 @@ class CompetitionSubmissionController extends Controller
             'penghargaan_photo_kegiatan' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // Handle file uploads
-        $filePaths = [];
-        $files = ['penghargaan_file_surat_tugas', 'penghargaan_file_sertifikat', 'penghargaan_file_poster', 'penghargaan_photo_kegiatan'];
+        try {
+            // Handle file uploads
+            $filePaths = [];
+            $files = ['penghargaan_file_surat_tugas', 'penghargaan_file_sertifikat', 'penghargaan_file_poster', 'penghargaan_photo_kegiatan'];
 
-        foreach ($files as $file) {
-            if ($request->hasFile($file)) {
-                $filePaths[$file] = $request->file($file)->store('prestasi', 'public');
+            foreach ($files as $file) {
+                if ($request->hasFile($file)) {
+                    $filePaths[$file] = $request->file($file)->store('prestasi', 'public');
+                }
             }
-        }
-        $peringkat = Peringkat::find($request->peringkat_id);
 
-        $tingkatanId = $request->lomba_id ?
-            Lomba::find($request->lomba_id)->tingkatan_id :
-            CompetitionSubmission::find($request->competition_submission_id)->lomba_tingkatan_id;
+            $peringkat = Peringkat::find($request->peringkat_id);
 
-        $tingkatan = Tingkatan::find($tingkatanId);
-
-        $penghargaanScore = $peringkat->peringkat_bobot * $tingkatan->tingkatan_point;
-
-        // Create penghargaan record
-        $penghargaan = Penghargaan::create([
-            'mahasiswa_id' => Auth::user()->mahasiswa->id,
-            'lomba_id' => $request->lomba_id ??
-                CompetitionSubmission::find($request->competition_submission_id)->lomba_id,
-            'peringkat_id' => $request->peringkat_id,
-            'tingkatan_id' => $request->lomba_id ?
+            $tingkatanId = $request->lomba_id ?
                 Lomba::find($request->lomba_id)->tingkatan_id :
-                CompetitionSubmission::find($request->competition_submission_id)->lomba_tingkatan_id,
-            'penghargaan_judul' => $request->penghargaan_judul,
-            'penghargaan_tempat' => $request->penghargaan_tempat,
-            'penghargaan_url' => $request->penghargaan_url,
-            'penghargaan_tanggal_mulai' => $request->penghargaan_tanggal_mulai,
-            'penghargaan_tanggal_selesai' => $request->penghargaan_tanggal_selesai,
-            'penghargaan_jumlah_peserta' => $request->penghargaan_jumlah_peserta,
-            'penghargaan_jumlah_instansi' => $request->penghargaan_jumlah_instansi,
-            'penghargaan_no_surat_tugas' => $request->penghargaan_no_surat_tugas,
-            'penghargaan_score' => $penghargaanScore,
-            'penghargaan_tanggal_surat_tugas' => $request->penghargaan_tanggal_surat_tugas,
-            'penghargaan_file_surat_tugas' => $filePaths['penghargaan_file_surat_tugas'] ?? null,
-            'penghargaan_file_sertifikat' => $filePaths['penghargaan_file_sertifikat'] ?? null,
-            'penghargaan_file_poster' => $filePaths['penghargaan_file_poster'] ?? null,
-            'penghargaan_photo_kegiatan' => $filePaths['penghargaan_photo_kegiatan'] ?? null,
-            'penghargaan_visible' => true
-        ]);
+                CompetitionSubmission::find($request->competition_submission_id)->lomba_tingkatan_id;
 
-        // Create verification record with selected dosen
-        Verifikasi::create([
-            'mahasiswa_id' => Auth::user()->mahasiswa->id,
-            'penghargaan_id' => $penghargaan->id,
-            'dosen_id' => $request->dosen_id,
-            'verifikasi_admin_status' => 'Menunggu',
-            'verifikasi_dosen_status' => 'Menunggu',
-            'verifikasi_visible' => true
-        ]);
+            $tingkatan = Tingkatan::find($tingkatanId);
 
+            $penghargaanScore = $peringkat->peringkat_bobot * $tingkatan->tingkatan_point;
+
+            // Create penghargaan record
+            $penghargaan = Penghargaan::create([
+                'mahasiswa_id' => Auth::user()->mahasiswa->id,
+                'lomba_id' => $request->lomba_id ??
+                    CompetitionSubmission::find($request->competition_submission_id)->lomba_id,
+                'peringkat_id' => $request->peringkat_id,
+                'tingkatan_id' => $request->lomba_id ?
+                    Lomba::find($request->lomba_id)->tingkatan_id :
+                    CompetitionSubmission::find($request->competition_submission_id)->lomba_tingkatan_id,
+                'penghargaan_judul' => $request->penghargaan_judul,
+                'penghargaan_tempat' => $request->penghargaan_tempat,
+                'penghargaan_url' => $request->penghargaan_url,
+                'penghargaan_tanggal_mulai' => $request->penghargaan_tanggal_mulai,
+                'penghargaan_tanggal_selesai' => $request->penghargaan_tanggal_selesai,
+                'penghargaan_jumlah_peserta' => $request->penghargaan_jumlah_peserta,
+                'penghargaan_jumlah_instansi' => $request->penghargaan_jumlah_instansi,
+                'penghargaan_no_surat_tugas' => $request->penghargaan_no_surat_tugas,
+                'penghargaan_score' => $penghargaanScore,
+                'penghargaan_tanggal_surat_tugas' => $request->penghargaan_tanggal_surat_tugas,
+                'penghargaan_file_surat_tugas' => $filePaths['penghargaan_file_surat_tugas'] ?? null,
+                'penghargaan_file_sertifikat' => $filePaths['penghargaan_file_sertifikat'] ?? null,
+                'penghargaan_file_poster' => $filePaths['penghargaan_file_poster'] ?? null,
+                'penghargaan_photo_kegiatan' => $filePaths['penghargaan_photo_kegiatan'] ?? null,
+                'penghargaan_visible' => true
+            ]);
+
+            // Create verification record with selected dosen
+            Verifikasi::create([
+                'mahasiswa_id' => Auth::user()->mahasiswa->id,
+                'penghargaan_id' => $penghargaan->id,
+                'dosen_id' => $request->dosen_id,
+                'verifikasi_admin_status' => 'Menunggu',
+                'verifikasi_dosen_status' => 'Menunggu',
+                'verifikasi_visible' => true
+            ]);
+
+            // Check if AJAX request
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Pengajuan prestasi berhasil disubmit dan sedang menunggu verifikasi.',
+                    'redirect' => route('student.achievement.step3'),
+                    'penghargaan' => [
+                        'id' => $penghargaan->id,
+                        'judul' => $penghargaan->penghargaan_judul,
+                        'score' => $penghargaan->penghargaan_score
+                    ]
+                ]);
+            }
+
+            return redirect()->route('student.achievement.step3');
+        } catch (\Exception $e) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan saat memproses pengajuan: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return back()->withErrors(['error' => 'Terjadi kesalahan saat memproses pengajuan.'])->withInput();
+        }
+    }
+
+    public function step3()
+    {
         return view('mahasiswa.ajukanVerifikasiPrestasi.create-step3');
     }
 }

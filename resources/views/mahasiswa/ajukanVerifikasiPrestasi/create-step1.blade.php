@@ -136,7 +136,7 @@
                                             <button type="button"
                                                 class="btn btn-sm btn-block {{ $lomba->lomba_terverifikasi ? 'btn-primary' : 'btn-outline-warning' }}">
                                                 @if ($lomba->lomba_terverifikasi)
-                                                    <i class="fas fa-check mr-1"></i>Pilih Lomba Ini
+                                                    <i class="fas fa-arrow-right mr-1"></i> Pilih Lomba Ini
                                                 @else
                                                     <i class="fas fa-exclamation-triangle mr-1"></i>Pilih Lomba (Belum
                                                     Terverifikasi)
