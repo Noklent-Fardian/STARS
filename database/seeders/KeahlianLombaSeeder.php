@@ -94,6 +94,18 @@ class KeahlianLombaSeeder extends Seeder
                 'lomba_id' => '17',
                 'keahlian_id' => '3',
             ],
+            [
+                'lomba_id' => '21',
+                'keahlian_id' => '3',
+            ],
+            [
+                'lomba_id' => '22',
+                'keahlian_id' => '1',
+            ],
+            [
+                'lomba_id' => '23',
+                'keahlian_id' => '2',
+            ],
         ]);
     }
 }
