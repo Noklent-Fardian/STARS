@@ -71,7 +71,7 @@
                                                         <span class="badge badge-danger">Tidak Aktif</span>
                                                     @endif
                                                 </td>
-                                                <td>{{ $mahasiswa->mahasiswa_angakatan }}</td>
+                                                <td>{{ $mahasiswa->mahasiswa_angkatan }}</td>
                                                 <td class="text-center">
                                                     <a href="" class="btn btn-sm btn-info">
                                                         <i class="fas fa-eye"></i>
