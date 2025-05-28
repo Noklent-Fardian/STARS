@@ -164,7 +164,7 @@
                             <div class="timeline-item">
                                 <div class="timeline-marker bg-info"></div>
                                 <div class="timeline-content">
-                                    <h6 class="font-weight-bold">Tanggal Mulai</h6>
+                                    <h6 class="font-weight-bold">Tanggal Mulai Pendaftaran</h6>
                                     <p class="text-muted mb-1">{{ $lomba->lomba_tanggal_mulai->format('l, d F Y') }}</p>
                                     <small class="text-info">{{ $lomba->lomba_tanggal_mulai->diffForHumans() }}</small>
                                 </div>
