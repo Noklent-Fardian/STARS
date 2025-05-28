@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\TopsisService;
 
-class TopsisController extends Controller
+class RekomendasiController extends Controller
 {
     public function rekomendasi(TopsisService $topsis)
     {

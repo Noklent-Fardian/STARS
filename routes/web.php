@@ -19,6 +19,8 @@ use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\TingkatanController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RekomendasiController;
+use App\Http\Controllers\BobotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -110,6 +112,11 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::get('/prestasi', [AdminController::class, 'prestasiIndex'])->name('admin.prestasi.index');
     Route::get('/prestasi/report', [AdminController::class, 'prestasiReport'])->name('admin.prestasi.report');
 
+    // Admin Kelola Rekomendasi
+    Route::prefix('rekomendasi')->name('admin.rekomendasi.')->group(function () {
+        Route::get('/', [BobotController::class, 'index'])->name('index');
+        Route::post('/update', [BobotController::class, 'update'])->name('update');
+    });
     // Admin Kelola Prestasi
     Route::prefix('adminKelolaPrestasi')->name('admin.adminKelolaPrestasi.')->group(function () {
         Route::get('/', [AdminKelolaPrestasiController::class, 'index'])->name('index');

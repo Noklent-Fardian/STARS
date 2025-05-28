@@ -20,6 +20,18 @@
 
         <hr class="sidebar-divider">
 
+        <!-- Manajemen Rekomendasi -->
+        <div class="sidebar-heading">Manajemen Rekomendasi</div>
+
+        <li class="nav-item {{ request()->routeIs('admin.rekomendasi.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.rekomendasi.index') }}">
+                <i class="fas fa-fw fa-thumbs-up"></i>
+                <span>Kelola Bobot</span>
+            </a>
+        </li>
+
+        <hr class="sidebar-divider">`
+
         <!-- Manajemen Pengguna -->
         <div class="sidebar-heading">Manajemen Pengguna</div>
 
@@ -45,6 +57,7 @@
         <hr class="sidebar-divider">
 
         <!-- Manajemen Prestasi -->
+         
         <div class="sidebar-heading">Manajemen Prestasi</div>
 
         <li class="nav-item {{ request()->routeIs('admin.prestasi.verification') ? 'active' : '' }}">
