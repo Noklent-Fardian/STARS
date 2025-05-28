@@ -30,7 +30,7 @@
                             {{ $mahasiswa->prodi->prodi_nama ?? '-' }}
                         </li>
                         <li class="mb-2 text-center">
-                            Semester: <span class="fw-semibold ms-1">{{ $mahasiswa->semester_id }}</span>
+                            Semester: <span class="fw-semibold ms-1">{{ $mahasiswa->semester->semester_nama ?? $mahasiswa->semester_id }}</span>
                         </li>
                         <li class="mb-2 text-center">
                             Angkatan: <span class="fw-semibold ms-1">{{ $mahasiswa->mahasiswa_angkatan }}</span>
@@ -116,7 +116,7 @@
                     </div>
                     <div class="row mb-2">
                         <div class="col-sm-4">Semester</div>
-                        <div class="col-sm-8">{{ $mahasiswa->semester_id }}</div>
+                        <div class="col-sm-8">{{ $mahasiswa->semester->semester_nama ?? $mahasiswa->semester_id }}</div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-sm-4">Angkatan</div>
