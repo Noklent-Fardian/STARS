@@ -10,12 +10,8 @@
 @endsection
 
 @section('content')
-    <div class="card shadow-lg rounded-lg overflow-hidden">
-        <div class="card-header position-relative p-4">
-            <h3 class="card-title font-weight-bold mb-0 text-white">{{ $page->title ?? 'Detail Dosen' }}</h3>
-            <div class="animated-bg"></div>
-        </div>
-        <div class="card-body p-4">
+    <div class="rounded-lg overflow-hidden">
+        <div class="">
             @empty($dosen)
                 <div class="alert alert-danger alert-dismissible fade show">
                     <div class="d-flex align-items-center">
@@ -28,139 +24,199 @@
                 </div>
             @else
                 <div class="user-detail-container">
-                    <div class="row mb-4">
-                        <div class="col-md-3 text-center">
-                            <div class="profile-image-container mb-3">
-                                @if ($dosen->dosen_photo)
-                                    <img src="{{ asset('storage/dosen_photos/' . $dosen->dosen_photo) }}"
-                                        alt="{{ $dosen->dosen_nama }}" class="img-fluid user-profile-image">
-                                    <div class="image-overlay"
-                                        onclick="window.open('{{ asset('storage/dosen_photos/' . $dosen->dosen_photo) }}', '_blank')">
-                                        <i class="fas fa-search-plus"></i>
-                                        <span>Lihat Foto</span>
+                    <div class="row mb-4 justify-content-center">
+                        <div class="col-md-12">
+                            <div class="card mx-2 h-100 border-0" style="background: #f8f9fa;">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="profile-image-container mr-4" style="width: 100px; height: 100px;">
+                                            @if ($dosen->dosen_photo)
+                                                <img src="{{ asset('storage/dosen_photos/' . $dosen->dosen_photo) }}"
+                                                     alt="{{ $dosen->dosen_nama }}"
+                                                     class="rounded-circle user-profile-image" style="width: 100px; height: 100px;">
+                                            @else
+                                                <div class="no-avatar rounded-circle bg-secondary" style="width: 100px; height: 100px;">
+                                                    <i class="fas fa-user"></i>
+                                                </div>
+                                            @endif
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h4 class="mb-1 text-primary font-weight-bold">{{ $dosen->dosen_nama }}</h4>
+                                            <div class="mb-1 text-muted" style="font-size: 15px;">
+                                                <span class="mr-3">
+                                                    <i class="fas fa-id-card text-info mr-1"></i>
+                                                    {{ $dosen->dosen_nip }}
+                                                </span>
+                                                <span>
+                                                    <i class="fas fa-university text-primary mr-1"></i>
+                                                    {{ $dosen->prodi->prodi_nama ?? '-' }}
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span class="badge badge-{{ 
+                                                    $dosen->dosen_status == 'Aktif' ? 'success' : 
+                                                    ($dosen->dosen_status == 'Cuti' ? 'warning' : 
+                                                    ($dosen->dosen_status == 'Pensiun' ? 'secondary' : 'danger')) 
+                                                }}">
+                                                    {{ $dosen->dosen_status }}
+                                                </span>
+                                                <span class="badge {{ $dosen->dosen_visible ? 'badge-success' : 'badge-secondary' }}">
+                                                    {{ $dosen->dosen_visible ? 'Aktif' : 'Tidak Aktif' }}
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
-                                @else
-                                    <div class="no-avatar">
-                                        <i class="fas fa-user-circle"></i>
-                                    </div>
-                                    <div class="image-overlay">
-                                        <i class="fas fa-camera"></i>
-                                        <span>Tidak Ada Foto</span>
-                                    </div>
-                                @endif
+                                </div>
                             </div>
-                            <h4 class="font-weight-bold mb-1">{{ $dosen->dosen_nama }}</h4>
-                            <span class="badge badge-info px-3 py-2">Dosen</span>
                         </div>
-                        <div class="col-md-9">
-                            <div class="user-info-card">
-                                <div class="user-info-item">
-                                    <div class="info-label">
-                                        <i class="fas fa-hashtag text-primary"></i>
-                                        <span>ID Dosen</span>
-                                    </div>
-                                    <div class="info-value">{{ $dosen->id }}</div>
+                    </div>
+                    
+                    <div class="row justify-content-center">
+                        {{-- Informasi Pribadi --}}
+                        <div class="col-md-12 mx-3 mb-3">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <i class="fas fa-user mr-2"></i> Informasi Pribadi
                                 </div>
-                                <div class="user-info-item">
-                                    <div class="info-label">
-                                        <i class="fas fa-user text-info"></i>
-                                        <span>Nama Dosen</span>
+                                <div class="card-body">
+                                    <div class="user-info-item">
+                                        <div class="info-label">
+                                            <i class="fas fa-user text-primary"></i>
+                                            <span>Nama Lengkap</span>
+                                        </div>
+                                        <div class="info-value">{{ $dosen->dosen_nama }}</div>
                                     </div>
-                                    <div class="info-value">{{ $dosen->dosen_nama }}</div>
-                                </div>
-                                <div class="user-info-item">
-                                    <div class="info-label">
-                                        <i class="fas fa-id-card text-primary"></i>
-                                        <span>NIP</span>
+                                    <div class="user-info-item">
+                                        <div class="info-label me-2">
+                                            <i class="fas fa-id-card text-info"></i>
+                                            <span>NIP</span>
+                                        </div>
+                                        <div class="info-value">{{ $dosen->dosen_nip }}</div>
                                     </div>
-                                    <div class="info-value">{{ $dosen->dosen_nip }}</div>
-                                </div>
-                                <div class="user-info-item">
-                                    <div class="info-label">
-                                        <i class="fas fa-venus-mars text-warning"></i>
-                                        <span>Jenis Kelamin</span>
+                                    <div class="user-info-item">
+                                        <div class="info-label me-2">
+                                            <i class="fas fa-venus-mars text-warning"></i>
+                                            <span>Jenis Kelamin</span>
+                                        </div>
+                                        <div class="info-value">{{ $dosen->dosen_gender }}</div>
                                     </div>
-                                    <div class="info-value">{{ $dosen->dosen_gender }}</div>
-                                </div>
-                                <div class="user-info-item">
-                                    <div class="info-label">
-                                        <i class="fas fa-phone text-success"></i>
-                                        <span>Nomor Telepon</span>
+                                    <div class="user-info-item">
+                                        <div class="info-label">
+                                            <i class="fas fa-pray text-secondary"></i>
+                                            <span>Agama</span>
+                                        </div>
+                                        <div class="info-value">{{ $dosen->dosen_agama ?? '-' }}</div>
                                     </div>
-                                    <div class="info-value">{{ $dosen->dosen_nomor_telepon }}</div>
-                                </div>
-                                <div class="user-info-item">
-                                    <div class="info-label">
-                                        <i class="fas fa-check-circle text-info"></i>
-                                        <span>Status</span>
+                                    <div class="user-info-item">
+                                        <div class="info-label">
+                                            <i class="fas fa-phone text-success"></i>
+                                            <span>Nomor Telepon</span>
+                                        </div>
+                                        <div class="info-value">{{ $dosen->dosen_nomor_telepon }}</div>
                                     </div>
-                                    <div class="info-value">
-                                        @php
-                                            $statusClasses = [
-                                                'Aktif' => 'badge-success',
-                                                'Cuti' => 'badge-warning',
-                                                'Resign' => 'badge-danger',
-                                                'Pensiun' => 'badge-secondary'
-                                            ];
-                                            $statusClass = $statusClasses[$dosen->dosen_status] ?? 'badge-info';
-                                        @endphp
-                                        <span class="badge {{ $statusClass }} px-3 py-2">{{ $dosen->dosen_status }}</span>
-                                    </div>
-                                </div>
-                                <div class="user-info-item">
-                                    <div class="info-label">
-                                        <i class="fas fa-graduation-cap text-danger"></i>
-                                        <span>Program Studi</span>
-                                    </div>
-                                    <div class="info-value">{{ $dosen->prodi ? $dosen->prodi->prodi_nama : '-' }}</div>
-                                </div>
-                                <div class="user-info-item">
-                                    <div class="info-label">
-                                        <i class="fas fa-user-circle text-primary"></i>
-                                        <span>Username</span>
-                                    </div>
-                                    <div class="info-value">{{ $dosen->user->username }}</div>
-                                </div>
-                                <div class="user-info-item">
-                                    <div class="info-label">
-                                        <i class="fas fa-pray text-secondary"></i>
-                                        <span>Agama</span>
-                                    </div>
-                                    <div class="info-value">{{ $dosen->dosen_agama ?? '-' }}</div>
-                                </div>
-                                <div class="user-info-item">
-                                    <div class="info-label">
-                                        <i class="fas fa-map-marker-alt text-danger"></i>
-                                        <span>Alamat</span>
-                                    </div>
-                                    <div class="info-value">
-                                        @php
-                                            $alamat = implode(', ', array_filter([
-                                                $dosen->dosen_desa,
-                                                $dosen->dosen_kecamatan,
-                                                $dosen->dosen_kota,
-                                                $dosen->dosen_provinsi
-                                            ]));
-                                        @endphp
-                                        {{ $alamat ?: '-' }}
+                                    <div class="user-info-item">
+                                        <div class="info-label">
+                                            <i class="fas fa-map-marker-alt text-danger"></i>
+                                            <span>Alamat</span>
+                                        </div>
+                                        <div class="info-value">
+                                            @php
+                                                $alamat = implode(', ', array_filter([
+                                                    $dosen->dosen_desa,
+                                                    $dosen->dosen_kecamatan,
+                                                    $dosen->dosen_kota,
+                                                    $dosen->dosen_provinsi
+                                                ]));
+                                            @endphp
+                                            {{ $alamat ?: '-' }}
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="user-info-item">
-                                    <div class="info-label">
-                                        <i class="fas fa-calendar-plus text-success"></i>
-                                        <span>Tanggal Dibuat</span>
+                            </div>
+                        </div>
+
+                        {{-- Informasi Akademik --}}
+                        <div class="col-md-12 mb-3">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <i class="fas fa-graduation-cap mr-2"></i> Informasi Akademik
+                                </div>
+                                <div class="card-body">
+                                    <div class="user-info-item">
+                                        <div class="info-label">
+                                            <i class="fas fa-university text-primary"></i>
+                                            <span>Program Studi</span>
+                                        </div>
+                                        <div class="info-value">{{ $dosen->prodi->prodi_nama ?? '-' }}</div>
                                     </div>
-                                    <div class="info-value">
-                                        {{ $dosen->created_at ? $dosen->created_at->format('d F Y H:i') : 'Tidak Ada Data' }}
+                                    <div class="user-info-item">
+                                        <div class="info-label">
+                                            <i class="fas fa-star text-danger"></i>
+                                            <span>Score</span>
+                                        </div>
+                                        <div class="info-value">{{ $dosen->dosen_score }}</div>
+                                    </div>
+                                    <div class="user-info-item">
+                                        <div class="info-label">
+                                            <i class="fas fa-info-circle text-info"></i>
+                                            <span>Status</span>
+                                        </div>
+                                        <div class="info-value">
+                                            <span class="badge badge-{{ 
+                                                $dosen->dosen_status == 'Aktif' ? 'success' : 
+                                                ($dosen->dosen_status == 'Cuti' ? 'warning' : 
+                                                ($dosen->dosen_status == 'Pensiun' ? 'secondary' : 'danger')) 
+                                            }}">
+                                                {{ $dosen->dosen_status }}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="user-info-item">
-                                    <div class="info-label">
-                                        <i class="fas fa-calendar-check text-success"></i>
-                                        <span>Terakhir Diperbarui</span>
+                            </div>
+                        </div>
+
+                        {{-- Informasi Akun --}}
+                        <div class="col-md-12 mb-3">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <i class="fas fa-user-circle mr-2"></i> Informasi Akun
+                                </div>
+                                <div class="card-body">
+                                    <div class="user-info-item">
+                                        <div class="info-label">
+                                            <i class="fas fa-user text-secondary"></i>
+                                            <span>Username</span>
+                                        </div>
+                                        <div class="info-value">{{ $dosen->user->username ?? '-' }}</div>
                                     </div>
-                                    <div class="info-value">
-                                        {{ $dosen->updated_at ? $dosen->updated_at->format('d F Y H:i') : 'Tidak Ada Data' }}
+                                    <div class="user-info-item">
+                                        <div class="info-label">
+                                            <i class="fas fa-calendar-plus text-success"></i>
+                                            <span>Tanggal Dibuat</span>
+                                        </div>
+                                        <div class="info-value">
+                                            {{ $dosen->created_at ? $dosen->created_at->format('d F Y H:i') : 'Tidak Ada Data' }}
+                                        </div>
+                                    </div>
+                                    <div class="user-info-item">
+                                        <div class="info-label">
+                                            <i class="fas fa-calendar-check text-success"></i>
+                                            <span>Terakhir Diperbarui</span>
+                                        </div>
+                                        <div class="info-value">
+                                            {{ $dosen->updated_at ? $dosen->updated_at->format('d F Y H:i') : 'Tidak Ada Data' }}
+                                        </div>
+                                    </div>
+                                    <div class="user-info-item">
+                                        <div class="info-label">
+                                            <i class="fas fa-eye text-info"></i>
+                                            <span>Status Akun</span>
+                                        </div>
+                                        <div class="info-value">
+                                            <span class="badge {{ $dosen->dosen_visible ? 'badge-success' : 'badge-secondary' }}">
+                                                {{ $dosen->dosen_visible ? 'Aktif' : 'Tidak Aktif' }}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -296,16 +352,9 @@
             opacity: 1;
         }
 
-        .user-info-card {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-        }
-
         .user-info-item {
             display: flex;
-            padding: 12px 20px;
+            padding: 12px 15px;
             border-bottom: 1px solid #f2f2f2;
             transition: background-color 0.2s ease;
         }
@@ -345,6 +394,12 @@
         .badge {
             font-weight: 500;
             letter-spacing: 0.5px;
+        }
+
+        .card .card-header {
+            border-radius: 0.35rem 0.35rem 0 0 !important;
+            padding: 0.75rem 1.25rem;
+            font-weight: 600;
         }
     </style>
 @endpush
