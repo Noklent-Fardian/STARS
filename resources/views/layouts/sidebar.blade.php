@@ -220,17 +220,10 @@
 
         <div class="sidebar-heading">Prestasi Mahasiswa</div>
 
-        <li class="nav-item {{ request()->routeIs('mahasiswa.lomba.index') ? 'active' : '' }}">
+        <li class="nav-item {{ request()->routeIs('mahasiswa.lomba.*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('mahasiswa.lomba.index') }}">
                 <i class="nav-icon fas fa-medal"></i>
                 <span>Lihat Lomba</span>
-            </a>
-        </li>
-
-        <li class="nav-item {{ request()->routeIs('mahasiswa.prestasi.*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('mahasiswa.prestasi.index') }}">
-                <i class="nav-icon fas fa-plus-circle"></i>
-                <span>Pencatatan Prestasi</span>
             </a>
         </li>
 
@@ -241,6 +234,15 @@
             </a>
         </li>
 
+        <hr class="sidebar-divider">
+
+        <div class="sidebar-heading">Riwayat</div>
+            <li class="nav-item {{ request()->routeIs('mahasiswa.prestasi.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('mahasiswa.prestasi.index') }}">
+                <i class="nav-icon fas fa-plus-circle"></i>
+                <span>Pencatatan Prestasi</span>
+            </a>
+        </li>
         <hr class="sidebar-divider">
 
         <div class="sidebar-heading">Pengaturan</div>

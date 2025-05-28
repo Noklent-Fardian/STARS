@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use App\Models\Keahlian;
+use App\Models\Prodi;
+use App\Models\Lomba;
 
 class MahasiswaController extends Controller
 {
@@ -244,5 +247,24 @@ class MahasiswaController extends Controller
             }
             return redirect()->back()->with('error', 'Terjadi kesalahan saat mengunggah foto.');
         }
+    }
+
+    public function lombaIndex()
+    {
+        $lombas =Lomba::with(['tingkatan', 'semester', 'keahlians'])
+            ->where('lomba_visible', true)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('mahasiswa.lomba.index', compact('lombas'));
+    }
+
+    public function lombaShow($id)
+    {
+        $lomba = \App\Models\Lomba::with(['tingkatan', 'semester', 'keahlians'])
+            ->where('lomba_visible', true)
+            ->findOrFail($id);
+
+        return view('mahasiswa.lomba.show', compact('lomba'));
     }
 }
