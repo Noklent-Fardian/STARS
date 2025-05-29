@@ -112,18 +112,18 @@ $(window).on("load", function () {
 
         if (percentageCounter === 24 || percentageCounter === 26) {
             currentTextIndex = 1;
-            loadingText.fadeOut(150, function () {
-                $(this).text(texts[currentTextIndex]).fadeIn(150);
+            loadingText.fadeOu(75, function () {
+                $(this).text(texts[currentTextIndex]).fadeIn(75);
             });
         } else if (percentageCounter === 48 || percentageCounter === 52) {
             currentTextIndex = 2;
-            loadingText.fadeOut(150, function () {
-                $(this).text(texts[currentTextIndex]).fadeIn(150);
+            loadingText.fadeOut(75, function () {
+                $(this).text(texts[currentTextIndex]).fadeIn(75);
             });
         } else if (percentageCounter === 74 || percentageCounter === 76) {
             currentTextIndex = 3;
-            loadingText.fadeOut(150, function () {
-                $(this).text(texts[currentTextIndex]).fadeIn(150);
+            loadingText.fadeOut(75, function () {
+                $(this).text(texts[currentTextIndex]).fadeIn(75);
             });
         }
 
@@ -131,10 +131,10 @@ $(window).on("load", function () {
             clearInterval(percentageInterval);
 
             setTimeout(function () {
-                $(".preloader").fadeOut(150);
-            }, 150);
+                $(".preloader").fadeOut(75);
+            }, 75);
         }
-    }, 15);
+    }, 10);
 });
 
 $(document).ready(function () {
