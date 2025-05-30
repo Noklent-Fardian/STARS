@@ -65,8 +65,8 @@
         <!-- Manajemen Lomba -->
         <div class="sidebar-heading">Manajemen Lomba</div>
 
-        <li class="nav-item {{ request()->routeIs('admin.lomba.verification') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('admin.lomba.verification') }}">
+        <li class="nav-item {{ request()->routeIs('admin.lombaVerification.index') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.lombaVerification.index') }}">
                 <i class="fas fa-fw fa-clipboard-check"></i>
                 <span>Verifikasi Lomba</span>
             </a>

@@ -119,7 +119,7 @@ class CompetitionSubmissionController extends Controller
             'lomba_tingkatan_id' => $request->lomba_tingkatan_id,
             'pendaftaran_tanggal_pendaftaran' => now(),
             'lomba_keahlian_ids' => $keahlianIds,
-            'pendaftaran_status' => 'menunggu',
+            'pendaftaran_status' => 'Menunggu',
             'pendaftaran_visible' => true
         ]);
 
