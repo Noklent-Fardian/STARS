@@ -15,15 +15,9 @@
                     <div class="card text-center shadow-sm border-0 mb-3">
                         <div class="card-body d-flex flex-column align-items-center">
                             <div class="mb-3 profile-image-container position-relative">
-                                @if ($dosen->dosen_photo)
-                                    <img src="{{ asset('storage/' . $dosen->dosen_photo) }}" alt="Profil" class="shadow"
-                                        style="width: 130px; height: 130px; object-fit: cover; border-radius: 50%;">
-                                @else
-                                    <div id="profileImagePlaceholder" class="profile-placeholder"
-                                        style="width: 130px; height: 130px; background-color: #e2e8f0; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
-                                        <i class="fas fa-user" style="color: #6b7280; font-size: 60px;"></i>
-                                    </div>
-                                @endif
+                                <img id="profile-preview"
+                                    src="{{ $dosen->dosen_photo ? asset('storage/' . $dosen->dosen_photo) : asset('imgs/profile_placeholder.jpg') }}"
+                                    alt="">
                             </div>
                             <button type="button" class="btn btn-outline-primary w-100 mt-2" data-bs-toggle="modal"
                                 data-bs-target="#modalPhoto">
