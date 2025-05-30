@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LombaVerificationController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminKelolaLombaController;
 use App\Http\Controllers\AdminKelolaPrestasiController;
@@ -134,6 +135,14 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::get('/generate_template', [AdminKelolaPrestasiController::class, 'generateTemplate'])->name('generateTemplate');
     });
 
+    // Admin Verifikasi Lomba
+    Route::prefix('lombaVerification')->name('admin.lombaVerification.')->group(function () {
+        Route::get('/', [LombaVerificationController::class, 'index'])->name('index');
+        Route::get('/list', [LombaVerificationController::class, 'list'])->name('list');
+        Route::get('/show/{id}', [LombaVerificationController::class, 'show'])->name('show');
+        Route::post('/{id}/approve', [LombaVerificationController::class, 'approve'])->name('approve');
+        Route::post('/{id}/reject', [LombaVerificationController::class, 'reject'])->name('reject');
+});
     // Admin Kelola Lomba
     Route::prefix('adminKelolaLomba')->name('admin.adminKelolaLomba.')->group(function () {
         Route::get('/', [AdminKelolaLombaController::class, 'index'])->name('index');

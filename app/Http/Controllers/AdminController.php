@@ -61,7 +61,7 @@ class AdminController extends Controller
 
     public function lombaVerification()
     {
-        return view('admin.lomba.verification');
+        return view('admin.lombaVerification.index');
     }
 
     public function lombaIndex()
