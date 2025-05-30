@@ -171,9 +171,9 @@
 
         <div class="sidebar-heading">Manajemen</div>
 
-        <li class="nav-item {{ request()->routeIs('dosen.lomba.index') ? 'active' : '' }}">
+        <li class="nav-item {{ request()->routeIs('dosen.lomba.*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('dosen.lomba.index') }}">
-                <i class="nav-icon fas fa-list"></i>
+                <i class="nav-icon fas fa-medal"></i>
                 <span>Lihat Lomba</span>
             </a>
         </li>
@@ -196,7 +196,7 @@
             </a>
         </li>
     @endif
-    
+
     @if (Auth::user()->mahasiswa)
         <a class="sidebar-brand d-flex align-items-center justify-content-center"
             href="{{ route('mahasiswa.dashboard') }}">
@@ -237,7 +237,7 @@
         <hr class="sidebar-divider">
 
         <div class="sidebar-heading">Riwayat</div>
-            <li class="nav-item {{ request()->routeIs('mahasiswa.prestasi.*') ? 'active' : '' }}">
+        <li class="nav-item {{ request()->routeIs('mahasiswa.prestasi.*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('mahasiswa.prestasi.index') }}">
                 <i class="nav-icon fas fa-plus-circle"></i>
                 <span>Pencatatan Prestasi</span>
@@ -254,7 +254,7 @@
             </a>
         </li>
     @endif
-    
+
     <hr class="sidebar-divider d-none d-md-block">
     <li class="nav-item logout-item">
         <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal">

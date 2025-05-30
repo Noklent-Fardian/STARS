@@ -5,7 +5,7 @@
 @section('page-title', 'Detail Lomba')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('mahasiswa.lomba.index') }}">Lihat Lomba</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('dosen.lomba.index') }}">Lihat Lomba</a></li>
     <li class="breadcrumb-item active">{{ $lomba->lomba_nama }}</li>
 @endsection
 
@@ -120,8 +120,7 @@
                                             </div>
                                             <div class="info-content">
                                                 <span class="info-label">Semester</span>
-                                                <span
-                                                    class="info-value">{{ $lomba->semester->semester_nama ?? 'Tidak ditentukan' }}</span>
+                                                <span class="info-value">{{ $lomba->semester->semester_nama ?? 'Tidak ditentukan' }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -135,9 +134,9 @@
                                                 <span>Buka Link Pendaftaran</span>
                                             </a>
                                         @endif
-                                        <button type="button" class="modern-btn secondary" onclick="daftarLomba({{ $lomba->id }})">
-                                            <i class="fas fa-user-plus"></i>
-                                            <span>Daftar Lomba</span>
+                                        <button type="button" class="modern-btn secondary" onclick="recommendToStudents()">
+                                            <i class="fas fa-share"></i>
+                                            <span>Rekomendasikan ke Mahasiswa</span>
                                         </button>
                                     </div>
                                 </div>
@@ -281,7 +280,7 @@
         <!-- Back Button -->
         <div class="row mt-4">
             <div class="col-12">
-                <a href="{{ route('mahasiswa.lomba.index') }}" class="modern-btn outline">
+                <a href="{{ route('dosen.lomba.index') }}" class="modern-btn outline">
                     <i class="fas fa-arrow-left"></i>
                     <span>Kembali ke Daftar Lomba</span>
                 </a>
@@ -291,7 +290,7 @@
 @endsection
 
 @push('css')
-    <!-- Same CSS as dosen show view -->
+    <!-- Same CSS as mahasiswa.lomba.show -->
     <style>
         /* Modern Card Styles */
         .modern-card {
@@ -830,26 +829,12 @@
 
 @push('js')
     <script>
-        function daftarLomba(lombaId) {
+        function recommendToStudents() {
             Swal.fire({
-                title: 'Daftar Lomba',
-                text: 'Apakah Anda yakin ingin mendaftar lomba ini?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#102044',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, Daftar!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Here you would typically make an AJAX call to register for the competition
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil Mendaftar!',
-                        text: 'Anda telah berhasil mendaftar lomba ini.',
-                        confirmButtonColor: '#102044'
-                    });
-                }
+                icon: 'success',
+                title: 'Rekomendasi Dikirim',
+                text: 'Lomba ini akan direkomendasikan kepada mahasiswa bimbingan Anda.',
+                confirmButtonColor: '#102044'
             });
         }
     </script>

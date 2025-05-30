@@ -21,7 +21,7 @@
                                     <i class="fas fa-medal mr-2"></i>Lomba Tersedia
                                 </h4>
                                 <p class="mb-0 text-white-50">
-                                    Jelajahi berbagai lomba yang tersedia dan temukan peluang untuk berprestasi
+                                    Jelajahi berbagai lomba yang tersedia dan ajukan lomba baru untuk mahasiswa
                                 </p>
                             </div>
                             <div class="col-md-4 text-md-right">
@@ -285,19 +285,10 @@
                 </div>
             </div>
         </div>
-
-        <!-- Load More Button -->
-        <div class="row" id="loadMoreSection" style="display: none;">
-            <div class="col-12 text-center">
-                <button type="button" class="btn btn-outline-primary" id="loadMoreBtn">
-                    <i class="fas fa-plus mr-2"></i>Muat Lebih Banyak
-                </button>
-            </div>
-        </div>
     </div>
 
     <!-- New Competition Modal -->
-    @include('mahasiswa.lomba.new-competition')
+    @include('dosbim.lomba.new-competition')
 @endsection
 
 @push('css')
@@ -454,34 +445,17 @@
         .competition-card:hover .overlay-poster {
             opacity: 1;
         }
-
-        .default-poster {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
-            text-align: center;
-            padding: 20px;
-        }
     </style>
 @endpush
 
 @push('js')
     <script>
         $(document).ready(function() {
-            // Initialize filters
             updateResultCount();
-
-            // Search functionality
             $('#searchInput').on('input', debounce(filterAndSort, 300));
-
-            // Filter functionality
             $('#statusFilter, #categoryFilter, #dateFilter, #sortFilter').on('change', filterAndSort);
         });
 
-        // Debounce function for search
         function debounce(func, wait) {
             let timeout;
             return function executedFunction(...args) {
@@ -494,7 +468,6 @@
             };
         }
 
-        // Main filter and sort function
         function filterAndSort() {
             const searchTerm = $('#searchInput').val().toLowerCase();
             const statusFilter = $('#statusFilter').val();
@@ -515,22 +488,18 @@
 
                 let show = true;
 
-                // Search filter
                 if (searchTerm && !name.includes(searchTerm)) {
                     show = false;
                 }
 
-                // Status filter
                 if (statusFilter && status !== statusFilter) {
                     show = false;
                 }
 
-                // Category filter
                 if (categoryFilter && category !== categoryFilter) {
                     show = false;
                 }
 
-                // Date filter
                 if (dateFilter) {
                     if (dateFilter === 'upcoming' && today >= startDate) {
                         show = false;
@@ -549,7 +518,6 @@
                 }
             });
 
-            // Sort visible items
             if (visibleItems.length > 0) {
                 sortItems(visibleItems, sortFilter);
             }
@@ -558,7 +526,6 @@
             toggleNoResults(visibleItems.length === 0);
         }
 
-        // Sort items function
         function sortItems(items, sortType) {
             const container = $('#lombaContainer');
 
@@ -567,10 +534,6 @@
                 const $b = $(b);
 
                 switch (sortType) {
-                    case 'newest':
-                        return new Date($b.data('created')) - new Date($a.data('created'));
-                    case 'oldest':
-                        return new Date($a.data('created')) - new Date($b.data('created'));
                     case 'name_asc':
                         return $a.data('name').localeCompare($b.data('name'));
                     case 'name_desc':
@@ -582,20 +545,17 @@
                 }
             });
 
-            // Reorder items in DOM
             items.forEach(item => {
                 container.append(item);
             });
         }
 
-        // Update result count
         function updateResultCount() {
             const visible = $('.lomba-item:visible').length;
             const total = $('.lomba-item').length;
             $('#resultCount').text(`Menampilkan ${visible} dari ${total} lomba`);
         }
 
-        // Toggle no results message
         function toggleNoResults(show) {
             if (show) {
                 $('#lombaContainer').hide();
@@ -606,371 +566,24 @@
             }
         }
 
-        // Clear all filters
         function clearFilters() {
             $('#searchInput').val('');
             $('#statusFilter').val('');
             $('#categoryFilter').val('');
             $('#dateFilter').val('');
-            $('#sortFilter').val('newest');
+            $('#sortFilter').val('name_asc');
 
             $('.lomba-item').show();
             updateResultCount();
             toggleNoResults(false);
         }
 
-        // View competition detail
         function viewCompetitionDetail(lombaId) {
-            window.location.href = `{{ route('mahasiswa.lomba.show', '') }}/${lombaId}`;
+            window.location.href = `{{ route('dosen.lomba.show', '') }}/${lombaId}`;
         }
 
-        // Show new competition form
         function showNewCompetitionForm() {
             $('#newCompetitionModal').modal('show');
-            setTimeout(() => {
-                document.getElementById('topicsInput').focus();
-            }, 300);
         }
-
-        // Available keahlian data
-        const availableKeahlians = @json(\App\Models\Keahlian::where('keahlian_visible', true)->get(['id', 'keahlian_nama']));
-        let selectedKeahlians = [];
-        let currentIndex = -1;
-
-        // Initialize topics input
-        document.addEventListener('DOMContentLoaded', function() {
-            const topicsInput = document.getElementById('topicsInput');
-            const topicsDropdown = document.getElementById('topicsDropdown');
-            const selectedTopicsContainer = document.getElementById('selectedTopics');
-            const inputWrapper = document.querySelector('.topics-input-wrapper');
-
-            if (inputWrapper) {
-                inputWrapper.addEventListener('click', () => {
-                    topicsInput.focus();
-                });
-
-                topicsInput.addEventListener('input', handleInput);
-                topicsInput.addEventListener('keydown', handleKeydown);
-                topicsInput.addEventListener('focus', () => {
-                    if (topicsInput.value.trim()) {
-                        showDropdown();
-                    }
-                });
-
-                document.addEventListener('click', (e) => {
-                    if (!e.target.closest('.github-topics-container')) {
-                        hideDropdown();
-                    }
-                });
-            }
-        });
-
-        function handleInput(e) {
-            const value = e.target.value.trim();
-            currentIndex = -1;
-
-            if (value.length === 0) {
-                hideDropdown();
-                return;
-            }
-
-            const filtered = availableKeahlians.filter(keahlian =>
-                keahlian.keahlian_nama.toLowerCase().includes(value.toLowerCase()) &&
-                !selectedKeahlians.some(selected => selected.id === keahlian.id)
-            );
-
-            updateDropdown(filtered, value);
-            showDropdown();
-        }
-
-        function handleKeydown(e) {
-            const dropdown = document.getElementById('dropdownContent');
-            const items = dropdown.querySelectorAll('.dropdown-item');
-
-            switch (e.key) {
-                case 'ArrowDown':
-                    e.preventDefault();
-                    currentIndex = Math.min(currentIndex + 1, items.length - 1);
-                    updateActiveItem(items);
-                    break;
-
-                case 'ArrowUp':
-                    e.preventDefault();
-                    currentIndex = Math.max(currentIndex - 1, -1);
-                    updateActiveItem(items);
-                    break;
-
-                case 'Enter':
-                    e.preventDefault();
-                    if (currentIndex >= 0 && items[currentIndex]) {
-                        items[currentIndex].click();
-                    } else {
-                        const value = e.target.value.trim();
-                        if (value) {
-                            addNewKeahlian(value);
-                        }
-                    }
-                    break;
-
-                case 'Escape':
-                    hideDropdown();
-                    e.target.blur();
-                    break;
-
-                case 'Backspace':
-                    if (e.target.value === '' && selectedKeahlian.length > 0) {
-                        removeKeahlian(selectedKeahlian.length - 1);
-                    }
-                    break;
-            }
-        }
-
-        function updateActiveItem(items) {
-            items.forEach((item, index) => {
-                item.classList.toggle('active', index === currentIndex);
-            });
-        }
-
-        function updateDropdown(filtered, searchValue) {
-            const dropdown = document.getElementById('dropdownContent');
-            dropdown.innerHTML = '';
-
-            filtered.forEach(keahlian => {
-                const item = createDropdownItem(`<i class="fas fa-code mr-2"></i>${keahlian.keahlian_nama}`, () => {
-                    addKeahlian(keahlian);
-                });
-                dropdown.appendChild(item);
-            });
-
-            const exactMatch = filtered.some(k => k.keahlian_nama.toLowerCase() === searchValue.toLowerCase());
-            if (searchValue && !exactMatch) {
-                const createItem = createDropdownItem(
-                    `<i class="fas fa-plus mr-2"></i> Buat "${searchValue}"`,
-                    () => addNewKeahlian(searchValue),
-                    'create-new'
-                );
-                dropdown.appendChild(createItem);
-            }
-
-            if (dropdown.children.length === 0) {
-                const emptyItem = document.createElement('div');
-                emptyItem.className = 'dropdown-item';
-                emptyItem.innerHTML = '<i class="fas fa-search mr-2"></i>Tidak ada hasil ditemukan';
-                emptyItem.style.cursor = 'default';
-                dropdown.appendChild(emptyItem);
-            }
-        }
-
-        function createDropdownItem(text, onClick, className = '') {
-            const item = document.createElement('div');
-            item.className = `dropdown-item ${className}`;
-            item.innerHTML = text;
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                onClick();
-            });
-            return item;
-        }
-
-        function addKeahlian(keahlian) {
-            selectedKeahlians.push({
-                id: keahlian.id,
-                nama: keahlian.keahlian_nama,
-                isNew: false
-            });
-
-            updateSelectedTopics();
-            clearInput();
-            hideDropdown();
-            updateHiddenInputs();
-        }
-
-        function addNewKeahlian(nama) {
-            const tempId = -Date.now();
-
-            selectedKeahlians.push({
-                id: tempId,
-                nama: nama,
-                isNew: true
-            });
-
-            updateSelectedTopics();
-            clearInput();
-            hideDropdown();
-            updateHiddenInputs();
-        }
-
-        function removeKeahlian(index) {
-            selectedKeahlians.splice(index, 1);
-            updateSelectedTopics();
-            updateHiddenInputs();
-        }
-
-        function updateSelectedTopics() {
-            const container = document.getElementById('selectedTopics');
-            container.innerHTML = '';
-
-            selectedKeahlians.forEach((keahlian, index) => {
-                const tag = document.createElement('div');
-                tag.className = `topic-tag ${keahlian.isNew ? 'new-topic' : ''}`;
-                tag.innerHTML = `
-                    <span class="topic-text" title="${keahlian.nama}">${keahlian.nama}</span>
-                    <button type="button" class="topic-remove" onclick="removeKeahlian(${index})">&times;</button>
-                `;
-                container.appendChild(tag);
-            });
-        }
-
-        function updateHiddenInputs() {
-            const container = document.getElementById('hiddenKeahlianInputs');
-            container.innerHTML = '';
-
-            selectedKeahlians.forEach(keahlian => {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = keahlian.isNew ? 'new_keahlian_names[]' : 'lomba_keahlian_ids[]';
-                input.value = keahlian.isNew ? keahlian.nama : keahlian.id;
-                container.appendChild(input);
-            });
-        }
-
-        function clearInput() {
-            document.getElementById('topicsInput').value = '';
-        }
-
-        function showDropdown() {
-            document.getElementById('topicsDropdown').classList.add('show');
-        }
-
-        function hideDropdown() {
-            document.getElementById('topicsDropdown').classList.remove('show');
-            currentIndex = -1;
-        }
-
-        // Clear validation errors
-        function clearValidationErrors() {
-            document.querySelectorAll('.is-invalid').forEach(field => {
-                field.classList.remove('is-invalid');
-            });
-            document.querySelectorAll('.invalid-feedback').forEach(feedback => {
-                feedback.textContent = '';
-            });
-        }
-
-        // Show validation errors
-        function showValidationErrors(errors) {
-            for (const field in errors) {
-                const input = document.querySelector(`[name="${field}"]`);
-                if (input) {
-                    input.classList.add('is-invalid');
-                    const feedback = input.parentNode.querySelector('.invalid-feedback');
-                    if (feedback) {
-                        feedback.textContent = errors[field][0];
-                    }
-                }
-            }
-        }
-
-        // Form submission with AJAX
-        document.getElementById('newCompetitionForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            if (selectedKeahlians.length === 0) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Bidang Keahlian Diperlukan',
-                    text: 'Silakan pilih minimal satu bidang keahlian!',
-                    confirmButtonColor: '#102044',
-                    showClass: {
-                        popup: 'animate__animated animate__shakeX'
-                    }
-                });
-                return false;
-            }
-
-            clearValidationErrors();
-
-            const submitBtn = document.getElementById('submitBtn');
-            const submitText = submitBtn.querySelector('.submit-text');
-            const submitLoading = submitBtn.querySelector('.submit-loading');
-
-            submitBtn.disabled = true;
-            submitText.style.display = 'none';
-            submitLoading.style.display = 'inline-flex';
-
-            const formData = new FormData(this);
-
-            $.ajax({
-                url: '{{ route('student.achievement.store') }}',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                headers: {
-                    'Accept': 'application/json',
-                },
-                success: function(response) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: 'Lomba berhasil diajukan dan akan segera ditambahkan ke daftar.',
-                        confirmButtonColor: '#102044',
-                        showClass: {
-                            popup: 'animate__animated animate__bounceIn'
-                        }
-                    }).then(() => {
-                        $('#newCompetitionModal').modal('hide');
-                        // Reload the page to show the new competition
-                        window.location.reload();
-                    });
-                },
-                error: function(xhr) {
-                    submitBtn.disabled = false;
-                    submitText.style.display = 'inline';
-                    submitLoading.style.display = 'none';
-
-                    if (xhr.status === 422) {
-                        const errors = xhr.responseJSON.errors;
-                        showValidationErrors(errors);
-
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Validasi Gagal',
-                            text: 'Silakan periksa kembali form yang Anda isi.',
-                            confirmButtonColor: '#102044',
-                            showClass: {
-                                popup: 'animate__animated animate__shakeX'
-                            }
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Terjadi Kesalahan',
-                            text: 'Mohon coba lagi beberapa saat.',
-                            confirmButtonColor: '#102044'
-                        });
-                    }
-                }
-            });
-        });
-
-        // Reset form when modal is closed
-        $('#newCompetitionModal').on('hidden.bs.modal', function() {
-            selectedKeahlians = [];
-            updateSelectedTopics();
-            updateHiddenInputs();
-            clearInput();
-            hideDropdown();
-            clearValidationErrors();
-            document.getElementById('newCompetitionForm').reset();
-
-            const submitBtn = document.getElementById('submitBtn');
-            const submitText = submitBtn.querySelector('.submit-text');
-            const submitLoading = submitBtn.querySelector('.submit-loading');
-
-            submitBtn.disabled = false;
-            submitText.style.display = 'inline';
-            submitLoading.style.display = 'none';
-        });
     </script>
 @endpush
