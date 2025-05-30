@@ -207,11 +207,10 @@ class MahasiswaManagementController extends Controller
      */
     public function show($id)
     {
-        $mahasiswa = Mahasiswa::with(['user', 'prodi', 'keahlian', 'semester'])->find($id);
+        $mahasiswa = Mahasiswa::with(['user', 'prodi', 'keahlianUtama', 'keahlianTambahan', 'semester'])->find($id);
         $page      = (object) [
             'title' => 'Detail Mahasiswa',
         ];
-
         return view('admin.mahasiswaManagement.show', compact('mahasiswa', 'page'));
     }
 
