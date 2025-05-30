@@ -32,10 +32,12 @@
                                         <div class="profile-image-container mr-4" style="width: 100px; height: 100px;">
                                             @if ($mahasiswa->mahasiswa_photo)
                                                 <img src="{{ asset('storage/' . $mahasiswa->mahasiswa_photo) }}"
-                                                     alt="{{ $mahasiswa->mahasiswa_nama }}"
-                                                     class="rounded-circle user-profile-image" style="width: 100px; height: 100px;">
+                                                    alt="{{ $mahasiswa->mahasiswa_nama }}"
+                                                    class="rounded-circle user-profile-image"
+                                                    style="width: 100px; height: 100px;">
                                             @else
-                                                <div class="no-avatar rounded-circle bg-secondary" style="width: 100px; height: 100px;">
+                                                <div class="no-avatar rounded-circle bg-secondary"
+                                                    style="width: 100px; height: 100px;">
                                                     <i class="fas fa-user"></i>
                                                 </div>
                                             @endif
@@ -53,8 +55,12 @@
                                                 </span>
                                             </div>
                                             <div>
-                                                <span class="badge {{ $mahasiswa->mahasiswa_visible ? 'badge-success' : 'badge-secondary' }}">
-                                                    {{ $mahasiswa->mahasiswa_visible ? 'Aktif' : 'Tidak Aktif' }}
+                                                <span
+                                                    class="badge 
+                                                @if ($mahasiswa->mahasiswa_status === 'Aktif') badge-success
+                                                @elseif($mahasiswa->mahasiswa_status === 'Cuti') badge-warning
+                                                @else badge-secondary @endif">
+                                                    {{ $mahasiswa->mahasiswa_status ?? 'Tidak Aktif' }}
                                                 </span>
                                             </div>
                                         </div>
@@ -63,7 +69,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row justify-content-center">
                         {{-- Informasi Pribadi --}}
                         <div class="col-md-12 mx-3 mb-3">
@@ -114,12 +120,15 @@
                                         </div>
                                         <div class="info-value">
                                             @php
-                                                $alamat = implode(', ', array_filter([
-                                                    $mahasiswa->mahasiswa_desa,
-                                                    $mahasiswa->mahasiswa_kecamatan,
-                                                    $mahasiswa->mahasiswa_kota,
-                                                    $mahasiswa->mahasiswa_provinsi
-                                                ]));
+                                                $alamat = implode(
+                                                    ', ',
+                                                    array_filter([
+                                                        $mahasiswa->mahasiswa_desa,
+                                                        $mahasiswa->mahasiswa_kecamatan,
+                                                        $mahasiswa->mahasiswa_kota,
+                                                        $mahasiswa->mahasiswa_provinsi,
+                                                    ]),
+                                                );
                                             @endphp
                                             {{ $alamat ?: '-' }}
                                         </div>
@@ -164,8 +173,9 @@
                                             <span>Keahlian Utama</span>
                                         </div>
                                         <div class="info-value">
-                                            @if($mahasiswa->keahlianUtama)
-                                                <span class="badge keahlian-badge">{{ $mahasiswa->keahlianUtama->keahlian_nama }}</span>
+                                            @if ($mahasiswa->keahlianUtama)
+                                                <span
+                                                    class="badge keahlian-badge">{{ $mahasiswa->keahlianUtama->keahlian_nama }}</span>
                                             @else
                                                 -
                                             @endif
@@ -177,9 +187,10 @@
                                             <span>Keahlian Tambahan</span>
                                         </div>
                                         <div class="info-value">
-                                            @if($mahasiswa->keahlianTambahan->count())
-                                                @foreach($mahasiswa->keahlianTambahan as $keahlian)
-                                                    <span class="badge keahlian-badge mb-1">{{ $keahlian->keahlian_nama }}</span>
+                                            @if ($mahasiswa->keahlianTambahan->count())
+                                                @foreach ($mahasiswa->keahlianTambahan as $keahlian)
+                                                    <span
+                                                        class="badge keahlian-badge mb-1">{{ $keahlian->keahlian_nama }}</span>
                                                 @endforeach
                                             @else
                                                 -
@@ -241,7 +252,8 @@
                                             <span>Status Akun</span>
                                         </div>
                                         <div class="info-value">
-                                            <span class="badge {{ $mahasiswa->mahasiswa_visible ? 'badge-success' : 'badge-secondary' }}">
+                                            <span
+                                                class="badge {{ $mahasiswa->mahasiswa_visible ? 'badge-success' : 'badge-secondary' }}">
                                                 {{ $mahasiswa->mahasiswa_visible ? 'Aktif' : 'Tidak Aktif' }}
                                             </span>
                                         </div>
@@ -265,7 +277,8 @@
                             class="btn btn-warning px-4 mr-2">
                             <i class="fas fa-edit mr-2"></i> Edit
                         </button>
-                        <button onclick="modalAction('{{ route('admin.mahasiswaManagement.confirmAjax', $mahasiswa->id) }}')"
+                        <button
+                            onclick="modalAction('{{ route('admin.mahasiswaManagement.confirmAjax', $mahasiswa->id) }}')"
                             class="btn btn-danger px-4">
                             <i class="fas fa-trash-alt mr-2"></i> Hapus
                         </button>
@@ -299,7 +312,7 @@
                     'transition': 'all 0.6s ease-out'
                 });
             }, 200);
-        }); 
+        });
     </script>
 @endpush
 
@@ -434,7 +447,7 @@
             margin-bottom: 0.3em;
             font-weight: 500;
             letter-spacing: 0.5px;
-            box-shadow: 0 1px 4px rgba(13,110,253,0.08);
+            box-shadow: 0 1px 4px rgba(13, 110, 253, 0.08);
             display: inline-block;
         }
 

@@ -57,7 +57,7 @@
                 <th class="text-center" width="5%">No</th>
                 <th class="text-center" width="15%">NIDN/NIP</th>
                 <th class="text-center" width="30%">Nama Dosen</th>
-                <th class="text-center" width="20%">Program Studi</th>
+                <th class="text-center" width="20%">Prodi Homebase</th>
                 <th class="text-center" width="15%">Status</th>
                 <th class="text-center" width="15%">Telepon</th>
             </tr>

@@ -86,7 +86,7 @@
                                         <div class="col-md-6">
                                             <!-- Program Studi -->
                                             <div class="form-group">
-                                                <label class="font-weight-bold">Program Studi <span class="text-danger">*</span></label>
+                                                <label class="font-weight-bold">Prodi Homebase <span class="text-danger">*</span></label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-secondary text-white"><i class="fas fa-graduation-cap"></i></span>

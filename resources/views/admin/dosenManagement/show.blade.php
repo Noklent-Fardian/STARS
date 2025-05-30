@@ -145,7 +145,7 @@
                                     <div class="user-info-item">
                                         <div class="info-label">
                                             <i class="fas fa-university text-primary"></i>
-                                            <span>Program Studi</span>
+                                            <span>Prodi Homebase</span>
                                         </div>
                                         <div class="info-value">{{ $dosen->prodi->prodi_nama ?? '-' }}</div>
                                     </div>
