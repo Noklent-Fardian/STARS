@@ -135,9 +135,10 @@
                                                 <span>Buka Link Pendaftaran</span>
                                             </a>
                                         @endif
-                                        <button type="button" class="modern-btn secondary" onclick="daftarLomba({{ $lomba->id }})">
+                                        <button type="button" class="modern-btn secondary"
+                                            onclick="selectCompetition({{ $lomba->id }})">
                                             <i class="fas fa-user-plus"></i>
-                                            <span>Daftar Lomba</span>
+                                            <span>Ajukan Verifikasi Pengghargaan</span>
                                         </button>
                                     </div>
                                 </div>
@@ -168,7 +169,8 @@
                                     <p class="timeline-date">
                                         {{ \Carbon\Carbon::parse($lomba->lomba_tanggal_mulai)->locale('id')->translatedFormat('l, d F Y') }}
                                     </p>
-                                    <small class="timeline-relative">{{ $lomba->lomba_tanggal_mulai->diffForHumans() }}</small>
+                                    <small
+                                        class="timeline-relative">{{ $lomba->lomba_tanggal_mulai->diffForHumans() }}</small>
                                 </div>
                             </div>
                             <div class="timeline-item-modern">
@@ -178,7 +180,8 @@
                                     <p class="timeline-date">
                                         {{ \Carbon\Carbon::parse($lomba->lomba_tanggal_selesai)->locale('id')->translatedFormat('l, d F Y') }}
                                     </p>
-                                    <small class="timeline-relative">{{ $lomba->lomba_tanggal_selesai->diffForHumans() }}</small>
+                                    <small
+                                        class="timeline-relative">{{ $lomba->lomba_tanggal_selesai->diffForHumans() }}</small>
                                 </div>
                             </div>
                         </div>
@@ -249,7 +252,8 @@
                                         </div>
                                         <div class="link-content">
                                             <h6 class="link-title">Link Poster</h6>
-                                            <a href="{{ $lomba->lomba_link_poster }}" target="_blank" class="link-button">
+                                            <a href="{{ $lomba->lomba_link_poster }}" target="_blank"
+                                                class="link-button">
                                                 <i class="fas fa-external-link-alt"></i>
                                                 Lihat Poster
                                             </a>
@@ -264,7 +268,8 @@
                                         </div>
                                         <div class="link-content">
                                             <h6 class="link-title">Link Pendaftaran</h6>
-                                            <a href="{{ $lomba->lomba_link_pendaftaran }}" target="_blank" class="link-button">
+                                            <a href="{{ $lomba->lomba_link_pendaftaran }}" target="_blank"
+                                                class="link-button">
                                                 <i class="fas fa-external-link-alt"></i>
                                                 Akses Pendaftaran
                                             </a>
@@ -829,24 +834,42 @@
 
 @push('js')
     <script>
-        function daftarLomba(lombaId) {
+        function selectCompetition(lombaId) {
             Swal.fire({
-                title: 'Daftar Lomba',
-                text: 'Apakah Anda yakin ingin mendaftar lomba ini?',
+                title: 'Konfirmasi',
+                text: 'Apakah Anda yakin ingin memilih lomba ini?',
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#102044',
                 cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, Daftar!',
-                cancelButtonText: 'Batal'
+                confirmButtonText: '<i class="fas fa-check mr-1"></i>Ya, Pilih',
+                cancelButtonText: '<i class="fas fa-times mr-1"></i>Batal',
+                showClass: {
+                    popup: 'animate__animated animate__fadeIn'
+                }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil Mendaftar!',
-                        text: 'Anda telah berhasil mendaftar lomba ini.',
-                        confirmButtonColor: '#102044'
-                    });
+
+
+                    // Create form and submit
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '{{ route('student.achievement.select-competition') }}';
+
+                    const csrfToken = document.createElement('input');
+                    csrfToken.type = 'hidden';
+                    csrfToken.name = '_token';
+                    csrfToken.value = '{{ csrf_token() }}';
+
+                    const lombaInput = document.createElement('input');
+                    lombaInput.type = 'hidden';
+                    lombaInput.name = 'lomba_id';
+                    lombaInput.value = lombaId;
+
+                    form.appendChild(csrfToken);
+                    form.appendChild(lombaInput);
+                    document.body.appendChild(form);
+                    form.submit();
                 }
             });
         }
