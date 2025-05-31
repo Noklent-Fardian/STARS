@@ -30,28 +30,6 @@
                 </div>
             @endif
 
-            <!-- Filter Section -->
-            <div class="row mb-3">
-                <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap">
-                    <div class="btn-group-responsive">
-                        <select class="form-control filter-control" id="statusFilter"
-                            style="width: 200px; display: inline-block;">
-                            <option value="">Semua Status</option>
-                            <option value="Menunggu">Menunggu Verifikasi</option>
-                            <option value="Diterima">Diterima</option>
-                            <option value="Ditolak">Ditolak</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="ml-auto">
-                    <div class="form-group has-search mb-0 ml-auto" style="max-width: 300px;">
-                        <span class="fa fa-search form-control-feedback"></span>
-                        <input type="text" class="form-control" id="searchBox"
-                            placeholder="Cari lomba atau penyelenggara...">
-                    </div>
-                </div>
-            </div>
-
             <!-- Statistics Cards -->
             <div class="row mb-4">
                 <div class="col-md-3">
@@ -96,6 +74,30 @@
                             <h4 id="stat-total-count">0</h4>
                             <p>Total Lomba</p>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="row mb-3">
+                <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="btn-group-responsive">
+                        <div class="form-group has-filter mb-0" style="width: 220px;">
+                            <span class="fa fa-filter form-control-feedback"></span>
+                            <select class="form-control filter-control" id="statusFilter">
+                                <option value="">Semua Status</option>
+                                <option value="Menunggu">Menunggu Verifikasi</option>
+                                <option value="Diterima">Diterima</option>
+                                <option value="Ditolak">Ditolak</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="ml-auto">
+                    <div class="form-group has-search mb-0 ml-auto" style="max-width: 300px;">
+                        <span class="fa fa-search form-control-feedback"></span>
+                        <input type="text" class="form-control" id="searchBox"
+                            placeholder="Cari lomba atau penyelenggara...">
                     </div>
                 </div>
             </div>
@@ -226,6 +228,90 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+
+        /* Modern Form Controls */
+        .has-filter {
+            position: relative;
+        }
+
+        .has-filter .form-control {
+            padding-left: 2.8rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 16px 12px;
+            padding-right: 2.5rem;
+        }
+
+        .has-filter .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(250, 157, 28, 0.25);
+            background-color: #fff;
+        }
+
+        .has-filter .form-control-feedback {
+            position: absolute;
+            z-index: 2;
+            display: block;
+            width: 2.8rem;
+            height: 2.8rem;
+            line-height: 2.8rem;
+            text-align: center;
+            pointer-events: none;
+            color: var(--light-text);
+            transition: color 0.3s ease;
+            left: 0;
+            top: 0;
+        }
+
+        .has-filter .form-control:focus+.form-control-feedback {
+            color: var(--accent-color);
+        }
+
+        /* Enhanced Search Box Styling */
+        .has-search .form-control {
+            padding-left: 2.8rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .has-search .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(250, 157, 28, 0.25);
+            background-color: #fff;
+        }
+
+        .has-search .form-control-feedback {
+            position: absolute;
+            z-index: 2;
+            display: block;
+            width: 2.8rem;
+            height: 2.8rem;
+            line-height: 2.8rem;
+            text-align: center;
+            pointer-events: none;
+            color: var(--light-text);
+            transition: color 0.3s ease;
+        }
+
+        .has-search .form-control:focus+.form-control-feedback {
+            color: var(--accent-color);
+        }
+
+        .has-search {
+            position: relative;
+            max-width: 300px;
+            margin-left: auto;
         }
 
         /* Statistics Cards */
@@ -387,7 +473,7 @@
     <script>
         var dataVerification;
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Initialize DataTable with server-side processing
             dataVerification = $('#table_verification').DataTable({
                 scrollX: true,
@@ -397,100 +483,100 @@
                     url: "{{ route('admin.lombaVerification.list') }}",
                     dataType: "json",
                     type: "GET",
-                    data: function(d) {
+                    data: function (d) {
                         d.status = $('#statusFilter').val();
                     }
                 },
                 columns: [{
-                        data: "id",
-                        className: "text-center",
-                        width: "8%",
-                        orderable: true
-                    },
-                    {
-                        data: "penginput",
-                        width: "20%",
-                        orderable: true,
-                        render: function(data, type, row) {
-                            // Check if submitted by dosen or mahasiswa
-                            if (row.dosen_nama && row.dosen_nip) {
-                                return `<div class="user-info">
-                        <div>${row.dosen_nama}</div>
-                        <small class="text-muted">
-                            <i class="fas fa-user-tie mr-1"></i> Dosen - ${row.dosen_nip}
-                        </small>
-                    </div>`;
-                            } else if (row.mahasiswa_nama && row.mahasiswa_nim) {
-                                return `<div class="user-info">
-                        <div>${row.mahasiswa_nama}</div>
-                        <small class="text-muted">
-                            <i class="fas fa-user-graduate mr-1"></i> Mahasiswa - ${row.mahasiswa_nim}
-                        </small>
-                    </div>`;
-                            } else {
-                                return `<div class="user-info">
-                        <div>Data tidak tersedia</div>
-                        <small class="text-muted">
-                            <i class="fas fa-question-circle mr-1"></i> Unknown
-                        </small>
-                    </div>`;
-                            }
-                        }
-                    },
-                    {
-                        data: "lomba_nama",
-                        width: "25%",
-                        orderable: true,
-                        render: function(data, type, row) {
-                            return `<div class="lomba-info">
-                                            <div class="lomba-title">${data}</div>
-                                            <small class="text-muted">
-                                                <i class="fas fa-layer-group mr-1"></i> ${row.lomba_kategori}
-                                            </small>
-                                        </div>`;
-                        }
-                    },
-                    {
-                        data: "lomba_penyelenggara",
-                        width: "18%",
-                        orderable: true
-                    },
-                    {
-                        data: "created_at",
-                        width: "12%",
-                        orderable: true,
-                        render: function(data) {
-                            return data ? new Date(data).toLocaleDateString('id-ID') : '-';
-                        }
-                    },
-                    {
-                        data: "pendaftaran_status",
-                        width: "12%",
-                        orderable: true,
-                        render: function(data) {
-                            if (data === 'Menunggu') {
-                                return '<span class="badge badge-warning"><i class="fas fa-clock mr-1"></i> Menunggu</span>';
-                            } else if (data === 'Diterima') {
-                                return '<span class="badge badge-success"><i class="fas fa-check mr-1"></i> Diterima</span>';
-                            } else {
-                                return '<span class="badge badge-danger"><i class="fas fa-times mr-1"></i> Ditolak</span>';
-                            }
-                        }
-                    },
-                    {
-                        data: "aksi",
-                        className: "text-center text-nowrap",
-                        width: "8%",
-                        orderable: false,
-                        searchable: false,
-                        render: function(data, type, row) {
-                            return `<a href="{{ route('admin.lombaVerification.show', '') }}/${row.id}" 
-                                           class="btn btn-info btn-sm" 
-                                           title="Lihat Detail & Verifikasi">
-                                            <i class="fas fa-eye"></i>
-                                        </a>`;
+                    data: "id",
+                    className: "text-center",
+                    width: "8%",
+                    orderable: true
+                },
+                {
+                    data: "penginput",
+                    width: "20%",
+                    orderable: true,
+                    render: function (data, type, row) {
+                        // Check if submitted by dosen or mahasiswa
+                        if (row.dosen_nama && row.dosen_nip) {
+                            return `<div class="user-info">
+                            <div>${row.dosen_nama}</div>
+                            <small class="text-muted">
+                                <i class="fas fa-user-tie mr-1"></i> Dosen - ${row.dosen_nip}
+                            </small>
+                        </div>`;
+                        } else if (row.mahasiswa_nama && row.mahasiswa_nim) {
+                            return `<div class="user-info">
+                            <div>${row.mahasiswa_nama}</div>
+                            <small class="text-muted">
+                                <i class="fas fa-user-graduate mr-1"></i> Mahasiswa - ${row.mahasiswa_nim}
+                            </small>
+                        </div>`;
+                        } else {
+                            return `<div class="user-info">
+                            <div>Data tidak tersedia</div>
+                            <small class="text-muted">
+                                <i class="fas fa-question-circle mr-1"></i> Unknown
+                            </small>
+                        </div>`;
                         }
                     }
+                },
+                {
+                    data: "lomba_nama",
+                    width: "25%",
+                    orderable: true,
+                    render: function (data, type, row) {
+                        return `<div class="lomba-info">
+                                                <div class="lomba-title">${data}</div>
+                                                <small class="text-muted">
+                                                    <i class="fas fa-layer-group mr-1"></i> ${row.lomba_kategori}
+                                                </small>
+                                            </div>`;
+                    }
+                },
+                {
+                    data: "lomba_penyelenggara",
+                    width: "18%",
+                    orderable: true
+                },
+                {
+                    data: "created_at",
+                    width: "12%",
+                    orderable: true,
+                    render: function (data) {
+                        return data ? new Date(data).toLocaleDateString('id-ID') : '-';
+                    }
+                },
+                {
+                    data: "pendaftaran_status",
+                    width: "12%",
+                    orderable: true,
+                    render: function (data) {
+                        if (data === 'Menunggu') {
+                            return '<span class="badge badge-warning"><i class="fas fa-clock mr-1"></i> Menunggu</span>';
+                        } else if (data === 'Diterima') {
+                            return '<span class="badge badge-success"><i class="fas fa-check mr-1"></i> Diterima</span>';
+                        } else {
+                            return '<span class="badge badge-danger"><i class="fas fa-times mr-1"></i> Ditolak</span>';
+                        }
+                    }
+                },
+                {
+                    data: "aksi",
+                    className: "text-center text-nowrap",
+                    width: "8%",
+                    orderable: false,
+                    searchable: false,
+                    render: function (data, type, row) {
+                        return `<a href="{{ route('admin.lombaVerification.show', '') }}/${row.id}" 
+                                               class="btn btn-info btn-sm" 
+                                               title="Lihat Detail & Verifikasi">
+                                                <i class="fas fa-eye"></i>
+                                            </a>`;
+                    }
+                }
                 ],
                 pageLength: 10,
                 lengthMenu: [
@@ -519,18 +605,18 @@
                 dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'>>" +
                     "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-                drawCallback: function(settings) {
+                drawCallback: function (settings) {
                     updateStatistics(settings.json);
                 }
             });
 
             // Custom search functionality
-            $('#searchBox').on('keyup', function() {
+            $('#searchBox').on('keyup', function () {
                 dataVerification.search(this.value).draw();
             });
 
             // Status filter
-            $('#statusFilter').on('change', function() {
+            $('#statusFilter').on('change', function () {
                 dataVerification.ajax.reload();
             });
 
@@ -549,8 +635,8 @@
         }
 
         // Animation for statistics cards
-        $(window).on('load', function() {
-            $('.stat-card').each(function(index) {
+        $(window).on('load', function () {
+            $('.stat-card').each(function (index) {
                 $(this).delay(index * 100).animate({
                     opacity: 1,
                     transform: 'translateY(0)'
