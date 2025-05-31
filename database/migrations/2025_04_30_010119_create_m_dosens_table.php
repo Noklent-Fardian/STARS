@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('prodi_id')->constrained('m_prodis')->onDelete('cascade');
             $table->string('dosen_nama')->unique();
             $table->string('dosen_nip')->unique();
-            $table->enum('dosen_status', ['Aktif', 'Tidak Aktif', 'Cuti','Luar Biasa','Studi']);
+            $table->enum('dosen_status', ['Aktif', 'Tidak Aktif', 'Cuti', 'Studi']);
             $table->enum('dosen_gender', ['Laki-laki', 'Perempuan']);
             $table->string('dosen_nomor_telepon')->nullable();
             $table->string('dosen_photo')->nullable();
