@@ -7,101 +7,119 @@ use Illuminate\Support\Facades\DB;
 
 class TopsisService
 {
-    /**
-     * Hitung rekomendasi mahasiswa dengan TOPSIS.
-     * @return array $top5
-     */
-    public function hitungRekomendasi()
+    public function hitung($mahasiswas, $bobots, $keahlianLomba = [])
     {
-        // 1. Ambil bobot kriteria dari tabel m_bobots
-        $bobot = DB::table('m_bobots')->pluck('bobot', 'kriteria')->toArray();
-        // ['score' => 0.4, 'keahlian_utama' => 0.3, 'keahlian_tambahan' => 0.2, 'jumlah_lomba' => 0.1]
-
-        // 2. Ambil data mahasiswa beserta relasi yang dibutuhkan
-        $mahasiswa = Mahasiswa::with(['keahliansTambahan', 'penghargaans'])->get();
-
-        // 3. Siapkan matriks keputusan (decision matrix)
-        $data = [];
-        foreach ($mahasiswa as $m) {
-            $data[] = [
-                'id' => $m->id,
-                'nama' => $m->mahasiswa_nama,
-                // Kriteria 1: Score dari kolom mahasiswa_score
-                'score' => $m->mahasiswa_score,
-                // Kriteria 2: Keahlian utama dari kolom keahlian_id
-                'keahlian_utama' => $m->keahlian_id,
-                // Kriteria 3: Keahlian tambahan dari relasi t_keahlian_mahasiswas
-                'keahlian_tambahan' => $m->keahliansTambahan->count(),
-                // Kriteria 4: Banyaknya lomba yang diikuti dari relasi m_penghargaans
-                'jumlah_lomba' => $m->penghargaans->count(),
+        $matriks = [];
+        foreach ($mahasiswas as $mahasiswa) {
+            $nilaiKeahlianUtama = in_array($mahasiswa->keahlian_utama_id, $keahlianLomba) ? 1 : 0;
+            $matriks[] = [
+                'mahasiswa' => $mahasiswa,
+                'score' => $mahasiswa->mahasiswa_score ?? 0,
+                'keahlian_utama' => $nilaiKeahlianUtama,
+                'keahlian_tambahan' => $mahasiswa->jumlah_keahlian_tambahan,
+                'jumlah_lomba' => $mahasiswa->jumlah_lomba
             ];
         }
 
-        // 4. Normalisasi matriks (setiap kolom dibagi akar jumlah kuadrat kolom tsb)
-        $normalisasi = [];
-        foreach (['score', 'keahlian_utama', 'keahlian_tambahan', 'jumlah_lomba'] as $kriteria) {
-            $sumKuadrat = array_sum(array_map(fn($d) => pow($d[$kriteria], 2), $data));
-            $akarSum = sqrt($sumKuadrat);
-            foreach ($data as $i => $d) {
-                $normalisasi[$i][$kriteria] = $akarSum == 0 ? 0 : $d[$kriteria] / $akarSum;
-            }
-            // Simpan id dan nama juga untuk referensi
-            foreach ($data as $i => $d) {
-                $normalisasi[$i]['id'] = $d['id'];
-                $normalisasi[$i]['nama'] = $d['nama'];
-            }
-        }
+        $matriksNormal = $this->normalisasiMatriks($matriks);
+        $matriksTerbobot = $this->hitungMatriksTerbobot($matriksNormal, $bobots);
+        $solusiIdeal = $this->hitungSolusiIdeal($matriksTerbobot);
+        $jarakIdeal = $this->hitungJarakIdeal($matriksTerbobot, $solusiIdeal);
 
-        // 5. Matriks normalisasi terbobot (dikali bobot)
-        $terbobot = [];
-        foreach ($normalisasi as $i => $row) {
-            foreach ($bobot as $kriteria => $bobotNilai) {
-                $terbobot[$i][$kriteria] = $row[$kriteria] * $bobotNilai;
+        return $this->hitungSkorPreferensi($jarakIdeal, $matriks);
+    }
+
+    private function normalisasiMatriks($matriks)
+    {
+        $kriteria = ['score', 'keahlian_utama', 'keahlian_tambahan', 'jumlah_lomba'];
+        $sumSquares = [];
+        foreach ($kriteria as $k) {
+            $sumSquares[$k] = sqrt(array_sum(array_map(function($row) use ($k) {
+                return pow($row[$k], 2);
+            }, $matriks)));
+        }
+        $matriksNormal = [];
+        foreach ($matriks as $row) {
+            $normalRow = ['mahasiswa' => $row['mahasiswa']];
+            foreach ($kriteria as $k) {
+                $normalRow[$k] = $sumSquares[$k] > 0 ? $row[$k] / $sumSquares[$k] : 0;
             }
-            $terbobot[$i]['id'] = $row['id'];
-            $terbobot[$i]['nama'] = $row['nama'];
+            $matriksNormal[] = $normalRow;
         }
+        return $matriksNormal;
+    }
 
-        // 6. Tentukan solusi ideal positif (A+) dan negatif (A-)
-        $idealPositif = [];
-        $idealNegatif = [];
-        foreach ($bobot as $kriteria => $bobotNilai) {
-            $kolom = array_column($terbobot, $kriteria);
-            $idealPositif[$kriteria] = max($kolom);
-            $idealNegatif[$kriteria] = min($kolom);
+    private function hitungMatriksTerbobot($matriksNormal, $bobots)
+    {
+        $kriteria = ['score', 'keahlian_utama', 'keahlian_tambahan', 'jumlah_lomba'];
+        $matriksTerbobot = [];
+        foreach ($matriksNormal as $row) {
+            $terbobotRow = ['mahasiswa' => $row['mahasiswa']];
+            foreach ($kriteria as $k) {
+                $bobot = $bobots[$k] ?? 0.25;
+                $terbobotRow[$k] = $row[$k] * $bobot;
+            }
+            $matriksTerbobot[] = $terbobotRow;
         }
+        return $matriksTerbobot;
+    }
 
-        // 7. Hitung jarak ke solusi ideal positif dan negatif untuk setiap mahasiswa
+    private function hitungSolusiIdeal($matriksTerbobot)
+    {
+        $kriteria = ['score', 'keahlian_utama', 'keahlian_tambahan', 'jumlah_lomba'];
+        $positif = [];
+        $negatif = [];
+        foreach ($kriteria as $k) {
+            $values = array_column($matriksTerbobot, $k);
+            $positif[$k] = max($values);
+            $negatif[$k] = min($values);
+        }
+        return ['positif' => $positif, 'negatif' => $negatif];
+    }
+
+    private function hitungJarakIdeal($matriksTerbobot, $solusiIdeal)
+    {
+        $kriteria = ['score', 'keahlian_utama', 'keahlian_tambahan', 'jumlah_lomba'];
         $jarakPositif = [];
         $jarakNegatif = [];
-        foreach ($terbobot as $i => $row) {
-            $jarakPositif[$i] = sqrt(array_sum(array_map(
-                fn($kriteria) => pow($row[$kriteria] - $idealPositif[$kriteria], 2),
-                array_keys($bobot)
-            )));
-            $jarakNegatif[$i] = sqrt(array_sum(array_map(
-                fn($kriteria) => pow($row[$kriteria] - $idealNegatif[$kriteria], 2),
-                array_keys($bobot)
-            )));
+        foreach ($matriksTerbobot as $index => $row) {
+            $jPositif = 0;
+            $jNegatif = 0;
+            foreach ($kriteria as $k) {
+                $jPositif += pow($row[$k] - $solusiIdeal['positif'][$k], 2);
+                $jNegatif += pow($row[$k] - $solusiIdeal['negatif'][$k], 2);
+            }
+            $jarakPositif[$index] = sqrt($jPositif);
+            $jarakNegatif[$index] = sqrt($jNegatif);
         }
+        return ['positif' => $jarakPositif, 'negatif' => $jarakNegatif];
+    }
 
-        // 8. Hitung nilai preferensi (V) untuk setiap mahasiswa
-        $preferensi = [];
-        foreach ($terbobot as $i => $row) {
-            $v = ($jarakPositif[$i] + $jarakNegatif[$i]) == 0 ? 0 : $jarakNegatif[$i] / ($jarakPositif[$i] + $jarakNegatif[$i]);
-            $preferensi[] = [
-                'id' => $row['id'],
-                'nama' => $row['nama'],
-                'nilai' => $v,
+    private function hitungSkorPreferensi($jarakIdeal, $matriks)
+    {
+        $hasil = [];
+        foreach ($matriks as $index => $row) {
+            $dPositif = $jarakIdeal['positif'][$index];
+            $dNegatif = $jarakIdeal['negatif'][$index];
+            $skorPreferensi = ($dPositif + $dNegatif) > 0 ? $dNegatif / ($dPositif + $dNegatif) : 0;
+            $hasil[] = [
+                'mahasiswa' => $row['mahasiswa'],
+                'skor_preferensi' => round($skorPreferensi, 4),
+                'ranking' => 0,
+                'kriteria' => [
+                    'score' => $row['score'],
+                    'keahlian_utama' => $row['keahlian_utama'],
+                    'keahlian_tambahan' => $row['keahlian_tambahan'],
+                    'jumlah_lomba' => $row['jumlah_lomba']
+                ]
             ];
         }
-
-        // 9. Urutkan berdasarkan nilai preferensi (ranking tertinggi = rekomendasi utama)
-        usort($preferensi, fn($a, $b) => $b['nilai'] <=> $a['nilai']);
-
-        // 10. Ambil 5 besar rekomendasi
-        $top5 = array_slice($preferensi, 0, 5);
-
-        return $top5;
+        usort($hasil, function($a, $b) {
+            return $b['skor_preferensi'] <=> $a['skor_preferensi'];
+        });
+        foreach ($hasil as $index => &$item) {
+            $item['ranking'] = $index + 1;
+        }
+        return $hasil;
     }
 }

@@ -10,7 +10,7 @@ class BobotController extends Controller
     public function index()
     {
         $bobots = Bobot::all();
-        return view('admin.rekomendasi.index', compact('bobots'));
+        return view('admin.kelolaBobot.index', compact('bobots'));
     }
 
     public function update(Request $request)

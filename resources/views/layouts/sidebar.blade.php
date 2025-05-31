@@ -23,10 +23,22 @@
         <!-- Manajemen Rekomendasi -->
         <div class="sidebar-heading">Manajemen Rekomendasi</div>
 
-        <li class="nav-item {{ request()->routeIs('admin.rekomendasi.*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('admin.rekomendasi.index') }}">
+        <li class="nav-item {{ request()->routeIs('admin.kelolaBobot.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.kelolaBobot.index') }}">
                 <i class="fas fa-fw fa-thumbs-up"></i>
                 <span>Kelola Bobot</span>
+            </a>
+        </li>
+        <li class="nav-item {{ request()->routeIs('admin.rekomendasiTopsis.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.rekomendasiTopsis.index') }}">
+                <i class="fas fa-fw fa-calculator"></i>
+                <span>Rekomendasi TOPSIS</span>
+            </a>
+        </li>
+        <li class="nav-item {{ request()->routeIs('admin.rekomendasiSaw.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.rekomendasiSaw.index') }}">
+                <i class="fas fa-fw fa-calculator"></i>
+                <span>Rekomendasi SAW</span>
             </a>
         </li>
 
@@ -249,8 +261,20 @@
 
         <hr class="sidebar-divider">
 
+        <div class="sidebar-heading">Notifikasi</div>
+
+        <li class="nav-item {{ request()->routeIs('mahasiswa.notifikasi.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('mahasiswa.notifikasi.index') }}">
+                <i class="nav-icon fas fa-plus-circle"></i>
+                <span>Notifikasi Mahasiswa</span>
+            </a>
+        </li>
+
+        <hr class="sidebar-divider">
+
         <div class="sidebar-heading">Riwayat</div>
-            <li class="nav-item {{ request()->routeIs('mahasiswa.prestasi.*') ? 'active' : '' }}">
+
+        <li class="nav-item {{ request()->routeIs('mahasiswa.prestasi.*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('mahasiswa.prestasi.index') }}">
                 <i class="nav-icon fas fa-plus-circle"></i>
                 <span>Pencatatan Prestasi</span>
