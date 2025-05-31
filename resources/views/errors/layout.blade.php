@@ -54,13 +54,12 @@
             z-index: 2;
         }
 
-        .error-icon {
-            font-size: 8rem;
-            color: var(--accent-color);
-            margin-bottom: 1rem;
-            display: block;
-            text-shadow: 0 0 30px rgba(250, 157, 28, 0.3);
-            animation: pulse 2s infinite ease-in-out;
+        .error-logo {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 0 20px rgba(250, 157, 28, 0.3));
+            animation: float 3s infinite ease-in-out;
         }
 
         .error-code {
@@ -178,7 +177,18 @@
             }
         }
 
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
         @media (max-width: 768px) {
+            .error-logo {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 1.5rem;
+            }
+            
             .error-code {
                 font-size: 4rem;
             }
@@ -207,7 +217,7 @@
     </div>
     
     <div class="error-container">
-        <i class="@yield('icon') error-icon"></i>
+        <img src="{{ asset('img/logo.svg') }}" alt="STARS Logo" class="error-logo">
         <div class="error-code">@yield('code')</div>
         <div class="error-title">@yield('title')</div>
         <div class="error-message">@yield('message')</div>
