@@ -1,4 +1,3 @@
-
 <div class="modal fade" id="newCompetitionModal" tabindex="-1" role="dialog" aria-labelledby="newCompetitionModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -16,14 +15,16 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label><i class="fas fa-trophy mr-1"></i>Nama Lomba <span class="text-danger">*</span></label>
+                                <label><i class="fas fa-trophy mr-1"></i>Nama Lomba <span
+                                        class="text-danger">*</span></label>
                                 <input type="text" name="lomba_nama" class="form-control" required>
                                 <div class="invalid-feedback"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label><i class="fas fa-building mr-1"></i>Penyelenggara <span class="text-danger">*</span></label>
+                                <label><i class="fas fa-building mr-1"></i>Penyelenggara <span
+                                        class="text-danger">*</span></label>
                                 <input type="text" name="lomba_penyelenggara" class="form-control" required>
                                 <div class="invalid-feedback"></div>
                             </div>
@@ -32,7 +33,8 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label><i class="fas fa-tag mr-1"></i>Kategori Lomba <span class="text-danger">*</span></label>
+                                <label><i class="fas fa-tag mr-1"></i>Kategori Lomba <span
+                                        class="text-danger">*</span></label>
                                 <select name="lomba_kategori" class="form-control" required>
                                     <option value="">Pilih Kategori</option>
                                     <option value="Akademik">Akademik</option>
@@ -43,10 +45,11 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label><i class="fas fa-layer-group mr-1"></i>Tingkatan Lomba <span class="text-danger">*</span></label>
+                                <label><i class="fas fa-layer-group mr-1"></i>Tingkatan Lomba <span
+                                        class="text-danger">*</span></label>
                                 <select name="lomba_tingkatan_id" class="form-control" required>
                                     <option value="">Pilih Tingkatan</option>
-                                    @foreach(\App\Models\Tingkatan::where('tingkatan_visible', true)->get() as $tingkatan)
+                                    @foreach (\App\Models\Tingkatan::where('tingkatan_visible', true)->get() as $tingkatan)
                                         <option value="{{ $tingkatan->id }}">{{ $tingkatan->tingkatan_nama }}</option>
                                     @endforeach
                                 </select>
@@ -54,16 +57,18 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Bidang Keahlian Section -->
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label><i class="fas fa-code mr-1"></i>Bidang Keahlian <span class="text-danger">*</span></label>
+                                <label><i class="fas fa-code mr-1"></i>Bidang Keahlian <span
+                                        class="text-danger">*</span></label>
                                 <div class="github-topics-container">
                                     <div class="topics-input-wrapper">
                                         <div class="selected-topics" id="selectedTopics"></div>
-                                        <input type="text" id="topicsInput" class="topics-input" placeholder="Ketik bidang keahlian..." autocomplete="off">
+                                        <input type="text" id="topicsInput" class="topics-input"
+                                            placeholder="Ketik bidang keahlian..." autocomplete="off">
                                     </div>
                                     <div class="topics-dropdown" id="topicsDropdown">
                                         <div class="dropdown-content" id="dropdownContent"></div>
@@ -72,44 +77,49 @@
                                 <div id="hiddenKeahlianInputs"></div>
                                 <small class="text-muted">
                                     <i class="fas fa-info-circle mr-1"></i>
-                                    Ketik untuk mencari bidang keahlian. Tekan Enter untuk menambah bidang baru jika tidak ditemukan.
+                                    Ketik untuk mencari bidang keahlian. Tekan Enter untuk menambah bidang baru jika
+                                    tidak ditemukan.
                                 </small>
                                 <div class="invalid-feedback"></div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Date Fields -->
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label><i class="fas fa-calendar-alt mr-1"></i>Tanggal Mulai <span class="text-danger">*</span></label>
+                                <label><i class="fas fa-calendar-alt mr-1"></i>Tanggal Mulai <span
+                                        class="text-danger">*</span></label>
                                 <input type="date" name="lomba_tanggal_mulai" class="form-control" required>
                                 <div class="invalid-feedback"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label><i class="fas fa-calendar-check mr-1"></i>Tanggal Selesai <span class="text-danger">*</span></label>
+                                <label><i class="fas fa-calendar-check mr-1"></i>Tanggal Selesai <span
+                                        class="text-danger">*</span></label>
                                 <input type="date" name="lomba_tanggal_selesai" class="form-control" required>
                                 <div class="invalid-feedback"></div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Link Fields -->
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label><i class="fas fa-link mr-1"></i>Link Pendaftaran</label>
-                                <input type="url" name="lomba_link_pendaftaran" class="form-control">
+                                <label><i class="fas fa-link mr-1"></i>Link Pendaftaran <span
+                                        class="text-danger">*</span></label>
+                                <input type="url" name="lomba_link_pendaftaran" class="form-control" required>
                                 <div class="invalid-feedback"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label><i class="fas fa-image mr-1"></i>Link Poster</label>
-                                <input type="url" name="lomba_link_poster" class="form-control">
+                                <label><i class="fas fa-image mr-1"></i>Link Poster <span
+                                        class="text-danger">*</span></label>
+                                <input type="url" name="lomba_link_poster" class="form-control" required>
                                 <div class="invalid-feedback"></div>
                             </div>
                         </div>
@@ -275,7 +285,7 @@
         color: #dc3545;
     }
 
-    .is-invalid ~ .invalid-feedback {
+    .is-invalid~.invalid-feedback {
         display: block;
     }
 

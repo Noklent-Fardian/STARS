@@ -387,7 +387,7 @@
     <script>
         var dataVerification;
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Initialize DataTable with server-side processing
             dataVerification = $('#table_verification').DataTable({
                 scrollX: true,
@@ -397,12 +397,11 @@
                     url: "{{ route('admin.lombaVerification.list') }}",
                     dataType: "json",
                     type: "GET",
-                    data: function (d) {
+                    data: function(d) {
                         d.status = $('#statusFilter').val();
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: "id",
                         className: "text-center",
                         width: "8%",
@@ -412,20 +411,37 @@
                         data: "penginput",
                         width: "20%",
                         orderable: true,
-                        render: function (data, type, row) {
-                            return `<div class="user-info">
-                                            <div>${row.mahasiswa_nama || 'N/A'}</div>
-                                            <small class="text-muted">
-                                                <i class="fas fa-user-graduate mr-1"></i> ${row.mahasiswa_nim || 'N/A'}
-                                            </small>
-                                        </div>`;
+                        render: function(data, type, row) {
+                            // Check if submitted by dosen or mahasiswa
+                            if (row.dosen_nama && row.dosen_nip) {
+                                return `<div class="user-info">
+                        <div>${row.dosen_nama}</div>
+                        <small class="text-muted">
+                            <i class="fas fa-user-tie mr-1"></i> Dosen - ${row.dosen_nip}
+                        </small>
+                    </div>`;
+                            } else if (row.mahasiswa_nama && row.mahasiswa_nim) {
+                                return `<div class="user-info">
+                        <div>${row.mahasiswa_nama}</div>
+                        <small class="text-muted">
+                            <i class="fas fa-user-graduate mr-1"></i> Mahasiswa - ${row.mahasiswa_nim}
+                        </small>
+                    </div>`;
+                            } else {
+                                return `<div class="user-info">
+                        <div>Data tidak tersedia</div>
+                        <small class="text-muted">
+                            <i class="fas fa-question-circle mr-1"></i> Unknown
+                        </small>
+                    </div>`;
+                            }
                         }
                     },
                     {
                         data: "lomba_nama",
                         width: "25%",
                         orderable: true,
-                        render: function (data, type, row) {
+                        render: function(data, type, row) {
                             return `<div class="lomba-info">
                                             <div class="lomba-title">${data}</div>
                                             <small class="text-muted">
@@ -443,7 +459,7 @@
                         data: "created_at",
                         width: "12%",
                         orderable: true,
-                        render: function (data) {
+                        render: function(data) {
                             return data ? new Date(data).toLocaleDateString('id-ID') : '-';
                         }
                     },
@@ -451,7 +467,7 @@
                         data: "pendaftaran_status",
                         width: "12%",
                         orderable: true,
-                        render: function (data) {
+                        render: function(data) {
                             if (data === 'Menunggu') {
                                 return '<span class="badge badge-warning"><i class="fas fa-clock mr-1"></i> Menunggu</span>';
                             } else if (data === 'Diterima') {
@@ -467,7 +483,7 @@
                         width: "8%",
                         orderable: false,
                         searchable: false,
-                        render: function (data, type, row) {
+                        render: function(data, type, row) {
                             return `<a href="{{ route('admin.lombaVerification.show', '') }}/${row.id}" 
                                            class="btn btn-info btn-sm" 
                                            title="Lihat Detail & Verifikasi">
@@ -477,8 +493,13 @@
                     }
                 ],
                 pageLength: 10,
-                lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
-                order: [[0, "desc"]],
+                lengthMenu: [
+                    [10, 25, 50, 100],
+                    [10, 25, 50, 100]
+                ],
+                order: [
+                    [0, "desc"]
+                ],
                 language: {
                     processing: '<div class="spinner-border text-primary" role="status"></div>',
                     search: "",
@@ -498,18 +519,18 @@
                 dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'>>" +
                     "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-                drawCallback: function (settings) {
+                drawCallback: function(settings) {
                     updateStatistics(settings.json);
                 }
             });
 
             // Custom search functionality
-            $('#searchBox').on('keyup', function () {
+            $('#searchBox').on('keyup', function() {
                 dataVerification.search(this.value).draw();
             });
 
             // Status filter
-            $('#statusFilter').on('change', function () {
+            $('#statusFilter').on('change', function() {
                 dataVerification.ajax.reload();
             });
 
@@ -528,8 +549,8 @@
         }
 
         // Animation for statistics cards
-        $(window).on('load', function () {
-            $('.stat-card').each(function (index) {
+        $(window).on('load', function() {
+            $('.stat-card').each(function(index) {
                 $(this).delay(index * 100).animate({
                     opacity: 1,
                     transform: 'translateY(0)'

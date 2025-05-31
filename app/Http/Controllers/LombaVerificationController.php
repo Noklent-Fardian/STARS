@@ -33,8 +33,8 @@ class LombaVerificationController extends Controller
             }
         }
 
-        if (!$submission->mahasiswa) {
-            $missingFields[] = 'Data Mahasiswa';
+        if (!$submission->mahasiswa && !$submission->dosen) {
+            $missingFields[] = 'Data Penginput (Mahasiswa atau Dosen)';
         }
 
         if (!$submission->tingkatan) {
@@ -94,13 +94,24 @@ class LombaVerificationController extends Controller
                 }
             })
             ->addColumn('mahasiswa_nama', function ($row) {
-                return $row->mahasiswa->mahasiswa_nama ?? 'N/A';
+                return $row->mahasiswa->mahasiswa_nama ?? null;
             })
             ->addColumn('mahasiswa_nim', function ($row) {
-                return $row->mahasiswa->mahasiswa_nim ?? 'N/A';
+                return $row->mahasiswa->mahasiswa_nim ?? null;
+            })
+            ->addColumn('dosen_nama', function ($row) {
+                return $row->dosen->dosen_nama ?? null;
+            })
+            ->addColumn('dosen_nip', function ($row) {
+                return $row->dosen->dosen_nip ?? null;
             })
             ->addColumn('penginput', function ($row) {
-                return $row->mahasiswa->mahasiswa_nama ?? 'N/A';
+                if ($row->dosen) {
+                    return $row->dosen->dosen_nama;
+                } elseif ($row->mahasiswa) {
+                    return $row->mahasiswa->mahasiswa_nama;
+                }
+                return 'N/A';
             })
             ->addColumn('nama_lomba', function ($row) {
                 return $row->lomba_nama ?? 'N/A';
@@ -204,7 +215,6 @@ class LombaVerificationController extends Controller
 
             return redirect()->route('admin.lombaVerification.index')
                 ->with('success', 'Lomba berhasil disetujui');
-
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
@@ -242,7 +252,6 @@ class LombaVerificationController extends Controller
 
             return redirect()->route('admin.lombaVerification.index')
                 ->with('success', 'Lomba berhasil ditolak');
-
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());

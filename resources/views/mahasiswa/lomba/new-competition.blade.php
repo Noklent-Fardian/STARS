@@ -94,15 +94,15 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label><i class="fas fa-link mr-1"></i>Link Pendaftaran</label>
-                                <input type="url" name="lomba_link_pendaftaran" class="form-control">
+                                <label><i class="fas fa-link mr-1"></i>Link Pendaftaran <span class="text-danger">*</span></label>
+                                <input type="url" name="lomba_link_pendaftaran" class="form-control" required>
                                 <div class="invalid-feedback"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label><i class="fas fa-image mr-1"></i>Link Poster</label>
-                                <input type="url" name="lomba_link_poster" class="form-control">
+                                <label><i class="fas fa-image mr-1"></i>Link Poster <span class="text-danger">*</span></label>
+                                <input type="url" name="lomba_link_poster" class="form-control" required>
                                 <div class="invalid-feedback"></div>
                             </div>
                         </div>
