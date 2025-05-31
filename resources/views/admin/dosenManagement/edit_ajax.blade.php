@@ -281,7 +281,7 @@
                                                         <option value="Aktif" {{ $dosen->dosen_status === 'Aktif' ? 'selected' : '' }}>Aktif</option>
                                                         <option value="Tidak Aktif" {{ $dosen->dosen_status === 'Tidak Aktif' ? 'selected' : '' }}>Tidak Aktif</option>
                                                         <option value="Cuti" {{ $dosen->dosen_status === 'Cuti' ? 'selected' : '' }}>Cuti</option>
-                                                        <option value="Pensiun" {{ $dosen->dosen_status === 'Pensiun' ? 'selected' : '' }}>Pensiun</option>
+                                                        <option value="Studi" {{ $dosen->dosen_status === 'Studi' ? 'selected' : '' }}>Studi</option>
                                                     </select>
                                                 </div>
                                                 <small id="error-dosen_status" class="error-text form-text text-danger"></small>

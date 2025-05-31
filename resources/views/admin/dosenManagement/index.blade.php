@@ -175,6 +175,13 @@
                 $('#myModal').load(url, function() {
                     $('#myModal').modal('show');
                 });
+
+                $('#myModal').on('hidden.bs.modal', function () {
+        if (dataDosen) {
+            dataDosen.ajax.reload(null, false); // reload without resetting pagination
+        }
+    });
+
             }
 
             var dataDosen;
