@@ -31,6 +31,7 @@ class Dosen extends Model
         'dosen_status',
         'dosen_gender',
         'keahlian_id',
+        'keahlian_sertifikat',
         'dosen_nomor_telepon',
         'dosen_photo',
         'dosen_agama',

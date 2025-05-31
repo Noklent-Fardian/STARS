@@ -216,25 +216,59 @@
     <!-- Modal Ubah Password -->
     <div class="modal fade" id="modalPassword" tabindex="-1" aria-labelledby="modalPasswordLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{ route('dosen.updatePassword') }}" method="POST" class="modal-content" id="form-password">
+            <form action="{{ route('dosen.changePassword') }}" method="POST" class="modal-content" id="form-password">
                 @csrf
-                @method('PUT')
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalPasswordLabel">Ganti Password</h5>
+                    <h5 class="modal-title" id="modalPasswordLabel">
+                        <i class="fas fa-shield-alt me-2"></i>Ganti Password
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label>Password Baru</label>
-                        <input type="password" name="password" class="form-control" required>
+                        <label class="form-label">
+                            <i class="fas fa-key me-1"></i>Password Saat Ini
+                        </label>
+                        <div class="input-group">
+                            <input type="password" name="current_password" id="current_password" class="form-control"
+                                required>
+                            <button type="button" class="btn btn-outline-secondary toggle-password"
+                                data-target="current_password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <label>Konfirmasi Password</label>
-                        <input type="password" name="password_confirmation" class="form-control" required>
+                        <label class="form-label">
+                            <i class="fas fa-lock me-1"></i>Password Baru
+                        </label>
+                        <div class="input-group">
+                            <input type="password" name="new_password" id="new_password" class="form-control" required>
+                            <button type="button" class="btn btn-outline-secondary toggle-password"
+                                data-target="new_password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="fas fa-lock-open me-1"></i>Konfirmasi Password Baru
+                        </label>
+                        <div class="input-group">
+                            <input type="password" name="confirm_password" id="confirm_password" class="form-control"
+                                required>
+                            <button type="button" class="btn btn-outline-secondary toggle-password"
+                                data-target="confirm_password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-lock me-1"></i>Simpan
+                    </button>
                 </div>
             </form>
         </div>
@@ -297,6 +331,28 @@
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        // Enhanced password toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.toggle-password').forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const targetInput = document.getElementById(targetId);
+                    const icon = this.querySelector('i');
+
+                    if (targetInput.type === 'password') {
+                        targetInput.type = 'text';
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                    } else {
+                        targetInput.type = 'password';
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                    }
+                });
+            });
+        });
+
+        // Enhanced form submission with SweetAlert
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('form-edit-profile');
             form.addEventListener('submit', function(e) {
@@ -314,40 +370,39 @@
                         body: formData
                     })
                     .then(async response => {
+                        const data = await response.json();
                         if (response.ok) {
-                            const data = await response.json();
                             Swal.fire({
                                 icon: 'success',
-                                title: 'Berhasil',
+                                title: 'Berhasil!',
                                 text: data.message || 'Profil berhasil diperbarui!',
-                                timer: 1200,
+                                timer: 1500,
                                 showConfirmButton: false
                             });
                             setTimeout(function() {
                                 window.location.href = "{{ route('dosen.profile') }}";
-                            }, 1200);
+                            }, 1500);
                         } else {
-                            const data = await response.json();
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Gagal',
+                                title: 'Gagal!',
                                 text: data.message ||
                                     'Terjadi kesalahan saat memperbarui profil.',
+                                confirmButtonText: 'OK'
                             });
                         }
                     })
                     .catch(error => {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Gagal',
+                            title: 'Error!',
                             text: 'Terjadi kesalahan pada server.',
+                            confirmButtonText: 'OK'
                         });
                     });
             });
         });
-    </script>
 
-    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const navLinks = document.querySelectorAll('#edit-nav .nav-link');
             const sections = document.querySelectorAll('.edit-section');
@@ -421,6 +476,17 @@
             if (formPassword) {
                 formPassword.addEventListener('submit', function(e) {
                     e.preventDefault();
+
+                    // Show loading state
+                    Swal.fire({
+                        title: 'Memproses...',
+                        text: 'Sedang mengubah password',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
                     let formData = new FormData(formPassword);
 
                     fetch(formPassword.action, {
@@ -433,46 +499,71 @@
                         })
                         .then(async response => {
                             const data = await response.json();
-                            if (response.ok) {
+                            Swal.close();
+
+                            if (response.ok && data.success) {
                                 Swal.fire({
                                     icon: 'success',
-                                    title: 'Berhasil',
+                                    title: 'Berhasil!',
                                     text: data.message || 'Password berhasil diubah!',
-                                    timer: 1200,
+                                    timer: 1500,
                                     showConfirmButton: false
                                 });
                                 setTimeout(function() {
                                     document.getElementById('modalPassword').querySelector(
                                         '.btn-close').click();
                                     formPassword.reset();
-                                }, 1200);
+                                    // Reset password visibility
+                                    document.querySelectorAll(
+                                        '#modalPassword input[type="text"]').forEach(
+                                        input => {
+                                            input.type = 'password';
+                                        });
+                                    document.querySelectorAll(
+                                        '#modalPassword .fa-eye-slash').forEach(
+                                    icon => {
+                                        icon.classList.remove('fa-eye-slash');
+                                        icon.classList.add('fa-eye');
+                                    });
+                                }, 1500);
                             } else {
                                 Swal.fire({
                                     icon: 'error',
-                                    title: 'Gagal',
+                                    title: 'Gagal!',
                                     text: data.message ||
                                         'Terjadi kesalahan saat mengubah password.',
+                                    confirmButtonText: 'OK'
                                 });
                             }
                         })
                         .catch(error => {
+                            Swal.close();
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Gagal',
+                                title: 'Error!',
                                 text: 'Terjadi kesalahan pada server.',
+                                confirmButtonText: 'OK'
                             });
                         });
                 });
             }
         });
-    </script>
 
-    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const formPhoto = document.getElementById('form-photo');
             if (formPhoto) {
                 formPhoto.addEventListener('submit', function(e) {
                     e.preventDefault();
+
+                    Swal.fire({
+                        title: 'Mengunggah...',
+                        text: 'Sedang mengunggah foto profil',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
                     let formData = new FormData(formPhoto);
 
                     fetch(formPhoto.action, {
@@ -485,12 +576,14 @@
                         })
                         .then(async response => {
                             const data = await response.json();
-                            if (response.ok) {
+                            Swal.close();
+
+                            if (response.ok && data.success) {
                                 Swal.fire({
                                     icon: 'success',
-                                    title: 'Berhasil',
+                                    title: 'Berhasil!',
                                     text: data.message || 'Foto profil berhasil diubah!',
-                                    timer: 1200,
+                                    timer: 1500,
                                     showConfirmButton: false
                                 });
                                 // Update foto profil di halaman tanpa reload
@@ -500,21 +593,24 @@
                                     document.getElementById('modalPhoto').querySelector(
                                         '.btn-close').click();
                                     formPhoto.reset();
-                                }, 1200);
+                                }, 1500);
                             } else {
                                 Swal.fire({
                                     icon: 'error',
-                                    title: 'Gagal',
+                                    title: 'Gagal!',
                                     text: data.message ||
                                         'Terjadi kesalahan saat upload foto.',
+                                    confirmButtonText: 'OK'
                                 });
                             }
                         })
                         .catch(error => {
+                            Swal.close();
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Gagal',
+                                title: 'Error!',
                                 text: 'Terjadi kesalahan pada server.',
+                                confirmButtonText: 'OK'
                             });
                         });
                 });
