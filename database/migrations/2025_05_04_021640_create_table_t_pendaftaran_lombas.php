@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('t_request_tambah_lombas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('mahasiswa_id')->constrained('m_mahasiswas')->onDelete('cascade');
+            $table->foreignId('mahasiswa_id')->nullable()->constrained('m_mahasiswas')->onDelete('cascade');
+            $table->foreignId('dosen_id')->nullable()->constrained('m_dosens')->onDelete('cascade');
             $table->foreignId('lomba_id')->nullable()->constrained('m_lombas')->onDelete('cascade');
             $table->string('lomba_nama')->nullable();
             $table->string('lomba_penyelenggara')->nullable();

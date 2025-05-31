@@ -24,7 +24,7 @@
                         <li><strong>Kolom C:</strong> Jenis Kelamin (L/P)</li>
                         <li><strong>Kolom D:</strong> Email</li>
                         <li><strong>Kolom E:</strong> Nomor Telepon</li>
-                        <li><strong>Kolom F:</strong> Program Studi</li>
+                        <li><strong>Kolom F:</strong> Prodi Homebase</li>
                         <li><strong>Kolom G:</strong> Jabatan Fungsional</li>
                         <li><strong>Kolom H:</strong> Status Aktif (Aktif/Non-Aktif)</li>
                     </ul>

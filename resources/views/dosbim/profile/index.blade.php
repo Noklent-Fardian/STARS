@@ -82,7 +82,7 @@
                     <div class="card-header fw-bold">Informasi Akademik</div>
                     <div class="card-body">
                         <div class="row mb-2">
-                            <div class="col-sm-4">Program Studi</div>
+                            <div class="col-sm-4">Program Studi Homebase</div>
                             <div class="col-sm-8">{{ $dosen->prodi->prodi_nama ?? '-' }}</div>
                         </div>
                         <div class="row mb-2">

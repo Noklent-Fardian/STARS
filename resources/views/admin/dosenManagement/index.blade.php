@@ -66,7 +66,7 @@
                                 <th>Nama Dosen</th>
                                 <th>NIP</th>
                                 <th>Status</th>
-                                <th>Program Studi</th>
+                                <th>Prodi Homebase</th>
                                 <th class="text-center text-nowrap">Aksi</th>
                             </tr>
                         </thead>

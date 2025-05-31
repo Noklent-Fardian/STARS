@@ -14,6 +14,7 @@ class CompetitionSubmission extends Model
 
     protected $fillable = [
         'mahasiswa_id',
+        'dosen_id',
         'lomba_id',
         'lomba_nama',
         'lomba_penyelenggara',
@@ -68,5 +69,9 @@ class CompetitionSubmission extends Model
     public function lomba(): BelongsTo
     {
         return $this->belongsTo(Lomba::class, 'lomba_id');
+    }
+    public function dosen(): BelongsTo
+    {
+        return $this->belongsTo(Dosen::class, 'dosen_id');
     }
 }
