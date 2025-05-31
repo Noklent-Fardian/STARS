@@ -249,15 +249,7 @@ class MahasiswaController extends Controller
         }
     }
 
-    public function lombaIndex()
-    {
-        $lombas =Lomba::with(['tingkatan', 'semester', 'keahlians'])
-            ->where('lomba_visible', true)
-            ->orderBy('created_at', 'desc')
-            ->get();
 
-        return view('mahasiswa.lomba.index', compact('lombas'));
-    }
 
     public function lombaShow($id)
     {

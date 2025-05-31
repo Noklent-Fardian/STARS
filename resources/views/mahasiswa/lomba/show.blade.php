@@ -291,7 +291,6 @@
 @endsection
 
 @push('css')
-    <!-- Same CSS as dosen show view -->
     <style>
         /* Modern Card Styles */
         .modern-card {
@@ -842,7 +841,6 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Here you would typically make an AJAX call to register for the competition
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil Mendaftar!',

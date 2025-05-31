@@ -14,7 +14,12 @@ class LombaController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('mahasiswa.lomba.index', compact('lombas'));
+        // Check user role and return appropriate view
+        if (auth()->user()->user_role === 'Dosen') {
+            return view('dosbim.lomba.index', compact('lombas'));
+        } else {
+            return view('mahasiswa.lomba.index', compact('lombas'));
+        }
     }
 
     public function lombaShow($id)
@@ -23,18 +28,17 @@ class LombaController extends Controller
             ->where('lomba_visible', true)
             ->findOrFail($id);
 
-        return view('mahasiswa.lomba.show', compact('lomba'));
+        // Check user role and return appropriate view
+        if (auth()->user()->user_role === 'Dosen') {
+            return view('dosbim.lomba.show', compact('lomba'));
+        } else {
+            return view('mahasiswa.lomba.show', compact('lomba'));
+        }
     }
 
-    public function daftarLomba(Request $request)
-    {
-        // Implementation for competition registration
-    }
+    public function daftarLomba(Request $request) {}
 
-    public function createAjax()
-    {
-        // Implementation for creating new competition via AJAX
-    }
+    public function createAjax() {}
 
     public function storeAjax(Request $request)
     {

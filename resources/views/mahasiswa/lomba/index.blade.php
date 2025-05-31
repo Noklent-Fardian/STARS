@@ -5,7 +5,7 @@
 @section('page-title', 'Lihat Lomba')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item active">Lihat Lomba</li>
+    <li class="breadcrumb-item active">Lihat Lomba (mahasiswa)</li>
 @endsection
 
 @section('content')
@@ -185,15 +185,14 @@
                         <div class="card-img-container">
                             @if ($lomba->lomba_link_poster)
                                 <img src="{{ $lomba->lomba_link_poster }}" class="card-img-top"
-                                    alt="{{ $lomba->lomba_nama }}" loading="lazy"
-                                    onerror="this.src='https://picsum.photos/400/200?random={{ $lomba->id }}'">
+                                     alt="{{ $lomba->lomba_nama }}" loading="lazy" onerror="this.src='https://picsum.photos/400/200?random={{ $lomba->id }}'">
                                 <div class="default-poster overlay-poster">
                                     <i class="fas fa-trophy fa-3x text-muted"></i>
                                     <p class="text-muted mt-2">{{ $lomba->lomba_nama }}</p>
                                 </div>
-                            @else
+                            @else    
                                 <img src="https://picsum.photos/400/200?random={{ $lomba->id }}" class="card-img-top"
-                                    alt="{{ $lomba->lomba_nama }}" loading="lazy">>
+                                   alt="{{ $lomba->lomba_nama }}" loading="lazy">>
                                 <div class="default-poster overlay-poster">
                                     <i class="fas fa-trophy fa-3x text-muted"></i>
                                     <p class="text-muted mt-2">{{ $lomba->lomba_nama }}</p>

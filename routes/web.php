@@ -142,7 +142,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::get('/show/{id}', [LombaVerificationController::class, 'show'])->name('show');
         Route::post('/{id}/approve', [LombaVerificationController::class, 'approve'])->name('approve');
         Route::post('/{id}/reject', [LombaVerificationController::class, 'reject'])->name('reject');
-});
+    });
     // Admin Kelola Lomba
     Route::prefix('adminKelolaLomba')->name('admin.adminKelolaLomba.')->group(function () {
         Route::get('/', [AdminKelolaLombaController::class, 'index'])->name('index');
@@ -343,17 +343,20 @@ Route::middleware(['auth', 'role:Dosen'])->prefix('dosen')->name('dosen.')->grou
     Route::post('/profile/update-photo', [DosenController::class, 'updatePhoto'])->name('updatePhoto');
 });
 
+// Achievement Process for Dosen - Outside dosen prefix
+Route::middleware(['auth', 'role:Dosen'])->prefix('dosen/achievement')->name('dosen.achievement.')->group(function () {
+    Route::get('/create', [CompetitionSubmissionController::class, 'Create'])->name('create');
+    Route::post('/store', [CompetitionSubmissionController::class, 'Store'])->name('store');
+
+    // AJAX routes for validation
+    Route::post('/check-duplicate', [CompetitionSubmissionController::class, 'checkDuplicateLomba'])->name('check-duplicate');
+    Route::get('/keahlian-suggestions', [CompetitionSubmissionController::class, 'getKeahlianSuggestions'])->name('keahlian-suggestions');
+});
+
 // Mahasiswa routes
 Route::middleware(['auth', 'role:Mahasiswa'])->prefix('mahasiswa')->name('mahasiswa.')->group(function () {
     // Dashboard
     Route::get('/dashboard', [MahasiswaController::class, 'index'])->name('dashboard');
-
-    // Lihat Lomba
-    Route::prefix('lomba')->name('lomba.')->group(function () {
-        Route::get('/', [MahasiswaController::class, 'lombaIndex'])->name('index');
-        Route::get('/show/{id}', [MahasiswaController::class, 'lombaShow'])->name('show');
-        Route::post('/daftar', [MahasiswaController::class, 'daftarLomba'])->name('daftar');
-    });
 
     // Lihat Lomba dan Tambah
     Route::prefix('lomba')->name('lomba.')->group(function () {
@@ -389,6 +392,10 @@ Route::middleware(['auth', 'role:Mahasiswa'])->prefix('student/achievement')->na
     Route::post('/store', [CompetitionSubmissionController::class, 'store'])->name('store');
     Route::post('/finalize', [CompetitionSubmissionController::class, 'finalizeSubmission'])->name('finalize');
     Route::get('/step3', [CompetitionSubmissionController::class, 'step3'])->name('step3');
+
+    // New AJAX routes for validation
+    Route::post('/check-duplicate', [CompetitionSubmissionController::class, 'checkDuplicateLomba'])->name('check-duplicate');
+    Route::get('/keahlian-suggestions', [CompetitionSubmissionController::class, 'getKeahlianSuggestions'])->name('keahlian-suggestions');
 });
 
 // Fallback for unauthorized access

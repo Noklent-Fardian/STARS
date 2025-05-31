@@ -11,7 +11,6 @@
 
 @section('content')
     <div class="container-fluid">
-        <!-- Competition Header -->
         <div class="row mb-4">
             <div class="col-12">
                 <div class="modern-card shadow-lg border-0">
@@ -120,12 +119,12 @@
                                             </div>
                                             <div class="info-content">
                                                 <span class="info-label">Semester</span>
-                                                <span class="info-value">{{ $lomba->semester->semester_nama ?? 'Tidak ditentukan' }}</span>
+                                                <span
+                                                    class="info-value">{{ $lomba->semester->semester_nama ?? 'Tidak ditentukan' }}</span>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Action Buttons -->
                                     <div class="action-buttons">
                                         @if ($lomba->lomba_link_pendaftaran)
                                             <a href="{{ $lomba->lomba_link_pendaftaran }}" target="_blank"
@@ -134,10 +133,6 @@
                                                 <span>Buka Link Pendaftaran</span>
                                             </a>
                                         @endif
-                                        <button type="button" class="modern-btn secondary" onclick="recommendToStudents()">
-                                            <i class="fas fa-share"></i>
-                                            <span>Rekomendasikan ke Mahasiswa</span>
-                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -146,6 +141,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- Competition Details -->
         <div class="row g-4">
@@ -167,7 +163,8 @@
                                     <p class="timeline-date">
                                         {{ \Carbon\Carbon::parse($lomba->lomba_tanggal_mulai)->locale('id')->translatedFormat('l, d F Y') }}
                                     </p>
-                                    <small class="timeline-relative">{{ $lomba->lomba_tanggal_mulai->diffForHumans() }}</small>
+                                    <small
+                                        class="timeline-relative">{{ $lomba->lomba_tanggal_mulai->diffForHumans() }}</small>
                                 </div>
                             </div>
                             <div class="timeline-item-modern">
@@ -177,7 +174,8 @@
                                     <p class="timeline-date">
                                         {{ \Carbon\Carbon::parse($lomba->lomba_tanggal_selesai)->locale('id')->translatedFormat('l, d F Y') }}
                                     </p>
-                                    <small class="timeline-relative">{{ $lomba->lomba_tanggal_selesai->diffForHumans() }}</small>
+                                    <small
+                                        class="timeline-relative">{{ $lomba->lomba_tanggal_selesai->diffForHumans() }}</small>
                                 </div>
                             </div>
                         </div>
@@ -248,7 +246,8 @@
                                         </div>
                                         <div class="link-content">
                                             <h6 class="link-title">Link Poster</h6>
-                                            <a href="{{ $lomba->lomba_link_poster }}" target="_blank" class="link-button">
+                                            <a href="{{ $lomba->lomba_link_poster }}" target="_blank"
+                                                class="link-button">
                                                 <i class="fas fa-external-link-alt"></i>
                                                 Lihat Poster
                                             </a>
@@ -263,7 +262,8 @@
                                         </div>
                                         <div class="link-content">
                                             <h6 class="link-title">Link Pendaftaran</h6>
-                                            <a href="{{ $lomba->lomba_link_pendaftaran }}" target="_blank" class="link-button">
+                                            <a href="{{ $lomba->lomba_link_pendaftaran }}" target="_blank"
+                                                class="link-button">
                                                 <i class="fas fa-external-link-alt"></i>
                                                 Akses Pendaftaran
                                             </a>
@@ -290,7 +290,6 @@
 @endsection
 
 @push('css')
-    <!-- Same CSS as mahasiswa.lomba.show -->
     <style>
         /* Modern Card Styles */
         .modern-card {
@@ -300,11 +299,6 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 20px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
             overflow: hidden;
-        }
-
-        .modern-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12), 0 16px 40px rgba(0, 0, 0, 0.08);
         }
 
         /* Poster Container */
@@ -825,17 +819,4 @@
             }
         }
     </style>
-@endpush
-
-@push('js')
-    <script>
-        function recommendToStudents() {
-            Swal.fire({
-                icon: 'success',
-                title: 'Rekomendasi Dikirim',
-                text: 'Lomba ini akan direkomendasikan kepada mahasiswa bimbingan Anda.',
-                confirmButtonColor: '#102044'
-            });
-        }
-    </script>
 @endpush

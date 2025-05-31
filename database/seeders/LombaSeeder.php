@@ -59,7 +59,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2024-10-17',
                 'lomba_tanggal_selesai' => '2024-10-22',
                 'lomba_link_pendaftaran' => 'https://reyes.com/sint-et-libero-maxime-delectus.html',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -71,7 +71,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2024-10-03',
                 'lomba_tanggal_selesai' => '2024-10-13',
                 'lomba_link_pendaftaran' => 'http://zemlak.com/autem-est-enim-aut-autem-non.html',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => false,
             ],
             [
@@ -83,7 +83,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2024-11-28',
                 'lomba_tanggal_selesai' => '2024-12-07',
                 'lomba_link_pendaftaran' => 'https://jast.org/delectus-mollitia-at-et-voluptatem-ut-ut.html',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -95,7 +95,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2024-10-15',
                 'lomba_tanggal_selesai' => '2024-10-18',
                 'lomba_link_pendaftaran' => 'http://mraz.com/exercitationem-explicabo-deleniti-qui-nobis-ipsum.html',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => false,
             ],
             [
@@ -107,7 +107,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2025-01-11',
                 'lomba_tanggal_selesai' => '2025-01-16',
                 'lomba_link_pendaftaran' => 'https://macejkovic.com/qui-voluptatibus-eum-iusto-sit-et-eum-est.html',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -119,7 +119,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2024-11-03',
                 'lomba_tanggal_selesai' => '2024-11-13',
                 'lomba_link_pendaftaran' => 'https://schmidt.com/exercitationem-reiciendis-molestiae.html',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -131,7 +131,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2025-03-12',
                 'lomba_tanggal_selesai' => '2025-03-15',
                 'lomba_link_pendaftaran' => 'https://strosin.com/autem-et-sit-beatae-id.html',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => false,
             ],
             [
@@ -143,7 +143,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2024-08-30',
                 'lomba_tanggal_selesai' => '2024-09-03',
                 'lomba_link_pendaftaran' => 'http://gorczany.org/enim-nostrum-dolor-rerum-veritatis-autem-et.html',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -155,7 +155,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2024-09-26',
                 'lomba_tanggal_selesai' => '2024-10-03',
                 'lomba_link_pendaftaran' => 'http://okeefe.org/facilis-velit-nisi-architecto.html',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => false,
             ],
             [
@@ -167,7 +167,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2024-08-01',
                 'lomba_tanggal_selesai' => '2024-08-07',
                 'lomba_link_pendaftaran' => 'https://towne.com/possimus-et-exercitationem-dolorum-in-nemo-vero.html',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -179,7 +179,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2024-09-10',
                 'lomba_tanggal_selesai' => '2024-09-15',
                 'lomba_link_pendaftaran' => 'https://aiui.id/daftar',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -191,7 +191,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2024-10-20',
                 'lomba_tanggal_selesai' => '2024-10-25',
                 'lomba_link_pendaftaran' => 'https://oracleacademy.com/db-contest',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => false,
             ],
             [
@@ -203,7 +203,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2025-01-05',
                 'lomba_tanggal_selesai' => '2025-01-10',
                 'lomba_link_pendaftaran' => 'https://reactjs.id/lomba-frontend',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -215,7 +215,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2024-12-01',
                 'lomba_tanggal_selesai' => '2024-12-05',
                 'lomba_link_pendaftaran' => 'https://startuphub.asia/ideathon',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => false,
             ],
             [
@@ -227,7 +227,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2024-11-11',
                 'lomba_tanggal_selesai' => '2024-11-18',
                 'lomba_link_pendaftaran' => 'https://gamedev.id/jam2024',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -239,7 +239,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2024-09-21',
                 'lomba_tanggal_selesai' => '2024-09-30',
                 'lomba_link_pendaftaran' => 'https://awseducate.com/challenge',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -251,7 +251,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2025-02-10',
                 'lomba_tanggal_selesai' => '2025-02-14',
                 'lomba_link_pendaftaran' => 'https://brin.go.id/robotik',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => false,
             ],
             [
@@ -263,7 +263,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2024-08-20',
                 'lomba_tanggal_selesai' => '2024-08-24',
                 'lomba_link_pendaftaran' => 'https://kominfo.go.id/hackathon2024',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -275,7 +275,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2024-07-15',
                 'lomba_tanggal_selesai' => '2024-07-20',
                 'lomba_link_pendaftaran' => 'https://dicoding.com/lomba-beginner',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -287,7 +287,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2024-10-05',
                 'lomba_tanggal_selesai' => '2024-10-10',
                 'lomba_link_pendaftaran' => 'https://puspresnas.kemdikbud.go.id/lomba-software',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => false,
             ],
 
@@ -300,7 +300,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2024-10-05',
                 'lomba_tanggal_selesai' => '2024-10-10',
                 'lomba_link_pendaftaran' => 'https://puspresnas.kemdikbud.go.id/lomba-software',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => false,
             ],
             [
@@ -312,7 +312,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2025-06-15',
                 'lomba_tanggal_selesai' => '2025-06-20',
                 'lomba_link_pendaftaran' => 'https://developers.google.com/mobile-contest',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -324,7 +324,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2025-05-10',
                 'lomba_tanggal_selesai' => '2025-08-17',
                 'lomba_link_pendaftaran' => 'https://ethereum.org/blockchain-challenge',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => false,
             ],
             [
@@ -348,7 +348,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2025-05-22',
                 'lomba_tanggal_selesai' => '2025-07-29',
                 'lomba_link_pendaftaran' => 'https://kaggle.com/ml-hackathon',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -360,7 +360,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2025-5-14',
                 'lomba_tanggal_selesai' => '2025-10-21',
                 'lomba_link_pendaftaran' => 'https://azure.microsoft.com/enterprise-dev',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => false,
             ],
             [
@@ -384,7 +384,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2025-12-03',
                 'lomba_tanggal_selesai' => '2025-12-10',
                 'lomba_link_pendaftaran' => 'https://postman.com/api-design',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -396,7 +396,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2026-01-15',
                 'lomba_tanggal_selesai' => '2026-01-22',
                 'lomba_link_pendaftaran' => 'https://adobe.com/digital-art-showcase',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => false,
             ],
             [
@@ -408,7 +408,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2026-02-12',
                 'lomba_tanggal_selesai' => '2026-02-19',
                 'lomba_link_pendaftaran' => 'https://docker.com/devops-award',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -432,7 +432,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2026-04-18',
                 'lomba_tanggal_selesai' => '2026-04-25',
                 'lomba_link_pendaftaran' => 'https://developers.facebook.com/react-native',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => false,
             ],
             [
@@ -444,7 +444,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2026-05-16',
                 'lomba_tanggal_selesai' => '2026-05-23',
                 'lomba_link_pendaftaran' => 'https://cncf.io/kubernetes-challenge',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -468,7 +468,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2026-07-12',
                 'lomba_tanggal_selesai' => '2026-07-19',
                 'lomba_link_pendaftaran' => 'https://unity.com/ar-vr-contest',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => false,
             ],
             [
@@ -480,7 +480,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2026-08-10',
                 'lomba_tanggal_selesai' => '2026-08-17',
                 'lomba_link_pendaftaran' => 'https://netflix.com/microservices-challenge',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -504,7 +504,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2026-10-06',
                 'lomba_tanggal_selesai' => '2026-10-13',
                 'lomba_link_pendaftaran' => 'https://graphql.org/championship',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => false,
             ],
             [
@@ -516,7 +516,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2026-11-04',
                 'lomba_tanggal_selesai' => '2026-11-11',
                 'lomba_link_pendaftaran' => 'https://storybook.js.org/ui-challenge',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -540,7 +540,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2027-01-14',
                 'lomba_tanggal_selesai' => '2027-01-21',
                 'lomba_link_pendaftaran' => 'https://apache.org/distributed-systems',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => false,
             ],
             [
@@ -552,7 +552,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2027-02-11',
                 'lomba_tanggal_selesai' => '2027-02-18',
                 'lomba_link_pendaftaran' => 'https://developer.mozilla.org/css-grid',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -576,7 +576,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2027-04-08',
                 'lomba_tanggal_selesai' => '2027-04-15',
                 'lomba_link_pendaftaran' => 'https://getbootstrap.com/responsive-challenge',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => false,
             ],
             [
@@ -588,7 +588,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2027-05-06',
                 'lomba_tanggal_selesai' => '2027-05-13',
                 'lomba_link_pendaftaran' => 'https://openai.com/nlp-contest',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
             [
@@ -612,7 +612,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2027-07-15',
                 'lomba_tanggal_selesai' => '2027-07-22',
                 'lomba_link_pendaftaran' => 'https://owasp.org/security-assessment',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => false,
             ],
             [
@@ -624,7 +624,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_mulai' => '2027-08-12',
                 'lomba_tanggal_selesai' => '2027-08-19',
                 'lomba_link_pendaftaran' => 'https://postgresql.org/performance-contest',
-                'lomba_link_poster' => 'https://placeimg.com/640/480',
+                'lomba_link_poster' => 'https:///picsum.photos/640/480',
                 'lomba_terverifikasi' => true,
             ],
 
