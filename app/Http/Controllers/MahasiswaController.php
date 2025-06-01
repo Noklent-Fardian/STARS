@@ -7,13 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use App\Models\User;
-use App\Models\Keahlian;
-use App\Models\Prodi;
-use App\Models\Lomba;
 use App\Models\CompetitionSubmission;
 use App\Models\Verifikasi;
-use App\Models\Penghargaan;
 use Yajra\DataTables\Facades\DataTables;
 
 class MahasiswaController extends Controller
