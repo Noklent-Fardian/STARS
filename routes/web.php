@@ -342,6 +342,13 @@ Route::middleware(['auth', 'role:Dosen'])->prefix('dosen')->name('dosen.')->grou
     Route::put('/profile/update-password', [DosenController::class, 'updatePassword'])->name('updatePassword');
     Route::post('/profile/change-password', [DosenController::class, 'changePassword'])->name('changePassword');
     Route::post('/profile/update-photo', [DosenController::class, 'updatePhoto'])->name('updatePhoto');
+
+    // Riwayat Pengajuan Lomba
+    Route::prefix('riwayatPengajuanLomba')->name('riwayatPengajuanLomba.')->group(function () {
+        Route::get('/', [DosenController::class, 'riwayatPengajuanLombaIndex'])->name('index');
+        Route::get('/list', [DosenController::class, 'riwayatPengajuanLombaList'])->name('list');
+        Route::get('/show/{id}', [DosenController::class, 'riwayatPengajuanLombaShow'])->name('show');
+    });
 });
 
 // Achievement Process for Dosen - Outside dosen prefix
@@ -384,6 +391,13 @@ Route::middleware(['auth', 'role:Mahasiswa'])->prefix('mahasiswa')->name('mahasi
     Route::put('/profile/update-password', [MahasiswaController::class, 'updatePassword'])->name('updatePassword');
     Route::post('/profile/change-password', [MahasiswaController::class, 'changePassword'])->name('changePassword');
     Route::post('/profile/update-photo', [MahasiswaController::class, 'updatePhoto'])->name('updatePhoto');
+
+    // Riwayat Pengajuan Lomba
+    Route::prefix('riwayatPengajuanLomba')->name('riwayatPengajuanLomba.')->group(function () {
+        Route::get('/', [MahasiswaController::class, 'riwayatPengajuanLombaIndex'])->name('index');
+        Route::get('/list', [MahasiswaController::class, 'riwayatPengajuanLombaList'])->name('list');
+        Route::get('/show/{id}', [MahasiswaController::class, 'riwayatPengajuanLombaShow'])->name('show');
+    });
 });
 
 // Achievement Verification Process - Outside mahasiswa prefix

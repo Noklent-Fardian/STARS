@@ -184,7 +184,15 @@
                 <span>Bimbingan</span>
             </a>
         </li>
+      <hr class="sidebar-divider">
 
+        <div class="sidebar-heading">Riwayat</div>
+        <li class="nav-item {{ request()->routeIs('dosen.riwayatPengajuanLomba.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('dosen.riwayatPengajuanLomba.index') }}">
+            <i class="nav-icon fas fa-history"></i>
+            <span>Riwayat Pengajuan Lomba</span>
+            </a>
+        </li>
         <hr class="sidebar-divider">
 
         <div class="sidebar-heading">Pengaturan</div>
@@ -241,6 +249,12 @@
             <a class="nav-link" href="{{ route('mahasiswa.prestasi.index') }}">
                 <i class="nav-icon fas fa-plus-circle"></i>
                 <span>Pencatatan Prestasi</span>
+            </a>
+        </li>
+        <li class="nav-item {{ request()->routeIs('mahasiswa.riwayatPengajuanLomba.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('mahasiswa.riwayatPengajuanLomba.index') }}">
+                <i class="nav-icon fas fa-history"></i>
+                <span>Riwayat Pengajuan Lomba</span>
             </a>
         </li>
         <hr class="sidebar-divider">

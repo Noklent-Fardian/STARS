@@ -11,6 +11,8 @@ use App\Models\User;
 use App\Models\Keahlian;
 use App\Models\Prodi;
 use App\Models\Lomba;
+use App\Models\CompetitionSubmission;
+use Yajra\DataTables\Facades\DataTables;
 
 class MahasiswaController extends Controller
 {
@@ -258,5 +260,62 @@ class MahasiswaController extends Controller
             ->findOrFail($id);
 
         return view('mahasiswa.lomba.show', compact('lomba'));
+    }
+
+    public function riwayatPengajuanLombaIndex()
+    {
+        return view('mahasiswa.riwayatPengajuanLomba.index');
+    }
+
+    public function riwayatPengajuanLombaList(Request $request)
+    {
+        $mahasiswa = Auth::user()->mahasiswa;
+        
+        $submissions = CompetitionSubmission::with(['lomba.tingkatan', 'lomba.keahlians'])
+            ->where('mahasiswa_id', $mahasiswa->id)
+            ->select('*');
+
+        if ($request->status && $request->status != '') {
+            $submissions->where('pendaftaran_status', $request->status);
+        }
+
+        return DataTables::of($submissions)
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($row) {
+                return '<a href="' . route('mahasiswa.riwayatPengajuanLomba.show', $row->id) . '" 
+                           class="btn btn-info btn-sm" 
+                           title="Lihat Detail">
+                            <i class="fas fa-eye"> Detail</i>
+                        </a>';
+            })
+            ->editColumn('pendaftaran_status', function ($row) {
+                if ($row->pendaftaran_status === 'Menunggu') {
+                    return '<span class="badge badge-warning"><i class="fas fa-clock mr-1"></i> Menunggu</span>';
+                } elseif ($row->pendaftaran_status === 'Diterima') {
+                    return '<span class="badge badge-success"><i class="fas fa-check mr-1"></i> Diterima</span>';
+                } else {
+                    return '<span class="badge badge-danger"><i class="fas fa-times mr-1"></i> Ditolak</span>';
+                }
+            })
+            ->with([
+                'statistics' => [
+                    'pending' => CompetitionSubmission::where('mahasiswa_id', $mahasiswa->id)->where('pendaftaran_status', 'Menunggu')->count(),
+                    'approved' => CompetitionSubmission::where('mahasiswa_id', $mahasiswa->id)->where('pendaftaran_status', 'Diterima')->count(),
+                    'rejected' => CompetitionSubmission::where('mahasiswa_id', $mahasiswa->id)->where('pendaftaran_status', 'Ditolak')->count(),
+                    'total' => CompetitionSubmission::where('mahasiswa_id', $mahasiswa->id)->count(),
+                ]
+            ])
+            ->rawColumns(['aksi', 'pendaftaran_status'])
+            ->make(true);
+    }
+
+    public function riwayatPengajuanLombaShow($id)
+    {
+        $mahasiswa = Auth::user()->mahasiswa;
+        $submission = CompetitionSubmission::with(['lomba.tingkatan', 'lomba.keahlians', 'lomba.semester'])
+            ->where('mahasiswa_id', $mahasiswa->id)
+            ->findOrFail($id);
+
+        return view('mahasiswa.riwayatPengajuanLomba.show', compact('submission'));
     }
 }
