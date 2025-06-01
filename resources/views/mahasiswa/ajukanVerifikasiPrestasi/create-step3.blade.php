@@ -139,7 +139,7 @@
                             <div class="action-buttons mt-5">
                                 <div class="row justify-content-center">
                                     <div class="col-md-6 mb-3">
-                                        <a href="{{ route('mahasiswa.prestasi.index') }}" class="btn btn-primary btn-lg btn-block btn-custom">
+                                        <a href="{{ route('mahasiswa.riwayatPengajuanPrestasi.index') }}" class="btn btn-primary btn-lg btn-block btn-custom">
                                             <i class="fas fa-list-alt mr-2"></i>
                                             <span>Lihat Status Prestasi</span>
                                         </a>

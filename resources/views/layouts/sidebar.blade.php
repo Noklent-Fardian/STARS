@@ -1,5 +1,5 @@
 <!-- Sidebar -->
-<ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+<ul class="navbar-nav sidebar sidebar-light accordion " id="accordionSidebar">
     @if (Auth::user()->admin)
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}">
             <div class="sidebar-brand-icon">
@@ -237,7 +237,7 @@
 
         <li class="nav-item {{ request()->routeIs('student.achievement.*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('student.achievement.create') }}">
-                <i class="nav-icon fas fa-certificate"></i>
+                <i class="nav-icon fas fa-plus-circle"></i>
                 <span>Ajukan Verifikasi Prestasi</span>
             </a>
         </li>
@@ -245,10 +245,10 @@
         <hr class="sidebar-divider">
 
         <div class="sidebar-heading">Riwayat</div>
-        <li class="nav-item {{ request()->routeIs('mahasiswa.prestasi.*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('mahasiswa.prestasi.index') }}">
-                <i class="nav-icon fas fa-plus-circle"></i>
-                <span>Pencatatan Prestasi</span>
+        <li class="nav-item {{ request()->routeIs('mahasiswa.riwayatPengajuanPrestasi.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('mahasiswa.riwayatPengajuanPrestasi.index') }}">
+                <i class="nav-icon fas fa-trophy"></i>
+                <span>Riwayat Verifikasi Prestasi</span>
             </a>
         </li>
         <li class="nav-item {{ request()->routeIs('mahasiswa.riwayatPengajuanLomba.*') ? 'active' : '' }}">

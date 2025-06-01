@@ -12,6 +12,8 @@ use App\Models\Keahlian;
 use App\Models\Prodi;
 use App\Models\Lomba;
 use App\Models\CompetitionSubmission;
+use App\Models\Verifikasi;
+use App\Models\Penghargaan;
 use Yajra\DataTables\Facades\DataTables;
 
 class MahasiswaController extends Controller
@@ -317,5 +319,110 @@ class MahasiswaController extends Controller
             ->findOrFail($id);
 
         return view('mahasiswa.riwayatPengajuanLomba.show', compact('submission'));
+    }
+
+    public function riwayatPengajuanPrestasiIndex()
+    {
+        return view('mahasiswa.riwayatPengajuanPrestasi.index');
+    }
+
+    public function riwayatPengajuanPrestasiList(Request $request)
+    {
+        $mahasiswa = Auth::user()->mahasiswa;
+        
+        $verifikasis = Verifikasi::with(['penghargaan.lomba.tingkatan', 'penghargaan.peringkat', 'dosen', 'admin'])
+            ->where('mahasiswa_id', $mahasiswa->id)
+            ->select('*');
+
+        if ($request->status && $request->status != '') {
+            if ($request->status === 'Menunggu') {
+                $verifikasis->where(function($query) {
+                    $query->where('verifikasi_admin_status', 'Menunggu')
+                          ->orWhere('verifikasi_dosen_status', 'Menunggu');
+                });
+            } elseif ($request->status === 'Diterima') {
+                $verifikasis->where('verifikasi_admin_status', 'Diterima')
+                           ->where('verifikasi_dosen_status', 'Diterima');
+            } elseif ($request->status === 'Ditolak') {
+                $verifikasis->where(function($query) {
+                    $query->where('verifikasi_admin_status', 'Ditolak')
+                          ->orWhere('verifikasi_dosen_status', 'Ditolak');
+                });
+            }
+        }
+
+        return DataTables::of($verifikasis)
+            ->addIndexColumn()
+            ->addColumn('prestasi_nama', function ($row) {
+                return $row->penghargaan->penghargaan_judul ?? 'N/A';
+            })
+            ->addColumn('lomba_nama', function ($row) {
+                return $row->penghargaan->lomba->lomba_nama ?? 'N/A';
+            })
+            ->addColumn('peringkat', function ($row) {
+                return $row->penghargaan->peringkat->peringkat_nama ?? 'N/A';
+            })
+            ->addColumn('tingkatan', function ($row) {
+                return $row->penghargaan->lomba->tingkatan->tingkatan_nama ?? 'N/A';
+            })
+            ->addColumn('status_verifikasi', function ($row) {
+                $adminStatus = $row->verifikasi_admin_status;
+                $dosenStatus = $row->verifikasi_dosen_status;
+                
+                if ($adminStatus === 'Ditolak' || $dosenStatus === 'Ditolak') {
+                    return '<span class="badge badge-danger"><i class="fas fa-times mr-1"></i> Ditolak</span>';
+                } elseif ($adminStatus === 'Diterima' && $dosenStatus === 'Diterima') {
+                    return '<span class="badge badge-success"><i class="fas fa-check mr-1"></i> Diterima</span>';
+                } else {
+                    return '<span class="badge badge-warning"><i class="fas fa-clock mr-1"></i> Menunggu</span>';
+                }
+            })
+            ->addColumn('prestasi_score', function ($row) {
+                return $row->penghargaan->penghargaan_score ?? 0;
+            })
+            ->addColumn('aksi', function ($row) {
+                return '<a href="' . route('mahasiswa.riwayatPengajuanPrestasi.show', $row->id) . '" 
+                           class="btn btn-info btn-sm" 
+                           title="Lihat Detail">
+                            <i class="fas fa-eye"> Detail</i>
+                        </a>';
+            })
+            ->with([
+                'statistics' => [
+                    'pending' => Verifikasi::where('mahasiswa_id', $mahasiswa->id)
+                        ->where(function($query) {
+                            $query->where('verifikasi_admin_status', 'Menunggu')
+                                  ->orWhere('verifikasi_dosen_status', 'Menunggu');
+                        })->count(),
+                    'approved' => Verifikasi::where('mahasiswa_id', $mahasiswa->id)
+                        ->where('verifikasi_admin_status', 'Diterima')
+                        ->where('verifikasi_dosen_status', 'Diterima')->count(),
+                    'rejected' => Verifikasi::where('mahasiswa_id', $mahasiswa->id)
+                        ->where(function($query) {
+                            $query->where('verifikasi_admin_status', 'Ditolak')
+                                  ->orWhere('verifikasi_dosen_status', 'Ditolak');
+                        })->count(),
+                    'total' => Verifikasi::where('mahasiswa_id', $mahasiswa->id)->count(),
+                ]
+            ])
+            ->rawColumns(['aksi', 'status_verifikasi'])
+            ->make(true);
+    }
+
+    public function riwayatPengajuanPrestasiShow($id)
+    {
+        $mahasiswa = Auth::user()->mahasiswa;
+        $verifikasi = Verifikasi::with([
+            'penghargaan.lomba.tingkatan', 
+            'penghargaan.lomba.keahlians', 
+            'penghargaan.lomba.semester',
+            'penghargaan.peringkat',
+            'dosen',
+            'admin'
+        ])
+        ->where('mahasiswa_id', $mahasiswa->id)
+        ->findOrFail($id);
+
+        return view('mahasiswa.riwayatPengajuanPrestasi.show', compact('verifikasi'));
     }
 }

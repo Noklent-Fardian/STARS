@@ -375,15 +375,6 @@ Route::middleware(['auth', 'role:Mahasiswa'])->prefix('mahasiswa')->name('mahasi
         Route::post('/ajax', [LombaController::class, 'storeAjax'])->name('storeAjax');
     });
 
-    // Manajemen Prestasi
-    Route::prefix('prestasi')->name('prestasi.')->group(function () {
-        Route::get('/', [MahasiswaController::class, 'index'])->name('index');
-        Route::get('/list', [MahasiswaController::class, 'prestasiListAjax'])->name('list');
-        Route::get('/create_ajax', [MahasiswaController::class, 'prestasiCreateAjax'])->name('createAjax');
-        Route::post('/ajax', [MahasiswaController::class, 'prestasiStoreAjax'])->name('storeAjax');
-        Route::get('/show_ajax/{id}', [MahasiswaController::class, 'prestasiShowAjax'])->name('showAjax');
-    });
-
     // Profil Mahasiswa
     Route::get('/profile', [MahasiswaController::class, 'profile'])->name('profile');
     Route::get('/profile/edit', [MahasiswaController::class, 'editProfile'])->name('editProfile');
@@ -397,6 +388,13 @@ Route::middleware(['auth', 'role:Mahasiswa'])->prefix('mahasiswa')->name('mahasi
         Route::get('/', [MahasiswaController::class, 'riwayatPengajuanLombaIndex'])->name('index');
         Route::get('/list', [MahasiswaController::class, 'riwayatPengajuanLombaList'])->name('list');
         Route::get('/show/{id}', [MahasiswaController::class, 'riwayatPengajuanLombaShow'])->name('show');
+    });
+
+    // Riwayat Pengajuan Prestasi
+    Route::prefix('riwayatPengajuanPrestasi')->name('riwayatPengajuanPrestasi.')->group(function () {
+        Route::get('/', [MahasiswaController::class, 'riwayatPengajuanPrestasiIndex'])->name('index');
+        Route::get('/list', [MahasiswaController::class, 'riwayatPengajuanPrestasiList'])->name('list');
+        Route::get('/show/{id}', [MahasiswaController::class, 'riwayatPengajuanPrestasiShow'])->name('show');
     });
 });
 
