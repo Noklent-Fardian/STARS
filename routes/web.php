@@ -19,6 +19,7 @@ use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\TingkatanController;
+use App\Http\Controllers\PrestasiVerificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -317,6 +318,14 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::get('/banner/{id}/edit', [SystemController::class, 'editBannerModal'])->name('editBannerModal');
         Route::get('/banner/{id}/confirm', [SystemController::class, 'confirmDeleteBannerModal'])->name('confirmDeleteBannerModal');
     });
+
+    // Verifikasi Prestasi
+    Route::prefix('prestasiVerification')->name('admin.prestasiVerification.')->group(function () {
+        Route::get('/', [PrestasiVerificationController::class, 'adminIndex'])->name('index');
+        Route::get('/list', [PrestasiVerificationController::class, 'adminList'])->name('list');
+        Route::get('/show/{id}', [PrestasiVerificationController::class, 'adminShow'])->name('show');
+        Route::post('/{id}/verify', [PrestasiVerificationController::class, 'adminVerify'])->name('verify');
+    });
 });
 
 // Dosen routes
@@ -348,6 +357,14 @@ Route::middleware(['auth', 'role:Dosen'])->prefix('dosen')->name('dosen.')->grou
         Route::get('/', [DosenController::class, 'riwayatPengajuanLombaIndex'])->name('index');
         Route::get('/list', [DosenController::class, 'riwayatPengajuanLombaList'])->name('list');
         Route::get('/show/{id}', [DosenController::class, 'riwayatPengajuanLombaShow'])->name('show');
+    });
+
+    // Verifikasi Prestasi
+    Route::prefix('prestasiVerification')->name('prestasiVerification.')->group(function () {
+        Route::get('/', [PrestasiVerificationController::class, 'dosenIndex'])->name('index');
+        Route::get('/list', [PrestasiVerificationController::class, 'dosenList'])->name('list');
+        Route::get('/show/{id}', [PrestasiVerificationController::class, 'dosenShow'])->name('show');
+        Route::post('/{id}/verify', [PrestasiVerificationController::class, 'dosenVerify'])->name('verify');
     });
 });
 
