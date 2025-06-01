@@ -6,12 +6,14 @@ use App\Models\Dosen;
 use App\Models\Keahlian;
 use App\Models\KeahlianDosen;
 use App\Models\Prodi;
+use App\Models\CompetitionSubmission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\Facades\DataTables;
 
 class DosenController extends Controller
 {
@@ -131,5 +133,62 @@ class DosenController extends Controller
         }
 
         return redirect()->back()->with('success', 'Foto profil berhasil diubah.');
+    }
+
+    public function riwayatPengajuanLombaIndex()
+    {
+        return view('dosbim.riwayatPengajuanLomba.index');
+    }
+
+    public function riwayatPengajuanLombaList(Request $request)
+    {
+        $dosen = Auth::user()->dosen;
+
+        $submissions = CompetitionSubmission::with(['lomba.tingkatan', 'lomba.keahlians'])
+            ->where('dosen_id', $dosen->id)
+            ->select('*');
+
+        if ($request->status && $request->status != '') {
+            $submissions->where('pendaftaran_status', $request->status);
+        }
+
+        return DataTables::of($submissions)
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($row) {
+                return '<a href="' . route('dosen.riwayatPengajuanLomba.show', $row->id) . '" 
+                           class="btn btn-info btn-sm" 
+                           title="Lihat Detail">
+                            <i class="fas fa-eye">Detail</i>
+                        </a>';
+            })
+            ->editColumn('pendaftaran_status', function ($row) {
+                if ($row->pendaftaran_status === 'Menunggu') {
+                    return '<span class="badge badge-warning"><i class="fas fa-clock mr-1"></i> Menunggu</span>';
+                } elseif ($row->pendaftaran_status === 'Diterima') {
+                    return '<span class="badge badge-success"><i class="fas fa-check mr-1"></i> Diterima</span>';
+                } else {
+                    return '<span class="badge badge-danger"><i class="fas fa-times mr-1"></i> Ditolak</span>';
+                }
+            })
+            ->with([
+                'statistics' => [
+                    'pending' => CompetitionSubmission::where('dosen_id', $dosen->id)->where('pendaftaran_status', 'Menunggu')->count(),
+                    'approved' => CompetitionSubmission::where('dosen_id', $dosen->id)->where('pendaftaran_status', 'Diterima')->count(),
+                    'rejected' => CompetitionSubmission::where('dosen_id', $dosen->id)->where('pendaftaran_status', 'Ditolak')->count(),
+                    'total' => CompetitionSubmission::where('dosen_id', $dosen->id)->count(),
+                ]
+            ])
+            ->rawColumns(['aksi', 'pendaftaran_status'])
+            ->make(true);
+    }
+
+    public function riwayatPengajuanLombaShow($id)
+    {
+        $dosen = Auth::user()->dosen;
+        $submission = CompetitionSubmission::with(['lomba.tingkatan', 'lomba.keahlians', 'lomba.semester'])
+            ->where('dosen_id', $dosen->id)
+            ->findOrFail($id);
+
+        return view('dosbim.riwayatPengajuanLomba.show', compact('submission'));
     }
 }
