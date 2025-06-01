@@ -88,12 +88,26 @@
                         <div class="filter-content" id="filterContent">
                             <div class="row align-items-end">
                                 <div class="col-lg-3 col-md-6 mb-3">
-                                    <label class="filter-label">Status Verifikasi</label>
+                                    <label class="filter-label">Status Verifikasi Dosen</label>
                                     <div class="filter-input-group">
                                         <div class="filter-input-icon">
-                                            <i class="fas fa-check-circle"></i>
+                                            <i class="fas fa-user-tie"></i>
                                         </div>
-                                        <select class="form-control filter-select" id="statusFilter">
+                                        <select class="form-control filter-select" id="statusDosenFilter">
+                                            <option value="">Semua Status</option>
+                                            <option value="Menunggu">Menunggu Verifikasi</option>
+                                            <option value="Diterima">Diterima</option>
+                                            <option value="Ditolak">Ditolak</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6 mb-3">
+                                    <label class="filter-label">Status Verifikasi Admin</label>
+                                    <div class="filter-input-group">
+                                        <div class="filter-input-icon">
+                                            <i class="fas fa-user-shield"></i>
+                                        </div>
+                                        <select class="form-control filter-select" id="statusAdminFilter">
                                             <option value="">Semua Status</option>
                                             <option value="Menunggu">Menunggu Verifikasi</option>
                                             <option value="Diterima">Diterima</option>
@@ -122,12 +136,13 @@
                     <thead>
                         <tr>
                             <th width="8%">ID</th>
-                            <th width="25%">Prestasi</th>
-                            <th width="20%">Lomba</th>
+                            <th width="20%">Prestasi</th>
+                            <th width="15%">Lomba</th>
                             <th width="10%">Peringkat</th>
                             <th width="10%">Tingkatan</th>
                             <th width="8%">Score</th>
-                            <th width="12%">Status</th>
+                            <th width="12%">Status Verifikasi Dosen</th>
+                            <th width="12%">Status Verifikasi Admin</th>
                             <th width="7%" class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -421,17 +436,19 @@
                     dataType: "json",
                     type: "GET",
                     data: function (d) {
-                        d.status = $('#statusFilter').val();
+                        d.status_dosen = $('#statusDosenFilter').val();
+                        d.status_admin = $('#statusAdminFilter').val();
                     }
                 },
                 columns: [
                     { data: "id", className: "text-center", width: "8%", orderable: true },
-                    { data: "prestasi_nama", width: "25%", orderable: true },
-                    { data: "lomba_nama", width: "20%", orderable: true },
+                    { data: "prestasi_nama", width: "20%", orderable: true },
+                    { data: "lomba_nama", width: "15%", orderable: true },
                     { data: "peringkat", width: "10%", orderable: true },
                     { data: "tingkatan", width: "10%", orderable: true },
                     { data: "prestasi_score", className: "text-center", width: "8%", orderable: true },
-                    { data: "status_verifikasi", width: "12%", orderable: true },
+                    { data: "status_verifikasi_dosen", width: "12%", orderable: true },
+                    { data: "status_verifikasi_admin", width: "12%", orderable: true },
                     { data: "aksi", className: "text-center", width: "7%", orderable: false, searchable: false }
                 ],
                 pageLength: 10,
@@ -466,7 +483,7 @@
                 dataRiwayatPrestasi.search(this.value).draw();
             });
 
-            $('#statusFilter').on('change', function () {
+            $('#statusDosenFilter, #statusAdminFilter').on('change', function () {
                 dataRiwayatPrestasi.ajax.reload();
             });
 

@@ -334,21 +334,14 @@ class MahasiswaController extends Controller
             ->where('mahasiswa_id', $mahasiswa->id)
             ->select('*');
 
-        if ($request->status && $request->status != '') {
-            if ($request->status === 'Menunggu') {
-                $verifikasis->where(function($query) {
-                    $query->where('verifikasi_admin_status', 'Menunggu')
-                          ->orWhere('verifikasi_dosen_status', 'Menunggu');
-                });
-            } elseif ($request->status === 'Diterima') {
-                $verifikasis->where('verifikasi_admin_status', 'Diterima')
-                           ->where('verifikasi_dosen_status', 'Diterima');
-            } elseif ($request->status === 'Ditolak') {
-                $verifikasis->where(function($query) {
-                    $query->where('verifikasi_admin_status', 'Ditolak')
-                          ->orWhere('verifikasi_dosen_status', 'Ditolak');
-                });
-            }
+        // Filter by dosen verification status
+        if ($request->status_dosen && $request->status_dosen != '') {
+            $verifikasis->where('verifikasi_dosen_status', $request->status_dosen);
+        }
+
+        // Filter by admin verification status
+        if ($request->status_admin && $request->status_admin != '') {
+            $verifikasis->where('verifikasi_admin_status', $request->status_admin);
         }
 
         return DataTables::of($verifikasis)
@@ -365,13 +358,23 @@ class MahasiswaController extends Controller
             ->addColumn('tingkatan', function ($row) {
                 return $row->penghargaan->lomba->tingkatan->tingkatan_nama ?? 'N/A';
             })
-            ->addColumn('status_verifikasi', function ($row) {
-                $adminStatus = $row->verifikasi_admin_status;
+            ->addColumn('status_verifikasi_dosen', function ($row) {
                 $dosenStatus = $row->verifikasi_dosen_status;
                 
-                if ($adminStatus === 'Ditolak' || $dosenStatus === 'Ditolak') {
+                if ($dosenStatus === 'Ditolak') {
                     return '<span class="badge badge-danger"><i class="fas fa-times mr-1"></i> Ditolak</span>';
-                } elseif ($adminStatus === 'Diterima' && $dosenStatus === 'Diterima') {
+                } elseif ($dosenStatus === 'Diterima') {
+                    return '<span class="badge badge-success"><i class="fas fa-check mr-1"></i> Diterima</span>';
+                } else {
+                    return '<span class="badge badge-warning"><i class="fas fa-clock mr-1"></i> Menunggu</span>';
+                }
+            })
+            ->addColumn('status_verifikasi_admin', function ($row) {
+                $adminStatus = $row->verifikasi_admin_status;
+                
+                if ($adminStatus === 'Ditolak') {
+                    return '<span class="badge badge-danger"><i class="fas fa-times mr-1"></i> Ditolak</span>';
+                } elseif ($adminStatus === 'Diterima') {
                     return '<span class="badge badge-success"><i class="fas fa-check mr-1"></i> Diterima</span>';
                 } else {
                     return '<span class="badge badge-warning"><i class="fas fa-clock mr-1"></i> Menunggu</span>';
@@ -405,7 +408,7 @@ class MahasiswaController extends Controller
                     'total' => Verifikasi::where('mahasiswa_id', $mahasiswa->id)->count(),
                 ]
             ])
-            ->rawColumns(['aksi', 'status_verifikasi'])
+            ->rawColumns(['aksi', 'status_verifikasi_dosen', 'status_verifikasi_admin'])
             ->make(true);
     }
 
