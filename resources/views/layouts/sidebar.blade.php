@@ -47,8 +47,8 @@
         <!-- Manajemen Prestasi -->
         <div class="sidebar-heading">Manajemen Prestasi</div>
 
-        <li class="nav-item {{ request()->routeIs('admin.prestasi.verification') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('admin.prestasi.verification') }}">
+        <li class="nav-item {{ request()->routeIs('admin.prestasiVerification.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.prestasiVerification.index') }}">
                 <i class="fas fa-fw fa-check-circle"></i>
                 <span>Verifikasi Prestasi</span>
             </a>
@@ -184,13 +184,23 @@
                 <span>Bimbingan</span>
             </a>
         </li>
-      <hr class="sidebar-divider">
 
+        <hr class="sidebar-divider">
+        <!-- Manajemen Prestasi -->
+        <div class="sidebar-heading">Manajemen Prestasi</div>
+
+        <li class="nav-item {{ request()->routeIs('dosen.prestasiVerification.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('dosen.prestasiVerification.index') }}">
+                <i class="fas fa-fw fa-check-circle"></i>
+                <span>Verifikasi Prestasi</span>
+            </a>
+        </li>
+        <hr class="sidebar-divider">
         <div class="sidebar-heading">Riwayat</div>
         <li class="nav-item {{ request()->routeIs('dosen.riwayatPengajuanLomba.*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('dosen.riwayatPengajuanLomba.index') }}">
-            <i class="nav-icon fas fa-history"></i>
-            <span>Riwayat Pengajuan Lomba</span>
+                <i class="nav-icon fas fa-history"></i>
+                <span>Riwayat Pengajuan Lomba</span>
             </a>
         </li>
         <hr class="sidebar-divider">
