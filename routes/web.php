@@ -21,6 +21,9 @@ use App\Http\Controllers\SystemController;
 use App\Http\Controllers\TingkatanController;
 use App\Http\Controllers\PrestasiVerificationController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RekomendasiController;
+use App\Http\Controllers\BobotController;
+use App\Http\Controllers\MahasiswaNotifikasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -111,6 +114,26 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::get('/prestasi/non-akademik', [AdminController::class, 'prestasiNonAkademik'])->name('admin.prestasi.non-akademik');
     Route::get('/prestasi', [AdminController::class, 'prestasiIndex'])->name('admin.prestasi.index');
     Route::get('/prestasi/report', [AdminController::class, 'prestasiReport'])->name('admin.prestasi.report');
+
+    // Admin Kelola Bobot
+    Route::prefix('kelolaBobot')->name('admin.kelolaBobot.')->group(function (){
+        Route::get('/', [BobotController::class, 'index'])->name('index');
+        Route::put('/update', [BobotController::class, 'update'])->name('update');
+    });
+
+    // Admin Kelola Rekomendasi Topsis
+    Route::prefix('rekomendasiTopsis')->name('admin.rekomendasiTopsis.')->group(function (){
+        Route::get('/', [RekomendasiController::class, 'index'])->name('index');
+        Route::post('/generate', [RekomendasiController::class, 'generateRekomendasi'])->name('generate');
+        Route::post('/kirim-rekomendasi', [RekomendasiController::class, 'kirimRekomendasi'])->name('kirimRekomendasi');
+    });
+
+    // Admin Kelola Rekomendasi Saw
+    Route::prefix('admin/rekomendasiSaw')->name('admin.rekomendasiSaw.')->middleware(['auth', 'role:Admin'])->group(function () {
+        Route::get('/', [RekomendasiController::class, 'indexSaw'])->name('index');
+        Route::post('/generate', [RekomendasiController::class, 'generateRekomendasiSaw'])->name('generate');
+        Route::post('/kirim-rekomendasi', [RekomendasiController::class, 'kirimRekomendasiSaw'])->name('kirimRekomendasi');
+    });
 
     // Admin Kelola Prestasi
     Route::prefix('adminKelolaPrestasi')->name('admin.adminKelolaPrestasi.')->group(function () {
@@ -392,6 +415,43 @@ Route::middleware(['auth', 'role:Mahasiswa'])->prefix('mahasiswa')->name('mahasi
         Route::post('/ajax', [LombaController::class, 'storeAjax'])->name('storeAjax');
     });
 
+    // Manajemen Prestasi
+    Route::prefix('prestasi')->name('prestasi.')->group(function () {
+        Route::get('/', [MahasiswaController::class, 'index'])->name('index');
+        Route::get('/list', [MahasiswaController::class, 'prestasiListAjax'])->name('list');
+        Route::get('/create_ajax', [MahasiswaController::class, 'prestasiCreateAjax'])->name('createAjax');
+        Route::post('/ajax', [MahasiswaController::class, 'prestasiStoreAjax'])->name('storeAjax');
+        Route::get('/show_ajax/{id}', [MahasiswaController::class, 'prestasiShowAjax'])->name('showAjax');
+    });
+
+    // Notifikasi Mahasiswa
+    Route::prefix('notifikasi')->name('notifikasi.')->group(function (){
+        Route::get('/', [MahasiswaNotifikasiController::class, 'index'])->name('index'); // Tampilkan semua notifikasi
+        Route::get('/{index}', [MahasiswaNotifikasiController::class, 'show'])->name('show'); // Lihat detail notifikasi
+        Route::post('/read/{index}', [MahasiswaNotifikasiController::class, 'markAsRead'])->name('read'); // Tandai satu notifikasi dibaca
+        Route::post('/read-all', [MahasiswaNotifikasiController::class, 'markAllAsRead'])->name('read_all'); // Tandai semua notifikasi dibaca
+        Route::get('/unread-count', [MahasiswaNotifikasiController::class, 'getUnreadCount'])->name('unread_count'); // Ambil jumlah belum dibaca
+        // Opsional: Simulasi notifikasi dummy (untuk testing)
+        Route::get('/simulate', [MahasiswaNotifikasiController::class, 'simulateNotifikasi'])->name('simulate');
+    });
+
+    // Profil Mahasiswa
+    Route::get('/profile', [MahasiswaController::class, 'profile'])->name('profile');
+        Route::get('/profile/edit', [MahasiswaController::class, 'editProfile'])->name('editProfile');
+        Route::put('/profile/update', [MahasiswaController::class, 'updateProfile'])->name('updateProfile');
+        Route::put('/profile/update-password', [MahasiswaController::class, 'updatePassword'])->name('updatePassword');
+        Route::post('/profile/change-password', [MahasiswaController::class, 'changePassword'])->name('changePassword');
+        Route::post('/profile/update-photo', [MahasiswaController::class, 'updatePhoto'])->name('updatePhoto');
+    });
+
+    // Achievement Verification Process - Outside mahasiswa prefix
+    Route::middleware(['auth', 'role:Mahasiswa'])->prefix('student/achievement')->name('student.achievement.')->group(function () {
+        Route::get('/create', [CompetitionSubmissionController::class, 'create'])->name('create');
+        Route::post('/select-competition', [CompetitionSubmissionController::class, 'selectCompetition'])->name('select-competition');
+        Route::post('/store', [CompetitionSubmissionController::class, 'store'])->name('store');
+        Route::post('/finalize', [CompetitionSubmissionController::class, 'finalizeSubmission'])->name('finalize');
+        Route::get('/step3', [CompetitionSubmissionController::class, 'step3'])->name('step3');
+    });
     // Profil Mahasiswa
     Route::get('/profile', [MahasiswaController::class, 'profile'])->name('profile');
     Route::get('/profile/edit', [MahasiswaController::class, 'editProfile'])->name('editProfile');
@@ -428,7 +488,7 @@ Route::middleware(['auth', 'role:Mahasiswa'])->prefix('student/achievement')->na
     Route::get('/keahlian-suggestions', [CompetitionSubmissionController::class, 'getKeahlianSuggestions'])->name('keahlian-suggestions');
 });
 
-// Fallback for unauthorized access
-Route::fallback(function () {
-    return redirect('/login');
-});
+    // Fallback for unauthorized access
+    Route::fallback(function () {
+        return redirect('/login');
+    });

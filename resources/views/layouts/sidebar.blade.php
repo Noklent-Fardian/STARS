@@ -20,6 +20,30 @@
 
         <hr class="sidebar-divider">
 
+        <!-- Manajemen Rekomendasi -->
+        <div class="sidebar-heading">Manajemen Rekomendasi</div>
+
+        <li class="nav-item {{ request()->routeIs('admin.kelolaBobot.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.kelolaBobot.index') }}">
+                <i class="fas fa-fw fa-thumbs-up"></i>
+                <span>Kelola Bobot</span>
+            </a>
+        </li>
+        <li class="nav-item {{ request()->routeIs('admin.rekomendasiTopsis.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.rekomendasiTopsis.index') }}">
+                <i class="fas fa-fw fa-calculator"></i>
+                <span>Rekomendasi TOPSIS</span>
+            </a>
+        </li>
+        <li class="nav-item {{ request()->routeIs('admin.rekomendasiSaw.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.rekomendasiSaw.index') }}">
+                <i class="fas fa-fw fa-calculator"></i>
+                <span>Rekomendasi SAW</span>
+            </a>
+        </li>
+
+        <hr class="sidebar-divider">`
+
         <!-- Manajemen Pengguna -->
         <div class="sidebar-heading">Manajemen Pengguna</div>
 
@@ -45,6 +69,7 @@
         <hr class="sidebar-divider">
 
         <!-- Manajemen Prestasi -->
+         
         <div class="sidebar-heading">Manajemen Prestasi</div>
 
         <li class="nav-item {{ request()->routeIs('admin.prestasiVerification.*') ? 'active' : '' }}">
@@ -254,7 +279,19 @@
 
         <hr class="sidebar-divider">
 
+        <div class="sidebar-heading">Notifikasi</div>
+
+        <li class="nav-item {{ request()->routeIs('mahasiswa.notifikasi.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('mahasiswa.notifikasi.index') }}">
+                <i class="nav-icon fas fa-plus-circle"></i>
+                <span>Notifikasi Mahasiswa</span>
+            </a>
+        </li>
+
+        <hr class="sidebar-divider">
+
         <div class="sidebar-heading">Riwayat</div>
+
         <li class="nav-item {{ request()->routeIs('mahasiswa.riwayatPengajuanPrestasi.*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('mahasiswa.riwayatPengajuanPrestasi.index') }}">
                 <i class="nav-icon fas fa-trophy"></i>
