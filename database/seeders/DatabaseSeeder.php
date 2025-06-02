@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Bobot;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -34,6 +36,7 @@ class DatabaseSeeder extends Seeder
             PdfSettingSeeder::class,
             BannerSeeder::class,
             MovePublicFilesSeeder::class,
+            BobotSeeder::class,
         ]);
     }
 }
