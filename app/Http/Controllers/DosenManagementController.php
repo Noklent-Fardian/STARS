@@ -92,10 +92,10 @@ class DosenManagementController extends Controller
             })
             ->editColumn('dosen_status', function ($dosen) {
                 $statuses = [
-                    'Aktif'   => 'success',
-                    'Cuti'    => 'warning',
-                    'Resign'  => 'danger',
-                    'Pensiun' => 'secondary',
+                    'Aktif'       => 'success',
+                    'Tidak Aktif' => 'danger',
+                    'Cuti'        => 'warning',
+                    'Studi'       => 'primary',
                 ];
                 $color = $statuses[$dosen->dosen_status] ?? 'info';
                 return '<span class="badge badge-' . $color . '">' . $dosen->dosen_status . '</span>';
@@ -224,7 +224,7 @@ class DosenManagementController extends Controller
                 'max:255',
                 Rule::unique('m_dosens')->ignore($dosen->id),
             ],
-            'dosen_status'        => 'required|in:Aktif,Tidak Aktif,Cuti,Pensiun',
+            'dosen_status'        => 'required|in:Aktif,Tidak Aktif,Cuti,Studi',
             'dosen_gender'        => 'required|in:Laki-laki,Perempuan',
             'dosen_nomor_telepon' => 'required|string|max:15',
             'dosen_agama'         => 'nullable|string|max:255',
@@ -568,8 +568,8 @@ class DosenManagementController extends Controller
                 }
 
                 // Validate status
-                if (! empty($rowData['E']) && ! in_array($rowData['E'], ['Aktif', 'Cuti', 'Resign', 'Pensiun'])) {
-                    $errors[] = "Baris $row: Status harus salah satu dari: Aktif, Cuti, Resign, Pensiun";
+                if (! empty($rowData['E']) && ! in_array($rowData['E'], ['Aktif', 'Cuti', 'Tidak Aktif', 'Studi'])) {
+                    $errors[] = "Baris $row: Status harus salah satu dari: Aktif, Cuti, Tidak Aktif, Studi";
                     continue;
                 }
 

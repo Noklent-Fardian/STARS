@@ -105,9 +105,8 @@ class CompetitionSubmissionController extends Controller
         // It creates records in the pivot table linking lomba_id to keahlian_id
         $lomba->keahlians()->attach($keahlianIds);
 
-        // Create competition submission record
-        $competitionSubmission = CompetitionSubmission::create([
-            'mahasiswa_id' => Auth::user()->mahasiswa->id,
+        // Determine user role and set appropriate ID
+        $competitionSubmissionData = [
             'lomba_id' => $lomba->id,
             'lomba_nama' => $request->lomba_nama,
             'lomba_penyelenggara' => $request->lomba_penyelenggara,
@@ -121,15 +120,33 @@ class CompetitionSubmissionController extends Controller
             'lomba_keahlian_ids' => $keahlianIds,
             'pendaftaran_status' => 'Menunggu',
             'pendaftaran_visible' => true
-        ]);
+        ];
+
+        // Check user role and assign appropriate ID
+        if (auth()->user()->user_role === 'Dosen') {
+            $competitionSubmissionData['dosen_id'] = auth()->user()->dosen->id;
+            $competitionSubmissionData['mahasiswa_id'] = null;
+        } else {
+            $competitionSubmissionData['mahasiswa_id'] = auth()->user()->mahasiswa->id;
+            $competitionSubmissionData['dosen_id'] = null;
+        }
+
+        // Create competition submission record
+        $competitionSubmission = CompetitionSubmission::create($competitionSubmissionData);
 
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
                 'message' => 'Lomba berhasil diajukan',
-                'redirect' => route('student.achievement.select-competition'),
+                'redirect' => auth()->user()->user_role === 'Dosen'
+                    ? route('dosen.lomba.index')
+                    : route('student.achievement.select-competition'),
                 'lomba_id' => $lomba->id
             ]);
+        }
+
+        if (auth()->user()->user_role === 'Dosen') {
+            return redirect()->route('dosen.lomba.index')->with('success', 'Lomba berhasil diajukan');
         }
 
         $peringkats = Peringkat::where('peringkat_visible', true)->get();
@@ -141,7 +158,6 @@ class CompetitionSubmissionController extends Controller
             ->with('peringkats', $peringkats)
             ->with('dosens', $dosens);
     }
-
 
     public function finalizeSubmission(Request $request)
     {

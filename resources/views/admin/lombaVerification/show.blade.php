@@ -47,12 +47,13 @@
                 </div>
             @else
                 @php
-                    $isDataComplete = !empty($submission->lomba_nama) && 
-                                     !empty($submission->lomba_penyelenggara) && 
-                                     !empty($submission->lomba_kategori) && 
-                                     !empty($submission->lomba_tanggal_mulai) && 
-                                     !empty($submission->lomba_tanggal_selesai) && 
-                                     !empty($submission->tingkatan);
+                    $isDataComplete =
+                        !empty($submission->lomba_nama) &&
+                        !empty($submission->lomba_penyelenggara) &&
+                        !empty($submission->lomba_kategori) &&
+                        !empty($submission->lomba_tanggal_mulai) &&
+                        !empty($submission->lomba_tanggal_selesai) &&
+                        !empty($submission->tingkatan);
                 @endphp
 
                 <div class="lomba-detail-container">
@@ -63,7 +64,7 @@
                                 <div class="trophy-icon mb-3">
                                     <i class="fas fa-trophy"></i>
                                 </div>
-                                @if($submission->pendaftaran_status == 'Menunggu')
+                                @if ($submission->pendaftaran_status == 'Menunggu')
                                     <span class="badge badge-warning badge-lg">
                                         <i class="fas fa-clock mr-2"></i> Menunggu Verifikasi
                                     </span>
@@ -81,7 +82,7 @@
                     </div>
 
                     <!-- Warning for Incomplete Data -->
-                    @if(!$isDataComplete && $submission->pendaftaran_status == 'Menunggu')
+                    @if (!$isDataComplete && $submission->pendaftaran_status == 'Menunggu')
                         <div class="row mb-4">
                             <div class="col-12">
                                 <div class="alert alert-warning">
@@ -89,7 +90,8 @@
                                         <i class="fas fa-exclamation-triangle fa-2x mr-3"></i>
                                         <div>
                                             <h5 class="mb-1">Data Tidak Lengkap</h5>
-                                            <p class="mb-0">Tidak dapat melakukan verifikasi karena ada data yang belum lengkap</p>
+                                            <p class="mb-0">Tidak dapat melakukan verifikasi karena ada data yang belum
+                                                lengkap</p>
                                         </div>
                                     </div>
                                 </div>
@@ -97,34 +99,66 @@
                         </div>
                     @endif
 
-                    <!-- Informasi Penginput -->
+                    <!-- Informasi Penginput --><!-- Informasi Penginput -->
                     <div class="row mb-4">
                         <div class="col-12">
                             <div class="info-card">
                                 <div class="info-card-header">
-                                    <i class="fas fa-user text-white"></i>
+                                    @if ($submission->dosen)
+                                        <i class="fas fa-user-tie text-white"></i>
+                                    @else
+                                        <i class="fas fa-user-graduate text-white"></i>
+                                    @endif
                                     <h6 class="mb-0">Informasi Penginput</h6>
                                 </div>
                                 <div class="info-card-body">
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="info-item">
-                                                <label>Nama Mahasiswa:</label>
-                                                <span>{{ $submission->mahasiswa->mahasiswa_nama ?? 'N/A' }}</span>
+                                        @if ($submission->dosen)
+                                            <div class="col-md-4">
+                                                <div class="info-item">
+                                                    <label>Nama Dosen</label>
+                                                    <span>{{ $submission->dosen->dosen_nama ?? 'N/A' }}</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="info-item">
-                                                <label>NIM:</label>
-                                                <span>{{ $submission->mahasiswa->mahasiswa_nim ?? 'N/A' }}</span>
+                                            <div class="col-md-4">
+                                                <div class="info-item">
+                                                    <label>NIP</label>
+                                                    <span>{{ $submission->dosen->dosen_nip ?? 'N/A' }}</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="info-item">
-                                                <label>Tanggal Input:</label>
-                                                <span>{{ $submission->created_at->format('d F Y') }}</span>
+                                            <div class="col-md-4">
+                                                <div class="info-item">
+                                                    <label>Role</label>
+                                                    <span><i class="fas fa-user-tie mr-1"></i>Dosen</span>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @elseif($submission->mahasiswa)
+                                            <div class="col-md-4">
+                                                <div class="info-item">
+                                                    <label>Nama Mahasiswa</label>
+                                                    <span>{{ $submission->mahasiswa->mahasiswa_nama ?? 'N/A' }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="info-item">
+                                                    <label>NIM</label>
+                                                    <span>{{ $submission->mahasiswa->mahasiswa_nim ?? 'N/A' }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="info-item">
+                                                    <label>Role</label>
+                                                    <span><i class="fas fa-user-graduate mr-1"></i>Mahasiswa</span>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div class="col-12">
+                                                <div class="info-item">
+                                                    <label>Status</label>
+                                                    <span class="text-warning">Data penginput tidak tersedia</span>
+                                                </div>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -144,7 +178,8 @@
                                         <div class="col-md-6">
                                             <div class="info-item">
                                                 <label>Nama Lomba:</label>
-                                                <span class="font-weight-bold">{{ $submission->lomba_nama ?: 'Belum diisi' }}</span>
+                                                <span
+                                                    class="font-weight-bold">{{ $submission->lomba_nama ?: 'Belum diisi' }}</span>
                                             </div>
                                             <div class="info-item">
                                                 <label>Penyelenggara:</label>
@@ -170,128 +205,140 @@
                     <!-- Date and Time Info -->
                     <div class="row mb-4">
                         <div class="col-12">
-                                <div class="info-card-header">
-                                    <i class="fas fa-clock text-danger"></i>
-                                    <h6 class="mb-0">Waktu Pelaksanaan Lomba</h6>
-                                </div>
-                                <div class="card-body p-4">
-                                    <div class="timeline-modern">
-                                        <div class="timeline-item-modern">
-                                            <div class="timeline-marker start"></div>
-                                            <div class="timeline-content-modern">
-                                                <h6 class="timeline-title">Tanggal Mulai Pendaftaran</h6>
-                                                <p class="timeline-date">{{ \Carbon\Carbon::parse($submission->lomba_tanggal_mulai)->locale('id')->translatedFormat('l, d F Y') }}</p>
-                                                <small class="timeline-relative">{{ $submission->lomba_tanggal_mulai->diffForHumans() }}</small>
-                                            </div>
-                                        </div>
-                                        <div class="timeline-item-modern">
-                                            <div class="timeline-marker end"></div>
-                                            <div class="timeline-content-modern">
-                                                <h6 class="timeline-title">Tanggal Selesai</h6>
-                                                <p class="timeline-date">{{ \Carbon\Carbon::parse($submission->lomba_tanggal_selesai)->locale('id')->translatedFormat('l, d F Y') }}</p>
-                                                <small class="timeline-relative">{{ $submission->lomba_tanggal_selesai->diffForHumans() }}</small>
-                                            </div>
+                            <div class="info-card-header">
+                                <i class="fas fa-clock text-danger"></i>
+                                <h6 class="mb-0">Waktu Pelaksanaan Lomba</h6>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="timeline-modern">
+                                    <div class="timeline-item-modern">
+                                        <div class="timeline-marker start"></div>
+                                        <div class="timeline-content-modern">
+                                            <h6 class="timeline-title">Tanggal Mulai Pendaftaran</h6>
+                                            <p class="timeline-date">
+                                                {{ \Carbon\Carbon::parse($submission->lomba_tanggal_mulai)->locale('id')->translatedFormat('l, d F Y') }}
+                                            </p>
+                                            <small
+                                                class="timeline-relative">{{ $submission->lomba_tanggal_mulai->diffForHumans() }}</small>
                                         </div>
                                     </div>
+                                    <div class="timeline-item-modern">
+                                        <div class="timeline-marker end"></div>
+                                        <div class="timeline-content-modern">
+                                            <h6 class="timeline-title">Tanggal Selesai</h6>
+                                            <p class="timeline-date">
+                                                {{ \Carbon\Carbon::parse($submission->lomba_tanggal_selesai)->locale('id')->translatedFormat('l, d F Y') }}
+                                            </p>
+                                            <small
+                                                class="timeline-relative">{{ $submission->lomba_tanggal_selesai->diffForHumans() }}</small>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                    <!-- Duration Card -->
-                                    <div class="duration-card">
-                                        <div class="duration-icon">
-                                            <i class="fas fa-hourglass-half"></i>
-                                        </div>
-                                        <div class="duration-content">
-                                            <h6 class="duration-label">Durasi Lomba</h6>
-                                            <p class="duration-value">{{ $submission->lomba_tanggal_mulai->diffInDays($submission->lomba_tanggal_selesai) + 1 }} hari</p>
-                                        </div>
+                                <!-- Duration Card -->
+                                <div class="duration-card">
+                                    <div class="duration-icon">
+                                        <i class="fas fa-hourglass-half"></i>
+                                    </div>
+                                    <div class="duration-content">
+                                        <h6 class="duration-label">Durasi Lomba</h6>
+                                        <p class="duration-value">
+                                            {{ $submission->lomba_tanggal_mulai->diffInDays($submission->lomba_tanggal_selesai) + 1 }}
+                                            hari</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Keahlian -->
-                    @if($keahlians->count() > 0)
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <div class="info-card">
-                                    <div class="info-card-header">
-                                        <i class="fas fa-cogs text-info"></i>
-                                        <h6 class="mb-0">Keahlian Terkait</h6>
-                                    </div>
-                                    <div class="info-card-body">
-                                        <div class="keahlian-tags">
-                                            @foreach($keahlians as $keahlian)
-                                                <span class="badge badge-outline-primary mr-2 mb-2">{{ $keahlian->keahlian_nama }}</span>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-
-                    <!-- Link Terkait -->
+                <!-- Keahlian -->
+                @if ($keahlians->count() > 0)
                     <div class="row mb-4">
                         <div class="col-12">
                             <div class="info-card">
                                 <div class="info-card-header">
-                                    <i class="fas fa-link text-success"></i>
-                                    <h6 class="mb-0">Link Terkait</h6>
+                                    <i class="fas fa-cogs text-info"></i>
+                                    <h6 class="mb-0">Keahlian Terkait</h6>
                                 </div>
                                 <div class="info-card-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="info-item">
-                                                <label>Link Pendaftaran:</label>
-                                                @if($submission->lomba_link_pendaftaran)
-                                                    <a href="{{ $submission->lomba_link_pendaftaran }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                                        <i class="fas fa-external-link-alt mr-1"></i> Buka Link
-                                                    </a>
-                                                @else
-                                                    <span class="text-muted">Tidak ada</span>
-                                                @endif
-                                            </div>
+                                    <div class="keahlian-tags">
+                                        @foreach ($keahlians as $keahlian)
+                                            <span
+                                                class="badge badge-outline-primary mr-2 mb-2">{{ $keahlian->keahlian_nama }}</span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                <!-- Link Terkait -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="info-card">
+                            <div class="info-card-header">
+                                <i class="fas fa-link text-success"></i>
+                                <h6 class="mb-0">Link Terkait</h6>
+                            </div>
+                            <div class="info-card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="info-item">
+                                            <label>Link Pendaftaran:</label>
+                                            @if ($submission->lomba_link_pendaftaran)
+                                                <a href="{{ $submission->lomba_link_pendaftaran }}" target="_blank"
+                                                    class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-external-link-alt mr-1"></i> Buka Link
+                                                </a>
+                                            @else
+                                                <span class="text-muted">Tidak ada</span>
+                                            @endif
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="info-item">
-                                                <label>Link Poster:</label>
-                                                @if($submission->lomba_link_poster)
-                                                    <a href="{{ $submission->lomba_link_poster }}" target="_blank" class="btn btn-sm btn-outline-success">
-                                                        <i class="fas fa-image mr-1"></i> Lihat Poster
-                                                    </a>
-                                                @else
-                                                    <span class="text-muted">Tidak ada</span>
-                                                @endif
-                                            </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="info-item">
+                                            <label>Link Poster:</label>
+                                            @if ($submission->lomba_link_poster)
+                                                <a href="{{ $submission->lomba_link_poster }}" target="_blank"
+                                                    class="btn btn-sm btn-outline-success">
+                                                    <i class="fas fa-image mr-1"></i> Lihat Poster
+                                                </a>
+                                            @else
+                                                <span class="text-muted">Tidak ada</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Action Buttons untuk Verifikasi -->
-                    @if($submission->pendaftaran_status == 'Menunggu' && $isDataComplete)
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <div class="verification-actions">
-                                    <div class="alert alert-info">
-                                        <i class="fas fa-info-circle mr-2"></i>
-                                        <strong>Perhatian:</strong> Silakan periksa semua informasi lomba di atas dengan teliti sebelum melakukan verifikasi
-                                    </div>
-                                    <div class="d-flex justify-content-center">
-                                        <button class="btn btn-success btn-lg mr-3" onclick="showApproveModal()">
-                                            <i class="fas fa-check mr-2"></i> Setujui Lomba
-                                        </button>
-                                        <button class="btn btn-danger btn-lg" onclick="showRejectModal()">
-                                            <i class="fas fa-times mr-2"></i> Tolak Lomba
-                                        </button>
-                                    </div>
+                <!-- Action Buttons untuk Verifikasi -->
+                @if ($submission->pendaftaran_status == 'Menunggu' && $isDataComplete)
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="verification-actions">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle mr-2"></i>
+                                    <strong>Perhatian:</strong> Silakan periksa semua informasi lomba di atas dengan teliti
+                                    sebelum melakukan verifikasi
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <button class="btn btn-success btn-lg mr-3" onclick="showApproveModal()">
+                                        <i class="fas fa-check mr-2"></i> Setujui Lomba
+                                    </button>
+                                    <button class="btn btn-danger btn-lg" onclick="showRejectModal()">
+                                        <i class="fas fa-times mr-2"></i> Tolak Lomba
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                    @endif
-                
+                    </div>
+                @endif
+
 
                 <!-- Action Buttons -->
                 <hr class="my-4">
@@ -302,8 +349,8 @@
                 </div>
             </div>
         </div>
-    </div> 
-@endempty
+        </div>
+    @endempty
 
     <!-- Approval Modal -->
     <div class="modal fade" id="approveModal" tabindex="-1" role="dialog">
@@ -332,7 +379,8 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
                         <i class="fas fa-times mr-1"></i> Batal
                     </button>
-                    <form method="POST" action="{{ route('admin.lombaVerification.approve', $submission->id ?? 0) }}" style="display: inline;">
+                    <form method="POST" action="{{ route('admin.lombaVerification.approve', $submission->id ?? 0) }}"
+                        style="display: inline;">
                         @csrf
                         <button type="submit" class="btn btn-success">
                             <i class="fas fa-check mr-1"></i> Ya, Setujui
@@ -370,7 +418,8 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
                         <i class="fas fa-times mr-1"></i> Batal
                     </button>
-                    <form method="POST" action="{{ route('admin.lombaVerification.reject', $submission->id ?? 0) }}" style="display: inline;">
+                    <form method="POST" action="{{ route('admin.lombaVerification.reject', $submission->id ?? 0) }}"
+                        style="display: inline;">
                         @csrf
                         <button type="submit" class="btn btn-danger">
                             <i class="fas fa-times mr-1"></i> Ya, Tolak
@@ -509,9 +558,17 @@
         }
 
         @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         /* Trophy Icon Styling */
@@ -534,9 +591,12 @@
         }
 
         @keyframes floatTrophy {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0px);
             }
+
             50% {
                 transform: translateY(-8px);
             }
@@ -648,16 +708,16 @@
             .timeline-modern {
                 padding-left: 1.5rem;
             }
-            
+
             .timeline-marker {
                 left: -1.5rem;
             }
-            
+
             .duration-card {
                 flex-direction: column;
                 text-align: center;
             }
-            
+
             .duration-icon {
                 margin-right: 0;
                 margin-bottom: 0.5rem;

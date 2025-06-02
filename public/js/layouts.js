@@ -112,7 +112,7 @@ $(window).on("load", function () {
 
         if (percentageCounter === 24 || percentageCounter === 26) {
             currentTextIndex = 1;
-            loadingText.fadeOu(75, function () {
+            loadingText.fadeOut(75, function () {
                 $(this).text(texts[currentTextIndex]).fadeIn(75);
             });
         } else if (percentageCounter === 48 || percentageCounter === 52) {

@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header bg-gradient-primary text-white">
                 <h5 class="modal-title" id="newCompetitionModalLabel">
-                    <i class="fas fa-plus-circle mr-2"></i>Ajukan Lomba Baru
+                    <i class="fas fa-plus-circle mr-2"></i>Ajukan Lomba Baru (Mahasiswa)
                 </h5>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -94,15 +94,15 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label><i class="fas fa-link mr-1"></i>Link Pendaftaran</label>
-                                <input type="url" name="lomba_link_pendaftaran" class="form-control">
+                                <label><i class="fas fa-link mr-1"></i>Link Pendaftaran <span class="text-danger">*</span></label>
+                                <input type="url" name="lomba_link_pendaftaran" class="form-control" required>
                                 <div class="invalid-feedback"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label><i class="fas fa-image mr-1"></i>Link Poster</label>
-                                <input type="url" name="lomba_link_poster" class="form-control">
+                                <label><i class="fas fa-image mr-1"></i>Link Poster <span class="text-danger">*</span></label>
+                                <input type="url" name="lomba_link_poster" class="form-control" required>
                                 <div class="invalid-feedback"></div>
                             </div>
                         </div>
@@ -282,58 +282,3 @@
     }
 }
 </style>
-
-<script>
-    // JavaScript for handling the new competition form submission
-    $(document).ready(function() {
-        $('#newCompetitionForm').on('submit', function(e) {
-            e.preventDefault();
-            var formData = $(this).serialize();
-            $('#submitBtn').prop('disabled', true);
-            $('.submit-text').hide();
-            $('.submit-loading').show();
-            $.ajax({
-                url: "{{ route('mahasiswa.lomba.storeAjax') }}",
-                type: "POST",
-                data: formData,
-                success: function(response) {
-                    $('#newCompetitionModal').modal('hide');
-                    $('#submitBtn').prop('disabled', false);
-                    $('.submit-text').show();
-                    $('.submit-loading').hide();
-                    // Handle success response
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil',
-                        text: 'Lomba berhasil diajukan!',
-                        confirmButtonColor: '#102044',
-                    }).then(() => {
-                        location.reload();
-                    });
-                },
-                error: function(xhr) {
-                    $('#submitBtn').prop('disabled', false);
-                    $('.submit-text').show();
-                    $('.submit-loading').hide();
-                    // Handle error response
-                    if (xhr.status === 422) {
-                        var errors = xhr.responseJSON.errors;
-                        $('.invalid-feedback').remove();
-                        $.each(errors, function(key, value) {
-                            var input = $('[name="' + key + '"]');
-                            input.addClass('is-invalid');
-                            input.after('<div class="invalid-feedback">' + value[0] + '</div>');
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Terjadi Kesalahan',
-                            text: 'Silakan coba lagi nanti.',
-                            confirmButtonColor: '#102044',
-                        });
-                    }
-                }
-            });
-        });
-    });
-</script>

@@ -19,6 +19,7 @@ use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\TingkatanController;
+use App\Http\Controllers\PrestasiVerificationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RekomendasiController;
 use App\Http\Controllers\BobotController;
@@ -165,7 +166,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::get('/show/{id}', [LombaVerificationController::class, 'show'])->name('show');
         Route::post('/{id}/approve', [LombaVerificationController::class, 'approve'])->name('approve');
         Route::post('/{id}/reject', [LombaVerificationController::class, 'reject'])->name('reject');
-});
+    });
     // Admin Kelola Lomba
     Route::prefix('adminKelolaLomba')->name('admin.adminKelolaLomba.')->group(function () {
         Route::get('/', [AdminKelolaLombaController::class, 'index'])->name('index');
@@ -340,6 +341,14 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::get('/banner/{id}/edit', [SystemController::class, 'editBannerModal'])->name('editBannerModal');
         Route::get('/banner/{id}/confirm', [SystemController::class, 'confirmDeleteBannerModal'])->name('confirmDeleteBannerModal');
     });
+
+    // Verifikasi Prestasi
+    Route::prefix('prestasiVerification')->name('admin.prestasiVerification.')->group(function () {
+        Route::get('/', [PrestasiVerificationController::class, 'adminIndex'])->name('index');
+        Route::get('/list', [PrestasiVerificationController::class, 'adminList'])->name('list');
+        Route::get('/show/{id}', [PrestasiVerificationController::class, 'adminShow'])->name('show');
+        Route::post('/{id}/verify', [PrestasiVerificationController::class, 'adminVerify'])->name('verify');
+    });
 });
 
 // Dosen routes
@@ -363,20 +372,39 @@ Route::middleware(['auth', 'role:Dosen'])->prefix('dosen')->name('dosen.')->grou
     Route::get('/profile/edit', [DosenController::class, 'editProfile'])->name('editProfile');
     Route::put('/profile/update', [DosenController::class, 'updateProfile'])->name('updateProfile');
     Route::put('/profile/update-password', [DosenController::class, 'updatePassword'])->name('updatePassword');
+    Route::post('/profile/change-password', [DosenController::class, 'changePassword'])->name('changePassword');
     Route::post('/profile/update-photo', [DosenController::class, 'updatePhoto'])->name('updatePhoto');
+
+    // Riwayat Pengajuan Lomba
+    Route::prefix('riwayatPengajuanLomba')->name('riwayatPengajuanLomba.')->group(function () {
+        Route::get('/', [DosenController::class, 'riwayatPengajuanLombaIndex'])->name('index');
+        Route::get('/list', [DosenController::class, 'riwayatPengajuanLombaList'])->name('list');
+        Route::get('/show/{id}', [DosenController::class, 'riwayatPengajuanLombaShow'])->name('show');
+    });
+
+    // Verifikasi Prestasi
+    Route::prefix('prestasiVerification')->name('prestasiVerification.')->group(function () {
+        Route::get('/', [PrestasiVerificationController::class, 'dosenIndex'])->name('index');
+        Route::get('/list', [PrestasiVerificationController::class, 'dosenList'])->name('list');
+        Route::get('/show/{id}', [PrestasiVerificationController::class, 'dosenShow'])->name('show');
+        Route::post('/{id}/verify', [PrestasiVerificationController::class, 'dosenVerify'])->name('verify');
+    });
+});
+
+// Achievement Process for Dosen - Outside dosen prefix
+Route::middleware(['auth', 'role:Dosen'])->prefix('dosen/achievement')->name('dosen.achievement.')->group(function () {
+    Route::get('/create', [CompetitionSubmissionController::class, 'Create'])->name('create');
+    Route::post('/store', [CompetitionSubmissionController::class, 'Store'])->name('store');
+
+    // AJAX routes for validation
+    Route::post('/check-duplicate', [CompetitionSubmissionController::class, 'checkDuplicateLomba'])->name('check-duplicate');
+    Route::get('/keahlian-suggestions', [CompetitionSubmissionController::class, 'getKeahlianSuggestions'])->name('keahlian-suggestions');
 });
 
 // Mahasiswa routes
 Route::middleware(['auth', 'role:Mahasiswa'])->prefix('mahasiswa')->name('mahasiswa.')->group(function () {
     // Dashboard
     Route::get('/dashboard', [MahasiswaController::class, 'index'])->name('dashboard');
-
-    // Lihat Lomba
-    Route::prefix('lomba')->name('lomba.')->group(function () {
-        Route::get('/', [MahasiswaController::class, 'lombaIndex'])->name('index');
-        Route::get('/show/{id}', [MahasiswaController::class, 'lombaShow'])->name('show');
-        Route::post('/daftar', [MahasiswaController::class, 'daftarLomba'])->name('daftar');
-    });
 
     // Lihat Lomba dan Tambah
     Route::prefix('lomba')->name('lomba.')->group(function () {
@@ -424,6 +452,41 @@ Route::middleware(['auth', 'role:Mahasiswa'])->prefix('mahasiswa')->name('mahasi
         Route::post('/finalize', [CompetitionSubmissionController::class, 'finalizeSubmission'])->name('finalize');
         Route::get('/step3', [CompetitionSubmissionController::class, 'step3'])->name('step3');
     });
+    // Profil Mahasiswa
+    Route::get('/profile', [MahasiswaController::class, 'profile'])->name('profile');
+    Route::get('/profile/edit', [MahasiswaController::class, 'editProfile'])->name('editProfile');
+    Route::put('/profile/update', [MahasiswaController::class, 'updateProfile'])->name('updateProfile');
+    Route::put('/profile/update-password', [MahasiswaController::class, 'updatePassword'])->name('updatePassword');
+    Route::post('/profile/change-password', [MahasiswaController::class, 'changePassword'])->name('changePassword');
+    Route::post('/profile/update-photo', [MahasiswaController::class, 'updatePhoto'])->name('updatePhoto');
+
+    // Riwayat Pengajuan Lomba
+    Route::prefix('riwayatPengajuanLomba')->name('riwayatPengajuanLomba.')->group(function () {
+        Route::get('/', [MahasiswaController::class, 'riwayatPengajuanLombaIndex'])->name('index');
+        Route::get('/list', [MahasiswaController::class, 'riwayatPengajuanLombaList'])->name('list');
+        Route::get('/show/{id}', [MahasiswaController::class, 'riwayatPengajuanLombaShow'])->name('show');
+    });
+
+    // Riwayat Pengajuan Prestasi
+    Route::prefix('riwayatPengajuanPrestasi')->name('riwayatPengajuanPrestasi.')->group(function () {
+        Route::get('/', [MahasiswaController::class, 'riwayatPengajuanPrestasiIndex'])->name('index');
+        Route::get('/list', [MahasiswaController::class, 'riwayatPengajuanPrestasiList'])->name('list');
+        Route::get('/show/{id}', [MahasiswaController::class, 'riwayatPengajuanPrestasiShow'])->name('show');
+    });
+});
+
+// Achievement Verification Process - Outside mahasiswa prefix
+Route::middleware(['auth', 'role:Mahasiswa'])->prefix('student/achievement')->name('student.achievement.')->group(function () {
+    Route::get('/create', [CompetitionSubmissionController::class, 'create'])->name('create');
+    Route::post('/select-competition', [CompetitionSubmissionController::class, 'selectCompetition'])->name('select-competition');
+    Route::post('/store', [CompetitionSubmissionController::class, 'store'])->name('store');
+    Route::post('/finalize', [CompetitionSubmissionController::class, 'finalizeSubmission'])->name('finalize');
+    Route::get('/step3', [CompetitionSubmissionController::class, 'step3'])->name('step3');
+
+    // New AJAX routes for validation
+    Route::post('/check-duplicate', [CompetitionSubmissionController::class, 'checkDuplicateLomba'])->name('check-duplicate');
+    Route::get('/keahlian-suggestions', [CompetitionSubmissionController::class, 'getKeahlianSuggestions'])->name('keahlian-suggestions');
+});
 
     // Fallback for unauthorized access
     Route::fallback(function () {

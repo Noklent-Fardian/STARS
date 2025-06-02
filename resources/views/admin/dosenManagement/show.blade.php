@@ -52,7 +52,7 @@
                                                     {{ $dosen->prodi->prodi_nama ?? '-' }}
                                                 </span>
                                             </div>
-                                            <div>
+                                            {{-- <div>
                                                 <span class="badge badge-{{ 
                                                     $dosen->dosen_status == 'Aktif' ? 'success' : 
                                                     ($dosen->dosen_status == 'Cuti' ? 'warning' : 
@@ -63,7 +63,7 @@
                                                 <span class="badge {{ $dosen->dosen_visible ? 'badge-success' : 'badge-secondary' }}">
                                                     {{ $dosen->dosen_visible ? 'Aktif' : 'Tidak Aktif' }}
                                                 </span>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -165,10 +165,11 @@
                                             <span class="badge badge-{{ 
                                                 $dosen->dosen_status == 'Aktif' ? 'success' : 
                                                 ($dosen->dosen_status == 'Cuti' ? 'warning' : 
-                                                ($dosen->dosen_status == 'Pensiun' ? 'secondary' : 'danger')) 
+                                                ($dosen->dosen_status == 'Tidak Aktif' ? 'danger' :
+                                                ($dosen->dosen_status == 'Studi' ? 'primary' : 'danger')
                                             }}">
                                                 {{ $dosen->dosen_status }}
-                                            </span>
+                                            </span><br>
                                         </div>
                                     </div>
                                 </div>
@@ -207,7 +208,7 @@
                                             {{ $dosen->updated_at ? $dosen->updated_at->format('d F Y H:i') : 'Tidak Ada Data' }}
                                         </div>
                                     </div>
-                                    <div class="user-info-item">
+                                    {{-- <div class="user-info-item">
                                         <div class="info-label">
                                             <i class="fas fa-eye text-info"></i>
                                             <span>Status Akun</span>
@@ -217,7 +218,7 @@
                                                 {{ $dosen->dosen_visible ? 'Aktif' : 'Tidak Aktif' }}
                                             </span>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>

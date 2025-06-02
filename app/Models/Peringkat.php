@@ -11,6 +11,7 @@ class Peringkat extends Model
     use HasFactory;
 
     protected $table = 'm_peringkats';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'peringkat_nama',
@@ -19,11 +20,12 @@ class Peringkat extends Model
     ];
 
     protected $casts = [
+        'peringkat_bobot' => 'decimal:2',
         'peringkat_visible' => 'boolean',
     ];
 
     public function penghargaans(): HasMany
     {
-        return $this->hasMany(Penghargaan::class, 'peringkat_id');
+        return $this->hasMany(Penghargaan::class, 'peringkat_id', 'id');
     }
 }

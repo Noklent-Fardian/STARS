@@ -1,16 +1,17 @@
 @extends('layouts.template')
 
-@section('title', $lomba->lomba_nama . ' | STARS')
+@section('title', $submission->lomba_nama . ' | STARS')
 
-@section('page-title', 'Detail Lomba')
+@section('page-title', 'Detail Pengajuan Lomba')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('dosen.lomba.index') }}">Lihat Lomba</a></li>
-    <li class="breadcrumb-item active">{{ $lomba->lomba_nama }}</li>
+    <li class="breadcrumb-item"><a href="{{ route('dosen.riwayatPengajuanLomba.index') }}">Riwayat Pengajuan Lomba</a></li>
+    <li class="breadcrumb-item active">{{ $submission->lomba_nama }}</li>
 @endsection
 
 @section('content')
     <div class="container-fluid">
+        <!-- Competition Header -->
         <div class="row mb-4">
             <div class="col-12">
                 <div class="modern-card shadow-lg border-0">
@@ -19,24 +20,18 @@
                             <!-- Competition Poster -->
                             <div class="col-lg-4">
                                 <div class="poster-container modern-poster">
-                                    @if ($lomba->lomba_link_poster)
-                                        <img src="{{ $lomba->lomba_link_poster }}" class="img-fluid poster-image"
-                                            alt="{{ $lomba->lomba_nama }}"
-                                            onerror="this.src='https://picsum.photos/500/500?random={{ $lomba->id }}'">
+                                    @if ($submission->lomba_link_poster)
+                                        <img src="{{ $submission->lomba_link_poster }}" class="img-fluid poster-image"
+                                            alt="{{ $submission->lomba_nama }}"
+                                            onerror="this.src='https://picsum.photos/500/500?random={{ $submission->id }}'">
                                     @else
                                         <div class="default-poster-modern">
                                             <div class="poster-icon">
                                                 <i class="fas fa-trophy"></i>
                                             </div>
-                                            <h5 class="poster-title">{{ $lomba->lomba_nama }}</h5>
+                                            <h5 class="poster-title">{{ $submission->lomba_nama }}</h5>
                                         </div>
                                     @endif
-                                    <div class="poster-overlay">
-                                        <div class="poster-overlay-content">
-                                            <i class="fas fa-expand-alt"></i>
-                                            <span>Lihat Poster</span>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
@@ -45,22 +40,27 @@
                                 <div class="competition-content p-4 p-lg-5">
                                     <!-- Status Badges -->
                                     <div class="status-badges mb-4">
-                                        @if ($lomba->lomba_terverifikasi)
-                                            <span class="modern-badge verified">
-                                                <i class="fas fa-shield-check"></i>
-                                                <span>Terverifikasi</span>
-                                            </span>
-                                        @else
+                                        @if ($submission->pendaftaran_status === 'Menunggu')
                                             <span class="modern-badge pending">
                                                 <i class="fas fa-clock"></i>
                                                 <span>Menunggu Verifikasi</span>
+                                            </span>
+                                        @elseif($submission->pendaftaran_status === 'Diterima')
+                                            <span class="modern-badge verified">
+                                                <i class="fas fa-shield-check"></i>
+                                                <span>Disetujui</span>
+                                            </span>
+                                        @else
+                                            <span class="modern-badge rejected">
+                                                <i class="fas fa-times-circle"></i>
+                                                <span>Ditolak</span>
                                             </span>
                                         @endif
 
                                         @php
                                             $now = now();
-                                            $start = $lomba->lomba_tanggal_mulai;
-                                            $end = $lomba->lomba_tanggal_selesai;
+                                            $start = $submission->lomba_tanggal_mulai;
+                                            $end = $submission->lomba_tanggal_selesai;
                                         @endphp
 
                                         @if ($now < $start)
@@ -82,7 +82,7 @@
                                     </div>
 
                                     <!-- Competition Title -->
-                                    <h1 class="competition-title mb-4">{{ $lomba->lomba_nama }}</h1>
+                                    <h1 class="competition-title mb-4">{{ $submission->lomba_nama }}</h1>
 
                                     <!-- Basic Info Grid -->
                                     <div class="info-grid mb-4">
@@ -92,7 +92,7 @@
                                             </div>
                                             <div class="info-content">
                                                 <span class="info-label">Penyelenggara</span>
-                                                <span class="info-value">{{ $lomba->lomba_penyelenggara }}</span>
+                                                <span class="info-value">{{ $submission->lomba_penyelenggara }}</span>
                                             </div>
                                         </div>
                                         <div class="info-item">
@@ -101,7 +101,7 @@
                                             </div>
                                             <div class="info-content">
                                                 <span class="info-label">Kategori</span>
-                                                <span class="info-value">{{ $lomba->lomba_kategori }}</span>
+                                                <span class="info-value">{{ $submission->lomba_kategori }}</span>
                                             </div>
                                         </div>
                                         <div class="info-item">
@@ -110,29 +110,9 @@
                                             </div>
                                             <div class="info-content">
                                                 <span class="info-label">Tingkatan</span>
-                                                <span class="info-value">{{ $lomba->tingkatan->tingkatan_nama }}</span>
+                                                <span class="info-value">{{ $submission->lomba->tingkatan->tingkatan_nama ?? 'Tidak ditentukan' }}</span>
                                             </div>
                                         </div>
-                                        <div class="info-item">
-                                            <div class="info-icon">
-                                                <i class="fas fa-calendar-alt"></i>
-                                            </div>
-                                            <div class="info-content">
-                                                <span class="info-label">Semester</span>
-                                                <span
-                                                    class="info-value">{{ $lomba->semester->semester_nama ?? 'Tidak ditentukan' }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="action-buttons">
-                                        @if ($lomba->lomba_link_pendaftaran)
-                                            <a href="{{ $lomba->lomba_link_pendaftaran }}" target="_blank"
-                                                class="modern-btn primary">
-                                                <i class="fas fa-external-link-alt"></i>
-                                                <span>Buka Link Pendaftaran</span>
-                                            </a>
-                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -141,7 +121,6 @@
                 </div>
             </div>
         </div>
-
 
         <!-- Competition Details -->
         <div class="row g-4">
@@ -159,12 +138,11 @@
                             <div class="timeline-item-modern">
                                 <div class="timeline-marker start"></div>
                                 <div class="timeline-content-modern">
-                                    <h6 class="timeline-title">Tanggal Mulai Pendaftaran</h6>
+                                    <h6 class="timeline-title">Tanggal Mulai</h6>
                                     <p class="timeline-date">
-                                        {{ \Carbon\Carbon::parse($lomba->lomba_tanggal_mulai)->locale('id')->translatedFormat('l, d F Y') }}
+                                        {{ \Carbon\Carbon::parse($submission->lomba_tanggal_mulai)->locale('id')->translatedFormat('l, d F Y') }}
                                     </p>
-                                    <small
-                                        class="timeline-relative">{{ $lomba->lomba_tanggal_mulai->diffForHumans() }}</small>
+                                    <small class="timeline-relative">{{ \Carbon\Carbon::parse($submission->lomba_tanggal_mulai)->diffForHumans() }}</small>
                                 </div>
                             </div>
                             <div class="timeline-item-modern">
@@ -172,10 +150,9 @@
                                 <div class="timeline-content-modern">
                                     <h6 class="timeline-title">Tanggal Selesai</h6>
                                     <p class="timeline-date">
-                                        {{ \Carbon\Carbon::parse($lomba->lomba_tanggal_selesai)->locale('id')->translatedFormat('l, d F Y') }}
+                                        {{ \Carbon\Carbon::parse($submission->lomba_tanggal_selesai)->locale('id')->translatedFormat('l, d F Y') }}
                                     </p>
-                                    <small
-                                        class="timeline-relative">{{ $lomba->lomba_tanggal_selesai->diffForHumans() }}</small>
+                                    <small class="timeline-relative">{{ \Carbon\Carbon::parse($submission->lomba_tanggal_selesai)->diffForHumans() }}</small>
                                 </div>
                             </div>
                         </div>
@@ -188,7 +165,7 @@
                             <div class="duration-content">
                                 <h6 class="duration-label">Durasi Lomba</h6>
                                 <p class="duration-value">
-                                    {{ $lomba->lomba_tanggal_mulai->diffInDays($lomba->lomba_tanggal_selesai) + 1 }} hari
+                                    {{ \Carbon\Carbon::parse($submission->lomba_tanggal_mulai)->diffInDays(\Carbon\Carbon::parse($submission->lomba_tanggal_selesai)) + 1 }} hari
                                 </p>
                             </div>
                         </div>
@@ -206,9 +183,9 @@
                         <h5 class="header-title">Bidang Keahlian</h5>
                     </div>
                     <div class="card-body p-4">
-                        @if ($lomba->keahlians->count() > 0)
+                        @if ($submission->lomba && $submission->lomba->keahlians->count() > 0)
                             <div class="skills-grid">
-                                @foreach ($lomba->keahlians as $keahlian)
+                                @foreach ($submission->lomba->keahlians as $keahlian)
                                     <div class="skill-tag">
                                         <i class="fas fa-code"></i>
                                         <span>{{ $keahlian->keahlian_nama }}</span>
@@ -227,7 +204,7 @@
         </div>
 
         <!-- Additional Information -->
-        @if ($lomba->lomba_link_poster || $lomba->lomba_link_pendaftaran)
+        @if ($submission->lomba_link_poster || $submission->lomba_link_pendaftaran)
             <div class="row mt-4">
                 <div class="col-12">
                     <div class="modern-card">
@@ -239,15 +216,14 @@
                         </div>
                         <div class="card-body p-4">
                             <div class="links-grid">
-                                @if ($lomba->lomba_link_poster)
+                                @if ($submission->lomba_link_poster)
                                     <div class="link-card">
                                         <div class="link-icon">
                                             <i class="fas fa-image"></i>
                                         </div>
                                         <div class="link-content">
                                             <h6 class="link-title">Link Poster</h6>
-                                            <a href="{{ $lomba->lomba_link_poster }}" target="_blank"
-                                                class="link-button">
+                                            <a href="{{ $submission->lomba_link_poster }}" target="_blank" class="link-button">
                                                 <i class="fas fa-external-link-alt"></i>
                                                 Lihat Poster
                                             </a>
@@ -255,15 +231,14 @@
                                     </div>
                                 @endif
 
-                                @if ($lomba->lomba_link_pendaftaran)
+                                @if ($submission->lomba_link_pendaftaran)
                                     <div class="link-card">
                                         <div class="link-icon">
                                             <i class="fas fa-edit"></i>
                                         </div>
                                         <div class="link-content">
                                             <h6 class="link-title">Link Pendaftaran</h6>
-                                            <a href="{{ $lomba->lomba_link_pendaftaran }}" target="_blank"
-                                                class="link-button">
+                                            <a href="{{ $submission->lomba_link_pendaftaran }}" target="_blank" class="link-button">
                                                 <i class="fas fa-external-link-alt"></i>
                                                 Akses Pendaftaran
                                             </a>
@@ -280,9 +255,9 @@
         <!-- Back Button -->
         <div class="row mt-4">
             <div class="col-12">
-                <a href="{{ route('dosen.lomba.index') }}" class="modern-btn outline">
+                <a href="{{ route('dosen.riwayatPengajuanLomba.index') }}" class="modern-btn outline">
                     <i class="fas fa-arrow-left"></i>
-                    <span>Kembali ke Daftar Lomba</span>
+                    <span>Kembali ke Riwayat Pengajuan</span>
                 </a>
             </div>
         </div>
@@ -291,7 +266,6 @@
 
 @push('css')
     <style>
-        /* Modern Card Styles */
         .modern-card {
             background: #ffffff;
             border-radius: 16px;
@@ -301,7 +275,11 @@
             overflow: hidden;
         }
 
-        /* Poster Container */
+        .modern-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12), 0 16px 40px rgba(0, 0, 0, 0.08);
+        }
+
         .modern-poster {
             position: relative;
             height: 400px;
@@ -349,41 +327,6 @@
             margin: 0;
         }
 
-        .poster-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            cursor: pointer;
-        }
-
-        .modern-poster:hover .poster-overlay {
-            opacity: 1;
-        }
-
-        .modern-poster:hover .poster-image {
-            transform: scale(1.05);
-        }
-
-        .poster-overlay-content {
-            text-align: center;
-            color: white;
-        }
-
-        .poster-overlay-content i {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        /* Competition Content */
         .competition-content {
             display: flex;
             flex-direction: column;
@@ -398,7 +341,6 @@
             margin: 0;
         }
 
-        /* Modern Badges */
         .status-badges {
             display: flex;
             flex-wrap: wrap;
@@ -427,6 +369,11 @@
             color: white;
         }
 
+        .modern-badge.rejected {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
         .modern-badge.upcoming {
             background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: white;
@@ -442,7 +389,6 @@
             color: white;
         }
 
-        /* Info Grid */
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -490,13 +436,6 @@
             font-weight: 600;
         }
 
-        /* Modern Buttons */
-        .action-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
         .modern-btn {
             display: inline-flex;
             align-items: center;
@@ -511,30 +450,6 @@
             overflow: hidden;
         }
 
-        .modern-btn.primary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
-
-        .modern-btn.primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-            color: white;
-            text-decoration: none;
-        }
-
-        .modern-btn.secondary {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-        }
-
-        .modern-btn.secondary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
-            color: white;
-            text-decoration: none;
-        }
-
         .modern-btn.outline {
             background: transparent;
             color: #667eea;
@@ -547,7 +462,6 @@
             text-decoration: none;
         }
 
-        /* Card Header Modern */
         .card-header-modern {
             display: flex;
             align-items: center;
@@ -576,7 +490,6 @@
             margin: 0;
         }
 
-        /* Timeline Modern */
         .timeline-modern {
             position: relative;
             padding-left: 2rem;
@@ -632,7 +545,6 @@
             font-style: italic;
         }
 
-        /* Duration Card */
         .duration-card {
             background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
             border: 1px solid #0ea5e9;
@@ -669,7 +581,6 @@
             margin: 0;
         }
 
-        /* Skills Grid */
         .skills-grid {
             display: flex;
             flex-wrap: wrap;
@@ -688,7 +599,6 @@
             font-size: 0.875rem;
         }
 
-        /* Empty State Modern */
         .empty-state-modern {
             text-align: center;
             padding: 3rem 1rem;
@@ -701,7 +611,6 @@
             opacity: 0.5;
         }
 
-        /* Links Grid */
         .links-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -751,7 +660,6 @@
             text-decoration: none;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .modern-poster {
                 height: 250px;
@@ -770,14 +678,6 @@
                 grid-template-columns: 1fr;
             }
 
-            .action-buttons {
-                flex-direction: column;
-            }
-
-            .modern-btn {
-                justify-content: center;
-            }
-
             .timeline-modern {
                 padding-left: 1.5rem;
             }
@@ -792,30 +692,6 @@
 
             .links-grid {
                 grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .status-badges {
-                justify-content: center;
-            }
-
-            .modern-badge {
-                font-size: 0.75rem;
-                padding: 0.375rem 0.75rem;
-            }
-
-            .card-header-modern {
-                padding: 1rem 1rem 0;
-            }
-
-            .header-icon {
-                width: 40px;
-                height: 40px;
-            }
-
-            .header-title {
-                font-size: 1.25rem;
             }
         }
     </style>
