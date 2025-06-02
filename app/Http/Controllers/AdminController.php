@@ -1,12 +1,20 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Mahasiswa;
+use App\Models\Dosen;
+use App\Models\AdminKelolaLomba;
+use App\Models\AdminKelolaPrestasi;
+use App\Models\CompetitionSubmission;
+use App\Models\Verifikasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 
 class AdminController extends Controller
@@ -17,7 +25,101 @@ class AdminController extends Controller
     public function index()
     {
         $admin = Auth::user()->admin;
-        return view('admin.index', compact('admin'));
+
+        // Dashboard Statistics
+        $stats = [
+            'total_mahasiswa' => Mahasiswa::where('mahasiswa_visible', true)->count(),
+            'total_dosen' => Dosen::where('dosen_visible', true)->count(),
+            'total_admin' => Admin::where('admin_visible', true)->count(),
+            'total_lomba' => AdminKelolaLomba::where('lomba_visible', true)->count(),
+            'total_prestasi' => AdminKelolaPrestasi::count(),
+            'verified_prestasi' => Verifikasi::where('verifikasi_dosen_status', 'Diterima')
+                ->where('verifikasi_admin_status', 'Diterima')
+                ->count(),
+            'pending_verifikasi_prestasi' => Verifikasi::where('verifikasi_admin_status', 'Menunggu')->count(),
+            'pending_verifikasi_lomba' => CompetitionSubmission::where('pendaftaran_status', 'Menunggu')->count(),
+        ];
+
+        // Recent Activities - Fixed null created_at issue
+        $recentPrestasi = AdminKelolaPrestasi::with(['mahasiswa', 'lomba', 'peringkat'])
+            ->whereNotNull('created_at')
+            ->whereHas('verifikasi', function ($query) {
+                $query->where('verifikasi_dosen_status', 'Diterima')
+                    ->where('verifikasi_admin_status', 'Diterima');
+            })
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        $recentLomba = AdminKelolaLomba::with(['tingkatan'])
+            ->where('lomba_visible', true)
+            ->where('lomba_terverifikasi', 1)
+            ->whereNotNull('created_at')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Monthly Statistics
+        $monthlyData = $this->getMonthlyStatistics();
+
+        // Prestasi by Tingkatan - Fixed to use proper table names
+        $prestasiByTingkatan = DB::table('m_penghargaans')
+            ->join('m_lombas', 'm_penghargaans.lomba_id', '=', 'm_lombas.id')
+            ->join('m_tingkatans', 'm_lombas.tingkatan_id', '=', 'm_tingkatans.id')
+            ->select('m_tingkatans.tingkatan_nama', DB::raw('count(*) as total'))
+            ->groupBy('m_tingkatans.tingkatan_nama')
+            ->get();
+
+        // Quick actions data
+        $quickActions = [
+            'pending_mahasiswa' => Mahasiswa::where('mahasiswa_visible', false)->count(),
+            'pending_dosen' => Dosen::where('dosen_visible', false)->count(),
+            'recent_submissions' => CompetitionSubmission::where('pendaftaran_status', 'Menunggu')
+                ->whereDate('created_at', '>=', Carbon::today())
+                ->count(),
+        ];
+
+        return view('admin.index', compact(
+            'admin',
+            'stats',
+            'recentPrestasi',
+            'recentLomba',
+            'monthlyData',
+            'prestasiByTingkatan',
+            'quickActions'
+        ));
+    }
+
+    /**
+     * Get monthly statistics for charts
+     */
+    private function getMonthlyStatistics()
+    {
+        $months = [];
+        $mahasiswaData = [];
+        $prestasiData = [];
+
+        for ($i = 11; $i >= 0; $i--) {
+            $date = Carbon::now()->subMonths($i);
+            $months[] = $date->format('M Y');
+
+            $mahasiswaCount = Mahasiswa::whereYear('created_at', $date->year)
+                ->whereMonth('created_at', $date->month)
+                ->where('mahasiswa_visible', true)
+                ->count();
+            $mahasiswaData[] = $mahasiswaCount;
+
+            $prestasiCount = AdminKelolaPrestasi::whereYear('created_at', $date->year)
+                ->whereMonth('created_at', $date->month)
+                ->count();
+            $prestasiData[] = $prestasiCount;
+        }
+
+        return [
+            'months' => $months,
+            'mahasiswa' => $mahasiswaData,
+            'prestasi' => $prestasiData
+        ];
     }
 
     public function mahasiswaIndex()
@@ -37,7 +139,7 @@ class AdminController extends Controller
 
     public function prestasiVerification()
     {
-        return view('admin.prestasi.verification');
+        return view('admin.prestasiVerification.index');
     }
 
     public function prestasiAkademik()

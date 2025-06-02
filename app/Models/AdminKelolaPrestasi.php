@@ -44,7 +44,7 @@ class AdminKelolaPrestasi extends Model
     {
         return $this->belongsTo(AdminKelolaLomba::class, 'lomba_id');
     }
-    
+
     // Relasi ke tabel peringkat
     public function peringkat()
     {
@@ -55,5 +55,9 @@ class AdminKelolaPrestasi extends Model
     public function tingkatan()
     {
         return $this->belongsTo(Tingkatan::class, 'tingkatan_id');
+    }
+    public function verifikasi()
+    {
+        return $this->hasOne(Verifikasi::class, 'penghargaan_id', 'id');
     }
 }
