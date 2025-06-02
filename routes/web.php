@@ -116,13 +116,13 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::get('/prestasi/report', [AdminController::class, 'prestasiReport'])->name('admin.prestasi.report');
 
     // Admin Kelola Bobot
-    Route::prefix('kelolaBobot')->name('admin.kelolaBobot.')->group(function (){
+    Route::prefix('kelolaBobot')->name('admin.kelolaBobot.')->group(function () {
         Route::get('/', [BobotController::class, 'index'])->name('index');
         Route::put('/update', [BobotController::class, 'update'])->name('update');
     });
 
     // Admin Kelola Rekomendasi Topsis
-    Route::prefix('rekomendasiTopsis')->name('admin.rekomendasiTopsis.')->group(function (){
+    Route::prefix('rekomendasiTopsis')->name('admin.rekomendasiTopsis.')->group(function () {
         Route::get('/', [RekomendasiController::class, 'index'])->name('index');
         Route::post('/generate', [RekomendasiController::class, 'generateRekomendasi'])->name('generate');
         Route::post('/kirim-rekomendasi', [RekomendasiController::class, 'kirimRekomendasi'])->name('kirimRekomendasi');
@@ -425,7 +425,7 @@ Route::middleware(['auth', 'role:Mahasiswa'])->prefix('mahasiswa')->name('mahasi
     });
 
     // Notifikasi Mahasiswa
-    Route::prefix('notifikasi')->name('notifikasi.')->group(function (){
+    Route::prefix('notifikasi')->name('notifikasi.')->group(function () {
         Route::get('/', [MahasiswaNotifikasiController::class, 'index'])->name('index'); // Tampilkan semua notifikasi
         Route::get('/{index}', [MahasiswaNotifikasiController::class, 'show'])->name('show'); // Lihat detail notifikasi
         Route::post('/read/{index}', [MahasiswaNotifikasiController::class, 'markAsRead'])->name('read'); // Tandai satu notifikasi dibaca
@@ -437,29 +437,12 @@ Route::middleware(['auth', 'role:Mahasiswa'])->prefix('mahasiswa')->name('mahasi
 
     // Profil Mahasiswa
     Route::get('/profile', [MahasiswaController::class, 'profile'])->name('profile');
-        Route::get('/profile/edit', [MahasiswaController::class, 'editProfile'])->name('editProfile');
-        Route::put('/profile/update', [MahasiswaController::class, 'updateProfile'])->name('updateProfile');
-        Route::put('/profile/update-password', [MahasiswaController::class, 'updatePassword'])->name('updatePassword');
-        Route::post('/profile/change-password', [MahasiswaController::class, 'changePassword'])->name('changePassword');
-        Route::post('/profile/update-photo', [MahasiswaController::class, 'updatePhoto'])->name('updatePhoto');
-    });
-
-    // Achievement Verification Process - Outside mahasiswa prefix
-    Route::middleware(['auth', 'role:Mahasiswa'])->prefix('student/achievement')->name('student.achievement.')->group(function () {
-        Route::get('/create', [CompetitionSubmissionController::class, 'create'])->name('create');
-        Route::post('/select-competition', [CompetitionSubmissionController::class, 'selectCompetition'])->name('select-competition');
-        Route::post('/store', [CompetitionSubmissionController::class, 'store'])->name('store');
-        Route::post('/finalize', [CompetitionSubmissionController::class, 'finalizeSubmission'])->name('finalize');
-        Route::get('/step3', [CompetitionSubmissionController::class, 'step3'])->name('step3');
-    });
-    // Profil Mahasiswa
-    Route::get('/profile', [MahasiswaController::class, 'profile'])->name('profile');
     Route::get('/profile/edit', [MahasiswaController::class, 'editProfile'])->name('editProfile');
     Route::put('/profile/update', [MahasiswaController::class, 'updateProfile'])->name('updateProfile');
     Route::put('/profile/update-password', [MahasiswaController::class, 'updatePassword'])->name('updatePassword');
     Route::post('/profile/change-password', [MahasiswaController::class, 'changePassword'])->name('changePassword');
     Route::post('/profile/update-photo', [MahasiswaController::class, 'updatePhoto'])->name('updatePhoto');
-
+    
     // Riwayat Pengajuan Lomba
     Route::prefix('riwayatPengajuanLomba')->name('riwayatPengajuanLomba.')->group(function () {
         Route::get('/', [MahasiswaController::class, 'riwayatPengajuanLombaIndex'])->name('index');
@@ -482,13 +465,30 @@ Route::middleware(['auth', 'role:Mahasiswa'])->prefix('student/achievement')->na
     Route::post('/store', [CompetitionSubmissionController::class, 'store'])->name('store');
     Route::post('/finalize', [CompetitionSubmissionController::class, 'finalizeSubmission'])->name('finalize');
     Route::get('/step3', [CompetitionSubmissionController::class, 'step3'])->name('step3');
+});
+// Profil Mahasiswa
+Route::get('/profile', [MahasiswaController::class, 'profile'])->name('profile');
+Route::get('/profile/edit', [MahasiswaController::class, 'editProfile'])->name('editProfile');
+Route::put('/profile/update', [MahasiswaController::class, 'updateProfile'])->name('updateProfile');
+Route::put('/profile/update-password', [MahasiswaController::class, 'updatePassword'])->name('updatePassword');
+Route::post('/profile/change-password', [MahasiswaController::class, 'changePassword'])->name('changePassword');
+Route::post('/profile/update-photo', [MahasiswaController::class, 'updatePhoto'])->name('updatePhoto');
+
+
+// Achievement Verification Process - Outside mahasiswa prefix
+Route::middleware(['auth', 'role:Mahasiswa'])->prefix('student/achievement')->name('student.achievement.')->group(function () {
+    Route::get('/create', [CompetitionSubmissionController::class, 'create'])->name('create');
+    Route::post('/select-competition', [CompetitionSubmissionController::class, 'selectCompetition'])->name('select-competition');
+    Route::post('/store', [CompetitionSubmissionController::class, 'store'])->name('store');
+    Route::post('/finalize', [CompetitionSubmissionController::class, 'finalizeSubmission'])->name('finalize');
+    Route::get('/step3', [CompetitionSubmissionController::class, 'step3'])->name('step3');
 
     // New AJAX routes for validation
     Route::post('/check-duplicate', [CompetitionSubmissionController::class, 'checkDuplicateLomba'])->name('check-duplicate');
     Route::get('/keahlian-suggestions', [CompetitionSubmissionController::class, 'getKeahlianSuggestions'])->name('keahlian-suggestions');
 });
 
-    // Fallback for unauthorized access
-    Route::fallback(function () {
-        return redirect('/login');
-    });
+// Fallback for unauthorized access
+Route::fallback(function () {
+    return redirect('/login');
+});
