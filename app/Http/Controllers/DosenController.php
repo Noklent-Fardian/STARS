@@ -110,30 +110,64 @@ class DosenController extends Controller
         return redirect()->route('dosen.profile')->with('success', 'Password berhasil diubah.');
     }
 
-    public function updatePhoto(Request $request)
+   public function updatePhoto(Request $request)
     {
-        $request->validate([
+        $messages = [
+            'dosen_photo.required' => 'Silakan pilih foto terlebih dahulu.',
+            'dosen_photo.image'    => 'File harus berupa gambar.',
+            'dosen_photo.mimes'    => 'Format foto harus jpeg, jpg, png, atau webp.',
+            'dosen_photo.max'      => 'Ukuran foto tidak boleh lebih dari 2MB.',
+        ];
+
+        $validator = Validator::make($request->all(), [
             'dosen_photo' => 'required|image|mimes:jpeg,jpg,png,webp|max:2048',
-        ]);
+        ], $messages);
+
+        if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $validator->errors()->first(),
+                ], 422);
+            }
+            return redirect()->back()->with('error', $validator->errors()->first());
+        }
 
         $dosen = Auth::user()->dosen;
 
-        if ($request->hasFile('dosen_photo')) {
-            $file = $request->file('dosen_photo');
-            $path = $file->store('dosen_photos', 'public');
-            $dosen->dosen_photo = $path;
-            $dosen->save();
+        // Delete old photo if exists
+        if ($dosen->dosen_photo && Storage::disk('public')->exists($dosen->dosen_photo)) {
+            Storage::disk('public')->delete($dosen->dosen_photo);
         }
 
-        if ($request->ajax()) {
-            return response()->json([
-                'message' => 'Foto profil berhasil diubah.',
-                'photo_url' => asset('storage/' . $dosen->dosen_photo)
-            ]);
-        }
+        try {
+            if ($request->hasFile('dosen_photo')) {
+                $file = $request->file('dosen_photo');
+                $path = $file->store('dosen_photos', 'public');
+                $dosen->dosen_photo = $path;
+                $dosen->save();
+            }
 
-        return redirect()->back()->with('success', 'Foto profil berhasil diubah.');
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Foto profil berhasil diubah.',
+                    'photo_url' => asset('storage/' . $dosen->dosen_photo)
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'Foto profil berhasil diubah.');
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan saat mengunggah foto. Silakan coba lagi.',
+                ], 500);
+            }
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengunggah foto.');
+        }
     }
+
 
     public function riwayatPengajuanLombaIndex()
     {
