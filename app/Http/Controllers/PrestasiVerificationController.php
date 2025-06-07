@@ -30,8 +30,7 @@ class PrestasiVerificationController extends Controller
             ->where('dosen_id', $dosen->id)
             ->whereHas('penghargaan.lomba', function ($query) {
                 $query->where('lomba_terverifikasi', 1);
-            })
-            ->select('*');
+            });
 
         if ($request->status && $request->status != '') {
             $verifikasis->where('verifikasi_dosen_status', $request->status);
@@ -39,6 +38,26 @@ class PrestasiVerificationController extends Controller
 
         return DataTables::of($verifikasis)
             ->addIndexColumn()
+            ->filter(function ($instance) use ($request) {
+                if ($request->get('search')['value']) {
+                    $search = $request->get('search')['value'];
+                    $instance->where(function ($w) use ($search) {
+                        $w->whereHas('mahasiswa', function ($q) use ($search) {
+                            $q->where('mahasiswa_nama', 'LIKE', "%$search%")
+                              ->orWhere('mahasiswa_nim', 'LIKE', "%$search%");
+                        })
+                        ->orWhereHas('mahasiswa.prodi', function ($q) use ($search) {
+                            $q->where('prodi_nama', 'LIKE', "%$search%");
+                        })
+                        ->orWhereHas('penghargaan', function ($q) use ($search) {
+                            $q->where('penghargaan_judul', 'LIKE', "%$search%");
+                        })
+                        ->orWhereHas('penghargaan.lomba', function ($q) use ($search) {
+                            $q->where('lomba_nama', 'LIKE', "%$search%");
+                        });
+                    });
+                }
+            })
             ->addColumn('mahasiswa_info', function ($row) {
                 return [
                     'nama' => $row->mahasiswa->mahasiswa_nama ?? 'N/A',
@@ -172,8 +191,7 @@ class PrestasiVerificationController extends Controller
         ])
             ->whereHas('penghargaan.lomba', function ($query) {
                 $query->where('lomba_terverifikasi', 1);
-            })
-            ->select('*');
+            });
 
         if ($request->status && $request->status != '') {
             $verifikasis->where('verifikasi_admin_status', $request->status);
@@ -181,6 +199,29 @@ class PrestasiVerificationController extends Controller
 
         return DataTables::of($verifikasis)
             ->addIndexColumn()
+            ->filter(function ($instance) use ($request) {
+                if ($request->get('search')['value']) {
+                    $search = $request->get('search')['value'];
+                    $instance->where(function ($w) use ($search) {
+                        $w->whereHas('mahasiswa', function ($q) use ($search) {
+                            $q->where('mahasiswa_nama', 'LIKE', "%$search%")
+                              ->orWhere('mahasiswa_nim', 'LIKE', "%$search%");
+                        })
+                        ->orWhereHas('mahasiswa.prodi', function ($q) use ($search) {
+                            $q->where('prodi_nama', 'LIKE', "%$search%");
+                        })
+                        ->orWhereHas('penghargaan', function ($q) use ($search) {
+                            $q->where('penghargaan_judul', 'LIKE', "%$search%");
+                        })
+                        ->orWhereHas('penghargaan.lomba', function ($q) use ($search) {
+                            $q->where('lomba_nama', 'LIKE', "%$search%");
+                        })
+                        ->orWhereHas('dosen', function ($q) use ($search) {
+                            $q->where('dosen_nama', 'LIKE', "%$search%");
+                        });
+                    });
+                }
+            })
             ->addColumn('mahasiswa_info', function ($row) {
                 return [
                     'nama' => $row->mahasiswa->mahasiswa_nama ?? 'N/A',

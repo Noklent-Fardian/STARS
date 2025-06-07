@@ -74,7 +74,7 @@
 
             <!-- Filter Section -->
             <div class="row mb-3">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="has-filter">
                         <select class="form-control filter-control" id="statusFilter">
                             <option value="">Semua Status</option>
@@ -87,7 +87,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-8">
                     <div class="has-search">
                         <input type="text" class="form-control" placeholder="Cari prestasi, mahasiswa, atau lomba..."
                             id="searchBox">
@@ -121,7 +121,6 @@
 @endsection
 
 @push('css')
-    <!-- DataTables CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
     <style>
         :root {
@@ -267,10 +266,8 @@
             pointer-events: none;
             color: var(--light-text);
             transition: color 0.3s ease;
-        }
-
-        .has-search .form-control:focus+.form-control-feedback {
-            color: var(--accent-color);
+            left: 0;
+            top: 0;
         }
 
         .has-search {
@@ -292,8 +289,16 @@
             pointer-events: none;
             color: var(--light-text);
             transition: color 0.3s ease;
-            left: 0;
+            right: 0;
             top: 0;
+        }
+
+        .has-filter .form-control {
+            padding-right: 2.8rem;
+        }
+
+        .has-filter .form-control:focus + .form-control-feedback {
+            color: var(--accent-color);
         }
 
         /* Mahasiswa Info Styling */
@@ -413,12 +418,14 @@
                         data: "DT_RowIndex",
                         className: "text-center",
                         width: "5%",
-                        orderable: false
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: "mahasiswa_info",
                         width: "20%",
                         orderable: false,
+                        searchable: true,
                         render: function(data, type, row) {
                             return `
                                 <div class="mahasiswa-info">
@@ -433,6 +440,7 @@
                         data: "prestasi_info",
                         width: "25%",
                         orderable: false,
+                        searchable: true,
                         render: function(data, type, row) {
                             return `
                                 <div class="prestasi-info">
@@ -447,19 +455,22 @@
                     {
                         data: "dosen_pembimbing",
                         width: "15%",
-                        orderable: false
+                        orderable: false,
+                        searchable: true
                     },
                     {
                         data: "status_verifikasi_dosen",
                         className: "text-center",
                         width: "10%",
-                        orderable: false
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: "status_verifikasi",
                         className: "text-center",
                         width: "10%",
-                        orderable: false
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: "aksi",
