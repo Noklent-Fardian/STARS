@@ -221,10 +221,29 @@
         <div class="error-code">@yield('code')</div>
         <div class="error-title">@yield('title')</div>
         <div class="error-message">@yield('message')</div>
-        <a href="{{ url('/') }}" class="btn-home">
+        @auth
+            @php
+            $dashboardRoute = '/';
+            if (auth()->user()->isAdmin()) {
+                $dashboardRoute = route('admin.dashboard');
+            } elseif (auth()->user()->isDosen()) {
+                $dashboardRoute = route('dosen.dashboard');
+            } elseif (auth()->user()->isMahasiswa()) {
+                $dashboardRoute = route('mahasiswa.dashboard');
+            }else {
+                $dashboardRoute = route('/login');
+            }
+            @endphp
+            <a href="{{ $dashboardRoute }}" class="btn-home">
+            <i class="bi bi-speedometer2"></i>
+            Kembali ke Dashboard
+            </a>
+        @else
+            <a href="{{ url('/') }}" class="btn-home">
             <i class="bi bi-house-door"></i>
             Kembali ke Beranda
-        </a>
+            </a>
+        @endauth
     </div>
 
     <script>
