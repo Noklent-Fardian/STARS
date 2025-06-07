@@ -13,14 +13,23 @@
             <div class="modal-body p-4">
 
                 <div class="form-group">
-                    <label class="font-weight-bold">ID Keahlian</label>
-                    <select name="keahlian_id" class="form-control" required>
-                        <option value="" disabled selected>-- Pilih Keahlian --</option>
-                        @foreach($keahlians as $keahlian)
-                            <option value="{{ $keahlian->id }}">{{ $keahlian->keahlian_nama }}</option>
-                        @endforeach
-                    </select>
-                    <small id="error-keahlian_id" class="error-text form-text text-danger"></small>
+                    <label class="font-weight-bold">
+                        <i class="fas fa-code mr-1"></i>
+                        Bidang Keahlian <span class="text-danger">*</span>
+                    </label>
+                    <div class="keahlian-input-container position-relative">
+                        <input type="text" id="keahlianInput" class="form-control keahlian-input"
+                            placeholder="Masukkan bidang keahlian" autocomplete="off">
+                        <div id="dropdownContainer" class="dropdown-container"></div>
+                    </div>
+                    <div class="selected-keahlian mt-2" id="selectedKeahlian"></div>
+                    <div id="hiddenKeahlianInputs"></div>
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        Ketik untuk mencari bidang keahlian. Tekan Enter untuk menambah bidang baru jika tidak
+                        ditemukan.
+                    </small>
+                    <small id="error-lomba_keahlian_ids" class="error-text form-text text-danger"></small>
                 </div>
 
                 <div class="form-group">
@@ -117,7 +126,134 @@
                 }
             };
         }
+        let keahlianList = [];
+        let newKeahlianNames = [];
+        $(document).ready(function () {
+            let dropdown = $('#dropdownContainer');
+            let selectedKeahlian = [];
+            let selectedKeahlianNama = {};
+            let keahlianTimer = null;
 
+            function refreshSelectedKeahlian() {
+                let html = '';
+                selectedKeahlian.forEach(function (itemId) {
+                    html += `<span class="badge badge-info mr-1 mb-1">
+                        ${selectedKeahlianNama[itemId]}
+                        <a href="#" class="text-white ml-1 remove-keahlian" data-id="${itemId}">&times;</a>
+                    </span>`;
+                });
+                newKeahlianNames.forEach(function (nama) {
+                    html += `<span class="badge badge-success mr-1 mb-1">
+                        ${nama}
+                        <a href="#" class="text-white ml-1 remove-keahlian" data-id="new-${nama}">&times;</a>
+                    </span>`;
+                });
+                $("#selectedKeahlian").html(html);
+
+                // Hidden input for keahlian IDs
+                let hidden = '';
+                selectedKeahlian.forEach(function (itemId) {
+                    hidden += `<input type="hidden" name="lomba_keahlian_ids[]" value="${itemId}">`;
+                });
+                newKeahlianNames.forEach(function (nama) {
+                    hidden += `<input type="hidden" name="new_keahlian_names[]" value="${nama}">`;
+                });
+                $("#hiddenKeahlianInputs").html(hidden);
+            }
+
+            $('#keahlianInput').on('input', function () {
+                let val = $(this).val();
+                clearTimeout(keahlianTimer);
+                if (val.length > 0) {
+                    keahlianTimer = setTimeout(function () {
+                        $.get("{{ route('admin.adminKelolaLomba.ajaxKeahlianSearch') }}", { q: val }, function (data) {
+                            let items = data.data || [];
+                            let html = '';
+                            items.forEach(function (item) {
+                                html += `<div class="dropdown-item keahlian-item" data-id="${item.id}" data-nama="${item.keahlian_nama}">
+                                    <i class="fas fa-code mr-1"></i> ${item.keahlian_nama}
+                                </div>`;
+                            });
+                            // Tampilkan opsi create jika tidak ada
+                            let found = items.some(i => i.keahlian_nama.toLowerCase() === val.toLowerCase());
+                            if (!found && val.trim() !== '') {
+                                html += `<div class="dropdown-item keahlian-item-create text-success" data-nama="${val}">
+                                    <i class="fas fa-plus mr-1"></i> Buat "<b>${val}</b>"
+                                </div>`;
+                            }
+                            dropdown.html(html).show();
+                        });
+                    }, 300);
+                } else {
+                    dropdown.hide();
+                }
+            });
+
+            // Pilih dari dropdown
+            dropdown.on('click', '.keahlian-item', function () {
+                let id = $(this).data('id');
+                let nama = $(this).data('nama');
+                if (!selectedKeahlian.includes(id)) {
+                    selectedKeahlian.push(id);
+                    selectedKeahlianNama[id] = nama;
+                    refreshSelectedKeahlian();
+                }
+                $('#keahlianInput').val('');
+                dropdown.hide();
+            });
+
+            // Buat baru
+            dropdown.on('click', '.keahlian-item-create', function () {
+                let nama = $(this).data('nama');
+                if (!newKeahlianNames.includes(nama)) {
+                    newKeahlianNames.push(nama);
+                    refreshSelectedKeahlian();
+                }
+                $('#keahlianInput').val('');
+                dropdown.hide();
+            });
+
+            // Enter untuk tambah bidang baru jika tidak ada di list
+            $('#keahlianInput').on('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    let val = $(this).val().trim();
+                    if (val !== '') {
+                        let exists = Object.values(selectedKeahlianNama).some(nama => nama.toLowerCase() === val.toLowerCase());
+                        let isNew = newKeahlianNames.some(nama => nama.toLowerCase() === val.toLowerCase());
+                        if (!exists && !isNew) {
+                            newKeahlianNames.push(val);
+                            refreshSelectedKeahlian();
+                        }
+                        $(this).val('');
+                        dropdown.hide();
+                    }
+                }
+            });
+
+            // Remove keahlian
+            $('#selectedKeahlian').on('click', '.remove-keahlian', function (e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                if (id.toString().startsWith('new-')) {
+                    let val = id.substr(4);
+                    newKeahlianNames = newKeahlianNames.filter(nama => nama !== val);
+                } else {
+                    selectedKeahlian = selectedKeahlian.filter(i => i != id);
+                    delete selectedKeahlianNama[id];
+                }
+                refreshSelectedKeahlian();
+            });
+
+            // Hide dropdown jika klik di luar
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('.keahlian-input-container').length) {
+                    dropdown.hide();
+                }
+            });
+
+            refreshSelectedKeahlian();
+        });
         // Set minimum end date based on start date
         $('#lomba_tanggal_mulai').change(function () {
             const startDate = $(this).val();
@@ -149,7 +285,7 @@
 
         $("#form-tambah").validate({
             rules: {
-                keahlian_id: { required: true },
+                lomba_keahlian_ids: { required: true },
                 tingkatan_id: { required: true },
                 semester_id: { required: true },
                 lomba_nama: { required: true, maxlength: 255 },
@@ -174,7 +310,7 @@
                 },
             },
             messages: {
-                keahlian_id: { required: "Pilih keahlian" },
+                lomba_keahlian_ids: { required: "Pilih minimal satu bidang keahlian" },
                 tingkatan_id: { required: "Pilih tingkatan" },
                 semester_id: { required: "Pilih semester" },
                 lomba_nama: {
@@ -236,9 +372,7 @@
                                     timer: 1500,
                                     showConfirmButton: false,
                                 }).then(function () {
-                                    if (typeof dataLomba !== 'undefined') {
-                                        dataLomba.ajax.reload();
-                                    }
+                                    location.reload();
                                 });
                             }, 300);
                         } else {

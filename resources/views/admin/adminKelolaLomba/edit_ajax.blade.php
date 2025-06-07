@@ -43,16 +43,23 @@
             </div>
             <div class="modal-body p-4">
                 <div class="form-group">
-                    <label class="font-weight-bold">ID Keahlian</label>
-                    <select name="keahlian_id" id="keahlian_id" class="form-control" required>
-                        <option value="" disabled>-- Pilih Keahlian --</option>
-                        @foreach ($keahlians as $keahlian)
-                            <option value="{{ $keahlian->id }}" {{ old('keahlian_id', $lomba->keahlian_id) == $keahlian->id ? 'selected' : '' }}>
-                                {{ $keahlian->keahlian_nama }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <small id="error-keahlian_id" class="error-text form-text text-danger"></small>
+                    <label class="font-weight-bold">
+                        <i class="fas fa-code mr-1"></i>
+                        Bidang Keahlian <span class="text-danger">*</span>
+                    </label>
+                    <div class="keahlian-input-container position-relative">
+                        <input type="text" id="keahlianInputEdit" class="form-control keahlian-input"
+                            placeholder="Masukkan bidang keahlian" autocomplete="off">
+                        <div id="dropdownContainerEdit" class="dropdown-container"></div>
+                    </div>
+                    <div class="selected-keahlian mt-2" id="selectedKeahlianEdit"></div>
+                    <div id="hiddenKeahlianInputsEdit"></div>
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        Ketik untuk mencari bidang keahlian. Tekan Enter untuk menambah bidang baru jika tidak
+                        ditemukan.
+                    </small>
+                    <small id="error-lomba_keahlian_ids" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group">
                     <label class="font-weight-bold">ID Tingkatan</label>
@@ -93,9 +100,19 @@
                 @foreach ($fields as $field => $label)
                     <div class="form-group">
                         <label class="font-weight-bold">{{ $label }}</label>
-                        <input type="{{ str_contains($field, 'tanggal') ? 'date' : 'text' }}" name="{{ $field }}"
-                            id="{{ $field }}" class="form-control" placeholder="Masukkan {{ strtolower($label) }}"
-                            value="{{ old($field, $lomba->$field) }}" required>
+                        @if (str_contains($field, 'tanggal'))
+                            <input type="date" name="{{ $field }}" id="{{ $field }}" class="form-control"
+                                placeholder="Masukkan {{ strtolower($label) }}"
+                                value="{{ old($field, optional($lomba->$field)->format('Y-m-d')) }}" required>
+                        @elseif (str_contains($field, 'link'))
+                            <input type="url" name="{{ $field }}" id="{{ $field }}" class="form-control"
+                                placeholder="Masukkan {{ strtolower($label) }}" value="{{ old($field, $lomba->$field) }}"
+                                required>
+                        @else
+                            <input type="text" name="{{ $field }}" id="{{ $field }}" class="form-control"
+                                placeholder="Masukkan {{ strtolower($label) }}" value="{{ old($field, $lomba->$field) }}"
+                                required>
+                        @endif
                         <small id="error-{{ $field }}" class="error-text form-text text-danger"></small>
                     </div>
                 @endforeach
@@ -122,6 +139,139 @@
                 }
             };
         }
+
+        let dropdownEdit = $('#dropdownContainerEdit');
+        let selectedKeahlianEdit = [];
+        let selectedKeahlianNamaEdit = {};
+        let newKeahlianNamesEdit = [];
+        let keahlianTimerEdit = null;
+
+        // Inisialisasi data dari $lomba->keahlians
+        @if(!empty($lomba->keahlians))
+            @foreach($lomba->keahlians as $keahlian)
+                selectedKeahlianEdit.push({{ $keahlian->id }});
+                selectedKeahlianNamaEdit[{{ $keahlian->id }}] = @json($keahlian->keahlian_nama);
+            @endforeach
+        @endif
+
+        function refreshSelectedKeahlianEdit() {
+            let html = '';
+            selectedKeahlianEdit.forEach(function (itemId) {
+                html += `<span class="badge badge-info mr-1 mb-1">
+                        ${selectedKeahlianNamaEdit[itemId]}
+                        <a href="#" class="text-white ml-1 remove-keahlian-edit" data-id="${itemId}">&times;</a>
+                    </span>`;
+            });
+            newKeahlianNamesEdit.forEach(function (nama) {
+                html += `<span class="badge badge-success mr-1 mb-1">
+                        ${nama}
+                        <a href="#" class="text-white ml-1 remove-keahlian-edit" data-id="new-${nama}">&times;</a>
+                    </span>`;
+            });
+            $("#selectedKeahlianEdit").html(html);
+
+            // Hidden input for keahlian IDs
+            let hidden = '';
+            selectedKeahlianEdit.forEach(function (itemId) {
+                hidden += `<input type="hidden" name="lomba_keahlian_ids[]" value="${itemId}">`;
+            });
+            newKeahlianNamesEdit.forEach(function (nama) {
+                hidden += `<input type="hidden" name="new_keahlian_names[]" value="${nama}">`;
+            });
+            $("#hiddenKeahlianInputsEdit").html(hidden);
+        }
+
+        $('#keahlianInputEdit').on('input', function () {
+            let val = $(this).val();
+            clearTimeout(keahlianTimerEdit);
+            if (val.length > 0) {
+                keahlianTimerEdit = setTimeout(function () {
+                    $.get("{{ route('admin.adminKelolaLomba.ajaxKeahlianSearch') }}", { q: val }, function (data) {
+                        let items = data.data || [];
+                        let html = '';
+                        items.forEach(function (item) {
+                            html += `<div class="dropdown-item keahlian-item-edit" data-id="${item.id}" data-nama="${item.keahlian_nama}">
+                                    <i class="fas fa-code mr-1"></i> ${item.keahlian_nama}
+                                </div>`;
+                        });
+                        // Tampilkan opsi create jika tidak ada exact match
+                        let found = items.some(i => i.keahlian_nama.toLowerCase() === val.toLowerCase());
+                        if (!found && val.trim() !== '') {
+                            html += `<div class="dropdown-item keahlian-item-create-edit text-success" data-nama="${val}">
+                                    <i class="fas fa-plus mr-1"></i> Buat "<b>${val}</b>"
+                                </div>`;
+                        }
+                        dropdownEdit.html(html).show();
+                    });
+                }, 300);
+            } else {
+                dropdownEdit.hide();
+            }
+        });
+
+        // Pilih dari dropdown
+        dropdownEdit.on('click', '.keahlian-item-edit', function () {
+            let id = $(this).data('id');
+            let nama = $(this).data('nama');
+            if (!selectedKeahlianEdit.includes(id)) {
+                selectedKeahlianEdit.push(id);
+                selectedKeahlianNamaEdit[id] = nama;
+                refreshSelectedKeahlianEdit();
+            }
+            $('#keahlianInputEdit').val('');
+            dropdownEdit.hide();
+        });
+        // Buat baru
+        dropdownEdit.on('click', '.keahlian-item-create-edit', function () {
+            let nama = $(this).data('nama');
+            if (!newKeahlianNamesEdit.includes(nama)) {
+                newKeahlianNamesEdit.push(nama);
+                refreshSelectedKeahlianEdit();
+            }
+            $('#keahlianInputEdit').val('');
+            dropdownEdit.hide();
+        });
+
+        // Enter untuk tambah bidang baru jika tidak ada di list
+        $('#keahlianInputEdit').on('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                let val = $(this).val().trim();
+                if (val !== '') {
+                    let exists = Object.values(selectedKeahlianNamaEdit).some(nama => nama.toLowerCase() === val.toLowerCase());
+                    let isNew = newKeahlianNamesEdit.some(nama => nama.toLowerCase() === val.toLowerCase());
+                    if (!exists && !isNew) {
+                        newKeahlianNamesEdit.push(val);
+                        refreshSelectedKeahlianEdit();
+                    }
+                    $(this).val('');
+                    dropdownEdit.hide();
+                }
+            }
+        });
+
+        // Remove keahlian
+        $('#selectedKeahlianEdit').on('click', '.remove-keahlian-edit', function (e) {
+            e.preventDefault();
+            let id = $(this).data('id');
+            if (id.toString().startsWith('new-')) {
+                let val = id.substr(4);
+                newKeahlianNamesEdit = newKeahlianNamesEdit.filter(nama => nama !== val);
+            } else {
+                selectedKeahlianEdit = selectedKeahlianEdit.filter(i => i != id);
+                delete selectedKeahlianNamaEdit[id];
+            }
+            refreshSelectedKeahlianEdit();
+        });
+
+        // Hide dropdown jika klik di luar
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('.keahlian-input-container').length) {
+                dropdownEdit.hide();
+            }
+        });
+
+        refreshSelectedKeahlianEdit();
 
         // Set minimum end date based on start date
         $('#lomba_tanggal_mulai').change(function () {
@@ -241,28 +391,9 @@
                                 title: 'Berhasil',
                                 text: response.message || 'Data lomba berhasil diperbarui!',
                                 timer: 1500,
-                                showConfirmButton: false,
-                                didClose: function () {
-
-                                    // Check if we're on the detail/show page
-                                    if ($('.card-header:contains("Detail Lomba")').length > 0) {
-                                        // Update the detail view with new lomba data
-                                        updateLombaDetailView({
-                                            nama: $('#lomba_nama').val(),
-                                            penyelenggara: $('#lomba_penyelenggara').val(),
-                                            kategori: $('#lomba_kategori').val(),
-                                            tanggalMulai: $('#lomba_tanggal_mulai').val(),
-                                            tanggalSelesai: $('#lomba_tanggal_selesai').val(),
-                                            linkPendaftaran: $('#lomba_link_pendaftaran').val(),
-                                            linkPoster: $('#lomba_link_poster').val()
-                                        });
-                                    } else {
-                                        // If on index page, reload the DataTable
-                                        if (typeof dataLomba !== 'undefined') {
-                                            dataLomba.ajax.reload();
-                                        }
-                                    }
-                                }
+                                showConfirmButton: false
+                            }).then(function () {
+                                location.reload();
                             });
                         } else {
                             Swal.fire({
@@ -299,25 +430,6 @@
                         }
                     }
                 });
-
-                function updateLombaDetailView(data) {
-                    $('h4.font-weight-bold').text(data.nama);
-                    $('#detail-penyelenggara').text(data.penyelenggara);
-                    $('#detail-kategori').text(data.kategori);
-                    $('#detail-tanggal-mulai').text(new Date(data.tanggalMulai).toLocaleDateString('id-ID'));
-                    $('#detail-tanggal-selesai').text(new Date(data.tanggalSelesai).toLocaleDateString('id-ID'));
-                    $('#detail-link-pendaftaran').attr('href', data.linkPendaftaran).text(data.linkPendaftaran);
-                    $('#detail-link-poster').attr('href', data.linkPoster).text(data.linkPoster);
-
-                    $('.detail-info').css({
-                        'background-color': '#fffde7',
-                        'transition': 'background-color 1s'
-                    });
-
-                    setTimeout(() => {
-                        $('.detail-info').css('background-color', '');
-                    }, 2000);
-                }
             }
         });
     });

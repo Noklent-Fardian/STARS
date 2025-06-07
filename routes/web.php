@@ -174,6 +174,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         Route::get('/show/{id}', [AdminKelolaLombaController::class, 'show'])->name('show');
 
         // AJAX routes
+        Route::get('/keahlian-search', [AdminKelolaLombaController::class, 'ajaxKeahlianSearch'])->name('ajaxKeahlianSearch');
         Route::get('/create_ajax', [AdminKelolaLombaController::class, 'createAjax'])->name('createAjax');
         Route::post('/ajax', [AdminKelolaLombaController::class, 'storeAjax'])->name('storeAjax');
         Route::get('/{id}/edit_ajax', [AdminKelolaLombaController::class, 'editAjax'])->name('editAjax');
