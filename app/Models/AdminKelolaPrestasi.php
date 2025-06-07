@@ -42,7 +42,7 @@ class AdminKelolaPrestasi extends Model
     // Relasi ke tabel lomba
     public function lomba()
     {
-        return $this->belongsTo(AdminKelolaLomba::class, 'lomba_id');
+        return $this->belongsTo(Lomba::class, 'lomba_id');
     }
 
     // Relasi ke tabel peringkat

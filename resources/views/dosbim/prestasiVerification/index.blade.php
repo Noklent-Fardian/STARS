@@ -73,7 +73,7 @@
             </div>
 
             <!-- Filter Section -->
-            <div class="row mb-3">
+            <div class="row mb-4">
                 <div class="col-md-3">
                     <div class="has-filter">
                         <select class="form-control filter-control" id="statusFilter">
@@ -87,9 +87,10 @@
                         </span>
                     </div>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-8">
                     <div class="has-search">
-                        <input type="text" class="form-control" id="searchBox" placeholder="Cari mahasiswa atau prestasi...">
+                        <input type="text" class="form-control" id="searchBox"
+                            placeholder="Cari mahasiswa atau prestasi...">
                         <span class="form-control-feedback">
                             <i class="fas fa-search"></i>
                         </span>
@@ -163,10 +164,21 @@
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
         }
 
-        .stat-pending { border-left-color: var(--warning-color); }
-        .stat-approved { border-left-color: var(--success-color); }
-        .stat-rejected { border-left-color: var(--danger-color); }
-        .stat-total { border-left-color: var(--primary-color); }
+        .stat-pending {
+            border-left-color: var(--warning-color);
+        }
+
+        .stat-approved {
+            border-left-color: var(--success-color);
+        }
+
+        .stat-rejected {
+            border-left-color: var(--danger-color);
+        }
+
+        .stat-total {
+            border-left-color: var(--primary-color);
+        }
 
         .stat-icon {
             width: 50px;
@@ -254,9 +266,11 @@
             pointer-events: none;
             color: var(--light-text);
             transition: color 0.3s ease;
+            left: 0;
+            top: 0;
         }
 
-        .has-search .form-control:focus + .form-control-feedback {
+        .has-search .form-control:focus+.form-control-feedback {
             color: var(--accent-color);
         }
 
@@ -279,8 +293,16 @@
             pointer-events: none;
             color: var(--light-text);
             transition: color 0.3s ease;
-            left: 0;
+            right: 0;
             top: 0;
+        }
+
+        .has-filter .form-control {
+            padding-right: 2.8rem;
+        }
+
+        .has-filter .form-control:focus + .form-control-feedback {
+            color: var(--accent-color);
         }
 
         /* Mahasiswa Info Styling */
@@ -393,62 +415,89 @@
                         d.status = $('#statusFilter').val();
                     }
                 },
-                columns: [
-                    { data: "DT_RowIndex", className: "text-center", width: "5%", orderable: false },
-                    { 
-                        data: "mahasiswa_info", 
-                        width: "20%", 
+                columns: [{
+                        data: "DT_RowIndex",
+                        className: "text-center",
+                        width: "5%",
                         orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: "mahasiswa_info",
+                        width: "20%",
+                        orderable: false,
+                        searchable: true,
                         render: function(data, type, row) {
                             return '<div class="mahasiswa-info">' +
-                                   '<div class="mahasiswa-nama">' + data.nama + '</div>' +
-                                   '<div class="mahasiswa-nim">' + data.nim + '</div>' +
-                                   '<div class="mahasiswa-prodi">' + data.prodi + '</div>' +
-                                   '</div>';
+                                '<div class="mahasiswa-nama">' + data.nama + '</div>' +
+                                '<div class="mahasiswa-nim">' + data.nim + '</div>' +
+                                '<div class="mahasiswa-prodi">' + data.prodi + '</div>' +
+                                '</div>';
                         }
                     },
-                    { 
-                        data: "prestasi_info", 
-                        width: "25%", 
+                    {
+                        data: "prestasi_info",
+                        width: "25%",
                         orderable: false,
+                        searchable: true,
                         render: function(data, type, row) {
                             return '<div class="prestasi-info">' +
-                                   '<div class="prestasi-judul">' + data.judul + '</div>' +
-                                   '<div class="prestasi-detail">Score: ' + data.score + '</div>' +
-                                   '</div>';
+                                '<div class="prestasi-judul">' + data.judul + '</div>' +
+                                '<div class="prestasi-detail">Score: ' + data.score + '</div>' +
+                                '</div>';
                         }
                     },
-                    { 
-                        data: "prestasi_info", 
-                        width: "15%", 
+                    {
+                        data: "prestasi_info",
+                        width: "15%",
                         orderable: false,
+                        searchable: true,
                         render: function(data, type, row) {
                             return data.lomba;
                         }
                     },
-                    { 
-                        data: "prestasi_info", 
-                        width: "10%", 
+                    {
+                        data: "prestasi_info",
+                        width: "10%",
                         orderable: false,
+                        searchable: false,
                         render: function(data, type, row) {
                             return data.peringkat;
                         }
                     },
-                    { 
-                        data: "prestasi_info", 
-                        className: "text-center", 
-                        width: "8%", 
+                    {
+                        data: "prestasi_info",
+                        className: "text-center",
+                        width: "8%",
                         orderable: false,
+                        searchable: false,
                         render: function(data, type, row) {
                             return '<span class="badge badge-info">' + data.score + '</span>';
                         }
                     },
-                    { data: "status_verifikasi", className: "text-center", width: "12%", orderable: false },
-                    { data: "aksi", className: "text-center", width: "5%", orderable: false, searchable: false }
+                    {
+                        data: "status_verifikasi",
+                        className: "text-center",
+                        width: "12%",
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: "aksi",
+                        className: "text-center",
+                        width: "5%",
+                        orderable: false,
+                        searchable: false
+                    }
                 ],
                 pageLength: 10,
-                lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
-                order: [[0, "desc"]],
+                lengthMenu: [
+                    [10, 25, 50, 100],
+                    [10, 25, 50, 100]
+                ],
+                order: [
+                    [0, "desc"]
+                ],
                 language: {
                     processing: '<div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>',
                     search: "",

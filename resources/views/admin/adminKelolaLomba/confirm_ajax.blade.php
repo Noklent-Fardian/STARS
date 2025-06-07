@@ -142,6 +142,7 @@
             $('#form-delete').on('submit', function (e) {
                 e.preventDefault();
                 const form = this;
+
                 Swal.fire({
                     title: 'Apakah Anda yakin?',
                     text: "Data yang dihapus tidak dapat dikembalikan!",
@@ -153,23 +154,32 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        $(form).find('button[type="submit"]').prop('disabled', true).html(
+                            '<i class="fas fa-spinner fa-spin mr-2"></i> Menghapus...'
+                        );
+
                         $.ajax({
                             url: form.action,
                             type: 'POST',
                             data: $(form).serialize(),
+                            dataType: 'json',
                             success: function (response) {
+                                $(form).find('button[type="submit"]').prop('disabled', false).html(
+                                    '<i class="fas fa-trash-alt mr-2"></i> Ya, Hapus'
+                                );
+
                                 if (response.status) {
                                     $('#myModal').modal('hide');
+
                                     Swal.fire({
                                         icon: 'success',
                                         title: 'Berhasil',
                                         text: response.message,
                                         timer: 1500,
-                                        showConfirmButton: false
+                                        showConfirmButton: false,
+                                    }).then(function () {
+                                        location.reload();
                                     });
-                                    if (typeof dataLomba !== 'undefined') {
-                                        dataLomba.ajax.reload();
-                                    }
                                 } else {
                                     Swal.fire({
                                         icon: 'error',
@@ -177,6 +187,19 @@
                                         text: response.message
                                     });
                                 }
+                            },
+                            error: function (xhr, status, error) {
+                                $(form).find('button[type="submit"]').prop('disabled', false).html(
+                                    '<i class="fas fa-trash-alt mr-2"></i> Ya, Hapus'
+                                );
+
+                                console.error('AJAX Error:', xhr.responseText);
+
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Terjadi kesalahan saat menghapus data. Silakan coba lagi.'
+                                });
                             }
                         });
                     }

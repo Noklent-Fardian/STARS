@@ -19,7 +19,8 @@
                 <div class="alert alert-info">
                     <i class="fas fa-info-circle mr-2"></i> Format Excel harus sesuai template dengan kolom:
                     <ul class="mb-0 pl-4 mt-1">
-                        <li><strong>Kolom A:</strong> Keahlian ID</li>
+                        <li><strong>Kolom A:</strong> <span class="text-danger-bold">Bidang Keahlian (boleh lebih dari
+                                satu, pisahkan dengan koma, contoh: Frontend Developer, Backend Developer)</span></li>
                         <li><strong>Kolom B:</strong> Tingkatan ID</li>
                         <li><strong>Kolom C:</strong> Semester ID</li>
                         <li><strong>Kolom D:</strong> Nama Lomba</li>
@@ -30,6 +31,8 @@
                         <li><strong>Kolom I:</strong> Link Pendaftaran</li>
                         <li><strong>Kolom J:</strong> Link Poster</li>
                     </ul>
+                    <div><small class="text-danger-bold">Jika keahlian belum ada di database, akan otomatis
+                            ditambahkan.</small></div>
                 </div>
                 <div class="form-group">
                     <label>Pilih File</label>
