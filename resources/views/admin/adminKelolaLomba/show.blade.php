@@ -120,16 +120,24 @@
                                         <i class="fas fa-link text-info"></i>
                                         <span>Link Pendaftaran</span>
                                     </div>
-                                    <div class="info-value"><a href="{{ $lomba->lomba_link_pendaftaran }}"
-                                            target="_blank">{{ $lomba->lomba_link_pendaftaran }}</a></div>
+                                    <div class="info-value">
+                                        <a href="#" class="show-link-modal" data-title="Link Pendaftaran"
+                                            data-url="{{ $lomba->lomba_link_pendaftaran }}">
+                                            {{ $lomba->lomba_link_pendaftaran }}
+                                        </a>
+                                    </div>
                                 </div>
                                 <div class="user-info-item">
                                     <div class="info-label">
                                         <i class="fas fa-image text-warning"></i>
                                         <span>Link Poster</span>
                                     </div>
-                                    <div class="info-value"><a href="{{ $lomba->lomba_link_poster }}"
-                                            target="_blank">{{ $lomba->lomba_link_poster }}</a></div>
+                                    <div class="info-value">
+                                        <a href="#" class="show-link-modal" data-title="Link Poster"
+                                            data-url="{{ $lomba->lomba_link_poster }}">
+                                            {{ $lomba->lomba_link_poster }}
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -159,6 +167,20 @@
         </div>
     </div>
     <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+    <div class="modal fade" id="linkModal" tabindex="-1" role="dialog" aria-labelledby="linkModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="linkModalLabel">Link</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="linkModalBody">
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('js')
@@ -182,10 +204,41 @@
                     'transition': 'all 0.6s ease-out'
                 });
             }, 200);
+            // Modal untuk link pendaftaran/poster
+            $('.show-link-modal').on('click', function (e) {
+                e.preventDefault();
+                var title = $(this).data('title');
+                var url = $(this).data('url');
+                $('#linkModalLabel').text(title);
+
+                let bodyHtml = '';
+                if (/.(jpg|jpeg|png|gif|webp)$/i.test(url)) {
+                    bodyHtml = `<div class="text-center"><img src="${url}" alt="Poster" style="max-width:100%;max-height:500px"></div>`;
+                } else if (/\.pdf(\?|$)/i.test(url) || /drive\.google\.com/i.test(url)) {
+
+                    let embedUrl = url;
+
+                    if (/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/.test(url)) {
+                        // Format: https://drive.google.com/file/d/FILE_ID/view?usp=sharing
+                        let fileId = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/)[1];
+                        embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+                    }
+                    bodyHtml = `<iframe src="${embedUrl}" style="width:100%;height:500px;" frameborder="0" allowfullscreen></iframe>
+            <div class="mt-2"><a href="${url}" target="_blank">${url}</a></div>`;
+                } else if (/^(http|https):\/\//.test(url)) {
+                    bodyHtml = `<iframe src="${url}" style="width:100%;height:500px;border:none"></iframe>
+            <div class="mt-2"><a href="${url}" target="_blank">${url}</a></div>`;
+                } else {
+                    bodyHtml = `<div><a href="${url}" target="_blank">${url}</a></div>`;
+                }
+
+                $('#linkModalBody').html(bodyHtml);
+                $('#linkModal').modal('show');
+            });
         });
     </script>
 @endpush
 
 @push('css')
-    <link rel="stylesheet" href="{{ asset('css/show.css') }}">
+<link rel="stylesheet" href="{{ asset('css/show.css') }}">
 @endpush
