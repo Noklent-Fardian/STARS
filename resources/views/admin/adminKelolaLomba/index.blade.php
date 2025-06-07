@@ -63,16 +63,10 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Keahlian</th>
                             <th>Tingkatan</th>
-                            <th>Semester</th>
                             <th>Nama Lomba</th>
                             <th>Penyelenggara</th>
                             <th>Kategori</th>
-                            <th>Tanggal Mulai</th>
-                            <th>Tanggal Selesai</th>
-                            <th>Link Pendaftaran</th>
-                            <th>Link Poster</th>
                             <th class="text-center text-nowrap">Aksi</th>
                         </tr>
                     </thead>
@@ -195,44 +189,10 @@
                 },
                 columns: [
                     { data: "id", className: "text-center", width: "5%" },
-                    { data: "keahlian_nama", className: "text-center", width: "5%" },
                     { data: "tingkatan_nama", className: "text-center", width: "5%" },
-                    { data: "semester_nama", className: "text-center", width: "5%" },
                     { data: "lomba_nama", width: "30%" },
                     { data: "lomba_penyelenggara", width: "20%" },
                     { data: "lomba_kategori", width: "10%" },
-                    {
-                        data: "lomba_tanggal_mulai",
-                        width: "20%",
-                        render: function (data) {
-                            return data ? new Date(data).toLocaleDateString('id-ID') : '-';
-                        }
-                    },
-                    {
-                        data: "lomba_tanggal_selesai",
-                        width: "20%",
-                        render: function (data) {
-                            return data ? new Date(data).toLocaleDateString('id-ID') : '-';
-                        }
-                    },
-                    {
-                        data: "lomba_link_pendaftaran",
-                        width: "20%",
-                        render: function (data) {
-                            if (!data) return '-';
-                            const url = data.startsWith('http') ? data : `https://${data}`;
-                            return `<a href="${url}" target="_blank" class="text-primary">${truncateText(data, 25)}</a>`;
-                        }
-                    },
-                    {
-                        data: "lomba_link_poster",
-                        width: "20%",
-                        render: function (data) {
-                            if (!data) return '-';
-                            const url = data.startsWith('http') ? data : `https://${data}`;
-                            return `<a href="${url}" target="_blank" class="text-primary">${truncateText(data, 25)}</a>`;
-                        }
-                    },
                     {
                         data: "aksi",
                         className: "text-center text-nowrap",

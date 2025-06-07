@@ -49,16 +49,32 @@
                                 <div class="user-info-item">
                                     <div class="info-label">
                                         <i class="fas fa-cogs text-info"></i>
-                                        <span>Keahlian</span>
+                                        <span>Bidang Keahlian</span>
                                     </div>
-                                    <div class="info-value">{{ $lomba->keahlian->keahlian_nama ?? '-' }}</div>
+                                    <div class="info-value">
+                                        @if ($lomba->keahlians->count() > 0)
+                                            <div class="skills-grid">
+                                                @foreach ($lomba->keahlians as $keahlian)
+                                                    <div class="skill-tag">
+                                                        <i class="fas fa-code"></i>
+                                                        <span>{{ $keahlian->keahlian_nama }}</span>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        @else
+                                            <div class="empty-state-modern">
+                                                <i class="fas fa-info-circle"></i>
+                                                <p>Bidang keahlian tidak ditentukan</p>
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
                                 <div class="user-info-item">
                                     <div class="info-label">
                                         <i class="fas fa-layer-group text-warning"></i>
                                         <span>Tingkatan</span>
                                     </div>
-                                   <div class="info-value">{{ $lomba->tingkatan->tingkatan_nama ?? '-' }}</div>
+                                    <div class="info-value">{{ $lomba->tingkatan->tingkatan_nama ?? '-' }}</div>
                                 </div>
                                 <div class="user-info-item">
                                     <div class="info-label">
@@ -86,7 +102,8 @@
                                         <i class="fas fa-calendar-alt text-success"></i>
                                         <span>Tanggal Mulai</span>
                                     </div>
-                                    <div class="info-value">{{ \Carbon\Carbon::parse($lomba->lomba_tanggal_mulai)->format('d F Y') }}
+                                    <div class="info-value">
+                                        {{ \Carbon\Carbon::parse($lomba->lomba_tanggal_mulai)->format('d F Y') }}
                                     </div>
                                 </div>
                                 <div class="user-info-item">
@@ -95,7 +112,8 @@
                                         <span>Tanggal Selesai</span>
                                     </div>
                                     <div class="info-value">
-                                        {{ \Carbon\Carbon::parse($lomba->lomba_tanggal_selesai)->format('d F Y') }}</div>
+                                        {{ \Carbon\Carbon::parse($lomba->lomba_tanggal_selesai)->format('d F Y') }}
+                                    </div>
                                 </div>
                                 <div class="user-info-item">
                                     <div class="info-label">
