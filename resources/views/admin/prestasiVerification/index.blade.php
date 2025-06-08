@@ -427,6 +427,9 @@
                         orderable: false,
                         searchable: true,
                         render: function(data, type, row) {
+                            if (type === 'sort' || type === 'type') {
+                                return data.nama;
+                            }
                             return `
                                 <div class="mahasiswa-info">
                                     <div class="mahasiswa-nama">${data.nama}</div>
@@ -442,6 +445,9 @@
                         orderable: false,
                         searchable: true,
                         render: function(data, type, row) {
+                            if (type === 'sort' || type === 'type') {
+                                return data.judul;
+                            }
                             return `
                                 <div class="prestasi-info">
                                     <div class="prestasi-judul">${data.judul}</div>

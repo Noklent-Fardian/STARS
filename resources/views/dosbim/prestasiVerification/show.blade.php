@@ -257,61 +257,61 @@
                     <div class="card-body">
                         <div class="documents-grid">
                             @if ($verifikasi->penghargaan->penghargaan_file_sertifikat)
-                                <div class="document-item">
+                                <div class="document-item" style="cursor: pointer;"
+                                    onclick="previewDocument('{{ asset('storage/' . $verifikasi->penghargaan->penghargaan_file_sertifikat) }}', 'Sertifikat')">
                                     <div class="document-icon">
                                         <i class="fas fa-certificate"></i>
                                     </div>
                                     <div class="document-content">
                                         <div class="document-name">Sertifikat</div>
-                                        <a href="{{ asset('storage/' . $verifikasi->penghargaan->penghargaan_file_sertifikat) }}"
-                                            target="_blank" class="document-link">
-                                            <i class="fas fa-external-link-alt"></i> Lihat
-                                        </a>
+                                        <div class="document-link">
+                                            <i class="fas fa-eye"></i> Preview
+                                        </div>
                                     </div>
                                 </div>
                             @endif
 
                             @if ($verifikasi->penghargaan->penghargaan_file_surat_tugas)
-                                <div class="document-item">
+                                <div class="document-item" style="cursor: pointer;"
+                                    onclick="previewDocument('{{ asset('storage/' . $verifikasi->penghargaan->penghargaan_file_surat_tugas) }}', 'Surat Tugas')">
                                     <div class="document-icon">
                                         <i class="fas fa-file-alt"></i>
                                     </div>
                                     <div class="document-content">
                                         <div class="document-name">Surat Tugas</div>
-                                        <a href="{{ asset('storage/' . $verifikasi->penghargaan->penghargaan_file_surat_tugas) }}"
-                                            target="_blank" class="document-link">
-                                            <i class="fas fa-external-link-alt"></i> Lihat
-                                        </a>
+                                        <div class="document-link">
+                                            <i class="fas fa-eye"></i> Preview
+                                        </div>
                                     </div>
                                 </div>
                             @endif
 
                             @if ($verifikasi->penghargaan->penghargaan_file_poster)
-                                <div class="document-item">
+                                <div class="document-item" style="cursor: pointer;"
+                                    onclick="previewDocument('{{ asset('storage/' . $verifikasi->penghargaan->penghargaan_file_poster) }}', 'Poster Kegiatan')">
                                     <div class="document-icon">
                                         <i class="fas fa-image"></i>
                                     </div>
                                     <div class="document-content">
                                         <div class="document-name">Poster Kegiatan</div>
-                                        <a href="{{ asset('storage/' . $verifikasi->penghargaan->penghargaan_file_poster) }}"
-                                            target="_blank" class="document-link">
-                                            <i class="fas fa-external-link-alt"></i> Lihat
-                                        </a>
+                                        <div class="document-link">
+                                            <i class="fas fa-eye"></i> Preview
+                                        </div>
                                     </div>
                                 </div>
                             @endif
 
                             @if ($verifikasi->penghargaan->penghargaan_photo_kegiatan)
-                                <div class="document-item">
+                                <div class="document-item" style="cursor: pointer;"
+                                    onclick="previewDocument('{{ asset('storage/' . $verifikasi->penghargaan->penghargaan_photo_kegiatan) }}', 'Foto Kegiatan')">
                                     <div class="document-icon">
                                         <i class="fas fa-camera"></i>
                                     </div>
                                     <div class="document-content">
                                         <div class="document-name">Foto Kegiatan</div>
-                                        <a href="{{ asset('storage/' . $verifikasi->penghargaan->penghargaan_photo_kegiatan) }}"
-                                            target="_blank" class="document-link">
-                                            <i class="fas fa-external-link-alt"></i> Lihat
-                                        </a>
+                                        <div class="document-link">
+                                            <i class="fas fa-eye"></i> Preview
+                                        </div>
                                     </div>
                                 </div>
                             @endif
@@ -471,6 +471,7 @@
             </div>
         </div>
     </div>
+    @include('dosbim.prestasiVerification.previewModal')
 @endsection
 
 @push('css')
@@ -480,6 +481,117 @@
 
 @push('js')
     <script>
+        function previewDocument(fileUrl, fileName) {
+            // Set modal title
+            $('#documentPreviewModalLabel').html('<i class="fas fa-file-alt mr-2"></i>' + fileName);
+
+            // Set download button href
+            $('#downloadBtn').attr('href', fileUrl);
+
+            // Show loading spinner
+            $('#documentContent').html(`
+                <div class="loading-spinner d-flex justify-content-center align-items-center" style="height: 500px;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            `);
+
+            // Show modal using Bootstrap 4 syntax
+            $('#documentPreviewModal').modal('show');
+
+            // Get file extension
+            const fileExtension = fileUrl.split('.').pop().toLowerCase();
+
+            // Create content based on file type
+            let content = '';
+
+            if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension)) {
+                // Image files
+                content =
+                    `<img src="${fileUrl}" alt="${fileName}" class="img-fluid" style="max-height: 70vh; object-fit: contain;">`;
+
+                // Load image and replace content
+                const img = new Image();
+                img.onload = function() {
+                    $('#documentContent').html(content);
+                };
+                img.onerror = function() {
+                    $('#documentContent').html(`
+                        <div class="alert alert-danger m-3">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            Gagal memuat gambar. File mungkin rusak atau tidak dapat diakses.
+                        </div>
+                    `);
+                };
+                img.src = fileUrl;
+
+            } else if (fileExtension === 'pdf') {
+                // PDF files
+                content = `<iframe src="${fileUrl}" style="width: 100%; height: 70vh; border: none;"></iframe>`;
+
+                setTimeout(() => {
+                    $('#documentContent').html(content);
+                }, 500);
+
+            } else if (['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'].includes(fileExtension)) {
+                // Office documents - use Google Docs viewer
+                const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(fileUrl)}&embedded=true`;
+                content = `<iframe src="${viewerUrl}" style="width: 100%; height: 70vh; border: none;"></iframe>`;
+
+                setTimeout(() => {
+                    $('#documentContent').html(content);
+                }, 500);
+
+            } else {
+                // Unsupported file types
+                content = `
+                    <div class="alert alert-info m-3">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        <h5>File tidak dapat dipratinjau</h5>
+                        <p>Tipe file ini tidak mendukung pratinjau langsung. Silakan unduh file untuk melihat isinya.</p>
+                        <a href="${fileUrl}" class="btn btn-primary" target="_blank" download>
+                            <i class="fas fa-download mr-2"></i>Download ${fileName}
+                        </a>
+                    </div>
+                `;
+
+                setTimeout(() => {
+                    $('#documentContent').html(content);
+                }, 500);
+            }
+        }
+
+        // Handle modal cleanup when closed - Bootstrap 4 syntax
+        $('#documentPreviewModal').on('hidden.bs.modal', function() {
+            $('#documentContent').html(`
+                <div class="loading-spinner d-flex justify-content-center align-items-center" style="height: 500px;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            `);
+        });
+
+        // Manual close handlers for better compatibility
+        $(document).on('click', '[data-dismiss="modal"]', function() {
+            $(this).closest('.modal').modal('hide');
+        });
+
+        // Close modal when clicking outside (backdrop)
+        $(document).on('click', '.modal', function(e) {
+            if (e.target === this) {
+                $(this).modal('hide');
+            }
+        });
+
+        // Close modal with Escape key
+        $(document).on('keydown', function(e) {
+            if (e.key === 'Escape' && $('#documentPreviewModal').hasClass('show')) {
+                $('#documentPreviewModal').modal('hide');
+            }
+        });
+
         function submitVerification(status) {
             const keterangan = $('#keterangan').val();
 

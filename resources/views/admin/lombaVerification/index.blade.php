@@ -491,13 +491,23 @@
                     data: "id",
                     className: "text-center",
                     width: "8%",
-                    orderable: true
+                    orderable: true,
+                    searchable: false
                 },
                 {
                     data: "penginput",
                     width: "20%",
                     orderable: true,
+                    searchable: true,
                     render: function (data, type, row) {
+                        if (type === 'sort' || type === 'type') {
+                            if (row.dosen_nama) {
+                                return row.dosen_nama;
+                            } else if (row.mahasiswa_nama) {
+                                return row.mahasiswa_nama;
+                            }
+                            return 'Unknown';
+                        }
                         // Check if submitted by dosen or mahasiswa
                         if (row.dosen_nama && row.dosen_nip) {
                             return `<div class="user-info">
@@ -527,7 +537,11 @@
                     data: "lomba_nama",
                     width: "25%",
                     orderable: true,
+                    searchable: true,
                     render: function (data, type, row) {
+                        if (type === 'sort' || type === 'type') {
+                            return data;
+                        }
                         return `<div class="lomba-info">
                                                 <div class="lomba-title">${data}</div>
                                                 <small class="text-muted">
@@ -539,13 +553,18 @@
                 {
                     data: "lomba_penyelenggara",
                     width: "18%",
-                    orderable: true
+                    orderable: true,
+                    searchable: true
                 },
                 {
                     data: "created_at",
                     width: "12%",
                     orderable: true,
-                    render: function (data) {
+                    searchable: false,
+                    render: function (data, type, row) {
+                        if (type === 'sort' || type === 'type') {
+                            return data;
+                        }
                         return data ? new Date(data).toLocaleDateString('id-ID') : '-';
                     }
                 },
@@ -553,7 +572,11 @@
                     data: "pendaftaran_status",
                     width: "12%",
                     orderable: true,
-                    render: function (data) {
+                    searchable: false,
+                    render: function (data, type, row) {
+                        if (type === 'sort' || type === 'type') {
+                            return data;
+                        }
                         if (data === 'Menunggu') {
                             return '<span class="badge badge-warning"><i class="fas fa-clock mr-1"></i> Menunggu</span>';
                         } else if (data === 'Diterima') {

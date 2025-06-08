@@ -30,7 +30,8 @@ class PrestasiVerificationController extends Controller
             ->where('dosen_id', $dosen->id)
             ->whereHas('penghargaan.lomba', function ($query) {
                 $query->where('lomba_terverifikasi', 1);
-            });
+            })
+            ->orderBy('t_verifikasis.id', 'desc');
 
         if ($request->status && $request->status != '') {
             $verifikasis->where('verifikasi_dosen_status', $request->status);
@@ -57,6 +58,17 @@ class PrestasiVerificationController extends Controller
                         });
                     });
                 }
+            })
+            ->orderColumn('DT_RowIndex', function ($query, $order) {
+                $query->orderBy('t_verifikasis.id', $order);
+            })
+            ->orderColumn('mahasiswa_info', function ($query, $order) {
+                $query->leftJoin('m_mahasiswas', 't_verifikasis.mahasiswa_id', '=', 'm_mahasiswas.id')
+                      ->orderBy('m_mahasiswas.mahasiswa_nama', $order);
+            })
+            ->orderColumn('prestasi_info', function ($query, $order) {
+                $query->leftJoin('m_penghargaans', 't_verifikasis.penghargaan_id', '=', 'm_penghargaans.id')
+                      ->orderBy('m_penghargaans.penghargaan_judul', $order);
             })
             ->addColumn('mahasiswa_info', function ($row) {
                 return [
@@ -191,7 +203,8 @@ class PrestasiVerificationController extends Controller
         ])
             ->whereHas('penghargaan.lomba', function ($query) {
                 $query->where('lomba_terverifikasi', 1);
-            });
+            })
+            ->orderBy('t_verifikasis.id', 'desc');
 
         if ($request->status && $request->status != '') {
             $verifikasis->where('verifikasi_admin_status', $request->status);
@@ -221,6 +234,21 @@ class PrestasiVerificationController extends Controller
                         });
                     });
                 }
+            })
+            ->orderColumn('DT_RowIndex', function ($query, $order) {
+                $query->orderBy('t_verifikasis.id', $order);
+            })
+            ->orderColumn('mahasiswa_info', function ($query, $order) {
+                $query->leftJoin('m_mahasiswas', 't_verifikasis.mahasiswa_id', '=', 'm_mahasiswas.id')
+                      ->orderBy('m_mahasiswas.mahasiswa_nama', $order);
+            })
+            ->orderColumn('prestasi_info', function ($query, $order) {
+                $query->leftJoin('m_penghargaans', 't_verifikasis.penghargaan_id', '=', 'm_penghargaans.id')
+                      ->orderBy('m_penghargaans.penghargaan_judul', $order);
+            })
+            ->orderColumn('dosen_pembimbing', function ($query, $order) {
+                $query->leftJoin('m_dosens', 't_verifikasis.dosen_id', '=', 'm_dosens.id')
+                      ->orderBy('m_dosens.dosen_nama', $order);
             })
             ->addColumn('mahasiswa_info', function ($row) {
                 return [

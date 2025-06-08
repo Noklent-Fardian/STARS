@@ -428,6 +428,9 @@
                         orderable: false,
                         searchable: true,
                         render: function(data, type, row) {
+                            if (type === 'sort' || type === 'type') {
+                                return data.nama;
+                            }
                             return '<div class="mahasiswa-info">' +
                                 '<div class="mahasiswa-nama">' + data.nama + '</div>' +
                                 '<div class="mahasiswa-nim">' + data.nim + '</div>' +
@@ -441,6 +444,9 @@
                         orderable: false,
                         searchable: true,
                         render: function(data, type, row) {
+                            if (type === 'sort' || type === 'type') {
+                                return data.judul;
+                            }
                             return '<div class="prestasi-info">' +
                                 '<div class="prestasi-judul">' + data.judul + '</div>' +
                                 '<div class="prestasi-detail">Score: ' + data.score + '</div>' +
@@ -453,6 +459,9 @@
                         orderable: false,
                         searchable: true,
                         render: function(data, type, row) {
+                            if (type === 'sort' || type === 'type') {
+                                return data.lomba;
+                            }
                             return data.lomba;
                         }
                     },
@@ -462,6 +471,9 @@
                         orderable: false,
                         searchable: false,
                         render: function(data, type, row) {
+                            if (type === 'sort' || type === 'type') {
+                                return data.peringkat;
+                            }
                             return data.peringkat;
                         }
                     },
@@ -472,6 +484,9 @@
                         orderable: false,
                         searchable: false,
                         render: function(data, type, row) {
+                            if (type === 'sort' || type === 'type') {
+                                return data.score;
+                            }
                             return '<span class="badge badge-info">' + data.score + '</span>';
                         }
                     },
@@ -494,9 +509,6 @@
                 lengthMenu: [
                     [10, 25, 50, 100],
                     [10, 25, 50, 100]
-                ],
-                order: [
-                    [0, "desc"]
                 ],
                 language: {
                     processing: '<div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>',
