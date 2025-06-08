@@ -167,7 +167,7 @@
                                                 ($dosen->dosen_status == 'Cuti' ? 'warning' : 
                                                 ($dosen->dosen_status == 'Tidak Aktif' ? 'danger' :
                                                 ($dosen->dosen_status == 'Studi' ? 'primary' : 'danger')
-                                            }}">
+                                                ))}}">
                                                 {{ $dosen->dosen_status }}
                                             </span><br>
                                         </div>
