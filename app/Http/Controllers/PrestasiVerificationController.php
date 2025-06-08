@@ -45,27 +45,30 @@ class PrestasiVerificationController extends Controller
                     $instance->where(function ($w) use ($search) {
                         $w->whereHas('mahasiswa', function ($q) use ($search) {
                             $q->where('mahasiswa_nama', 'LIKE', "%$search%")
-                                ->orWhere('mahasiswa_nim', 'LIKE', "%$search%");
+                              ->orWhere('mahasiswa_nim', 'LIKE', "%$search%");
                         })
-                            ->orWhereHas('mahasiswa.prodi', function ($q) use ($search) {
-                                $q->where('prodi_nama', 'LIKE', "%$search%");
-                            })
-                            ->orWhereHas('penghargaan', function ($q) use ($search) {
-                                $q->where('penghargaan_judul', 'LIKE', "%$search%");
-                            })
-                            ->orWhereHas('penghargaan.lomba', function ($q) use ($search) {
-                                $q->where('lomba_nama', 'LIKE', "%$search%");
-                            });
+                        ->orWhereHas('mahasiswa.prodi', function ($q) use ($search) {
+                            $q->where('prodi_nama', 'LIKE', "%$search%");
+                        })
+                        ->orWhereHas('penghargaan', function ($q) use ($search) {
+                            $q->where('penghargaan_judul', 'LIKE', "%$search%");
+                        })
+                        ->orWhereHas('penghargaan.lomba', function ($q) use ($search) {
+                            $q->where('lomba_nama', 'LIKE', "%$search%");
+                        });
                     });
                 }
             })
+            ->orderColumn('DT_RowIndex', function ($query, $order) {
+                $query->orderBy('t_verifikasis.id', $order);
+            })
             ->orderColumn('mahasiswa_info', function ($query, $order) {
                 $query->leftJoin('m_mahasiswas', 't_verifikasis.mahasiswa_id', '=', 'm_mahasiswas.id')
-                    ->orderBy('m_mahasiswas.mahasiswa_nama', $order);
+                      ->orderBy('m_mahasiswas.mahasiswa_nama', $order);
             })
             ->orderColumn('prestasi_info', function ($query, $order) {
                 $query->leftJoin('m_penghargaans', 't_verifikasis.penghargaan_id', '=', 'm_penghargaans.id')
-                    ->orderBy('m_penghargaans.penghargaan_judul', $order);
+                      ->orderBy('m_penghargaans.penghargaan_judul', $order);
             })
             ->addColumn('mahasiswa_info', function ($row) {
                 return [
@@ -196,7 +199,7 @@ class PrestasiVerificationController extends Controller
             'mahasiswa.prodi',
             'penghargaan.lomba.tingkatan',
             'penghargaan.peringkat',
-            'dosen',
+            'dosen'
         ])
             ->whereHas('penghargaan.lomba', function ($query) {
                 $query->where('lomba_terverifikasi', 1);
@@ -215,34 +218,37 @@ class PrestasiVerificationController extends Controller
                     $instance->where(function ($w) use ($search) {
                         $w->whereHas('mahasiswa', function ($q) use ($search) {
                             $q->where('mahasiswa_nama', 'LIKE', "%$search%")
-                                ->orWhere('mahasiswa_nim', 'LIKE', "%$search%");
+                              ->orWhere('mahasiswa_nim', 'LIKE', "%$search%");
                         })
-                            ->orWhereHas('mahasiswa.prodi', function ($q) use ($search) {
-                                $q->where('prodi_nama', 'LIKE', "%$search%");
-                            })
-                            ->orWhereHas('penghargaan', function ($q) use ($search) {
-                                $q->where('penghargaan_judul', 'LIKE', "%$search%");
-                            })
-                            ->orWhereHas('penghargaan.lomba', function ($q) use ($search) {
-                                $q->where('lomba_nama', 'LIKE', "%$search%");
-                            })
-                            ->orWhereHas('dosen', function ($q) use ($search) {
-                                $q->where('dosen_nama', 'LIKE', "%$search%");
-                            });
+                        ->orWhereHas('mahasiswa.prodi', function ($q) use ($search) {
+                            $q->where('prodi_nama', 'LIKE', "%$search%");
+                        })
+                        ->orWhereHas('penghargaan', function ($q) use ($search) {
+                            $q->where('penghargaan_judul', 'LIKE', "%$search%");
+                        })
+                        ->orWhereHas('penghargaan.lomba', function ($q) use ($search) {
+                            $q->where('lomba_nama', 'LIKE', "%$search%");
+                        })
+                        ->orWhereHas('dosen', function ($q) use ($search) {
+                            $q->where('dosen_nama', 'LIKE', "%$search%");
+                        });
                     });
                 }
             })
+            ->orderColumn('DT_RowIndex', function ($query, $order) {
+                $query->orderBy('t_verifikasis.id', $order);
+            })
             ->orderColumn('mahasiswa_info', function ($query, $order) {
                 $query->leftJoin('m_mahasiswas', 't_verifikasis.mahasiswa_id', '=', 'm_mahasiswas.id')
-                    ->orderBy('m_mahasiswas.mahasiswa_nama', $order);
+                      ->orderBy('m_mahasiswas.mahasiswa_nama', $order);
             })
             ->orderColumn('prestasi_info', function ($query, $order) {
                 $query->leftJoin('m_penghargaans', 't_verifikasis.penghargaan_id', '=', 'm_penghargaans.id')
-                    ->orderBy('m_penghargaans.penghargaan_judul', $order);
+                      ->orderBy('m_penghargaans.penghargaan_judul', $order);
             })
             ->orderColumn('dosen_pembimbing', function ($query, $order) {
                 $query->leftJoin('m_dosens', 't_verifikasis.dosen_id', '=', 'm_dosens.id')
-                    ->orderBy('m_dosens.dosen_nama', $order);
+                      ->orderBy('m_dosens.dosen_nama', $order);
             })
             ->addColumn('mahasiswa_info', function ($row) {
                 return [

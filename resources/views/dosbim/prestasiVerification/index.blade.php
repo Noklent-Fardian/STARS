@@ -425,7 +425,7 @@
                     {
                         data: "mahasiswa_info",
                         width: "20%",
-                        orderable: true,
+                        orderable: false,
                         searchable: true,
                         render: function(data, type, row) {
                             if (type === 'sort' || type === 'type') {
@@ -441,7 +441,7 @@
                     {
                         data: "prestasi_info",
                         width: "25%",
-                        orderable: true,
+                        orderable: false,
                         searchable: true,
                         render: function(data, type, row) {
                             if (type === 'sort' || type === 'type') {
@@ -456,7 +456,7 @@
                     {
                         data: "prestasi_info",
                         width: "15%",
-                        orderable: true,
+                        orderable: false,
                         searchable: true,
                         render: function(data, type, row) {
                             if (type === 'sort' || type === 'type') {
@@ -468,7 +468,7 @@
                     {
                         data: "prestasi_info",
                         width: "10%",
-                        orderable: true,
+                        orderable: false,
                         searchable: false,
                         render: function(data, type, row) {
                             if (type === 'sort' || type === 'type') {
@@ -481,7 +481,7 @@
                         data: "prestasi_info",
                         className: "text-center",
                         width: "8%",
-                        orderable: true,
+                        orderable: false,
                         searchable: false,
                         render: function(data, type, row) {
                             if (type === 'sort' || type === 'type') {
@@ -494,7 +494,7 @@
                         data: "status_verifikasi",
                         className: "text-center",
                         width: "12%",
-                        orderable: true,
+                        orderable: false,
                         searchable: false
                     },
                     {
@@ -509,9 +509,6 @@
                 lengthMenu: [
                     [10, 25, 50, 100],
                     [10, 25, 50, 100]
-                ],
-                order: [
-                    [1, "asc"]
                 ],
                 language: {
                     processing: '<div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>',

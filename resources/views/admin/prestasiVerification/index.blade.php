@@ -424,7 +424,7 @@
                     {
                         data: "mahasiswa_info",
                         width: "20%",
-                        orderable: true,
+                        orderable: false,
                         searchable: true,
                         render: function(data, type, row) {
                             if (type === 'sort' || type === 'type') {
@@ -442,7 +442,7 @@
                     {
                         data: "prestasi_info",
                         width: "25%",
-                        orderable: true,
+                        orderable: false,
                         searchable: true,
                         render: function(data, type, row) {
                             if (type === 'sort' || type === 'type') {
@@ -461,21 +461,21 @@
                     {
                         data: "dosen_pembimbing",
                         width: "15%",
-                        orderable: true,
+                        orderable: false,
                         searchable: true
                     },
                     {
                         data: "status_verifikasi_dosen",
                         className: "text-center",
                         width: "10%",
-                        orderable: true,
+                        orderable: false,
                         searchable: false
                     },
                     {
                         data: "status_verifikasi",
                         className: "text-center",
                         width: "10%",
-                        orderable: true,
+                        orderable: false,
                         searchable: false
                     },
                     {
@@ -492,7 +492,7 @@
                     [10, 25, 50, 100]
                 ],
                 order: [
-                    [1, "asc"]
+                    [0, "desc"]
                 ],
                 language: {
                     processing: '<div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>',
