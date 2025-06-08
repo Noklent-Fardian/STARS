@@ -119,16 +119,20 @@ class DosenManagementController extends Controller
     public function storeAjax(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'dosen_nama'          => 'required|string|max:255',
-            'dosen_nip'           => 'required|string|max:255|unique:m_dosens',
-            'dosen_gender'        => 'required|in:Laki-laki,Perempuan',
-            'dosen_nomor_telepon' => 'required|string|max:15',
-            'dosen_agama'         => 'nullable|string|max:255',
-            'dosen_provinsi'      => 'nullable|string|max:255',
-            'dosen_kota'          => 'nullable|string|max:255',
-            'dosen_kecamatan'     => 'nullable|string|max:255',
-            'dosen_desa'          => 'nullable|string|max:255',
-            'prodi_id'            => 'nullable|exists:m_prodis,id',
+            'dosen_nama'           => 'required|string|max:255',
+            'dosen_nip'            => 'required|string|max:255|unique:m_dosens',
+            'dosen_gender'         => 'required|in:Laki-laki,Perempuan',
+            'dosen_nomor_telepon'  => 'required|string|max:15',
+            'dosen_agama'          => 'nullable|string|max:255',
+            'dosen_provinsi'       => 'nullable|string|max:255',
+            'dosen_kota'           => 'nullable|string|max:255',
+            'dosen_kecamatan'      => 'nullable|string|max:255',
+            'dosen_desa'           => 'nullable|string|max:255',
+            'dosen_provinsi_text'  => 'nullable|string|max:255',
+            'dosen_kota_text'      => 'nullable|string|max:255',
+            'dosen_kecamatan_text' => 'nullable|string|max:255',
+            'dosen_desa_text'      => 'nullable|string|max:255',
+            'prodi_id'             => 'nullable|exists:m_prodis,id',
         ]);
 
         if ($validator->fails()) {
@@ -149,20 +153,24 @@ class DosenManagementController extends Controller
             ]);
 
             Dosen::create([
-                'user_id'             => $user->id,
-                'prodi_id'            => $request->prodi_id,
-                'dosen_nama'          => $request->dosen_nama,
-                'dosen_nip'           => $request->dosen_nip,
-                'dosen_status'        => 'Aktif',
-                'dosen_gender'        => $request->dosen_gender,
-                'dosen_nomor_telepon' => $request->dosen_nomor_telepon,
-                'dosen_agama'         => $request->dosen_agama,
-                'dosen_provinsi'      => $request->dosen_provinsi,
-                'dosen_kota'          => $request->dosen_kota,
-                'dosen_kecamatan'     => $request->dosen_kecamatan,
-                'dosen_desa'          => $request->dosen_desa,
-                'dosen_photo'         => null,
-                'dosen_visible'       => true,
+                'user_id'              => $user->id,
+                'prodi_id'             => $request->prodi_id,
+                'dosen_nama'           => $request->dosen_nama,
+                'dosen_nip'            => $request->dosen_nip,
+                'dosen_status'         => 'Aktif',
+                'dosen_gender'         => $request->dosen_gender,
+                'dosen_nomor_telepon'  => $request->dosen_nomor_telepon,
+                'dosen_agama'          => $request->dosen_agama,
+                'dosen_provinsi'       => $request->dosen_provinsi,
+                'dosen_kota'           => $request->dosen_kota,
+                'dosen_kecamatan'      => $request->dosen_kecamatan,
+                'dosen_desa'           => $request->dosen_desa,
+                'dosen_provinsi_text'  => $request->dosen_provinsi_text,
+                'dosen_kota_text'      => $request->dosen_kota_text,
+                'dosen_kecamatan_text' => $request->dosen_kecamatan_text,
+                'dosen_desa_text'      => $request->dosen_desa_text,
+                'dosen_photo'          => null,
+                'dosen_visible'        => true,
             ]);
 
             DB::commit();
@@ -217,30 +225,34 @@ class DosenManagementController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'dosen_nama'          => 'required|string|max:255',
-            'dosen_nip'           => [
+            'dosen_nama'           => 'required|string|max:255',
+            'dosen_nip'            => [
                 'required',
                 'string',
                 'max:255',
                 Rule::unique('m_dosens')->ignore($dosen->id),
             ],
-            'dosen_status'        => 'required|in:Aktif,Tidak Aktif,Cuti,Studi',
-            'dosen_gender'        => 'required|in:Laki-laki,Perempuan',
-            'dosen_nomor_telepon' => 'required|string|max:15',
-            'dosen_agama'         => 'nullable|string|max:255',
-            'dosen_provinsi'      => 'nullable|string|max:255',
-            'dosen_kota'          => 'nullable|string|max:255',
-            'dosen_kecamatan'     => 'nullable|string|max:255',
-            'dosen_desa'          => 'nullable|string|max:255',
-            'prodi_id'            => 'nullable|exists:m_prodis,id',
-            'username'            => [
+            'dosen_status'         => 'required|in:Aktif,Tidak Aktif,Cuti,Studi',
+            'dosen_gender'         => 'required|in:Laki-laki,Perempuan',
+            'dosen_nomor_telepon'  => 'required|string|max:15',
+            'dosen_agama'          => 'nullable|string|max:255',
+            'dosen_provinsi'       => 'nullable|string|max:255',
+            'dosen_kota'           => 'nullable|string|max:255',
+            'dosen_kecamatan'      => 'nullable|string|max:255',
+            'dosen_desa'           => 'nullable|string|max:255',
+            'dosen_provinsi_text'  => 'nullable|string|max:255',
+            'dosen_kota_text'      => 'nullable|string|max:255',
+            'dosen_kecamatan_text' => 'nullable|string|max:255',
+            'dosen_desa_text'      => 'nullable|string|max:255',
+            'prodi_id'             => 'nullable|exists:m_prodis,id',
+            'username'             => [
                 'required',
                 'string',
                 'max:255',
                 Rule::unique('m_users')->ignore($dosen->user_id),
             ],
-            'password'            => 'nullable|string|min:8',
-            'dosen_photo'         => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'password'             => 'nullable|string|min:8',
+            'dosen_photo'          => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -264,17 +276,21 @@ class DosenManagementController extends Controller
 
             // Update dosen profile
             $dosen->update([
-                'prodi_id'            => $request->prodi_id,
-                'dosen_nama'          => $request->dosen_nama,
-                'dosen_nip'           => $request->dosen_nip,
-                'dosen_status'        => $request->dosen_status,
-                'dosen_gender'        => $request->dosen_gender,
-                'dosen_nomor_telepon' => $request->dosen_nomor_telepon,
-                'dosen_agama'         => $request->dosen_agama,
-                'dosen_provinsi'      => $request->dosen_provinsi,
-                'dosen_kota'          => $request->dosen_kota,
-                'dosen_kecamatan'     => $request->dosen_kecamatan,
-                'dosen_desa'          => $request->dosen_desa,
+                'prodi_id'             => $request->prodi_id,
+                'dosen_nama'           => $request->dosen_nama,
+                'dosen_nip'            => $request->dosen_nip,
+                'dosen_status'         => $request->dosen_status,
+                'dosen_gender'         => $request->dosen_gender,
+                'dosen_nomor_telepon'  => $request->dosen_nomor_telepon,
+                'dosen_agama'          => $request->dosen_agama,
+                'dosen_provinsi'       => $request->dosen_provinsi,
+                'dosen_kota'           => $request->dosen_kota,
+                'dosen_kecamatan'      => $request->dosen_kecamatan,
+                'dosen_desa'           => $request->dosen_desa,
+                'dosen_provinsi_text'  => $request->dosen_provinsi_text,
+                'dosen_kota_text'      => $request->dosen_kota_text,
+                'dosen_kecamatan_text' => $request->dosen_kecamatan_text,
+                'dosen_desa_text'      => $request->dosen_desa_text,
             ]);
 
             DB::commit();

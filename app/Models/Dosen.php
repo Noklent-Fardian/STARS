@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -39,6 +38,10 @@ class Dosen extends Model
         'dosen_kota',
         'dosen_kecamatan',
         'dosen_desa',
+        'dosen_provinsi_text',
+        'dosen_kota_text',
+        'dosen_kecamatan_text',
+        'dosen_desa_text',
         'dosen_score',
         'dosen_visible',
     ];
