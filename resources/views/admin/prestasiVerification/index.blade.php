@@ -424,9 +424,12 @@
                     {
                         data: "mahasiswa_info",
                         width: "20%",
-                        orderable: false,
+                        orderable: true,
                         searchable: true,
                         render: function(data, type, row) {
+                            if (type === 'sort' || type === 'type') {
+                                return data.nama;
+                            }
                             return `
                                 <div class="mahasiswa-info">
                                     <div class="mahasiswa-nama">${data.nama}</div>
@@ -439,9 +442,12 @@
                     {
                         data: "prestasi_info",
                         width: "25%",
-                        orderable: false,
+                        orderable: true,
                         searchable: true,
                         render: function(data, type, row) {
+                            if (type === 'sort' || type === 'type') {
+                                return data.judul;
+                            }
                             return `
                                 <div class="prestasi-info">
                                     <div class="prestasi-judul">${data.judul}</div>
@@ -455,21 +461,21 @@
                     {
                         data: "dosen_pembimbing",
                         width: "15%",
-                        orderable: false,
+                        orderable: true,
                         searchable: true
                     },
                     {
                         data: "status_verifikasi_dosen",
                         className: "text-center",
                         width: "10%",
-                        orderable: false,
+                        orderable: true,
                         searchable: false
                     },
                     {
                         data: "status_verifikasi",
                         className: "text-center",
                         width: "10%",
-                        orderable: false,
+                        orderable: true,
                         searchable: false
                     },
                     {
@@ -486,7 +492,7 @@
                     [10, 25, 50, 100]
                 ],
                 order: [
-                    [0, "desc"]
+                    [1, "asc"]
                 ],
                 language: {
                     processing: '<div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>',

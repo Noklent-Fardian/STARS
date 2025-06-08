@@ -425,9 +425,12 @@
                     {
                         data: "mahasiswa_info",
                         width: "20%",
-                        orderable: false,
+                        orderable: true,
                         searchable: true,
                         render: function(data, type, row) {
+                            if (type === 'sort' || type === 'type') {
+                                return data.nama;
+                            }
                             return '<div class="mahasiswa-info">' +
                                 '<div class="mahasiswa-nama">' + data.nama + '</div>' +
                                 '<div class="mahasiswa-nim">' + data.nim + '</div>' +
@@ -438,9 +441,12 @@
                     {
                         data: "prestasi_info",
                         width: "25%",
-                        orderable: false,
+                        orderable: true,
                         searchable: true,
                         render: function(data, type, row) {
+                            if (type === 'sort' || type === 'type') {
+                                return data.judul;
+                            }
                             return '<div class="prestasi-info">' +
                                 '<div class="prestasi-judul">' + data.judul + '</div>' +
                                 '<div class="prestasi-detail">Score: ' + data.score + '</div>' +
@@ -450,18 +456,24 @@
                     {
                         data: "prestasi_info",
                         width: "15%",
-                        orderable: false,
+                        orderable: true,
                         searchable: true,
                         render: function(data, type, row) {
+                            if (type === 'sort' || type === 'type') {
+                                return data.lomba;
+                            }
                             return data.lomba;
                         }
                     },
                     {
                         data: "prestasi_info",
                         width: "10%",
-                        orderable: false,
+                        orderable: true,
                         searchable: false,
                         render: function(data, type, row) {
+                            if (type === 'sort' || type === 'type') {
+                                return data.peringkat;
+                            }
                             return data.peringkat;
                         }
                     },
@@ -469,9 +481,12 @@
                         data: "prestasi_info",
                         className: "text-center",
                         width: "8%",
-                        orderable: false,
+                        orderable: true,
                         searchable: false,
                         render: function(data, type, row) {
+                            if (type === 'sort' || type === 'type') {
+                                return data.score;
+                            }
                             return '<span class="badge badge-info">' + data.score + '</span>';
                         }
                     },
@@ -479,7 +494,7 @@
                         data: "status_verifikasi",
                         className: "text-center",
                         width: "12%",
-                        orderable: false,
+                        orderable: true,
                         searchable: false
                     },
                     {
@@ -496,7 +511,7 @@
                     [10, 25, 50, 100]
                 ],
                 order: [
-                    [0, "desc"]
+                    [1, "asc"]
                 ],
                 language: {
                     processing: '<div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>',
