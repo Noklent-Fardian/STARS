@@ -29,6 +29,10 @@ return new class extends Migration
             $table->string('mahasiswa_kota')->nullable();
             $table->string('mahasiswa_kecamatan')->nullable();
             $table->string('mahasiswa_desa')->nullable();
+            $table->string('mahasiswa_provinsi_text')->nullable();
+            $table->string('mahasiswa_kota_text')->nullable();
+            $table->string('mahasiswa_kecamatan_text')->nullable();
+            $table->string('mahasiswa_desa_text')->nullable();
             $table->integer('mahasiswa_score')->default(0);
             $table->boolean('mahasiswa_visible')->default(true);
 
