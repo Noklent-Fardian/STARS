@@ -85,6 +85,7 @@ class RekomendasiController extends Controller
             'm_mahasiswas.mahasiswa_score',
             'm_mahasiswas.keahlian_id as keahlian_utama_id',
             'keahlian_utama.keahlian_nama as keahlian_utama',
+            'm_mahasiswas.mahasiswa_nomor_telepon as mahasiswa_nomor_telepon', // <-- Tambahkan ini!
             DB::raw('COUNT(DISTINCT t_keahlian_mahasiswas.keahlian_id) as jumlah_keahlian_tambahan'),
             DB::raw('COUNT(DISTINCT m_penghargaans.id) as jumlah_lomba')
         ])
@@ -97,7 +98,8 @@ class RekomendasiController extends Controller
             'm_mahasiswas.mahasiswa_nim',
             'm_mahasiswas.mahasiswa_score',
             'm_mahasiswas.keahlian_id',
-            'keahlian_utama.keahlian_nama'
+            'keahlian_utama.keahlian_nama',
+            'm_mahasiswas.mahasiswa_nomor_telepon' // <-- Tambahkan juga di groupBy!
         ])
         ->get();
     }
@@ -105,36 +107,39 @@ class RekomendasiController extends Controller
     // filepath: [RekomendasiController.php](http://_vscodecontentref_/0)
     public function kirimRekomendasi(Request $request)
     {
-        $request->validate([
-            'mahasiswa_id' => 'required|exists:m_mahasiswas,id',
-            'lomba_id' => 'required|exists:m_lombas,id',
-            'rekomendasi_data' => 'required|array'
-        ]);
+        // Hapus session notifikasi lama
+        session()->forget('notifikasi_mahasiswa');
 
-        $lomba = \App\Models\Lomba::findOrFail($request->lomba_id);
+        $ranking = $request->rekomendasi_data;
+        $mahasiswaId = $request->mahasiswa_id;
+        $lombaId = $request->lomba_id; // pastikan dikirim dari AJAX
 
-        // Ambil notifikasi lama dari session
-        $notifikasi = session()->get('notifikasi_mahasiswa', []);
+        $mahasiswa = Mahasiswa::find($mahasiswaId);
+        $lomba = Lomba::find($lombaId);
 
-        // Tambahkan notifikasi untuk semua mahasiswa yang direkomendasikan
-        foreach ($request->rekomendasi_data as $item) {
-            $notifikasi[] = [
-                'judul' => 'Rekomendasi Lomba: ' . $lomba->lomba_nama,
-                'pesan' => 'Anda direkomendasikan untuk mengikuti lomba ini.',
-                'lomba' => [
-                    'lomba_nama' => $lomba->lomba_nama,
-                    'lomba_id' => $lomba->id,
-                ],
-                'mahasiswa' => [
-                    'mahasiswa_nama' => $item['mahasiswa']['nama'],
-                    'mahasiswa_telepon' => $item['mahasiswa']['telepon'],
-                ],
-                'data_ranking' => json_encode($request->rekomendasi_data),
-                'is_read' => false,
-                'created_at' => now(),
+        $dataRanking = [];
+        foreach ($ranking as $item) {
+            $dataRanking[] = [
+                'ranking' => $item['ranking'],
+                'nama' => $item['mahasiswa']['nama'],
+                'nim' => $item['mahasiswa']['nim'],
+                'telepon' => $item['mahasiswa']['mahasiswa_nomor_telepon'] ?? '-',
             ];
         }
 
+        $notifikasi = session()->get('notifikasi_mahasiswa', []);
+        $notifikasi[] = [
+            'judul' => 'Rekomendasi Lomba: ' . ($lomba->lomba_nama ?? '-'),
+            'lomba_nama' => $lomba->lomba_nama ?? '-',
+            'pesan' => 'Anda direkomendasikan untuk mengikuti lomba ini.',
+            'mahasiswa' => [
+                'mahasiswa_nama' => $mahasiswa->mahasiswa_nama,
+                'mahasiswa_telepon' => $mahasiswa->mahasiswa_nomor_telepon,
+            ],
+            'data_ranking' => json_encode($dataRanking),
+            'is_read' => false,
+            'created_at' => now(),
+        ];
         session()->put('notifikasi_mahasiswa', $notifikasi);
 
         return response()->json(['success' => true, 'message' => 'Notifikasi berhasil dikirim ke mahasiswa.']);

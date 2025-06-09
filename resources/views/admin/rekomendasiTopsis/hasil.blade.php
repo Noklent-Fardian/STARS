@@ -284,7 +284,7 @@
     </div>
 @endsection
 
-@push('scripts')
+@push('js')
 <script>
 // Data rekomendasi untuk JavaScript
 const rekomendasiData = @json($rekomendasi);
