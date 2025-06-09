@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class DosenSeeder extends Seeder
 {
@@ -30,6 +31,7 @@ class DosenSeeder extends Seeder
                 'dosen_kota' => null,
                 'dosen_kecamatan' => null,
                 'dosen_desa' => null,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => 7,
@@ -47,6 +49,7 @@ class DosenSeeder extends Seeder
                 'dosen_kota' => null,
                 'dosen_kecamatan' => null,
                 'dosen_desa' => null,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => 8,
@@ -64,6 +67,7 @@ class DosenSeeder extends Seeder
                 'dosen_kota' => null,
                 'dosen_kecamatan' => null,
                 'dosen_desa' => null,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => 9,
@@ -81,6 +85,7 @@ class DosenSeeder extends Seeder
                 'dosen_kota' => null,
                 'dosen_kecamatan' => null,
                 'dosen_desa' => null,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => 10,
@@ -98,6 +103,7 @@ class DosenSeeder extends Seeder
                 'dosen_kota' => null,
                 'dosen_kecamatan' => null,
                 'dosen_desa' => null,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => 11,
@@ -115,6 +121,7 @@ class DosenSeeder extends Seeder
                 'dosen_kota' => null,
                 'dosen_kecamatan' => null,
                 'dosen_desa' => null,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
         ]);
     }

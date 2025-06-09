@@ -46,6 +46,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     // Dashboard
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/dashboard/export-pdf', [AdminController::class, 'exportDashboardPDF'])->name('admin.dashboard.exportPDF');
 
     // Admin Management Routes
     Route::prefix('adminManagement')->name('admin.adminManagement.')->group(function () {
@@ -443,7 +444,7 @@ Route::middleware(['auth', 'role:Mahasiswa'])->prefix('mahasiswa')->name('mahasi
     Route::put('/profile/update-password', [MahasiswaController::class, 'updatePassword'])->name('updatePassword');
     Route::post('/profile/change-password', [MahasiswaController::class, 'changePassword'])->name('changePassword');
     Route::post('/profile/update-photo', [MahasiswaController::class, 'updatePhoto'])->name('updatePhoto');
-    
+
     // Riwayat Pengajuan Lomba
     Route::prefix('riwayatPengajuanLomba')->name('riwayatPengajuanLomba.')->group(function () {
         Route::get('/', [MahasiswaController::class, 'riwayatPengajuanLombaIndex'])->name('index');

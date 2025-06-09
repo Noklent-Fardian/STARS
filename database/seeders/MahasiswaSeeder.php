@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class MahasiswaSeeder extends Seeder
 {
@@ -33,6 +34,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Lowokwaru',
                 'mahasiswa_desa' => 'Dinoyo',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '13',
@@ -53,6 +55,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Gubeng',
                 'mahasiswa_desa' => 'Airlangga',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '14',
@@ -73,6 +76,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Tembalang',
                 'mahasiswa_desa' => 'Tembalang',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '15',
@@ -93,6 +97,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Coblong',
                 'mahasiswa_desa' => 'Dago',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '16',
@@ -113,6 +118,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kebayoran Baru',
                 'mahasiswa_desa' => 'Senayan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '17',
@@ -133,6 +139,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Klojen',
                 'mahasiswa_desa' => 'Kauman',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '18',
@@ -153,6 +160,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Depok',
                 'mahasiswa_desa' => 'Caturtunggal',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '19',
@@ -173,6 +181,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Bangil',
                 'mahasiswa_desa' => 'Pogar',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '20',
@@ -193,6 +202,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Bogor Tengah',
                 'mahasiswa_desa' => 'Paledang',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '21',
@@ -213,6 +223,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Karawaci',
                 'mahasiswa_desa' => 'Bencongan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '22',
@@ -233,6 +244,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Medan Timur',
                 'mahasiswa_desa' => 'Simpang Limun',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '23',
@@ -253,6 +265,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Waru',
                 'mahasiswa_desa' => 'Waru',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '24',
@@ -273,6 +286,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Sananwetan',
                 'mahasiswa_desa' => 'Plosoarang',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '25',
@@ -293,6 +307,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Banjarsari',
                 'mahasiswa_desa' => 'Keprabon',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '26',
@@ -313,6 +328,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Pancoran Mas',
                 'mahasiswa_desa' => 'Depok',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '27',
@@ -333,6 +349,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Padang Utara',
                 'mahasiswa_desa' => 'Air Tawar',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '28',
@@ -353,6 +370,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Denpasar Timur',
                 'mahasiswa_desa' => 'Kesiman',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '29',
@@ -373,6 +391,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Balikpapan Tengah',
                 'mahasiswa_desa' => 'Damai',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '30',
@@ -393,6 +412,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Tamalate',
                 'mahasiswa_desa' => 'Mangasa',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '31',
@@ -413,6 +433,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kranggan',
                 'mahasiswa_desa' => 'Sukosari',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '32',
@@ -433,6 +454,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Sumurbandung',
                 'mahasiswa_desa' => 'Cikawao',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '33',
@@ -453,6 +475,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Kediri',
                 'mahasiswa_desa' => 'Mojoroto',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '34',
@@ -473,6 +496,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Semarang Tengah',
                 'mahasiswa_desa' => 'Pekunden',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '35',
@@ -493,6 +517,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Sooko',
                 'mahasiswa_desa' => 'Jatirejo',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '36',
@@ -513,6 +538,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Sumurbandung',
                 'mahasiswa_desa' => 'Cikawao',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '37',
@@ -533,6 +559,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kranggan',
                 'mahasiswa_desa' => 'Sukosari',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '38',
@@ -553,6 +580,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Semarang Timur',
                 'mahasiswa_desa' => 'Pekunden',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '39',
@@ -573,6 +601,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '40',
@@ -593,6 +622,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Sumurbandung',
                 'mahasiswa_desa' => 'Cikawao',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '41',
@@ -613,6 +643,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '42',
@@ -633,6 +664,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '43',
@@ -653,6 +685,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '44',
@@ -673,6 +706,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '45',
@@ -693,6 +727,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '46',
@@ -713,6 +748,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '47',
@@ -733,6 +769,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '48',
@@ -753,6 +790,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '49',
@@ -773,6 +811,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '50',
@@ -793,6 +832,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '51',
@@ -813,6 +853,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '52',
@@ -833,6 +874,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '53',
@@ -853,6 +895,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '54',
@@ -873,6 +916,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '55',
@@ -893,6 +937,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '56',
@@ -913,6 +958,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '57',
@@ -933,6 +979,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '58',
@@ -953,6 +1000,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '59',
@@ -973,6 +1021,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '60',
@@ -993,6 +1042,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '61',
@@ -1013,6 +1063,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '62',
@@ -1033,6 +1084,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '63',
@@ -1053,6 +1105,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '64',
@@ -1073,6 +1126,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '65',
@@ -1093,6 +1147,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Kota Mojokerto',
                 'mahasiswa_desa' => 'Kranggan',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
                 'user_id' => '66',
@@ -1113,6 +1168,7 @@ class MahasiswaSeeder extends Seeder
                 'mahasiswa_kecamatan' => 'Jayapura Utara',
                 'mahasiswa_desa' => 'Gurabesi',
                 'mahasiswa_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
         ]);
     }

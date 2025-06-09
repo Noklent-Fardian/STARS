@@ -375,6 +375,16 @@ class MahasiswaController extends Controller
                     return '<span class="badge badge-warning"><i class="fas fa-clock mr-1"></i> Menunggu</span>';
                 }
             })
+            ->addColumn('status_verifikasi_keseluruhan', function ($row) {
+                // Overall verification status based on both admin and dosen
+                if ($row->verifikasi_admin_status === 'Diterima' && $row->verifikasi_dosen_status === 'Diterima') {
+                    return '<span class="badge badge-success"><i class="fas fa-check-double mr-1"></i> Terverifikasi</span>';
+                } elseif ($row->verifikasi_admin_status === 'Ditolak' || $row->verifikasi_dosen_status === 'Ditolak') {
+                    return '<span class="badge badge-danger"><i class="fas fa-times mr-1"></i> Ditolak</span>';
+                } else {
+                    return '<span class="badge badge-warning"><i class="fas fa-clock mr-1"></i> Menunggu</span>';
+                }
+            })
             ->addColumn('prestasi_score', function ($row) {
                 return $row->penghargaan->penghargaan_score ?? 0;
             })

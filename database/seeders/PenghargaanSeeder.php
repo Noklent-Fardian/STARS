@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
 class PenghargaanSeeder extends Seeder
 {
     /**
@@ -33,6 +35,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 2250,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 2,
@@ -54,6 +57,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 1250,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 3,
@@ -75,6 +79,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 1500,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 4,
@@ -96,6 +101,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 1500,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 5,
@@ -117,6 +123,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 125,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 1,
@@ -138,6 +145,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 1000,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 2,
@@ -159,6 +167,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 2250,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 8,
@@ -180,6 +189,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 1250,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 2,
@@ -201,6 +211,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 500,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 2,
@@ -222,6 +233,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 150,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 2,
@@ -243,6 +255,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 938,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 11,
@@ -264,6 +277,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 500,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 4,
@@ -285,6 +299,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 3000,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 12,
@@ -306,6 +321,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 1875,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 6,
@@ -327,6 +343,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 1000,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 7,
@@ -348,6 +365,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 375,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 9,
@@ -369,6 +387,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 125,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 11,
@@ -390,6 +409,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 1000,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 5,
@@ -411,6 +431,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 2250,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 7,
@@ -432,6 +453,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 1250,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 16,
@@ -453,6 +475,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 2250,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 15,
@@ -474,6 +497,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 1250,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 9,
@@ -495,6 +519,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 1500,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 1,
@@ -516,6 +541,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 2000,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 1,
@@ -537,6 +563,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 125,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 13,
@@ -558,6 +585,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 1000,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 3,
@@ -579,6 +607,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 2250,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 3,
@@ -600,6 +629,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 1250,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 10,
@@ -621,6 +651,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 500,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 6,
@@ -642,6 +673,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 150,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 4,
@@ -663,6 +695,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 938,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 3,
@@ -684,6 +717,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 500,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 4,
@@ -705,6 +739,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 3000,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 12,
@@ -726,6 +761,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 1875,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 3,
@@ -747,6 +783,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 1000,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 14,
@@ -768,6 +805,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 375,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 2,
@@ -789,6 +827,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 125,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 17,
@@ -810,6 +849,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 1000,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 4,
@@ -831,6 +871,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 2250,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
                 'mahasiswa_id' => 5,
@@ -852,6 +893,7 @@ class PenghargaanSeeder extends Seeder
                 'penghargaan_photo_kegiatan' => '',
                 'penghargaan_score' => 1250,
                 'penghargaan_visible' => true,
+                'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
         ]);
     }

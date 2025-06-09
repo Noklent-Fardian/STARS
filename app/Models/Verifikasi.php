@@ -33,6 +33,43 @@ class Verifikasi extends Model
         'verifikasi_visible' => 'boolean'
     ];
 
+    /**
+     * Check if verification is fully approved (both admin and dosen approved)
+     */
+    public function isFullyVerified(): bool
+    {
+        return $this->verifikasi_admin_status === 'Diterima' && 
+               $this->verifikasi_dosen_status === 'Diterima';
+    }
+
+    /**
+     * Check if verification is rejected by either admin or dosen
+     */
+    public function isRejected(): bool
+    {
+        return $this->verifikasi_admin_status === 'Ditolak' || 
+               $this->verifikasi_dosen_status === 'Ditolak';
+    }
+
+    /**
+     * Check if verification is pending (either or both are waiting)
+     */
+    public function isPending(): bool
+    {
+        return ($this->verifikasi_admin_status === 'Menunggu' || 
+                $this->verifikasi_dosen_status === 'Menunggu') && 
+               !$this->isRejected();
+    }
+
+    /**
+     * Scope for fully verified records
+     */
+    public function scopeFullyVerified($query)
+    {
+        return $query->where('verifikasi_admin_status', 'Diterima')
+                    ->where('verifikasi_dosen_status', 'Diterima');
+    }
+
     public function mahasiswa(): BelongsTo
     {
         return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id', 'id');

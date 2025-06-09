@@ -126,6 +126,13 @@ class PrestasiVerificationController extends Controller
                             $query->where('lomba_terverifikasi', 1);
                         })
                         ->count(),
+                    'fully_verified' => Verifikasi::where('dosen_id', $dosen->id)
+                        ->where('verifikasi_dosen_status', 'Diterima')
+                        ->where('verifikasi_admin_status', 'Diterima')
+                        ->whereHas('penghargaan.lomba', function ($query) {
+                            $query->where('lomba_terverifikasi', 1);
+                        })
+                        ->count(),
                 ]
             ])
             ->rawColumns(['status_verifikasi', 'aksi'])
@@ -313,6 +320,12 @@ class PrestasiVerificationController extends Controller
                     'total' => Verifikasi::whereHas('penghargaan.lomba', function ($query) {
                         $query->where('lomba_terverifikasi', 1);
                     })
+                        ->count(),
+                    'fully_verified' => Verifikasi::where('verifikasi_admin_status', 'Diterima')
+                        ->where('verifikasi_dosen_status', 'Diterima')
+                        ->whereHas('penghargaan.lomba', function ($query) {
+                            $query->where('lomba_terverifikasi', 1);
+                        })
                         ->count(),
                 ]
             ])

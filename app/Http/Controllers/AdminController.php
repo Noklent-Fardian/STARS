@@ -14,14 +14,39 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 
 
 class AdminController extends Controller
 {
-    /**
-     * Display admin dashboard.
-     */
+    private function getYearlyVerificationStatistics()
+    {
+        $years = [];
+        $verifiedData = [];
+
+        // Get data for the last 5 years
+        for ($i = 4; $i >= 0; $i--) {
+            $year = Carbon::now()->subYears($i)->year;
+            $years[] = $year;
+
+            $verifiedCount = Verifikasi::whereYear('created_at', $year)
+                ->where('verifikasi_dosen_status', 'Diterima')
+                ->where('verifikasi_admin_status', 'Diterima')
+                ->whereHas('penghargaan.lomba', function ($query) {
+                    $query->where('lomba_terverifikasi', 1);
+                })
+                ->count();
+
+            $verifiedData[] = $verifiedCount;
+        }
+
+        return [
+            'years' => $years,
+            'verified' => $verifiedData
+        ];
+    }
+
     public function index()
     {
         $admin = Auth::user()->admin;
@@ -35,6 +60,9 @@ class AdminController extends Controller
             'total_prestasi' => AdminKelolaPrestasi::count(),
             'verified_prestasi' => Verifikasi::where('verifikasi_dosen_status', 'Diterima')
                 ->where('verifikasi_admin_status', 'Diterima')
+                ->whereHas('penghargaan.lomba', function ($query) {
+                    $query->where('lomba_terverifikasi', 1);
+                })
                 ->count(),
             'pending_verifikasi_prestasi' => Verifikasi::where('verifikasi_admin_status', 'Menunggu')->count(),
             'pending_verifikasi_lomba' => CompetitionSubmission::where('pendaftaran_status', 'Menunggu')->count(),
@@ -48,7 +76,7 @@ class AdminController extends Controller
                     ->where('verifikasi_admin_status', 'Diterima');
             })
             ->orderBy('created_at', 'desc')
-            ->limit(5)
+            ->limit(10)
             ->get();
 
         $recentLomba = AdminKelolaLomba::with(['tingkatan'])
@@ -56,18 +84,38 @@ class AdminController extends Controller
             ->where('lomba_terverifikasi', 1)
             ->whereNotNull('created_at')
             ->orderBy('created_at', 'desc')
-            ->limit(5)
+            ->limit(10)
             ->get();
 
         // Monthly Statistics
         $monthlyData = $this->getMonthlyStatistics();
 
+        // Yearly Verification Statistics
+        $yearlyVerificationData = $this->getYearlyVerificationStatistics();
+
         // Prestasi by Tingkatan - Fixed to use proper table names
         $prestasiByTingkatan = DB::table('m_penghargaans')
             ->join('m_lombas', 'm_penghargaans.lomba_id', '=', 'm_lombas.id')
             ->join('m_tingkatans', 'm_lombas.tingkatan_id', '=', 'm_tingkatans.id')
-            ->select('m_tingkatans.tingkatan_nama', DB::raw('count(*) as total'))
-            ->groupBy('m_tingkatans.tingkatan_nama')
+            ->join('t_verifikasis', 'm_penghargaans.id', '=', 't_verifikasis.penghargaan_id')
+            ->where('t_verifikasis.verifikasi_admin_status', 'Diterima')
+            ->where('t_verifikasis.verifikasi_dosen_status', 'Diterima')
+            ->select('m_tingkatans.tingkatan_nama', 'm_tingkatans.id as tingkatan_id', DB::raw('count(*) as total'))
+            ->groupBy('m_tingkatans.tingkatan_nama', 'm_tingkatans.id')
+            ->orderBy('m_tingkatans.id')
+            ->get();
+
+        // Verified Prestasi by Tingkatan - New chart data
+        $verifiedPrestasiByTingkatan = DB::table('m_penghargaans')
+            ->join('m_lombas', 'm_penghargaans.lomba_id', '=', 'm_lombas.id')
+            ->join('m_tingkatans', 'm_lombas.tingkatan_id', '=', 'm_tingkatans.id')
+            ->join('t_verifikasis', 'm_penghargaans.id', '=', 't_verifikasis.penghargaan_id')
+            ->where('t_verifikasis.verifikasi_admin_status', 'Diterima')
+            ->where('t_verifikasis.verifikasi_dosen_status', 'Diterima')
+            ->where('m_lombas.lomba_terverifikasi', 1)
+            ->select('m_tingkatans.tingkatan_nama', 'm_tingkatans.id as tingkatan_id', DB::raw('count(*) as verified_total'))
+            ->groupBy('m_tingkatans.tingkatan_nama', 'm_tingkatans.id')
+            ->orderBy('m_tingkatans.id')
             ->get();
 
         // Quick actions data
@@ -85,7 +133,9 @@ class AdminController extends Controller
             'recentPrestasi',
             'recentLomba',
             'monthlyData',
+            'yearlyVerificationData',
             'prestasiByTingkatan',
+            'verifiedPrestasiByTingkatan',
             'quickActions'
         ));
     }
@@ -96,28 +146,33 @@ class AdminController extends Controller
     private function getMonthlyStatistics()
     {
         $months = [];
-        $mahasiswaData = [];
+        $lombaData = [];
         $prestasiData = [];
 
         for ($i = 11; $i >= 0; $i--) {
             $date = Carbon::now()->subMonths($i);
             $months[] = $date->format('M Y');
 
-            $mahasiswaCount = Mahasiswa::whereYear('created_at', $date->year)
+            $lombaCount = CompetitionSubmission::whereYear('created_at', $date->year)
                 ->whereMonth('created_at', $date->month)
-                ->where('mahasiswa_visible', true)
+                ->where('pendaftaran_status', 'Diterima')
                 ->count();
-            $mahasiswaData[] = $mahasiswaCount;
+            $lombaData[] = $lombaCount;
 
-            $prestasiCount = AdminKelolaPrestasi::whereYear('created_at', $date->year)
+            $prestasiCount = Verifikasi::whereYear('created_at', $date->year)
                 ->whereMonth('created_at', $date->month)
+                ->where('verifikasi_dosen_status', 'Diterima')
+                ->where('verifikasi_admin_status', 'Diterima')
+                ->whereHas('penghargaan.lomba', function ($query) {
+                    $query->where('lomba_terverifikasi', 1);
+                })
                 ->count();
             $prestasiData[] = $prestasiCount;
         }
 
         return [
             'months' => $months,
-            'mahasiswa' => $mahasiswaData,
+            'lomba' => $lombaData,
             'prestasi' => $prestasiData
         ];
     }
@@ -341,5 +396,123 @@ class AdminController extends Controller
             return redirect()->route('admin.profile')
                 ->with('error', 'Terjadi kesalahan saat mengubah kata sandi. Silakan coba lagi.');
         }
+    }
+    public function exportDashboardPDF()
+    {
+        $admin = Auth::user()->admin;
+
+        // Basic Statistics
+        $stats = [
+            'total_mahasiswa' => Mahasiswa::where('mahasiswa_visible', true)->count(),
+            'total_dosen' => Dosen::where('dosen_visible', true)->count(),
+            'total_admin' => Admin::where('admin_visible', true)->count(),
+            'total_lomba' => AdminKelolaLomba::where('lomba_visible', true)->count(),
+            'total_prestasi' => AdminKelolaPrestasi::count(),
+            'verified_prestasi' => Verifikasi::where('verifikasi_dosen_status', 'Diterima')
+                ->where('verifikasi_admin_status', 'Diterima')
+                ->count(),
+            'pending_verifikasi_prestasi' => Verifikasi::where('verifikasi_admin_status', 'Menunggu')->count(),
+            'pending_verifikasi_lomba' => CompetitionSubmission::where('pendaftaran_status', 'Menunggu')->count(),
+        ];
+
+        // Monthly Statistics for Charts
+        $monthlyData = $this->getMonthlyStatistics();
+
+        // Prestasi by Tingkatan
+        $prestasiByTingkatan = DB::table('m_penghargaans')
+            ->join('m_lombas', 'm_penghargaans.lomba_id', '=', 'm_lombas.id')
+            ->join('m_tingkatans', 'm_lombas.tingkatan_id', '=', 'm_tingkatans.id')
+            ->select('m_tingkatans.tingkatan_nama', DB::raw('count(*) as total'))
+            ->groupBy('m_tingkatans.tingkatan_nama')
+            ->get();
+
+        // Top Performers
+        $topMahasiswa = Mahasiswa::where('mahasiswa_visible', true)
+            ->orderBy('mahasiswa_score', 'desc')
+            ->limit(10)
+            ->get();
+
+        $topDosen = Dosen::where('dosen_visible', true)
+            ->orderBy('dosen_score', 'desc')
+            ->limit(10)
+            ->get();
+
+        // Prestasi by Prodi
+        $prestasiByProdi = DB::table('m_penghargaans')
+            ->join('m_mahasiswas', 'm_penghargaans.mahasiswa_id', '=', 'm_mahasiswas.id')
+            ->join('m_prodis', 'm_mahasiswas.prodi_id', '=', 'm_prodis.id')
+            ->select('m_prodis.prodi_nama', DB::raw('count(*) as total'))
+            ->groupBy('m_prodis.prodi_nama')
+            ->orderBy('total', 'desc')
+            ->get();
+
+        // Recent Activities
+        $recentActivities = [
+            'prestasi' => AdminKelolaPrestasi::with(['mahasiswa', 'lomba'])
+                ->whereNotNull('created_at')
+                ->orderBy('created_at', 'asc')
+                ->limit(10)
+                ->get(),
+            'lomba' => AdminKelolaLomba::with(['tingkatan'])
+                ->where('lomba_visible', true)
+                ->whereNotNull('created_at')
+                ->orderBy('created_at', 'asc')
+                ->limit(10)
+                ->get()
+        ];
+
+        // Growth Analysis
+        $currentMonth = Carbon::now();
+        $previousMonth = Carbon::now()->subMonth();
+
+        $growthAnalysis = [
+            'lomba_growth' => [
+                'current' => CompetitionSubmission::whereMonth('created_at', $currentMonth->month)
+                    ->whereYear('created_at', $currentMonth->year)
+                    ->where('pendaftaran_status', 'Diterima')
+                    ->count(),
+                'previous' => CompetitionSubmission::whereMonth('created_at', $previousMonth->month)
+                    ->whereYear('created_at', $previousMonth->year)
+                    ->where('pendaftaran_status', 'Diterima')
+                    ->count()
+            ],
+            'prestasi_growth' => [
+                'current' => AdminKelolaPrestasi::whereMonth('created_at', $currentMonth->month)
+                    ->whereYear('created_at', $currentMonth->year)->count(),
+                'previous' => AdminKelolaPrestasi::whereMonth('created_at', $previousMonth->month)
+                    ->whereYear('created_at', $previousMonth->year)->count()
+            ]
+        ];
+
+        // System Performance Metrics
+        $systemMetrics = [
+            'verification_efficiency' => $stats['total_prestasi'] > 0
+                ? round(($stats['verified_prestasi'] / $stats['total_prestasi']) * 100, 2)
+                : 0,
+            'active_participation' => $stats['total_mahasiswa'] > 0
+                ? round((AdminKelolaPrestasi::distinct('mahasiswa_id')->count() / $stats['total_mahasiswa']) * 100, 2)
+                : 0,
+            'dosen_involvement' => $stats['total_dosen'] > 0
+                ? round((Verifikasi::distinct('dosen_id')->count() / $stats['total_dosen']) * 100, 2)
+                : 0
+        ];
+
+        $pdfSetting = \App\Models\PdfSetting::first();
+
+        $pdf = PDF::loadView('admin.export_pdf', compact(
+            'admin',
+            'stats',
+            'monthlyData',
+            'prestasiByTingkatan',
+            'topMahasiswa',
+            'topDosen',
+            'prestasiByProdi',
+            'recentActivities',
+            'growthAnalysis',
+            'systemMetrics',
+            'pdfSetting'
+        ))->setPaper('A4', 'portrait');
+
+        return $pdf->download('dashboard-statistics-' . date('Y-m-d') . '.pdf');
     }
 }
