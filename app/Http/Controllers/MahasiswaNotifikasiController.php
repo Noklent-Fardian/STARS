@@ -8,31 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class MahasiswaNotifikasiController extends Controller
 {
+    // filepath: [MahasiswaNotifikasiController.php](http://_vscodecontentref_/1)
     public function index()
     {
-        try {
-            $mahasiswaId = session('mahasiswa_id') ?? Auth::id();
-
-            if (!$mahasiswaId) {
-                return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu');
-            }
-
-            $mahasiswa = Mahasiswa::find($mahasiswaId);
-            if (!$mahasiswa) {
-                return redirect()->route('login')->with('error', 'Data mahasiswa tidak ditemukan');
-            }
-
-            // Ambil notifikasi dari session
-            $notifikasi = session()->get('notifikasi_mahasiswa', []);
-
-            // Hitung notifikasi belum dibaca (is_read = false)
-            $unreadCount = collect($notifikasi)->where('is_read', false)->count();
-
-            return view('mahasiswa.notifikasi.index', compact('notifikasi', 'mahasiswa', 'unreadCount'));
-
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
-        }
+        $notifikasi = session('notifikasi_mahasiswa', []);
+        return view('mahasiswa.notifikasi.index', compact('notifikasi'));
     }
 
     public function show($index)

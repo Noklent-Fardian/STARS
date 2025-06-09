@@ -12,6 +12,24 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.7.32/sweetalert2.min.css" rel="stylesheet">
 
 <style>
+    #errorMessage {
+    min-height: 0;
+    height: 0;
+    overflow: hidden;
+    transition: height 0.2s;
+    }
+    #errorMessage.show {
+        height: auto;
+        min-height: 48px; /* atau tinggi minimum sesuai kebutuhan */
+        margin-top: 1rem;
+    }
+    .content-wrapper, .main-content, .container-fluid {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+    .card.card-modern {
+        margin-top: 0 !important;
+    }
     .card-modern {
         border: none;
         border-radius: 15px;
@@ -248,13 +266,12 @@
 @endpush
 
 @section('content')
-<div class="container-fluid">
+<div class="container-fluid pt-2" style="margin-top:0 !important; padding-top:10px !important;">
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <!-- Notification Area -->
             <div id="notifArea"></div>
-            
-            <div class="card card-modern fade-in">
+            <div class="card card-modern fade-in" style="margin-top:0 !important;">
                 <div class="card-body card-body-modern">
                     <div class="form-header">
                         <h3>
@@ -357,7 +374,7 @@
 </div>
 @endsection
 
-@push('scripts')
+@push('js')
 <!-- jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!-- Bootstrap JS -->
@@ -395,13 +412,28 @@ $(document).ready(function () {
             totalInfo.addClass('error');
             errorMessage.show();
             $('#errorText').text('Total bobot harus tepat 100% (1.00). Saat ini total bobot adalah ' + (total * 100).toFixed(1) + '%');
+
+            // Tambahan: Tampilkan alert di notifArea
+            $('#notifArea').html(`
+                <div class="alert alert-danger-modern alert-modern fade-in">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Error:</strong><br>
+                    Total bobot harus tepat 100% (1.00). Saat ini total bobot adalah ${(total * 100).toFixed(1)}%
+                </div>
+            `);
         } else if (total > 1.01) {
-            message = '❌ Total bobot melebihi 100%! Tidak dapat disimpan.';
-            messageClass = 'text-danger';
+            message = '⚠️ Total bobot lebih dari 100%';
+            messageClass = 'text-warning';
             submitBtn.prop('disabled', true);
             totalInfo.addClass('error');
             errorMessage.show();
-            $('#errorText').text('Total bobot tidak boleh melebihi 100%. Saat ini total bobot adalah ' + (total * 100).toFixed(1) + '%');
+            $('#notifArea').html(`
+                <div class="alert alert-danger-modern alert-modern fade-in">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Error:</strong><br>
+                    Total bobot tidak boleh melebihi 100%. Saat ini total bobot adalah ${(total * 100).toFixed(1)}%
+                </div>
+            `);
         } else {
             message = '✅ Total bobot sudah sesuai';
             messageClass = 'text-success';
