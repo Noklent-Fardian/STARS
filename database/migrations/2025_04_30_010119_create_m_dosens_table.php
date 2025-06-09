@@ -26,6 +26,10 @@ return new class extends Migration
             $table->string('dosen_kota')->nullable();
             $table->string('dosen_kecamatan')->nullable();
             $table->string('dosen_desa')->nullable();
+            $table->string('dosen_provinsi_text')->nullable();
+            $table->string('dosen_kota_text')->nullable();
+            $table->string('dosen_kecamatan_text')->nullable();
+            $table->string('dosen_desa_text')->nullable();
             $table->integer('dosen_score')->default(0);
             $table->boolean('dosen_visible')->default(true);
 

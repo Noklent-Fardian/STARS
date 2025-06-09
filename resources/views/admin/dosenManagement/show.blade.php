@@ -122,10 +122,10 @@
                                         <div class="info-value">
                                             @php
                                                 $alamat = implode(', ', array_filter([
-                                                    $dosen->dosen_desa,
-                                                    $dosen->dosen_kecamatan,
-                                                    $dosen->dosen_kota,
-                                                    $dosen->dosen_provinsi
+                                                    $dosen->dosen_desa_text,
+                                                    $dosen->dosen_kecamatan_text,
+                                                    $dosen->dosen_kota_text,
+                                                    $dosen->dosen_provinsi_text
                                                 ]));
                                             @endphp
                                             {{ $alamat ?: '-' }}

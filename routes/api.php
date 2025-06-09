@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +13,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// routes/api.php
+Route::get('/wilayah/provinces', function () {
+    $client   = new \GuzzleHttp\Client();
+    $response = $client->get('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json');
+    return json_decode($response->getBody(), true);
+});
+
+Route::get('/wilayah/regencies/{provinceId}', function ($provinceId) {
+    $client   = new \GuzzleHttp\Client();
+    $response = $client->get("https://www.emsifa.com/api-wilayah-indonesia/api/regencies/{$provinceId}.json");
+    return json_decode($response->getBody(), true);
+});
+
+Route::get('/wilayah/districts/{regencyId}', function ($regencyId) {
+    $client   = new \GuzzleHttp\Client();
+    $response = $client->get("https://www.emsifa.com/api-wilayah-indonesia/api/districts/{$regencyId}.json");
+    return json_decode($response->getBody(), true);
+});
+
+Route::get('/wilayah/villages/{districtId}', function ($districtId) {
+    $client   = new \GuzzleHttp\Client();
+    $response = $client->get("https://www.emsifa.com/api-wilayah-indonesia/api/villages/{$districtId}.json");
+    return json_decode($response->getBody(), true);
 });

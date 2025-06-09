@@ -178,7 +178,15 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-warning text-white"><i class="fas fa-pray"></i></span>
                                                     </div>
-                                                    <input value="{{ $mahasiswa->mahasiswa_agama }}" type="text" name="mahasiswa_agama" id="mahasiswa_agama" class="form-control" placeholder="Masukkan agama">
+                                                    <select name="mahasiswa_agama" id="mahasiswa_agama" class="form-control">
+                                                        <option value="">-- Pilih Agama --</option>
+                                                        <option value="Islam" {{ $mahasiswa->mahasiswa_agama === 'Islam' ? 'selected' : '' }}>Islam</option>
+                                                        <option value="Kristen" {{ $mahasiswa->mahasiswa_agama === 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                                                        <option value="Katolik" {{ $mahasiswa->mahasiswa_agama === 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                                                        <option value="Hindu" {{ $mahasiswa->mahasiswa_agama === 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                                                        <option value="Buddha" {{ $mahasiswa->mahasiswa_agama === 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                                                        <option value="Konghucu" {{ $mahasiswa->mahasiswa_agama === 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                                                    </select>
                                                 </div>
                                                 <small id="error-mahasiswa_agama" class="error-text form-text text-danger"></small>
                                             </div>
@@ -200,12 +208,14 @@
                                         <div class="col-md-6">
                                             <!-- Provinsi -->
                                             <div class="form-group">
-                                                <label class="font-weight-bold">Provinsi</label>
+                                                <label class="font-weight-bold">Provinsi <span class="text-danger">*</span></label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-info text-white"><i class="fas fa-map-marker-alt"></i></span>
                                                     </div>
-                                                    <input value="{{ $mahasiswa->mahasiswa_provinsi }}" type="text" name="mahasiswa_provinsi" id="mahasiswa_provinsi" class="form-control" placeholder="Masukkan provinsi">
+                                                    <select name="mahasiswa_provinsi" id="mahasiswa_provinsi" class="form-control" required>
+                                                        <option value="">Memuat provinsi...</option>
+                                                    </select>
                                                 </div>
                                                 <small id="error-mahasiswa_provinsi" class="error-text form-text text-danger"></small>
                                             </div>
@@ -213,12 +223,14 @@
                                         <div class="col-md-6">
                                             <!-- Kota/Kabupaten -->
                                             <div class="form-group">
-                                                <label class="font-weight-bold">Kota/Kabupaten</label>
+                                                <label class="font-weight-bold">Kota/Kabupaten <span class="text-danger">*</span></label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-info text-white"><i class="fas fa-map-marker-alt"></i></span>
                                                     </div>
-                                                    <input value="{{ $mahasiswa->mahasiswa_kota }}" type="text" name="mahasiswa_kota" id="mahasiswa_kota" class="form-control" placeholder="Masukkan kota/kabupaten">
+                                                    <select name="mahasiswa_kota" id="mahasiswa_kota" class="form-control" disabled required>
+                                                        <option value="">Pilih Provinsi terlebih dahulu</option>
+                                                    </select>
                                                 </div>
                                                 <small id="error-mahasiswa_kota" class="error-text form-text text-danger"></small>
                                             </div>
@@ -228,12 +240,14 @@
                                         <div class="col-md-6">
                                             <!-- Kecamatan -->
                                             <div class="form-group">
-                                                <label class="font-weight-bold">Kecamatan</label>
+                                                <label class="font-weight-bold">Kecamatan <span class="text-danger">*</span></label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-info text-white"><i class="fas fa-map-marker-alt"></i></span>
                                                     </div>
-                                                    <input value="{{ $mahasiswa->mahasiswa_kecamatan }}" type="text" name="mahasiswa_kecamatan" id="mahasiswa_kecamatan" class="form-control" placeholder="Masukkan kecamatan">
+                                                    <select name="mahasiswa_kecamatan" id="mahasiswa_kecamatan" class="form-control" disabled required>
+                                                        <option value="">Pilih Kota/Kabupaten terlebih dahulu</option>
+                                                    </select>
                                                 </div>
                                                 <small id="error-mahasiswa_kecamatan" class="error-text form-text text-danger"></small>
                                             </div>
@@ -241,17 +255,23 @@
                                         <div class="col-md-6">
                                             <!-- Desa/Kelurahan -->
                                             <div class="form-group">
-                                                <label class="font-weight-bold">Desa/Kelurahan</label>
+                                                <label class="font-weight-bold">Desa/Kelurahan <span class="text-danger">*</span></label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-info text-white"><i class="fas fa-map-marker-alt"></i></span>
                                                     </div>
-                                                    <input value="{{ $mahasiswa->mahasiswa_desa }}" type="text" name="mahasiswa_desa" id="mahasiswa_desa" class="form-control" placeholder="Masukkan desa/kelurahan">
+                                                    <select name="mahasiswa_desa" id="mahasiswa_desa" class="form-control" disabled required>
+                                                        <option value="">Pilih Kecamatan terlebih dahulu</option>
+                                                    </select>
                                                 </div>
                                                 <small id="error-mahasiswa_desa" class="error-text form-text text-danger"></small>
                                             </div>
                                         </div>
                                     </div>
+                                    <input type="hidden" name="mahasiswa_provinsi_text" id="mahasiswa_provinsi_text" value="{{ $mahasiswa->mahasiswa_provinsi }}">
+                                    <input type="hidden" name="mahasiswa_kota_text" id="mahasiswa_kota_text" value="{{ $mahasiswa->mahasiswa_kota }}">
+                                    <input type="hidden" name="mahasiswa_kecamatan_text" id="mahasiswa_kecamatan_text" value="{{ $mahasiswa->mahasiswa_kecamatan }}">
+                                    <input type="hidden" name="mahasiswa_desa_text" id="mahasiswa_desa_text" value="{{ $mahasiswa->mahasiswa_desa }}">
                                 </div>
                             </div>
                         </div>
@@ -342,13 +362,275 @@
     </div>
 
     <script>
-        $(document).ready(function() {
-            $('.form-group').each(function (i) {
+    $(document).ready(function() {
+        // Data alamat yang sudah ada dari database (berupa ID)
+        const existingAddress = {
+            provinsi: '{{ $mahasiswa->mahasiswa_provinsi }}', // Field ini berisi ID wilayah
+            kota: '{{ $mahasiswa->mahasiswa_kota }}',
+            kecamatan: '{{ $mahasiswa->mahasiswa_kecamatan }}',
+            desa: '{{ $mahasiswa->mahasiswa_desa }}'
+        };
+        
+        // Load provinsi saat modal shown
+        $('#myModal').on('shown.bs.modal', function() {
+            loadProvinsi();
+        });
+
+        $("#mahasiswa_nama").on("input", function () {
+            let value = $(this).val();
+            let cleaned = value.replace(/[^a-zA-Z\s.,]/g, ""); // hapus karakter lain
+            if (value !== cleaned) {
+                $(this).val(cleaned);
+            }
+        });
+
+        $("#mahasiswa_nim").on("input", function () {
+            let value = $(this).val();
+            let cleaned = value.replace(/[^0-9]/g, ""); // hanya angka
+            if (value !== cleaned) {
+                $(this).val(cleaned);
+            }
+        });
+
+        $("#mahasiswa_nomor_telepon").on("input", function () {
+            let value = $(this).val();
+            let cleaned = value.replace(/[^0-9]/g, ""); // hanya angka
+            if (value !== cleaned) {
+                $(this).val(cleaned);
+            }
+        });
+        
+        // Fungsi untuk load provinsi
+        function loadProvinsi() {
+            $('#mahasiswa_provinsi').html('<option value="">Memuat provinsi...</option>');
+            
+            $.ajax({
+                url: '/api/wilayah/provinces',
+                method: 'GET',
+                success: function(data) {
+                    $('#mahasiswa_provinsi').html('<option value="">Pilih Provinsi</option>');
+                    $.each(data, function(index, provinsi) {
+                        $('#mahasiswa_provinsi').append(`<option value="${provinsi.id}" data-name="${provinsi.name}">${provinsi.name}</option>`);
+                    });
+
+                    console.log('Existing Address:', existingAddress);
+                    
+                    // Set provinsi berdasarkan ID dan trigger cascade loading
+                    if (existingAddress.provinsi) {
+                        setSelectedById('#mahasiswa_provinsi', existingAddress.provinsi, function() {
+                            loadKabupaten(existingAddress.provinsi, existingAddress.kota);
+                        });
+                    }
+                },
+                error: function() {
+                    $('#mahasiswa_provinsi').html('<option value="">Gagal memuat provinsi</option>');
+                    console.error('Gagal memuat data provinsi');
+                }
+            });
+        }
+        
+        // Fungsi untuk set selected option berdasarkan ID
+        function setSelectedById(selector, idValue, callback) {
+            const selectElement = $(selector);
+            
+            // Set value dan trigger change
+            selectElement.val(idValue);
+            
+            // Update hidden text field
+            const selectedText = selectElement.find('option:selected').text();
+            const fieldName = selector.replace('#mahasiswa_', '').replace('#', '');
+            $('#mahasiswa_' + fieldName + '_text').val(selectedText);
+            
+            // Trigger change event
+            selectElement.trigger('change');
+            
+            if (typeof callback === 'function') {
+                // Berikan delay untuk memastikan DOM sudah terupdate
+                setTimeout(callback, 300);
+            }
+        }
+        
+        // Event handlers untuk dropdown changes
+        $('#mahasiswa_provinsi').change(function() {
+            const selectedOption = $(this).find('option:selected');
+            const provinsiId = $(this).val();
+            const provinsiText = selectedOption.text();
+            
+            $('#mahasiswa_provinsi_text').val(provinsiText);
+            
+            if (provinsiId) {
+                loadKabupaten(provinsiId);
+                $('#mahasiswa_kota').prop('disabled', false);
+                resetWilayah('kecamatan');
+                resetWilayah('desa');
+            } else {
+                resetWilayah('kota');
+                resetWilayah('kecamatan');
+                resetWilayah('desa');
+            }
+        });
+        
+        $('#mahasiswa_kota').change(function() {
+            const selectedOption = $(this).find('option:selected');
+            const kotaId = $(this).val();
+            const kotaText = selectedOption.text();
+            
+            $('#mahasiswa_kota_text').val(kotaText);
+            
+            if (kotaId) {
+                loadKecamatan(kotaId);
+                $('#mahasiswa_kecamatan').prop('disabled', false);
+                resetWilayah('desa');
+            } else {
+                resetWilayah('kecamatan');
+                resetWilayah('desa');
+            }
+        });
+        
+        $('#mahasiswa_kecamatan').change(function() {
+            const selectedOption = $(this).find('option:selected');
+            const kecamatanId = $(this).val();
+            const kecamatanText = selectedOption.text();
+            
+            $('#mahasiswa_kecamatan_text').val(kecamatanText);
+            
+            if (kecamatanId) {
+                loadDesa(kecamatanId);
+                $('#mahasiswa_desa').prop('disabled', false);
+            } else {
+                resetWilayah('desa');
+            }
+        });
+        
+        $('#mahasiswa_desa').change(function() {
+            const selectedOption = $(this).find('option:selected');
+            const desaText = selectedOption.text();
+            $('#mahasiswa_desa_text').val(desaText);
+        });
+        
+        // Fungsi untuk load kabupaten dengan auto-select
+        function loadKabupaten(provinsiId, autoSelectKota = null) {
+            $('#mahasiswa_kota').html('<option value="">Memuat kabupaten/kota...</option>').prop('disabled', true);
+            
+            $.ajax({
+                url: '/api/wilayah/regencies/' + provinsiId,
+                method: 'GET',
+                success: function(data) {
+                    $('#mahasiswa_kota').html('<option value="">Pilih Kabupaten/Kota</option>');
+                    $.each(data, function(index, kota) {
+                        $('#mahasiswa_kota').append(`<option value="${kota.id}" data-name="${kota.name}">${kota.name}</option>`);
+                    });
+                    $('#mahasiswa_kota').prop('disabled', false);
+                    
+                    // Auto-select kota berdasarkan ID
+                    if (autoSelectKota) {
+                        setSelectedById('#mahasiswa_kota', autoSelectKota, function() {
+                            loadKecamatan(autoSelectKota, existingAddress.kecamatan);
+                        });
+                    }
+                },
+                error: function() {
+                    $('#mahasiswa_kota').html('<option value="">Gagal memuat kabupaten/kota</option>').prop('disabled', true);
+                    console.error('Gagal memuat data kabupaten/kota');
+                }
+            });
+        }
+        
+        // Fungsi untuk load kecamatan dengan auto-select
+        function loadKecamatan(kotaId, autoSelectKecamatan = null) {
+            $('#mahasiswa_kecamatan').html('<option value="">Memuat kecamatan...</option>').prop('disabled', true);
+            
+            $.ajax({
+                url: '/api/wilayah/districts/' + kotaId,
+                method: 'GET',
+                success: function(data) {
+                    $('#mahasiswa_kecamatan').html('<option value="">Pilih Kecamatan</option>');
+                    $.each(data, function(index, kecamatan) {
+                        $('#mahasiswa_kecamatan').append(`<option value="${kecamatan.id}" data-name="${kecamatan.name}">${kecamatan.name}</option>`);
+                    });
+                    $('#mahasiswa_kecamatan').prop('disabled', false);
+                    
+                    // Auto-select kecamatan berdasarkan ID
+                    if (autoSelectKecamatan) {
+                        setSelectedById('#mahasiswa_kecamatan', autoSelectKecamatan, function() {
+                            loadDesa(autoSelectKecamatan, existingAddress.desa);
+                        });
+                    }
+                },
+                error: function() {
+                    $('#mahasiswa_kecamatan').html('<option value="">Gagal memuat kecamatan</option>').prop('disabled', true);
+                    console.error('Gagal memuat data kecamatan');
+                }
+            });
+        }
+        
+        // Fungsi untuk load desa dengan auto-select
+        function loadDesa(kecamatanId, autoSelectDesa = null) {
+            $('#mahasiswa_desa').html('<option value="">Memuat desa/kelurahan...</option>').prop('disabled', true);
+            
+            $.ajax({
+                url: '/api/wilayah/villages/' + kecamatanId,
+                method: 'GET',
+                success: function(data) {
+                    $('#mahasiswa_desa').html('<option value="">Pilih Desa/Kelurahan</option>');
+                    $.each(data, function(index, desa) {
+                        $('#mahasiswa_desa').append(`<option value="${desa.id}" data-name="${desa.name}">${desa.name}</option>`);
+                    });
+                    $('#mahasiswa_desa').prop('disabled', false);
+                    
+                    // Auto-select desa berdasarkan ID
+                    if (autoSelectDesa) {
+                        setSelectedById('#mahasiswa_desa', autoSelectDesa);
+                    }
+                },
+                error: function() {
+                    $('#mahasiswa_desa').html('<option value="">Gagal memuat desa/kelurahan</option>').prop('disabled', true);
+                    console.error('Gagal memuat data desa/kelurahan');
+                }
+            });
+        }
+        
+        // Fungsi untuk reset wilayah
+        function resetWilayah(tingkat) {
+            const element = $('#mahasiswa_' + tingkat);
+            const placeholder = tingkat === 'kota' ? 'Kota/Kabupaten' : 
+                            tingkat === 'kecamatan' ? 'Kecamatan' : 'Desa/Kelurahan';
+            
+            element.html(`<option value="">Pilih ${placeholder}</option>`)
+                .prop('disabled', true)
+                .val('');
+                
+            // Reset hidden field
+            $('#mahasiswa_' + tingkat + '_text').val('');
+            
+            // Reset dependent fields
+            if (tingkat === 'kota') {
+                resetWilayah('kecamatan');
+                resetWilayah('desa');
+            } else if (tingkat === 'kecamatan') {
+                resetWilayah('desa');
+            }
+        }
+            
+        // Debug function untuk melihat data yang dimuat
+        function debugAddressData() {
+            console.log('Existing Address Data:', existingAddress);
+            console.log('Current Selected Values:', {
+                provinsi: $('#mahasiswa_provinsi').val(),
+                kota: $('#mahasiswa_kota').val(),
+                kecamatan: $('#mahasiswa_kecamatan').val(),
+                desa: $('#mahasiswa_desa').val()
+            });
+        }
+        
+        // Add animation to form elements when modal loads
+        $('.form-group').each(function(i) {
             $(this).css({
                 'opacity': 0,
                 'transform': 'translateY(20px)'
             });
-            setTimeout(function () {
+
+            setTimeout(function() {
                 $('.form-group').eq(i).css({
                     'opacity': 1,
                     'transform': 'translateY(0)',
@@ -356,135 +638,153 @@
                 });
             }, 100 * (i + 1));
         });
-            // Toggle password visibility
-            $(document).on('click', '.toggle-password', function() {
-                const passwordInput = $(this).closest('.input-group').find('input');
-                const icon = $(this).find('i');
-                if (passwordInput.attr('type') === 'password') {
-                    passwordInput.attr('type', 'text');
-                    icon.removeClass('fa-eye').addClass('fa-eye-slash');
+
+        $(document).on('click', '.toggle-password', function() {
+            const passwordInput = $(this).closest('.input-group').find('input');
+            const icon = $(this).find('i');
+            if (passwordInput.attr('type') === 'password') {
+                passwordInput.attr('type', 'text');
+                icon.removeClass('fa-eye').addClass('fa-eye-slash');
+            } else {
+                passwordInput.attr('type', 'password');
+                icon.removeClass('fa-eye-slash').addClass('fa-eye');
+            }
+        });
+
+        // Password strength indicator
+        $('#password').on('input', function() {
+            const password = $(this).val();
+            const meter = $(this).closest('.form-group').find('.password-strength-meter');
+            const progressBar = meter.find('.progress-bar');
+            const strengthText = meter.find('.strength-text');
+            if (password.length > 0) {
+                meter.removeClass('d-none');
+                // Simple strength calculation
+                let strength = 0;
+                if (password.length >= 8) strength += 25;
+                if (password.match(/[A-Z]/)) strength += 25;
+                if (password.match(/[0-9]/)) strength += 25;
+                if (password.match(/[^A-Za-z0-9]/)) strength += 25;
+                progressBar.css('width', strength + '%');
+                // Update strength text and color
+                if (strength < 50) {
+                    progressBar.removeClass('bg-warning bg-success').addClass('bg-danger');
+                    strengthText.text('Lemah');
+                } else if (strength < 75) {
+                    progressBar.removeClass('bg-danger bg-success').addClass('bg-warning');
+                    strengthText.text('Sedang');
                 } else {
-                    passwordInput.attr('type', 'password');
-                    icon.removeClass('fa-eye-slash').addClass('fa-eye');
+                    progressBar.removeClass('bg-danger bg-warning').addClass('bg-success');
+                    strengthText.text('Kuat');
                 }
-            });
+            } else {
+                meter.addClass('d-none');
+            }
+        });
 
-            // Password strength indicator
-            $('#password').on('input', function() {
-                const password = $(this).val();
-                const meter = $(this).closest('.form-group').find('.password-strength-meter');
-                const progressBar = meter.find('.progress-bar');
-                const strengthText = meter.find('.strength-text');
-                if (password.length > 0) {
-                    meter.removeClass('d-none');
-                    // Simple strength calculation
-                    let strength = 0;
-                    if (password.length >= 8) strength += 25;
-                    if (password.match(/[A-Z]/)) strength += 25;
-                    if (password.match(/[0-9]/)) strength += 25;
-                    if (password.match(/[^A-Za-z0-9]/)) strength += 25;
-                    progressBar.css('width', strength + '%');
-                    // Update strength text and color
-                    if (strength < 50) {
-                        progressBar.removeClass('bg-warning bg-success').addClass('bg-danger');
-                        strengthText.text('Lemah');
-                    } else if (strength < 75) {
-                        progressBar.removeClass('bg-danger bg-success').addClass('bg-warning');
-                        strengthText.text('Sedang');
-                    } else {
-                        progressBar.removeClass('bg-danger bg-warning').addClass('bg-success');
-                        strengthText.text('Kuat');
-                    }
-                } else {
-                    meter.addClass('d-none');
+        // Validation
+        $("#form-edit").validate({
+            rules: {
+                mahasiswa_nama: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 255
+                },
+                mahasiswa_nim: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 20
+                },
+                mahasiswa_gender: {
+                    required: true
+                },
+                mahasiswa_angkatan: {
+                    required: true,
+                    min: 2000,
+                    max: {{ date('Y') + 5 }}
+                },
+                mahasiswa_nomor_telepon: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 15
+                },
+                mahasiswa_agama: {
+                    maxlength: 50
+                },
+                mahasiswa_provinsi: {
+                    required: true
+                },
+                mahasiswa_kota: {
+                    required: true
+                },
+                mahasiswa_kecamatan: {
+                    required: true
+                },
+                mahasiswa_desa: {
+                    required: true
+                },
+                mahasiswa_status: {
+                    required: true
+                },
+                username: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 50
+                },
+                password: {
+                    minlength: 8,
+                    maxlength: 50
                 }
-            });
-
-            // Custom file input label
-            $('.custom-file-input').on('change', function() {
-                let fileName = $(this).val().split('\\').pop();
-                $(this).next('.custom-file-label').addClass("selected").html(fileName);
-            });
-
-            // Validation
-            $("#form-edit").validate({
-                rules: {
-                    mahasiswa_nama: {
-                        required: true,
-                        minlength: 3,
-                        maxlength: 255
-                    },
-                    mahasiswa_nim: {
-                        required: true,
-                        minlength: 5,
-                        maxlength: 20
-                    },
-                    mahasiswa_gender: {
-                        required: true
-                    },
-                    mahasiswa_angkatan: {
-                        required: true,
-                        min: 2000,
-                        max: {{ date('Y') + 5 }}
-                    },
-                    mahasiswa_nomor_telepon: {
-                        required: true,
-                        minlength: 10,
-                        maxlength: 15
-                    },
-                    mahasiswa_agama: {
-                        maxlength: 50
-                    },
-                    mahasiswa_provinsi: {
-                        maxlength: 255
-                    },
-                    mahasiswa_kota: {
-                        maxlength: 255
-                    },
-                    mahasiswa_kecamatan: {
-                        maxlength: 255
-                    },
-                    mahasiswa_desa: {
-                        maxlength: 255
-                    },
-                    mahasiswa_status: {
-                        required: true
-                    },
-                    username: {
-                        required: true,
-                        minlength: 3,
-                        maxlength: 50
-                    },
-                    password: {
-                        minlength: 8,
-                        maxlength: 50
-                    }
+            },
+            messages: {
+                mahasiswa_nama: {
+                    required: "Nama mahasiswa tidak boleh kosong",
+                    minlength: "Nama mahasiswa minimal 3 karakter",
+                    maxlength: "Nama mahasiswa maksimal 255 karakter"
                 },
-                messages: {
-                    mahasiswa_nama: {
-                        required: "Nama mahasiswa tidak boleh kosong",
-                        minlength: "Nama mahasiswa minimal 3 karakter",
-                        maxlength: "Nama mahasiswa maksimal 255 karakter"
-                    },
-                    mahasiswa_nim: {
-                        required: "NIM tidak boleh kosong",
-                        minlength: "NIM minimal 5 karakter",
-                        maxlength: "NIM maksimal 20 karakter"
-                    },
-                    mahasiswa_gender: {
-                        required: "Jenis kelamin tidak boleh kosong"
-                    },
-                    mahasiswa_angkatan: {
-                        required: "Angkatan tidak boleh kosong",
-                        min: "Angkatan minimal tahun 2000",
-                        max: "Angkatan maksimal tahun {{ date('Y') + 5 }}"
-                    },
-                    mahasiswa_nomor_telepon: {
-                        required: "Nomor telepon tidak boleh kosong",
-                        minlength: "Nomor telepon minimal 10 karakter",
-                        maxlength: "Nomor telepon maksimal 15 karakter"
-                    }
+                mahasiswa_nim: {
+                    required: "NIM tidak boleh kosong",
+                    minlength: "NIM minimal 5 karakter",
+                    maxlength: "NIM maksimal 20 karakter"
                 },
+                mahasiswa_gender: {
+                    required: "Jenis kelamin tidak boleh kosong"
+                },
+                mahasiswa_angkatan: {
+                    required: "Angkatan tidak boleh kosong",
+                    min: "Angkatan minimal tahun 2000",
+                    max: "Angkatan maksimal tahun {{ date('Y') + 5 }}"
+                },
+                mahasiswa_nomor_telepon: {
+                    required: "Nomor telepon tidak boleh kosong",
+                    minlength: "Nomor telepon minimal 10 karakter",
+                    maxlength: "Nomor telepon maksimal 15 karakter"
+                },
+                mahasiswa_provinsi: {
+                    required: "Provinsi tidak boleh kosong"
+                },
+                mahasiswa_kota: {
+                    required: "Kota/Kabupaten tidak boleh kosong"
+                },
+                mahasiswa_kecamatan: {
+                    required: "Kecamatan tidak boleh kosong"
+                },
+                mahasiswa_desa: {
+                    required: "Desa/Kelurahan tidak boleh kosong"
+                },
+                mahasiswa_status: {
+                    required: "Status tidak boleh kosong"
+                },
+                username: {
+                    required: "Username tidak boleh kosong",
+                    minlength: "Username minimal 3 karakter",
+                    maxlength: "Username maksimal 50 karakter"
+                },
+                password: {
+                    minlength: "Password minimal 8 karakter",
+                    maxlength: "Password maksimal 50 karakter"
+                }
+            },
                 submitHandler: function (form) {
                     // Create FormData object for file upload
                     let formData = new FormData(form);
