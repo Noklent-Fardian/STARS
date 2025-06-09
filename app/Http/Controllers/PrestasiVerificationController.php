@@ -173,8 +173,8 @@ class PrestasiVerificationController extends Controller
                 'verifikasi_dosen_tanggal' => now()
             ]);
 
-            // If both dosen and admin approved, update scores
-            if ($request->status === 'Diterima' && $verifikasi->verifikasi_admin_status === 'Diterima') {
+            // If both dosen and admin approved, update scores and verification completion
+            if ($verifikasi->fresh()->isFullyVerified()) {
                 $this->updateScores($verifikasi);
                 $verifikasi->update(['verifikasi_verified_at' => now()]);
             }
@@ -365,8 +365,8 @@ class PrestasiVerificationController extends Controller
                 'admin_id' => Auth::user()->admin->id
             ]);
 
-            // If both dosen and admin approved, update scores
-            if ($request->status === 'Diterima' && $verifikasi->verifikasi_dosen_status === 'Diterima') {
+            // If both dosen and admin approved, update scores and verification completion
+            if ($verifikasi->fresh()->isFullyVerified()) {
                 $this->updateScores($verifikasi);
                 $verifikasi->update(['verifikasi_verified_at' => now()]);
             }

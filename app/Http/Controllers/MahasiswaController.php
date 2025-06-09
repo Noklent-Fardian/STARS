@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\CompetitionSubmission;
 use App\Models\Verifikasi;
 use Yajra\DataTables\Facades\DataTables;
+use App\Models\Prodi;
+use App\Models\Keahlian;
+use App\Models\Lomba;
+
 
 class MahasiswaController extends Controller
 {
@@ -18,8 +22,156 @@ class MahasiswaController extends Controller
      */
     public function index()
     {
-        $mahasiswa = Auth::user()->mahasiswa;
-        return view('mahasiswa.index', compact('mahasiswa'));
+        $mahasiswa = Auth::user()->mahasiswa->load(['prodi', 'keahlianUtama', 'keahlianTambahan']);
+
+        // Calculate overall ranking
+        $overallRank = DB::table('m_mahasiswas')
+            ->where('mahasiswa_visible', true)
+            ->where('mahasiswa_score', '>', $mahasiswa->mahasiswa_score)
+            ->count() + 1;
+
+        $totalMahasiswa = DB::table('m_mahasiswas')
+            ->where('mahasiswa_visible', true)
+            ->count();
+
+        // Calculate ranking in angkatan (year)
+        $angkatanRank = DB::table('m_mahasiswas')
+            ->where('mahasiswa_visible', true)
+            ->where('mahasiswa_angkatan', $mahasiswa->mahasiswa_angkatan)
+            ->where('mahasiswa_score', '>', $mahasiswa->mahasiswa_score)
+            ->count() + 1;
+
+        $totalMahasiswaAngkatan = DB::table('m_mahasiswas')
+            ->where('mahasiswa_visible', true)
+            ->where('mahasiswa_angkatan', $mahasiswa->mahasiswa_angkatan)
+            ->count();
+
+        // Get mahasiswa statistics
+        $stats = [
+            'total_prestasi' => Verifikasi::where('mahasiswa_id', $mahasiswa->id)->count(),
+            'verified_prestasi' => Verifikasi::where('mahasiswa_id', $mahasiswa->id)
+                ->where('verifikasi_admin_status', 'Diterima')
+                ->where('verifikasi_dosen_status', 'Diterima')
+                ->count(),
+            'pending_prestasi' => Verifikasi::where('mahasiswa_id', $mahasiswa->id)
+                ->where(function ($query) {
+                    $query->where('verifikasi_admin_status', 'Menunggu')
+                        ->orWhere('verifikasi_dosen_status', 'Menunggu');
+                })
+                ->count(),
+            'total_lomba_submissions' => CompetitionSubmission::where('mahasiswa_id', $mahasiswa->id)->count(),
+            'approved_lomba_submissions' => CompetitionSubmission::where('mahasiswa_id', $mahasiswa->id)
+                ->where('pendaftaran_status', 'Diterima')
+                ->count(),
+            'current_score' => $mahasiswa->mahasiswa_score ?? 0,
+            'overall_rank' => $overallRank,
+            'total_mahasiswa' => $totalMahasiswa,
+            'angkatan_rank' => $angkatanRank,
+            'total_mahasiswa_angkatan' => $totalMahasiswaAngkatan,
+        ];
+
+        // Get recent activities (prestasi)
+        $recentPrestasi = Verifikasi::with(['penghargaan.lomba.tingkatan', 'penghargaan.peringkat'])
+            ->where('mahasiswa_id', $mahasiswa->id)
+            ->whereHas('penghargaan.lomba', function ($query) {
+                $query->where('lomba_terverifikasi', 1);
+            })
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Get recent lomba submissions
+        $recentLombaSubmissions = CompetitionSubmission::with(['lomba.tingkatan'])
+            ->where('mahasiswa_id', $mahasiswa->id)
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Get ranking comparison data for chart
+        $rankingData = $this->getRankingComparisonData($mahasiswa);
+
+        // Get yearly score data for the student
+        $yearlyScoreData = $this->getYearlyScoreData($mahasiswa);
+
+        return view('mahasiswa.index', compact(
+            'mahasiswa',
+            'stats',
+            'recentPrestasi',
+            'recentLombaSubmissions',
+            'rankingData',
+            'yearlyScoreData'
+        ));
+    }
+
+    /**
+     * Get yearly score data for charts
+     */
+    private function getYearlyScoreData($mahasiswa)
+    {
+        // Get scores by year for this mahasiswa
+        $yearlyScores = DB::table('t_verifikasis')
+            ->join('m_penghargaans', 't_verifikasis.penghargaan_id', '=', 'm_penghargaans.id')
+            ->join('m_lombas', 'm_penghargaans.lomba_id', '=', 'm_lombas.id')
+            ->where('t_verifikasis.mahasiswa_id', $mahasiswa->id)
+            ->where('t_verifikasis.verifikasi_admin_status', 'Diterima')
+            ->where('t_verifikasis.verifikasi_dosen_status', 'Diterima')
+            ->where('m_lombas.lomba_terverifikasi', 1)
+            ->whereNotNull('t_verifikasis.verifikasi_verified_at')
+            ->selectRaw('YEAR(t_verifikasis.verifikasi_verified_at) as year, SUM(m_penghargaans.penghargaan_score) as total_score')
+            ->groupBy(DB::raw('YEAR(t_verifikasis.verifikasi_verified_at)'))  // Fixed this line
+            ->orderBy('year')
+            ->get();
+
+        // Generate last 5 years data
+        $currentYear = now()->year;
+        $years = [];
+        $scores = [];
+
+        for ($i = 4; $i >= 0; $i--) {
+            $year = $currentYear - $i;
+            $years[] = $year;
+
+            $yearScore = $yearlyScores->firstWhere('year', $year);
+            $scores[] = $yearScore ? floatval($yearScore->total_score) : 0;
+        }
+
+        return [
+            'years' => $years,
+            'scores' => $scores
+        ];
+    }
+
+    /**
+     * Get ranking comparison data for charts
+     */
+    private function getRankingComparisonData($mahasiswa)
+    {
+        // Get top 10 students for comparison
+        $topStudents = DB::table('m_mahasiswas')
+            ->select('mahasiswa_nama', 'mahasiswa_score', 'mahasiswa_nim')
+            ->where('mahasiswa_visible', true)
+            ->orderBy('mahasiswa_score', 'desc')
+            ->limit(10)
+            ->get();
+
+        // Get students in same angkatan
+        $angkatanStudents = DB::table('m_mahasiswas')
+            ->select('mahasiswa_nama', 'mahasiswa_score', 'mahasiswa_nim')
+            ->where('mahasiswa_visible', true)
+            ->where('mahasiswa_angkatan', $mahasiswa->mahasiswa_angkatan)
+            ->orderBy('mahasiswa_score', 'desc')
+            ->limit(10)
+            ->get();
+
+        return [
+            'top_students' => $topStudents,
+            'angkatan_students' => $angkatanStudents,
+            'current_student' => [
+                'nama' => $mahasiswa->mahasiswa_nama,
+                'nim' => $mahasiswa->mahasiswa_nim,
+                'score' => $mahasiswa->mahasiswa_score
+            ]
+        ];
     }
 
     public function profile()
@@ -32,8 +184,8 @@ class MahasiswaController extends Controller
     {
         $mahasiswa = Auth::user()->mahasiswa;
         // Ambil data prodi dan keahlian untuk dropdown
-        $prodis = \App\Models\Prodi::all();
-        $keahlians = \App\Models\Keahlian::all();
+        $prodis =  Prodi::all();
+        $keahlians =  Keahlian::all();
         return view('mahasiswa.profile.edit', compact('mahasiswa', 'prodis', 'keahlians'));
     }
 
@@ -252,7 +404,7 @@ class MahasiswaController extends Controller
 
     public function lombaShow($id)
     {
-        $lomba = \App\Models\Lomba::with(['tingkatan', 'semester', 'keahlians'])
+        $lomba =  Lomba::with(['tingkatan', 'semester', 'keahlians'])
             ->where('lomba_visible', true)
             ->findOrFail($id);
 
@@ -267,7 +419,7 @@ class MahasiswaController extends Controller
     public function riwayatPengajuanLombaList(Request $request)
     {
         $mahasiswa = Auth::user()->mahasiswa;
-        
+
         $submissions = CompetitionSubmission::with(['lomba.tingkatan', 'lomba.keahlians'])
             ->where('mahasiswa_id', $mahasiswa->id)
             ->select('*');
@@ -324,7 +476,7 @@ class MahasiswaController extends Controller
     public function riwayatPengajuanPrestasiList(Request $request)
     {
         $mahasiswa = Auth::user()->mahasiswa;
-        
+
         $verifikasis = Verifikasi::with(['penghargaan.lomba.tingkatan', 'penghargaan.peringkat', 'dosen', 'admin'])
             ->where('mahasiswa_id', $mahasiswa->id)
             ->select('*');
@@ -355,7 +507,7 @@ class MahasiswaController extends Controller
             })
             ->addColumn('status_verifikasi_dosen', function ($row) {
                 $dosenStatus = $row->verifikasi_dosen_status;
-                
+
                 if ($dosenStatus === 'Ditolak') {
                     return '<span class="badge badge-danger"><i class="fas fa-times mr-1"></i> Ditolak</span>';
                 } elseif ($dosenStatus === 'Diterima') {
@@ -366,7 +518,7 @@ class MahasiswaController extends Controller
             })
             ->addColumn('status_verifikasi_admin', function ($row) {
                 $adminStatus = $row->verifikasi_admin_status;
-                
+
                 if ($adminStatus === 'Ditolak') {
                     return '<span class="badge badge-danger"><i class="fas fa-times mr-1"></i> Ditolak</span>';
                 } elseif ($adminStatus === 'Diterima') {
@@ -398,17 +550,17 @@ class MahasiswaController extends Controller
             ->with([
                 'statistics' => [
                     'pending' => Verifikasi::where('mahasiswa_id', $mahasiswa->id)
-                        ->where(function($query) {
+                        ->where(function ($query) {
                             $query->where('verifikasi_admin_status', 'Menunggu')
-                                  ->orWhere('verifikasi_dosen_status', 'Menunggu');
+                                ->orWhere('verifikasi_dosen_status', 'Menunggu');
                         })->count(),
                     'approved' => Verifikasi::where('mahasiswa_id', $mahasiswa->id)
                         ->where('verifikasi_admin_status', 'Diterima')
                         ->where('verifikasi_dosen_status', 'Diterima')->count(),
                     'rejected' => Verifikasi::where('mahasiswa_id', $mahasiswa->id)
-                        ->where(function($query) {
+                        ->where(function ($query) {
                             $query->where('verifikasi_admin_status', 'Ditolak')
-                                  ->orWhere('verifikasi_dosen_status', 'Ditolak');
+                                ->orWhere('verifikasi_dosen_status', 'Ditolak');
                         })->count(),
                     'total' => Verifikasi::where('mahasiswa_id', $mahasiswa->id)->count(),
                 ]
@@ -421,15 +573,15 @@ class MahasiswaController extends Controller
     {
         $mahasiswa = Auth::user()->mahasiswa;
         $verifikasi = Verifikasi::with([
-            'penghargaan.lomba.tingkatan', 
-            'penghargaan.lomba.keahlians', 
+            'penghargaan.lomba.tingkatan',
+            'penghargaan.lomba.keahlians',
             'penghargaan.lomba.semester',
             'penghargaan.peringkat',
             'dosen',
             'admin'
         ])
-        ->where('mahasiswa_id', $mahasiswa->id)
-        ->findOrFail($id);
+            ->where('mahasiswa_id', $mahasiswa->id)
+            ->findOrFail($id);
 
         return view('mahasiswa.riwayatPengajuanPrestasi.show', compact('verifikasi'));
     }

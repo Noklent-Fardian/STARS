@@ -24,7 +24,8 @@ class Verifikasi extends Model
         'verifikasi_dosen_status',
         'verifikasi_dosen_keterangan',
         'verifikasi_dosen_tanggal',
-        'verifikasi_visible'
+        'verifikasi_visible',
+        'verifikasi_verified_at'
     ];
 
     protected $casts = [
@@ -88,5 +89,15 @@ class Verifikasi extends Model
     public function admin(): BelongsTo
     {
         return $this->belongsTo(Admin::class, 'admin_id', 'id');
+    }
+
+    /**
+     * Update verification completion timestamp if both verifications are accepted
+     */
+    public function updateVerificationCompletion(): void
+    {
+        if ($this->isFullyVerified() && !$this->verifikasi_verified_at) {
+            $this->update(['verifikasi_verified_at' => now()]);
+        }
     }
 }

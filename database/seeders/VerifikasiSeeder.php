@@ -14,7 +14,7 @@ class VerifikasiSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('t_verifikasis')->insert([
+        $records = [
             [
                 'mahasiswa_id' => 1,
                 'penghargaan_id' => 1,
@@ -704,6 +704,17 @@ class VerifikasiSeeder extends Seeder
                 'verifikasi_dosen_tanggal' => null,
                 'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
-        ]);
+        ];
+
+        // Process each record to add verifikasi_verified_at
+        foreach ($records as &$record) {
+            if ($record['verifikasi_admin_status'] === 'Diterima' && $record['verifikasi_dosen_status'] === 'Diterima') {
+                $record['verifikasi_verified_at'] = $record['created_at'];
+            } else {
+                $record['verifikasi_verified_at'] = null;
+            }
+        }
+
+        DB::table('t_verifikasis')->insert($records);
     }
 }
