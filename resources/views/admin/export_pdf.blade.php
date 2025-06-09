@@ -1,114 +1,58 @@
 <html>
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="{{ public_path('css/exportPdf.css') }}">
     <style>
-        .statistics-grid {
+        .summary-stats {
             display: table;
             width: 100%;
             margin: 20px 0;
         }
-
-        .stat-row {
-            display: table-row;
-        }
-
-        .stat-cell {
+        .stat-item {
             display: table-cell;
             width: 25%;
-            padding: 15px;
             text-align: center;
             border: 1px solid #ddd;
+            padding: 10px;
             background-color: #f8f9fc;
         }
-
         .stat-number {
-            font-size: 24pt;
+            font-size: 20pt;
             font-weight: bold;
             color: var(--primary-color);
-            margin-bottom: 5px;
+            display: block;
         }
-
         .stat-label {
-            font-size: 10pt;
-            color: var(--text-color);
+            font-size: 9pt;
+            color: var(--light-text);
             text-transform: uppercase;
         }
-
-        .analysis-section {
-            margin: 25px 0;
+        .chart-placeholder {
+            border: 2px dashed #ddd;
             padding: 20px;
-            border: 1px solid #ddd;
+            text-align: center;
+            margin: 10px 0;
             background-color: #f8f9fc;
         }
-
-        .section-title {
-            font-size: 14pt;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 5px;
-        }
-
-        .growth-indicator {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 9pt;
-            font-weight: bold;
-        }
-
-        .growth-positive {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .growth-negative {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .growth-neutral {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-
-        .metric-bar {
+        .performance-grid {
+            display: table;
             width: 100%;
-            height: 20px;
-            background-color: #e9ecef;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 5px 0;
-        }
-
-        .metric-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-        }
-
-        .chart-placeholder {
-            width: 100%;
-            height: 200px;
-            border: 2px dashed #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            font-style: italic;
             margin: 15px 0;
         }
-
-        .top-performer {
+        .performance-item {
+            display: table-cell;
+            width: 50%;
             padding: 8px;
-            margin: 5px 0;
             border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: white;
         }
-
+        .section-title {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 8px 12px;
+            margin: 20px 0 10px 0;
+            font-weight: bold;
+            font-size: 12pt;
+        }
         .page-break {
             page-break-before: always;
         }
@@ -116,31 +60,30 @@
 </head>
 
 <body>
-    <!-- Header -->
+    {{-- Header --}}
     <table class="letterhead">
         <tr>
             <td width="15%" class="text-center">
-                @if (isset($pdfSetting) && $pdfSetting->pdf_logo_kiri)
+                @if(isset($pdfSetting) && $pdfSetting->pdf_logo_kiri)
                     <img src="{{ public_path('storage/' . $pdfSetting->pdf_logo_kiri) }}" alt="Logo Kiri" class="logo">
                 @else
                     <img src="{{ public_path('img/poltek100.png') }}" alt="Logo Polinema" class="logo">
                 @endif
             </td>
             <td width="70%" class="text-center">
-                <div class="ministry">
-                    {{ isset($pdfSetting) && $pdfSetting->pdf_instansi1 ? $pdfSetting->pdf_instansi1 : 'STARS - Student Achievement Record System' }}
-                </div>
-                <div class="institution">
-                    {{ isset($pdfSetting) && $pdfSetting->pdf_instansi2 ? $pdfSetting->pdf_instansi2 : 'POLITEKNIK NEGERI MALANG' }}
-                </div>
+                <div class="ministry">{{ isset($pdfSetting) && $pdfSetting->pdf_instansi1 ? $pdfSetting->pdf_instansi1 : 'STARS - Student Achievement Record System' }}</div>
+                <div class="institution">{{ isset($pdfSetting) && $pdfSetting->pdf_instansi2 ? $pdfSetting->pdf_instansi2 : 'POLITEKNIK NEGERI MALANG' }}</div>
+                <div class="address">{{ isset($pdfSetting) && $pdfSetting->pdf_alamat ? $pdfSetting->pdf_alamat : 'Jl. Soekarno-Hatta No. 9 Malang 65141' }}</div>
                 <div class="address">
-                    {{ isset($pdfSetting) && $pdfSetting->pdf_alamat ? $pdfSetting->pdf_alamat : 'Jl. Soekarno-Hatta No. 9 Malang 65141' }}
+                    Telepon {{ isset($pdfSetting) && $pdfSetting->pdf_telepon ? $pdfSetting->pdf_telepon : '(0341) 404424' }}
+                    {{ isset($pdfSetting) && $pdfSetting->pdf_pes ? ' Pes. ' . $pdfSetting->pdf_pes : ' Pes. 101-105, 0341-404420' }}
+                    {{ isset($pdfSetting) && $pdfSetting->pdf_fax ? ', Fax. ' . $pdfSetting->pdf_fax : ', Fax. (0341) 404420' }}
                 </div>
+                <div class="address">Laman: {{ isset($pdfSetting) && $pdfSetting->pdf_website ? $pdfSetting->pdf_website : 'www.polinema.ac.id' }}</div>
             </td>
             <td width="15%" class="text-center">
-                @if (isset($pdfSetting) && $pdfSetting->pdf_logo_kanan)
-                    <img src="{{ public_path('storage/' . $pdfSetting->pdf_logo_kanan) }}" alt="Logo Kanan"
-                        class="logo">
+                @if(isset($pdfSetting) && $pdfSetting->pdf_logo_kanan)
+                    <img src="{{ public_path('storage/' . $pdfSetting->pdf_logo_kanan) }}" alt="Logo Kanan" class="logo">
                 @else
                     <img src="{{ public_path('img/logo100.png') }}" alt="Logo Stars" class="logo">
                 @endif
@@ -148,291 +91,263 @@
         </tr>
     </table>
 
-    <div class="document-title">Laporan Statistik & Analisis Sistem STARS</div>
-
-    <div style="text-align: center; margin: 20px 0; font-size: 11pt; color: #666;">
-        Periode: {{ date('F Y') }} | Dicetak: {{ now()->format('d F Y H:i') }}
+    <div class="document-title">LAPORAN STATISTIK DAN ANALISIS SISTEM STAR</div>
+    <div class="text-center" style="margin-bottom: 30px; font-size: 11pt;">
+        Periode: {{ now()->format('d F Y') }}
     </div>
 
-    <!-- Executive Summary -->
-    <div class="analysis-section">
-        <div class="section-title">Ringkasan Eksekutif</div>
-        <p style="text-align: justify; line-height: 1.6;">
-            Sistem STARS (Student Achievement Record System) saat ini mengelola data dari
-            <strong>{{ number_format($stats['total_mahasiswa']) }} mahasiswa</strong> dan
-            <strong>{{ number_format($stats['total_dosen']) }} dosen</strong> dengan total
-            <strong>{{ number_format($stats['total_prestasi']) }} prestasi</strong> yang tercatat.
-            Tingkat verifikasi prestasi mencapai <strong>{{ $systemMetrics['verification_efficiency'] }}%</strong>
-            dengan partisipasi aktif mahasiswa sebesar <strong>{{ $systemMetrics['active_participation'] }}%</strong>.
-        </p>
-    </div>
-
-    <!-- Key Statistics -->
-    <div class="statistics-grid">
-        <div class="stat-row">
-            <div class="stat-cell">
-                <div class="stat-number">{{ number_format($stats['total_mahasiswa']) }}</div>
-                <div class="stat-label">Total Mahasiswa</div>
-            </div>
-            <div class="stat-cell">
-                <div class="stat-number">{{ number_format($stats['total_dosen']) }}</div>
-                <div class="stat-label">Total Dosen</div>
-            </div>
-            <div class="stat-cell">
-                <div class="stat-number">{{ number_format($stats['total_prestasi']) }}</div>
-                <div class="stat-label">Total Prestasi</div>
-            </div>
-            <div class="stat-cell">
-                <div class="stat-number">{{ number_format($stats['verified_prestasi']) }}</div>
-                <div class="stat-label">Prestasi Terverifikasi</div>
-            </div>
+    {{-- Executive Summary --}}
+    <div class="section-title">RINGKASAN EKSEKUTIF</div>
+    <div class="summary-stats">
+        <div class="stat-item">
+            <span class="stat-number">{{ number_format($stats['total_mahasiswa']) }}</span>
+            <span class="stat-label">Total Mahasiswa</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">{{ number_format($stats['total_dosen']) }}</span>
+            <span class="stat-label">Total Dosen</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">{{ number_format($stats['total_prestasi']) }}</span>
+            <span class="stat-label">Total Prestasi</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">{{ number_format($stats['verified_prestasi']) }}</span>
+            <span class="stat-label">Prestasi Terverifikasi</span>
         </div>
     </div>
 
-    <!-- System Performance Metrics -->
-    <div class="analysis-section">
-        <div class="section-title">Metrik Kinerja Sistem</div>
-
-        <div style="margin: 15px 0;">
-            <strong>Efisiensi Verifikasi:</strong> {{ $systemMetrics['verification_efficiency'] }}%
-            <div class="metric-bar">
-                <div class="metric-fill" style="width: {{ $systemMetrics['verification_efficiency'] }}%;"></div>
-            </div>
+    <div class="summary-stats">
+        <div class="stat-item">
+            <span class="stat-number">{{ number_format($stats['total_lomba']) }}</span>
+            <span class="stat-label">Total Lomba</span>
         </div>
-
-        <div style="margin: 15px 0;">
-            <strong>Partisipasi Aktif Mahasiswa:</strong> {{ $systemMetrics['active_participation'] }}%
-            <div class="metric-bar">
-                <div class="metric-fill" style="width: {{ $systemMetrics['active_participation'] }}%;"></div>
-            </div>
+        <div class="stat-item">
+            <span class="stat-number">{{ number_format($stats['pending_verifikasi_prestasi']) }}</span>
+            <span class="stat-label">Prestasi Pending</span>
         </div>
-
-        <div style="margin: 15px 0;">
-            <strong>Keterlibatan Dosen:</strong> {{ $systemMetrics['dosen_involvement'] }}%
-            <div class="metric-bar">
-                <div class="metric-fill" style="width: {{ $systemMetrics['dosen_involvement'] }}%;"></div>
-            </div>
+        <div class="stat-item">
+            <span class="stat-number">{{ $performanceMetrics['verification_rate'] }}%</span>
+            <span class="stat-label">Tingkat Verifikasi</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">{{ number_format($performanceMetrics['avg_score_per_student'], 1) }}</span>
+            <span class="stat-label">Rata-rata Skor Mahasiswa</span>
         </div>
     </div>
 
-    <!-- Growth Analysis -->
-    @php
-        $lombaGrowth =
-            $growthAnalysis['lomba_growth']['previous'] > 0
-                ? (($growthAnalysis['lomba_growth']['current'] - $growthAnalysis['lomba_growth']['previous']) /
-                        $growthAnalysis['lomba_growth']['previous']) *
-                    100
-                : 0;
-        $prestasiGrowth =
-            $growthAnalysis['prestasi_growth']['previous'] > 0
-                ? (($growthAnalysis['prestasi_growth']['current'] - $growthAnalysis['prestasi_growth']['previous']) /
-                        $growthAnalysis['prestasi_growth']['previous']) *
-                    100
-                : 0;
-    @endphp
-
-    <div style="margin: 10px 0;">
-        <strong>Lomba Terverifikasi:</strong>
-        {{ $growthAnalysis['lomba_growth']['current'] }} lomba
-        @if ($lombaGrowth > 0)
-            <span class="growth-indicator growth-positive">↑ {{ number_format($lombaGrowth, 1) }}%</span>
-        @elseif($lombaGrowth < 0)
-            <span class="growth-indicator growth-negative">↓ {{ number_format(abs($lombaGrowth), 1) }}%</span>
-        @else
-            <span class="growth-indicator growth-neutral">→ 0%</span>
-        @endif
+    {{-- Performance Metrics --}}
+    <div class="section-title">METRIK KINERJA SISTEM</div>
+    <div class="performance-grid">
+        <div class="performance-item">
+            <strong>Tingkat Verifikasi Prestasi:</strong><br>
+            {{ $performanceMetrics['verification_rate'] }}% ({{ number_format($stats['verified_prestasi']) }} dari {{ number_format($stats['total_prestasi']) }} prestasi)
+        </div>
+        <div class="performance-item">
+            <strong>Tingkat Pending:</strong><br>
+            {{ $performanceMetrics['pending_rate'] }}% ({{ number_format($stats['pending_verifikasi_prestasi']) }} prestasi menunggu)
+        </div>
+    </div>
+    <div class="performance-grid">
+        <div class="performance-item">
+            <strong>Rata-rata Skor per Mahasiswa:</strong><br>
+            {{ number_format($performanceMetrics['avg_score_per_student'], 2) }} poin
+        </div>
+        <div class="performance-item">
+            <strong>Rata-rata Skor per Dosen:</strong><br>
+            {{ number_format($performanceMetrics['avg_score_per_lecturer'], 2) }} poin
+        </div>
     </div>
 
-    <div style="margin: 10px 0;">
-        <strong>Prestasi Baru:</strong>
-        {{ $growthAnalysis['prestasi_growth']['current'] }} prestasi
-        @if ($prestasiGrowth > 0)
-            <span class="growth-indicator growth-positive">↑ {{ number_format($prestasiGrowth, 1) }}%</span>
-        @elseif($prestasiGrowth < 0)
-            <span class="growth-indicator growth-negative">↓ {{ number_format(abs($prestasiGrowth), 1) }}%</span>
-        @else
-            <span class="growth-indicator growth-neutral">→ 0%</span>
-        @endif
-    </div>
-    </div>
+    {{-- Prestasi by Tingkatan --}}
+    <div class="section-title">DISTRIBUSI PRESTASI BERDASARKAN TINGKATAN</div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th width="10%">No</th>
+                <th width="60%">Tingkatan Lomba</th>
+                <th width="15%">Jumlah</th>
+                <th width="15%">Persentase</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php $totalPrestasi = $prestasiByTingkatan->sum('total'); @endphp
+            @foreach($prestasiByTingkatan as $item)
+            <tr>
+                <td class="text-center">{{ $loop->iteration }}</td>
+                <td>{{ $item->tingkatan_nama }}</td>
+                <td class="text-center">{{ number_format($item->total) }}</td>
+                <td class="text-center">{{ $totalPrestasi > 0 ? number_format(($item->total / $totalPrestasi) * 100, 1) : 0 }}%</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 
-    <!-- Page Break -->
+    {{-- Page Break --}}
     <div class="page-break"></div>
 
-    <!-- Prestasi by Tingkatan -->
-    <div class="analysis-section">
-        <div class="section-title">Distribusi Prestasi Berdasarkan Tingkatan</div>
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th width="60%">Tingkatan</th>
-                    <th width="20%">Jumlah</th>
-                    <th width="20%">Persentase</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php $totalPrestasi = $prestasiByTingkatan->sum('total'); @endphp
-                @foreach ($prestasiByTingkatan as $item)
-                    <tr>
-                        <td>{{ $item->tingkatan_nama }}</td>
-                        <td class="text-center">{{ $item->total }}</td>
-                        <td class="text-center">
-                            {{ $totalPrestasi > 0 ? number_format(($item->total / $totalPrestasi) * 100, 1) : 0 }}%
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+    {{-- Prestasi by Program Studi --}}
+    <div class="section-title">DISTRIBUSI PRESTASI BERDASARKAN PROGRAM STUDI</div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th width="10%">No</th>
+                <th width="60%">Program Studi</th>
+                <th width="15%">Jumlah</th>
+                <th width="15%">Persentase</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php $totalByProdi = $prestasiByProdi->sum('total'); @endphp
+            @foreach($prestasiByProdi as $item)
+            <tr>
+                <td class="text-center">{{ $loop->iteration }}</td>
+                <td>{{ $item->prodi_nama }}</td>
+                <td class="text-center">{{ number_format($item->total) }}</td>
+                <td class="text-center">{{ $totalByProdi > 0 ? number_format(($item->total / $totalByProdi) * 100, 1) : 0 }}%</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 
-    <!-- Prestasi by Prodi -->
-    @if ($prestasiByProdi->count() > 0)
-        <div class="analysis-section">
-            <div class="section-title">Top 10 Program Studi Berdasarkan Prestasi</div>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th width="10%">Rank</th>
-                        <th width="60%">Program Studi</th>
-                        <th width="30%">Jumlah Prestasi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($prestasiByProdi->take(10) as $index => $item)
-                        <tr>
-                            <td class="text-center">{{ $index + 1 }}</td>
-                            <td>{{ $item->prodi_nama }}</td>
-                            <td class="text-center">{{ $item->total }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    @endif
+    {{-- Top Students --}}
+    <div class="section-title">TOP 10 MAHASISWA BERPRESTASI</div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th width="8%">Rank</th>
+                <th width="15%">NIM</th>
+                <th width="32%">Nama Mahasiswa</th>
+                <th width="30%">Program Studi</th>
+                <th width="15%">Total Skor</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($topStudents as $student)
+            <tr>
+                <td class="text-center">{{ $loop->iteration }}</td>
+                <td class="text-center">{{ $student->mahasiswa_nim }}</td>
+                <td>{{ $student->mahasiswa_nama }}</td>
+                <td>{{ $student->prodi_nama }}</td>
+                <td class="text-center">{{ number_format($student->mahasiswa_score, 1) }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 
-    <!-- Top Performers -->
-    <div class="analysis-section">
-        <div class="section-title">Top 10 Mahasiswa Berprestasi</div>
-        @if ($topMahasiswa->count() > 0)
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th width="10%">Rank</th>
-                        <th width="25%">NIM</th>
-                        <th width="45%">Nama</th>
-                        <th width="20%">Total Score</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($topMahasiswa as $index => $mahasiswa)
-                        <tr>
-                            <td class="text-center">{{ $index + 1 }}</td>
-                            <td>{{ $mahasiswa->mahasiswa_nim }}</td>
-                            <td>{{ $mahasiswa->mahasiswa_nama }}</td>
-                            <td class="text-center">{{ number_format($mahasiswa->mahasiswa_score, 2) }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @else
-            <p style="text-align: center; color: #666; font-style: italic;">Belum ada data mahasiswa berprestasi</p>
-        @endif
-    </div>
+    {{-- Top Lecturers --}}
+    <div class="section-title">TOP 10 DOSEN PEMBIMBING</div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th width="8%">Rank</th>
+                <th width="15%">NIP</th>
+                <th width="32%">Nama Dosen</th>
+                <th width="30%">Program Studi</th>
+                <th width="15%">Total Skor</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($topLecturers as $lecturer)
+            <tr>
+                <td class="text-center">{{ $loop->iteration }}</td>
+                <td class="text-center">{{ $lecturer->dosen_nip }}</td>
+                <td>{{ $lecturer->dosen_nama }}</td>
+                <td>{{ $lecturer->prodi_nama ?? 'N/A' }}</td>
+                <td class="text-center">{{ number_format($lecturer->dosen_score, 1) }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 
-    <div class="analysis-section">
-        <div class="section-title">Top 10 Dosen Pembimbing</div>
-        @if ($topDosen->count() > 0)
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th width="10%">Rank</th>
-                        <th width="25%">NIP</th>
-                        <th width="45%">Nama</th>
-                        <th width="20%">Total Score</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($topDosen as $index => $dosen)
-                        <tr>
-                            <td class="text-center">{{ $index + 1 }}</td>
-                            <td>{{ $dosen->dosen_nip }}</td>
-                            <td>{{ $dosen->dosen_nama }}</td>
-                            <td class="text-center">{{ number_format($dosen->dosen_score, 2) }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @else
-            <p style="text-align: center; color: #666; font-style: italic;">Belum ada data dosen pembimbing</p>
-        @endif
-    </div>
-
-    <!-- Page Break -->
+    {{-- Page Break --}}
     <div class="page-break"></div>
 
-    <!-- Recommendations -->
-    <div class="analysis-section">
-        <div class="section-title">Rekomendasi & Insight</div>
-        <div style="line-height: 1.6;">
-            <p><strong>1. Efisiensi Verifikasi:</strong></p>
-            <ul style="margin-left: 20px;">
-                @if ($systemMetrics['verification_efficiency'] >= 80)
-                    <li>Tingkat verifikasi sangat baik ({{ $systemMetrics['verification_efficiency'] }}%). Pertahankan
-                        proses yang efisien.</li>
-                @elseif($systemMetrics['verification_efficiency'] >= 60)
-                    <li>Tingkat verifikasi cukup baik ({{ $systemMetrics['verification_efficiency'] }}%). Diperlukan
-                        sedikit peningkatan proses.</li>
-                @else
-                    <li>Tingkat verifikasi perlu ditingkatkan ({{ $systemMetrics['verification_efficiency'] }}%).
-                        Evaluasi bottleneck dalam proses verifikasi.</li>
-                @endif
-            </ul>
+    {{-- Competition Categories --}}
+    <div class="section-title">ANALISIS KATEGORI LOMBA</div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th width="10%">No</th>
+                <th width="60%">Kategori Lomba</th>
+                <th width="15%">Jumlah</th>
+                <th width="15%">Persentase</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php $totalCategories = $competitionCategories->sum('total'); @endphp
+            @foreach($competitionCategories as $category)
+            <tr>
+                <td class="text-center">{{ $loop->iteration }}</td>
+                <td>{{ $category->lomba_kategori }}</td>
+                <td class="text-center">{{ number_format($category->total) }}</td>
+                <td class="text-center">{{ $totalCategories > 0 ? number_format(($category->total / $totalCategories) * 100, 1) : 0 }}%</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 
-            <p><strong>2. Partisipasi Mahasiswa:</strong></p>
-            <ul style="margin-left: 20px;">
-                @if ($systemMetrics['active_participation'] >= 50)
-                    <li>Partisipasi mahasiswa aktif ({{ $systemMetrics['active_participation'] }}%). Lanjutkan program
-                        motivasi.</li>
-                @elseif($systemMetrics['active_participation'] >= 30)
-                    <li>Partisipasi mahasiswa cukup ({{ $systemMetrics['active_participation'] }}%). Perluas
-                        sosialisasi program prestasi.</li>
-                @else
-                    <li>Partisipasi mahasiswa rendah ({{ $systemMetrics['active_participation'] }}%). Diperlukan
-                        strategi baru untuk meningkatkan engagement.</li>
-                @endif
-            </ul>
+    {{-- Monthly Trends --}}
+    <div class="section-title">TREN BULANAN (12 BULAN TERAKHIR)</div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th width="40%">Bulan</th>
+                <th width="30%">Lomba Terverifikasi</th>
+                <th width="30%">Prestasi Baru</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($monthlyData['months'] as $index => $month)
+            <tr>
+                <td>{{ $month }}</td>
+                <td class="text-center">{{ number_format($monthlyData['lomba'][$index]) }}</td>
+                <td class="text-center">{{ number_format($monthlyData['prestasi'][$index]) }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 
-            <p><strong>3. Keterlibatan Dosen:</strong></p>
-            <ul style="margin-left: 20px;">
-                @if ($systemMetrics['dosen_involvement'] >= 70)
-                    <li>Keterlibatan dosen sangat baik ({{ $systemMetrics['dosen_involvement'] }}%).</li>
-                @elseif($systemMetrics['dosen_involvement'] >= 50)
-                    <li>Keterlibatan dosen cukup baik ({{ $systemMetrics['dosen_involvement'] }}%). Tingkatkan
-                        pelatihan dosen pembimbing.</li>
-                @else
-                    <li>Keterlibatan dosen perlu ditingkatkan ({{ $systemMetrics['dosen_involvement'] }}%). Berikan
-                        insentif untuk dosen pembimbing.</li>
-                @endif
-            </ul>
-        </div>
-    </div>
+    {{-- Recent Activities --}}
+    <div class="section-title">AKTIVITAS PRESTASI TERBARU (20 TERAKHIR)</div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th width="8%">No</th>
+                <th width="25%">Mahasiswa</th>
+                <th width="30%">Judul Prestasi</th>
+                <th width="25%">Lomba</th>
+                <th width="12%">Tanggal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($recentActivities as $activity)
+            <tr>
+                <td class="text-center">{{ $loop->iteration }}</td>
+                <td>{{ $activity->mahasiswa->mahasiswa_nama ?? 'N/A' }}</td>
+                <td>{{ Str::limit($activity->penghargaan_judul, 40) }}</td>
+                <td>{{ $activity->lomba->lomba_nama ?? 'N/A' }}</td>
+                <td class="text-center">{{ $activity->created_at ? $activity->created_at->format('d/m/Y') : 'N/A' }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 
-    <!-- Footer -->
+    {{-- Footer --}}
     <div class="footer">
-        <div style="text-align: center;">
-            <strong>STARS - Student Achievement Record System</strong><br>
-            Laporan digenerate secara otomatis pada {{ now()->format('d F Y H:i:s') }}<br>
-            Data yang ditampilkan adalah real-time sesuai kondisi sistem saat ini
-        </div>
+        <strong>Kesimpulan:</strong><br>
+        Sistem STAR telah mencatat {{ number_format($stats['total_prestasi']) }} prestasi dari {{ number_format($stats['total_mahasiswa']) }} mahasiswa dengan tingkat verifikasi {{ $performanceMetrics['verification_rate'] }}%. 
+        Rata-rata skor per mahasiswa adalah {{ number_format($performanceMetrics['avg_score_per_student'], 2) }} poin, menunjukkan aktifitas prestasi yang {{ $performanceMetrics['avg_score_per_student'] > 50 ? 'sangat baik' : ($performanceMetrics['avg_score_per_student'] > 25 ? 'baik' : 'perlu ditingkatkan') }}.
+        <br><br>
+        Dokumen ini digenerate pada {{ now()->format('d F Y H:i') }} WIB oleh {{ $admin->admin_name ?? 'Admin' }}
     </div>
 
     <div class="page-number">
-        Halaman <span class="pageNumber"></span>
+        STAR SYSTEM - {{ now()->format('Y') }}
     </div>
 
     <div class="watermark">
-        CONFIDENTIAL - STAR SYSTEM
+        CONFIDENTIAL
     </div>
 </body>
-
 </html>
