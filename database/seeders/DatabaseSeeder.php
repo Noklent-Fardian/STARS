@@ -37,6 +37,8 @@ class DatabaseSeeder extends Seeder
             BannerSeeder::class,
             MovePublicFilesSeeder::class,
             BobotSeeder::class,
+            DosenScoreSeeder::class,
+            MahasiswaScoreSeeder::class,
         ]);
     }
 }

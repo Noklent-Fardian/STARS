@@ -367,7 +367,11 @@ Route::middleware(['auth', 'role:Dosen'])->prefix('dosen')->name('dosen.')->grou
     });
 
     // Bimbingan Mahasiswa
-    Route::get('/bimbingan', [DosenController::class, 'bimbinganIndex'])->name('bimbingan.index');
+    Route::prefix('bimbingan')->name('bimbingan.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\BimbinganController::class, 'index'])->name('index');
+        Route::get('/list', [\App\Http\Controllers\BimbinganController::class, 'list'])->name('list');
+        Route::get('/show/{id}', [\App\Http\Controllers\BimbinganController::class, 'show'])->name('show');
+    });
 
     // Profil Dosen
     Route::get('/profile', [DosenController::class, 'profile'])->name('profile');

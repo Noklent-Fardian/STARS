@@ -14,7 +14,7 @@ class DosenSeeder extends Seeder
      */
     public function run(): void
     {
-        Db::table('m_dosens')->insert([
+        DB::table('m_dosens')->insert([
             [
                 'user_id' => 6,
                 'prodi_id' => 1,
@@ -31,6 +31,8 @@ class DosenSeeder extends Seeder
                 'dosen_kota' => null,
                 'dosen_kecamatan' => null,
                 'dosen_desa' => null,
+                'dosen_score' => 0, 
+                'dosen_visible' => true,
                 'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
@@ -49,6 +51,8 @@ class DosenSeeder extends Seeder
                 'dosen_kota' => null,
                 'dosen_kecamatan' => null,
                 'dosen_desa' => null,
+                'dosen_score' => 0, 
+                'dosen_visible' => true,
                 'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
@@ -67,6 +71,8 @@ class DosenSeeder extends Seeder
                 'dosen_kota' => null,
                 'dosen_kecamatan' => null,
                 'dosen_desa' => null,
+                'dosen_score' => 0, 
+                'dosen_visible' => true,
                 'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
@@ -85,6 +91,8 @@ class DosenSeeder extends Seeder
                 'dosen_kota' => null,
                 'dosen_kecamatan' => null,
                 'dosen_desa' => null,
+                'dosen_score' => 0, 
+                'dosen_visible' => true,
                 'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
@@ -103,6 +111,8 @@ class DosenSeeder extends Seeder
                 'dosen_kota' => null,
                 'dosen_kecamatan' => null,
                 'dosen_desa' => null,
+                'dosen_score' => 0, 
+                'dosen_visible' => true,
                 'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
             [
@@ -121,8 +131,11 @@ class DosenSeeder extends Seeder
                 'dosen_kota' => null,
                 'dosen_kecamatan' => null,
                 'dosen_desa' => null,
+                'dosen_score' => 0, 
+                'dosen_visible' => true,
                 'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2020, 1, 1)->timestamp, Carbon::create(2025, 12, 31)->timestamp)),
             ],
         ]);
+
     }
 }

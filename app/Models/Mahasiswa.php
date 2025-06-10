@@ -88,4 +88,9 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(Semester::class, 'semester_id');
     }
+
+    public function verifikasis()
+    {
+        return $this->hasMany(Verifikasi::class, 'mahasiswa_id');
+    }
 }

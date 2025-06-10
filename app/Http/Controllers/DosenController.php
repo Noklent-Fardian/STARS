@@ -7,6 +7,9 @@ use App\Models\Keahlian;
 use App\Models\KeahlianDosen;
 use App\Models\Prodi;
 use App\Models\CompetitionSubmission;
+use App\Models\Verifikasi;
+use App\Models\Mahasiswa;
+use App\Models\Bimbingan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -20,8 +23,152 @@ class DosenController extends Controller
     public function index()
     {
         $dosen = Auth::user()->dosen;
-        return view('dosbim.index', compact('dosen'));
+        
+        // Get mahasiswa bimbingan through verifikasi records
+        $mahasiswaBimbingan = Mahasiswa::whereHas('verifikasis', function ($query) use ($dosen) {
+            $query->where('dosen_id', $dosen->id);
+        })
+        ->with(['prodi', 'verifikasis' => function ($query) use ($dosen) {
+            $query->where('dosen_id', $dosen->id);
+        }])
+        ->where('mahasiswa_visible', true)
+        ->get();
+
+        // Calculate overall ranking among all dosen
+        $overallRank = DB::table('m_dosens')
+            ->where('dosen_visible', true)
+            ->where('dosen_score', '>', $dosen->dosen_score)
+            ->count() + 1;
+
+        $totalDosen = DB::table('m_dosens')
+            ->where('dosen_visible', true)
+            ->count();
+
+        // Get dosen statistics
+        $stats = [
+            'total_mahasiswa_bimbingan' => $mahasiswaBimbingan->count(),
+            'total_prestasi_bimbingan' => Verifikasi::where('dosen_id', $dosen->id)
+                ->whereHas('penghargaan.lomba', function ($query) {
+                    $query->where('lomba_terverifikasi', 1);
+                })
+                ->count(),
+            'verified_prestasi' => Verifikasi::where('dosen_id', $dosen->id)
+                ->where('verifikasi_dosen_status', 'Diterima')
+                ->where('verifikasi_admin_status', 'Diterima')
+                ->whereHas('penghargaan.lomba', function ($query) {
+                    $query->where('lomba_terverifikasi', 1);
+                })
+                ->count(),
+            'pending_prestasi' => Verifikasi::where('dosen_id', $dosen->id)
+                ->where('verifikasi_dosen_status', 'Menunggu')
+                ->whereHas('penghargaan.lomba', function ($query) {
+                    $query->where('lomba_terverifikasi', 1);
+                })
+                ->count(),
+            'total_lomba_submissions' => CompetitionSubmission::where('dosen_id', $dosen->id)->count(),
+            'approved_lomba_submissions' => CompetitionSubmission::where('dosen_id', $dosen->id)
+                ->where('pendaftaran_status', 'Diterima')
+                ->count(),
+            'current_score' => $dosen->dosen_score ?? 0,
+            'overall_rank' => $overallRank,
+            'total_dosen' => $totalDosen,
+        ];
+
+        // Get recent prestasi verifications
+        $recentPrestasi = Verifikasi::with(['mahasiswa', 'penghargaan.lomba.tingkatan', 'penghargaan.peringkat'])
+            ->where('dosen_id', $dosen->id)
+            ->whereHas('penghargaan.lomba', function ($query) {
+                $query->where('lomba_terverifikasi', 1);
+            })
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Get recent lomba submissions
+        $recentLombaSubmissions = CompetitionSubmission::with(['lomba.tingkatan'])
+            ->where('dosen_id', $dosen->id)
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Get ranking comparison data for chart
+        $rankingData = $this->getRankingComparisonData($dosen);
+
+        // Get yearly score data for the dosen
+        $yearlyScoreData = $this->getYearlyScoreData($dosen);
+
+        return view('dosbim.index', compact(
+            'dosen',
+            'mahasiswaBimbingan',
+            'stats',
+            'recentPrestasi',
+            'recentLombaSubmissions',
+            'rankingData',
+            'yearlyScoreData'
+        ));
     }
+
+    /**
+     * Get yearly score data for charts
+     */
+    private function getYearlyScoreData($dosen)
+    {
+        // Get scores by year for this dosen
+        $yearlyScores = DB::table('t_verifikasis')
+            ->join('m_penghargaans', 't_verifikasis.penghargaan_id', '=', 'm_penghargaans.id')
+            ->join('m_lombas', 'm_penghargaans.lomba_id', '=', 'm_lombas.id')
+            ->where('t_verifikasis.dosen_id', $dosen->id)
+            ->where('t_verifikasis.verifikasi_admin_status', 'Diterima')
+            ->where('t_verifikasis.verifikasi_dosen_status', 'Diterima')
+            ->where('m_lombas.lomba_terverifikasi', 1)
+            ->whereNotNull('t_verifikasis.verifikasi_verified_at')
+            ->selectRaw('YEAR(t_verifikasis.verifikasi_verified_at) as year, SUM(m_penghargaans.penghargaan_score) as total_score')
+            ->groupBy(DB::raw('YEAR(t_verifikasis.verifikasi_verified_at)'))
+            ->orderBy('year')
+            ->get();
+
+        // Generate last 5 years data
+        $currentYear = now()->year;
+        $years = [];
+        $scores = [];
+
+        for ($i = 4; $i >= 0; $i--) {
+            $year = $currentYear - $i;
+            $years[] = $year;
+
+            $yearScore = $yearlyScores->firstWhere('year', $year);
+            $scores[] = $yearScore ? floatval($yearScore->total_score) : 0;
+        }
+
+        return [
+            'years' => $years,
+            'scores' => $scores
+        ];
+    }
+
+    /**
+     * Get ranking comparison data for charts
+     */
+    private function getRankingComparisonData($dosen)
+    {
+        // Get top 10 dosen for comparison
+        $topDosen = DB::table('m_dosens')
+            ->select('dosen_nama', 'dosen_score', 'dosen_nip')
+            ->where('dosen_visible', true)
+            ->orderBy('dosen_score', 'desc')
+            ->limit(10)
+            ->get();
+
+        return [
+            'top_dosen' => $topDosen,
+            'current_dosen' => [
+                'nama' => $dosen->dosen_nama,
+                'nip' => $dosen->dosen_nip,
+                'score' => $dosen->dosen_score
+            ]
+        ];
+    }
+
     public function profile()
     {
         $dosen = Auth::user()->dosen->load(['keahlianUtama', 'keahlianTambahan']);
