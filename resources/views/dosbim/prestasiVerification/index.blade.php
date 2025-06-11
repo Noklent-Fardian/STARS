@@ -44,7 +44,7 @@
                         </div>
                         <div class="stat-content">
                             <h4 id="stat-approved-count">0</h4>
-                            <p>Disetujui</p>
+                            <p>Disetujui Oleh Dosen</p>
                         </div>
                     </div>
                 </div>

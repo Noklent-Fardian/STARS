@@ -506,7 +506,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal_selesai' => '2026-07-19',
                 'lomba_link_pendaftaran' => 'https://unity.com/ar-vr-contest',
                 'lomba_link_poster' => 'https:///picsum.photos/640/480',
-                'lomba_terverifikasi' => false,
+                'lomba_terverifikasi' => true,
                 'created_at' => Carbon::createFromTimestamp(rand(Carbon::create(2021, 1, 1)->timestamp, Carbon::now()->timestamp)),
             ],
             [
