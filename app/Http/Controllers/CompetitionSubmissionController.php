@@ -12,6 +12,7 @@ use App\Models\Verifikasi;
 use App\Models\Dosen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CompetitionSubmissionController extends Controller
 {
@@ -87,76 +88,123 @@ class CompetitionSubmissionController extends Controller
 
         $keahlianIds = array_values(array_unique(array_map('intval', $keahlianIds)));
 
-        // Create lomba record with terverifikasi = false
-        $lomba = Lomba::create([
-            'tingkatan_id' => $request->lomba_tingkatan_id,
-            'semester_id' => 1,
-            'lomba_nama' => $request->lomba_nama,
-            'lomba_penyelenggara' => $request->lomba_penyelenggara,
-            'lomba_kategori' => $request->lomba_kategori,
-            'lomba_tanggal_mulai' => $request->lomba_tanggal_mulai,
-            'lomba_tanggal_selesai' => $request->lomba_tanggal_selesai,
-            'lomba_link_pendaftaran' => $request->lomba_link_pendaftaran ?? '',
-            'lomba_link_poster' => $request->lomba_link_poster ?? '',
-            'lomba_terverifikasi' => false,
-            'lomba_visible' => true
-        ]);
-
-        // It creates records in the pivot table linking lomba_id to keahlian_id
-        $lomba->keahlians()->attach($keahlianIds);
-
-        // Determine user role and set appropriate ID
-        $competitionSubmissionData = [
-            'lomba_id' => $lomba->id,
-            'lomba_nama' => $request->lomba_nama,
-            'lomba_penyelenggara' => $request->lomba_penyelenggara,
-            'lomba_kategori' => $request->lomba_kategori,
-            'lomba_tanggal_mulai' => $request->lomba_tanggal_mulai,
-            'lomba_tanggal_selesai' => $request->lomba_tanggal_selesai,
-            'lomba_link_pendaftaran' => $request->lomba_link_pendaftaran,
-            'lomba_link_poster' => $request->lomba_link_poster,
-            'lomba_tingkatan_id' => $request->lomba_tingkatan_id,
-            'pendaftaran_tanggal_pendaftaran' => now(),
-            'lomba_keahlian_ids' => $keahlianIds,
-            'pendaftaran_status' => 'Menunggu',
-            'pendaftaran_visible' => true
-        ];
-
-        // Check user role and assign appropriate ID
-        if (auth()->user()->user_role === 'Dosen') {
-            $competitionSubmissionData['dosen_id'] = auth()->user()->dosen->id;
-            $competitionSubmissionData['mahasiswa_id'] = null;
-        } else {
-            $competitionSubmissionData['mahasiswa_id'] = auth()->user()->mahasiswa->id;
-            $competitionSubmissionData['dosen_id'] = null;
-        }
-
-        // Create competition submission record
-        $competitionSubmission = CompetitionSubmission::create($competitionSubmissionData);
-
-        if ($request->expectsJson()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Lomba berhasil diajukan',
-                'redirect' => auth()->user()->user_role === 'Dosen'
-                    ? route('dosen.lomba.index')
-                    : route('student.achievement.select-competition'),
-                'lomba_id' => $lomba->id
+        DB::beginTransaction();
+        try {
+            // Create lomba record with terverifikasi = false
+            $lomba = Lomba::create([
+                'tingkatan_id' => $request->lomba_tingkatan_id,
+                'semester_id' => 1,
+                'lomba_nama' => $request->lomba_nama,
+                'lomba_penyelenggara' => $request->lomba_penyelenggara,
+                'lomba_kategori' => $request->lomba_kategori,
+                'lomba_tanggal_mulai' => $request->lomba_tanggal_mulai,
+                'lomba_tanggal_selesai' => $request->lomba_tanggal_selesai,
+                'lomba_link_pendaftaran' => $request->lomba_link_pendaftaran ?? '',
+                'lomba_link_poster' => $request->lomba_link_poster ?? '',
+                'lomba_terverifikasi' => false,
+                'lomba_visible' => true
             ]);
+
+            // It creates records in the pivot table linking lomba_id to keahlian_id
+            $lomba->keahlians()->attach($keahlianIds);
+
+            // Determine user role and set appropriate ID
+            $competitionSubmissionData = [
+                'lomba_id' => $lomba->id,
+                'lomba_nama' => $request->lomba_nama,
+                'lomba_penyelenggara' => $request->lomba_penyelenggara,
+                'lomba_kategori' => $request->lomba_kategori,
+                'lomba_tanggal_mulai' => $request->lomba_tanggal_mulai,
+                'lomba_tanggal_selesai' => $request->lomba_tanggal_selesai,
+                'lomba_link_pendaftaran' => $request->lomba_link_pendaftaran,
+                'lomba_link_poster' => $request->lomba_link_poster,
+                'lomba_tingkatan_id' => $request->lomba_tingkatan_id,
+                'pendaftaran_tanggal_pendaftaran' => now(),
+                'lomba_keahlian_ids' => $keahlianIds,
+                'pendaftaran_status' => 'Menunggu',
+                'pendaftaran_visible' => true
+            ];
+
+            // Check user role and assign appropriate ID
+            if (auth()->user()->user_role === 'Dosen') {
+                $competitionSubmissionData['dosen_id'] = auth()->user()->dosen->id;
+                $competitionSubmissionData['mahasiswa_id'] = null;
+            } else {
+                $competitionSubmissionData['mahasiswa_id'] = auth()->user()->mahasiswa->id;
+                $competitionSubmissionData['dosen_id'] = null;
+            }
+
+            // Create competition submission record
+            $competitionSubmission = CompetitionSubmission::create($competitionSubmissionData);
+
+            // Create notification for admin about new competition submission
+            $admins = \App\Models\Admin::where('admin_visible', true)->get();
+            foreach ($admins as $admin) {
+                if ($admin->user_id) {
+                    createNotification(
+                        $admin->user_id,
+                        'Pengajuan Lomba Baru',
+                        "Pengajuan lomba baru '{$lomba->lomba_nama}' perlu diverifikasi.",
+                        route('admin.lombaVerification.show', $competitionSubmission->id),
+                        'fas fa-file-alt',
+                        'bg-warning',
+                        $competitionSubmission->id,
+                        'lomba_submission'
+                    );
+                }
+            }
+
+            // Create notification for submitter
+            $userId = auth()->user()->id;
+            createNotification(
+                $userId,
+                'Lomba Diajukan',
+                "Pengajuan lomba '{$lomba->lomba_nama}' berhasil dikirim dan sedang menunggu verifikasi.",
+                auth()->user()->user_role === 'Dosen' ? 
+                    route('dosen.riwayatPengajuanLomba.show', $competitionSubmission->id) :
+                    route('mahasiswa.riwayatPengajuanLomba.show', $competitionSubmission->id),
+                'fas fa-upload',
+                'bg-warning',
+                $competitionSubmission->id,
+                'lomba_submission'
+            );
+
+            DB::commit();
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Lomba berhasil diajukan',
+                    'redirect' => auth()->user()->user_role === 'Dosen'
+                        ? route('dosen.lomba.index')
+                        : route('student.achievement.select-competition'),
+                    'lomba_id' => $lomba->id
+                ]);
+            }
+
+            if (auth()->user()->user_role === 'Dosen') {
+                return redirect()->route('dosen.lomba.index')->with('success', 'Lomba berhasil diajukan');
+            }
+
+            $peringkats = Peringkat::where('peringkat_visible', true)->get();
+            $dosens = Dosen::where('dosen_visible', true)->get();
+
+            return view('mahasiswa.ajukanVerifikasiPrestasi.create-step2')
+                ->with('selectedLomba', $lomba)
+                ->with('competitionSubmissionId', $competitionSubmission->id)
+                ->with('peringkats', $peringkats)
+                ->with('dosens', $dosens);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan saat memproses pengajuan: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return back()->withErrors(['error' => 'Terjadi kesalahan saat memproses pengajuan.'])->withInput();
         }
-
-        if (auth()->user()->user_role === 'Dosen') {
-            return redirect()->route('dosen.lomba.index')->with('success', 'Lomba berhasil diajukan');
-        }
-
-        $peringkats = Peringkat::where('peringkat_visible', true)->get();
-        $dosens = Dosen::where('dosen_visible', true)->get();
-
-        return view('mahasiswa.ajukanVerifikasiPrestasi.create-step2')
-            ->with('selectedLomba', $lomba)
-            ->with('competitionSubmissionId', $competitionSubmission->id)
-            ->with('peringkats', $peringkats)
-            ->with('dosens', $dosens);
     }
 
     public function finalizeSubmission(Request $request)
@@ -226,8 +274,7 @@ class CompetitionSubmissionController extends Controller
                 'penghargaan_visible' => true
             ]);
 
-            // Create verification record with selected dosen
-            Verifikasi::create([
+            $verifikasi = Verifikasi::create([
                 'mahasiswa_id' => Auth::user()->mahasiswa->id,
                 'penghargaan_id' => $penghargaan->id,
                 'dosen_id' => $request->dosen_id,
@@ -235,6 +282,50 @@ class CompetitionSubmissionController extends Controller
                 'verifikasi_dosen_status' => 'Menunggu',
                 'verifikasi_visible' => true
             ]);
+
+            // Create notification for selected dosen
+            $dosen = \App\Models\Dosen::find($request->dosen_id);
+            if ($dosen && $dosen->user_id) {
+                createNotification(
+                    $dosen->user_id,
+                    'Verifikasi Prestasi Baru',
+                    "Pengajuan prestasi '{$penghargaan->penghargaan_judul}' perlu diverifikasi.",
+                    route('dosen.prestasiVerification.show', $verifikasi->id),
+                    'fas fa-star',
+                    'bg-warning',
+                    $verifikasi->id,
+                    'prestasi_verification'
+                );
+            }
+
+            // Create notification for admin
+            $admins = \App\Models\Admin::where('admin_visible', true)->get();
+            foreach ($admins as $admin) {
+                if ($admin->user_id) {
+                    createNotification(
+                        $admin->user_id,
+                        'Verifikasi Prestasi Baru',
+                        "Pengajuan prestasi '{$penghargaan->penghargaan_judul}' perlu diverifikasi admin.",
+                        route('admin.prestasiVerification.show', $verifikasi->id),
+                        'fas fa-star',
+                        'bg-warning',
+                        $verifikasi->id,
+                        'prestasi_verification'
+                    );
+                }
+            }
+
+            // Create notification for student
+            createNotification(
+                Auth::user()->id,
+                'Prestasi Diajukan',
+                "Pengajuan prestasi '{$penghargaan->penghargaan_judul}' berhasil dikirim dan sedang menunggu verifikasi.",
+                route('mahasiswa.riwayatPengajuanPrestasi.show', $verifikasi->id),
+                'fas fa-upload',
+              'bg-warning',
+                $verifikasi->id,
+                'prestasi_verification'
+            );
 
             // Check if AJAX request
             if ($request->expectsJson()) {

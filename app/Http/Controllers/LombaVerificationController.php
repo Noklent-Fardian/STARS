@@ -211,6 +211,33 @@ class LombaVerificationController extends Controller
                 'pendaftaran_tanggal_pendaftaran' => now(),
             ]);
 
+            // Create notification for submitter
+            if ($submission->mahasiswa_id && $submission->mahasiswa->user_id) {
+                createNotification(
+                    $submission->mahasiswa->user_id,
+                    'Lomba Disetujui',
+                    "Pengajuan lomba '{$submission->lomba_nama}' telah disetujui oleh admin!",
+                    route('mahasiswa.riwayatPengajuanLomba.show', $submission->id),
+                    'fas fa-trophy',
+                    'bg-success',
+                    $submission->id,
+                    'lomba_submission'
+                );
+            }
+
+            if ($submission->dosen_id && $submission->dosen->user_id) {
+                createNotification(
+                    $submission->dosen->user_id,
+                    'Lomba Disetujui',
+                    "Pengajuan lomba '{$submission->lomba_nama}' telah disetujui oleh admin!",
+                    route('dosen.riwayatPengajuanLomba.show', $submission->id),
+                    'fas fa-trophy',
+                    'bg-success',
+                    $submission->id,
+                    'lomba_submission'
+                );
+            }
+
             DB::commit();
 
             return redirect()->route('admin.lombaVerification.index')
@@ -246,6 +273,33 @@ class LombaVerificationController extends Controller
                         'lomba_visible' => false,
                     ]);
                 }
+            }
+
+            // Create notification for submitter
+            if ($submission->mahasiswa_id && $submission->mahasiswa->user_id) {
+                createNotification(
+                    $submission->mahasiswa->user_id,
+                    'Lomba Ditolak',
+                    "Pengajuan lomba '{$submission->lomba_nama}' ditolak. Silakan periksa dan ajukan kembali.",
+                    route('mahasiswa.riwayatPengajuanLomba.show', $submission->id),
+                    'fas fa-ban',
+                    'bg-danger',
+                    $submission->id,
+                    'lomba_submission'
+                );
+            }
+
+            if ($submission->dosen_id && $submission->dosen->user_id) {
+                createNotification(
+                    $submission->dosen->user_id,
+                    'Lomba Ditolak',
+                    "Pengajuan lomba '{$submission->lomba_nama}' ditolak. Silakan periksa dan ajukan kembali.",
+                    route('dosen.riwayatPengajuanLomba.show', $submission->id),
+                    'fas fa-ban',
+                    'bg-danger',
+                    $submission->id,
+                    'lomba_submission'
+                );
             }
 
             DB::commit();

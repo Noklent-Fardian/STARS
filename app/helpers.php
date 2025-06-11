@@ -1,5 +1,7 @@
 <?php
 
+
+use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -56,5 +58,52 @@ function getUserProfileRoute(): string
         return route('mahasiswa.profile');
     }
 
-    return route('admin.profile'); 
+    return route('admin.profile');
+}
+if (!function_exists('getUnreadNotifications')) {
+    function getUnreadNotifications()
+    {
+        if (!Auth::check()) {
+            return [];
+        }
+
+        $notifications = Notification::where('user_id', Auth::id())
+            ->where('is_read', false)
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get()
+            ->map(function ($notification) {
+                return [
+                    'id' => $notification->id,
+                    'message' => $notification->message,
+                    'url' => $notification->url,
+                    'icon' => $notification->icon,
+                    'icon_bg' => $notification->icon_bg,
+                    'is_read' => $notification->is_read,
+                    'created_at' => $notification->formatted_created_at,
+                ];
+            })
+            ->toArray();
+
+        return $notifications;
+    }
+}
+
+
+if (!function_exists('createNotification')) {
+    function createNotification($userId, $type, $message, $url, $icon = 'fas fa-bell', $iconBg = 'bg-primary', $relatedId = null, $relatedType = null)
+    {
+        return Notification::create([
+            'user_id' => $userId,
+            'type' => $type,
+            'title' => $type,
+            'message' => $message,
+            'url' => $url,
+            'icon' => $icon,
+            'icon_bg' => $iconBg,
+            'is_read' => false,
+            'related_id' => $relatedId,
+            'related_type' => $relatedType,
+        ]);
+    }
 }

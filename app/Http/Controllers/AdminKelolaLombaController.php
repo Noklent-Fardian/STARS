@@ -163,6 +163,31 @@ class AdminKelolaLombaController extends Controller
             // Attach keahlians
             $lomba->keahlians()->attach($keahlianIds);
 
+            // Create notification for all students with matching skills
+            $mahasiswas = \App\Models\Mahasiswa::where('mahasiswa_visible', true)
+                ->where(function ($query) use ($keahlianIds) {
+                    $query->whereIn('keahlian_id', $keahlianIds)
+                        ->orWhereHas('keahlianTambahan', function ($q) use ($keahlianIds) {
+                            $q->whereIn('keahlian_id', $keahlianIds);
+                        });
+                })
+                ->get();
+
+            foreach ($mahasiswas as $mahasiswa) {
+                if ($mahasiswa->user_id) {
+                    createNotification(
+                        $mahasiswa->user_id,
+                        'Lomba Baru',
+                        "Lomba baru '{$lomba->lomba_nama}' telah ditambahkan sesuai keahlian Anda!",
+                        route('mahasiswa.lomba.show', $lomba->id),
+                        'fas fa-bullhorn',
+                        'bg-success',
+                        $lomba->id,
+                        'lomba'
+                    );
+                }
+            }
+
             DB::commit();
 
             return response()->json([
@@ -296,6 +321,31 @@ class AdminKelolaLombaController extends Controller
             ]);
 
             $lomba->keahlians()->sync($keahlianIds);
+
+            // Create notification for students with matching skills about competition update
+            $mahasiswas = \App\Models\Mahasiswa::where('mahasiswa_visible', true)
+                ->where(function ($query) use ($keahlianIds) {
+                    $query->whereIn('keahlian_id', $keahlianIds)
+                        ->orWhereHas('keahlianTambahan', function ($q) use ($keahlianIds) {
+                            $q->whereIn('keahlian_id', $keahlianIds);
+                        });
+                })
+                ->get();
+
+            foreach ($mahasiswas as $mahasiswa) {
+                if ($mahasiswa->user_id) {
+                    createNotification(
+                        $mahasiswa->user_id,
+                        'Lomba Diperbarui',
+                        "Lomba '{$lomba->lomba_nama}' telah diperbarui. Periksa detail terbaru!",
+                        route('mahasiswa.lomba.show', $lomba->id),
+                        'fas fa-sync-alt',
+                        'bg-warning',
+                        $lomba->id,
+                        'lomba'
+                    );
+                }
+            }
 
             DB::commit();
 
@@ -686,7 +736,6 @@ class AdminKelolaLombaController extends Controller
                     'message' => 'Berhasil mengimport ' . count($insertData) . ' data lomba',
                     'count' => count($insertData)
                 ]);
-
             } catch (\Exception $e) {
                 DB::rollBack();
                 return response()->json([
@@ -694,7 +743,6 @@ class AdminKelolaLombaController extends Controller
                     'message' => 'Gagal menyimpan data: ' . $e->getMessage()
                 ]);
             }
-
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,

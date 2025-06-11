@@ -2,6 +2,7 @@
     --primary-color: #102044;
     --secondary-color: #1a2a4d;
     --accent-color: #fa9d1c;
+    --danger-color: #e74a3b;
     --accent-color-gradient: #f38c00;
     --text-color: #444444;
     --heading-color: #293c5d;
@@ -159,6 +160,9 @@ body {
 
 .topbar .icon-circle.bg-warning {
     background-color: var(--accent-color) !important;
+}
+.topbar .icon-circle.bg-danger {
+    background-color: var(--danger-color) !important;
 }
 
 footer.sticky-footer {

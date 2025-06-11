@@ -92,9 +92,24 @@ class AdminKelolaPrestasiController extends Controller
             ]);
         }
 
-        AdminKelolaPrestasi::create($validator->validated() + [
+        $prestasi = AdminKelolaPrestasi::create($validator->validated() + [
             'penghargaan_visible' => 1,
         ]);
+
+        // Create notification for the student
+        $mahasiswa = \App\Models\Mahasiswa::find($request->mahasiswa_id);
+        if ($mahasiswa && $mahasiswa->user_id) {
+            createNotification(
+                $mahasiswa->user_id,
+                'Prestasi Ditambahkan',
+                "Prestasi '{$prestasi->penghargaan_judul}' telah ditambahkan oleh admin.",
+                route('mahasiswa.prestasi.showAjax', $prestasi->id),
+                'fas fa-plus-circle',
+                'bg-success',
+                $prestasi->id,
+                'prestasi'
+            );
+        }
 
         return response()->json([
             'status' => true,

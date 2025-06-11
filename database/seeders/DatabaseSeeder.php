@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
             BobotSeeder::class,
             DosenScoreSeeder::class,
             MahasiswaScoreSeeder::class,
+            NotificationSeeder::class,
         ]);
     }
 }

@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RekomendasiController;
 use App\Http\Controllers\BobotController;
 use App\Http\Controllers\MahasiswaNotifikasiController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,12 @@ Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::get('/login', [LandingController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Notification routes (moved here and fixed paths)
+Route::middleware(['auth'])->group(function () {
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+    Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsRead');
+});
 
 // Admin routes
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
@@ -185,7 +192,6 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
 
         // Export routes
         Route::get('/export_pdf', [AdminKelolaLombaController::class, 'exportPDF'])->name('exportPDF');
-        Route::get('/export_excel', [AdminKelolaLombaController::class, 'exportExcel'])->name('exportExcel');
 
         // Import routes
         Route::get('/import_form', [AdminKelolaLombaController::class, 'importForm'])->name('importForm');
@@ -411,6 +417,7 @@ Route::middleware(['auth', 'role:Dosen'])->prefix('dosen/achievement')->name('do
 Route::middleware(['auth', 'role:Mahasiswa'])->prefix('mahasiswa')->name('mahasiswa.')->group(function () {
     // Dashboard
     Route::get('/dashboard', [MahasiswaController::class, 'index'])->name('dashboard');
+    Route::get('/notifikasi', [MahasiswaNotifikasiController::class, 'index'])->name('notifikasi');
 
     // Lihat Lomba dan Tambah
     Route::prefix('lomba')->name('lomba.')->group(function () {
