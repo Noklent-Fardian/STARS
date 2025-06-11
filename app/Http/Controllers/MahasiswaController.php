@@ -193,7 +193,7 @@ class MahasiswaController extends Controller
     {
         $mahasiswa = Auth::user()->mahasiswa;
 
-        $validated = $request->validate([
+         $validated = $request->validate([
             'mahasiswa_nomor_telepon' => 'nullable|string|max:20',
             'keahlian_id' => 'required|exists:m_keahlians,id',
             'keahlian_tambahan' => 'array',
@@ -202,6 +202,10 @@ class MahasiswaController extends Controller
             'mahasiswa_kota' => 'nullable|string|max:100',
             'mahasiswa_kecamatan' => 'nullable|string|max:100',
             'mahasiswa_desa' => 'nullable|string|max:100',
+            'mahasiswa_provinsi_text' => 'nullable|string|max:100',
+            'mahasiswa_kota_text' => 'nullable|string|max:100',
+            'mahasiswa_kecamatan_text' => 'nullable|string|max:100',
+            'mahasiswa_desa_text' => 'nullable|string|max:100',
             'profile_picture' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
             'keahlian_sertifikat' => 'nullable|url',
             'keahlian_sertifikat_tambahan' => 'array',
@@ -220,10 +224,14 @@ class MahasiswaController extends Controller
                 'mahasiswa_nomor_telepon' => $validated['mahasiswa_nomor_telepon'] ?? null,
                 'keahlian_id' => $validated['keahlian_id'],
                 'keahlian_sertifikat' => $validated['keahlian_sertifikat'] ?? null,
-                'mahasiswa_provinsi' => $validated['mahasiswa_provinsi'] ?? null,
-                'mahasiswa_kota' => $validated['mahasiswa_kota'] ?? null,
-                'mahasiswa_kecamatan' => $validated['mahasiswa_kecamatan'] ?? null,
-                'mahasiswa_desa' => $validated['mahasiswa_desa'] ?? null,
+                'mahasiswa_provinsi' => $request->mahasiswa_provinsi,
+                'mahasiswa_kota' => $request->mahasiswa_kota,
+                'mahasiswa_kecamatan' => $request->mahasiswa_kecamatan,
+                'mahasiswa_desa' => $request->mahasiswa_desa,
+                'mahasiswa_provinsi_text' => $request->mahasiswa_provinsi_text,
+                'mahasiswa_kota_text' => $request->mahasiswa_kota_text,
+                'mahasiswa_kecamatan_text' => $request->mahasiswa_kecamatan_text,
+                'mahasiswa_desa_text' => $request->mahasiswa_desa_text,
                 'mahasiswa_photo' => $validated['mahasiswa_photo'] ?? $mahasiswa->mahasiswa_photo,
             ]);
 

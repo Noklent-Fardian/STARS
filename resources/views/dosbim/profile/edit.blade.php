@@ -69,24 +69,26 @@
                 </div>
                 {{-- Main Edit Form --}}
                 <div class="col-md-8">
+                    {{-- Informasi Pribadi --}}
                     <div id="form-pribadi" class="edit-section mb-4 active">
                         <div class="card">
                             <div class="card-header fw-bold">Informasi Pribadi</div>
                             <div class="card-body">
-                                {{-- ...informasi pribadi... --}}
                                 <div class="mb-3">
                                     <label class="form-label">Nomor Telepon</label>
                                     <input type="text" name="dosen_nomor_telepon" class="form-control"
-                                        value="{{ old('dosen_nomor_telepon', $dosen->dosen_nomor_telepon) }}">
+                                        value="{{ old('dosen_nomor_telepon', $dosen->dosen_nomor_telepon) }}"
+                                        inputmode="numeric" pattern="[0-9]*" title="Hanya boleh angka">
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    {{-- Informasi Akademik --}}
                     <div id="form-akademik" class="edit-section mb-4">
                         <div class="card">
                             <div class="card-header fw-bold">Informasi Akademik</div>
                             <div class="card-body">
-                                {{-- Informasi Akademik --}}
                                 {{-- Keahlian Utama --}}
                                 <div class="mb-3">
                                     <label class="form-label">Keahlian Utama</label>
@@ -100,6 +102,7 @@
                                         @endforeach
                                     </select>
                                 </div>
+
                                 {{-- Keahlian Tambahan --}}
                                 <div class="mb-3">
                                     <label class="form-label">Keahlian Tambahan</label>
@@ -129,8 +132,8 @@
                                                 <select name="keahlian_tambahan[]" class="form-select" required>
                                                     <option value="">Pilih Keahlian Tambahan</option>
                                                     @foreach ($keahlians as $keahlian)
-                                                        <option value="{{ $keahlian->id }}">
-                                                            {{ $keahlian->keahlian_nama }}</option>
+                                                        <option value="{{ $keahlian->id }}">{{ $keahlian->keahlian_nama }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                                 <button type="button" class="btn btn-outline-danger btn-remove-keahlian"
@@ -144,39 +147,95 @@
                             </div>
                         </div>
                     </div>
+
+                    {{-- Informasi Alamat --}}
                     <div id="form-alamat" class="edit-section mb-4">
                         <div class="card">
                             <div class="card-header fw-bold">Alamat / Domisili</div>
                             <div class="card-body">
-                                {{-- ...informasi alamat... --}}
-                                <div class="mb-3">
-                                    <label class="form-label">Provinsi</label>
-                                    <input type="text" name="dosen_provinsi" class="form-control"
-                                        value="{{ old('dosen_provinsi', $dosen->dosen_provinsi) }}">
+                                {{-- Provinsi --}}
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Provinsi <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-info text-white"><i
+                                                    class="fas fa-map-marker-alt"></i></span>
+                                        </div>
+                                        <select name="dosen_provinsi" id="provinsi" class="form-control" required>
+                                            <option value="">Pilih Provinsi</option>
+                                        </select>
+                                    </div>
+                                    <small id="error-dosen_provinsi" class="error-text form-text text-danger"></small>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Kota</label>
-                                    <input type="text" name="dosen_kota" class="form-control"
-                                        value="{{ old('dosen_kota', $dosen->dosen_kota) }}">
+
+                                {{-- Kota --}}
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Kabupaten/Kota <span
+                                            class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-info text-white"><i
+                                                    class="fas fa-map-marker-alt"></i></span>
+                                        </div>
+                                        <select id="kota" name="dosen_kota" class="form-control" disabled required>
+                                            <option value="">Pilih Kabupaten/Kota</option>
+                                        </select>
+                                    </div>
+                                    <small id="error-dosen_kota" class="error-text form-text text-danger"></small>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Kecamatan</label>
-                                    <input type="text" name="dosen_kecamatan" class="form-control"
-                                        value="{{ old('dosen_kecamatan', $dosen->dosen_kecamatan) }}">
+
+                                {{-- Kecamatan --}}
+                                <div class="form-group">
+                                    <label class="font-weight-bold mt-3">Kecamatan <span
+                                            class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-info text-white"><i
+                                                    class="fas fa-map-marker-alt"></i></span>
+                                        </div>
+                                        <select id="kecamatan" name="dosen_kecamatan" class="form-control" disabled
+                                            required>
+                                            <option value="">Pilih Kecamatan</option>
+                                        </select>
+                                    </div>
+                                    <small id="error-dosen_kecamatan" class="error-text form-text text-danger"></small>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Desa</label>
-                                    <input type="text" name="dosen_desa" class="form-control"
-                                        value="{{ old('dosen_desa', $dosen->dosen_desa) }}">
+
+                                {{-- Kelurahan --}}
+                                <div class="form-group">
+                                    <label class="font-weight-bold mt-3">Kelurahan/Desa <span
+                                            class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-info text-white"><i
+                                                    class="fas fa-map-marker-alt"></i></span>
+                                        </div>
+                                        <select id="kelurahan" name="dosen_desa" class="form-control" disabled required>
+                                            <option value="">Pilih Kelurahan/Desa</option>
+                                        </select>
+                                    </div>
+                                    <small id="error-dosen_desa" class="error-text form-text text-danger"></small>
                                 </div>
+
+                                {{-- Hidden untuk menyimpan teks --}}
+                                <input type="hidden" name="dosen_provinsi_text" id="dosen_provinsi_text"
+                                    value="{{ $dosen->dosen_provinsi }}">
+                                <input type="hidden" name="dosen_kota_text" id="dosen_kota_text"
+                                    value="{{ $dosen->dosen_kota }}">
+                                <input type="hidden" name="dosen_kecamatan_text" id="dosen_kecamatan_text"
+                                    value="{{ $dosen->dosen_kecamatan }}">
+                                <input type="hidden" name="dosen_desa_text" id="dosen_desa_text"
+                                    value="{{ $dosen->dosen_desa }}">
                             </div>
                         </div>
                     </div>
+
+                    {{-- Informasi Lain-lain --}}
                     <div id="form-lain" class="edit-section mb-4">
                         <div class="card">
                             <div class="card-header fw-bold">Lain-lain</div>
                             <div class="card-body">
-                                {{-- Link Sertifikat Keahlian Utama --}}
+                                {{-- Sertifikat Keahlian Utama --}}
                                 <div class="mb-3">
                                     <label class="form-label">Link Sertifikat Keahlian Utama</label>
                                     <div class="mb-1">
@@ -187,7 +246,8 @@
                                         placeholder="Link sertifikat utama (Google Drive, PDF, dll)"
                                         value="{{ old('keahlian_sertifikat', $dosen->keahlian_sertifikat ?? '') }}">
                                 </div>
-                                {{-- Link Sertifikat Keahlian Tambahan --}}
+
+                                {{-- Sertifikat Keahlian Tambahan --}}
                                 <label class="form-label">Link Sertifikat Keahlian Tambahan</label>
                                 @foreach ($dosen->keahlianTambahan as $keahlian)
                                     <div class="mb-2">
@@ -201,10 +261,14 @@
                             </div>
                         </div>
                     </div>
+
+                    {{-- Tombol Aksi --}}
                     <div class="d-flex gap-3 mt-3">
                         <button type="submit" class="btn btn-primary">Simpan</button>
                         <a href="{{ route('dosen.profile') }}" class="btn btn-secondary">Batal</a>
                     </div>
+
+                    {{-- Slot tambahan jika ada --}}
                     @yield('form-edit-content')
                 </div>
             </div>
@@ -521,10 +585,10 @@
                                         });
                                     document.querySelectorAll(
                                         '#modalPassword .fa-eye-slash').forEach(
-                                    icon => {
-                                        icon.classList.remove('fa-eye-slash');
-                                        icon.classList.add('fa-eye');
-                                    });
+                                        icon => {
+                                            icon.classList.remove('fa-eye-slash');
+                                            icon.classList.add('fa-eye');
+                                        });
                                 }, 1500);
                             } else {
                                 Swal.fire({
@@ -614,6 +678,143 @@
                             });
                         });
                 });
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ambil value lama dari server (pastikan sudah di-passing ke view)
+            const selectedProv = "{{ old('dosen_provinsi', $dosen->dosen_provinsi) }}";
+            const selectedKota = "{{ old('dosen_kota', $dosen->dosen_kota) }}";
+            const selectedKec = "{{ old('dosen_kecamatan', $dosen->dosen_kecamatan) }}";
+            const selectedDesa = "{{ old('dosen_desa', $dosen->dosen_desa) }}";
+
+            // Load Provinsi
+            fetch('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json')
+                .then(response => response.json())
+                .then(provinces => {
+                    let options = '<option value="">Pilih Provinsi</option>';
+                    provinces.forEach(prov => {
+                        options +=
+                            `<option value="${prov.id}" data-nama="${prov.name}" ${prov.id == selectedProv ? 'selected' : ''}>${prov.name}</option>`;
+                    });
+                    document.getElementById('provinsi').innerHTML = options;
+
+                    // Set nama provinsi jika sudah ada
+                    if (selectedProv) {
+                        const provNama = provinces.find(p => p.id == selectedProv)?.name || '';
+                        document.getElementById('dosen_provinsi_text').value = provNama;
+                        loadKota(selectedProv, selectedKota, selectedKec, selectedDesa);
+                    }
+                });
+
+            document.getElementById('provinsi').addEventListener('change', function() {
+                const provId = this.value;
+                const provNama = this.options[this.selectedIndex].getAttribute('data-nama') || '';
+                document.getElementById('dosen_provinsi_text').value = provNama;
+                resetSelect('kota', 'Kabupaten/Kota');
+                resetSelect('kecamatan', 'Kecamatan');
+                resetSelect('kelurahan', 'Kelurahan/Desa');
+                if (!provId) return;
+                loadKota(provId, null, null, null);
+            });
+
+            function loadKota(provId, selectedKota, selectedKec, selectedDesa) {
+                const kotaSelect = document.getElementById('kota');
+                kotaSelect.disabled = false;
+                kotaSelect.innerHTML = '<option value="">Loading...</option>';
+                fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provId}.json`)
+                    .then(response => response.json())
+                    .then(regencies => {
+                        let options = '<option value="">Pilih Kabupaten/Kota</option>';
+                        regencies.forEach(reg => {
+                            options +=
+                                `<option value="${reg.id}" data-nama="${reg.name}" ${reg.id == selectedKota ? 'selected' : ''}>${reg.name}</option>`;
+                        });
+                        kotaSelect.innerHTML = options;
+
+                        // Set nama kota jika sudah ada
+                        if (selectedKota) {
+                            const kotaNama = regencies.find(r => r.id == selectedKota)?.name || '';
+                            document.getElementById('dosen_kota_text').value = kotaNama;
+                            loadKecamatan(selectedKota, selectedKec, selectedDesa);
+                        }
+                    });
+            }
+
+            document.getElementById('kota').addEventListener('change', function() {
+                const kotaId = this.value;
+                const kotaNama = this.options[this.selectedIndex].getAttribute('data-nama') || '';
+                document.getElementById('dosen_kota_text').value = kotaNama;
+                resetSelect('kecamatan', 'Kecamatan');
+                resetSelect('kelurahan', 'Kelurahan/Desa');
+                if (!kotaId) return;
+                loadKecamatan(kotaId, null, null);
+            });
+
+            function loadKecamatan(kotaId, selectedKec, selectedDesa) {
+                const kecSelect = document.getElementById('kecamatan');
+                kecSelect.disabled = false;
+                kecSelect.innerHTML = '<option value="">Loading...</option>';
+                fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${kotaId}.json`)
+                    .then(response => response.json())
+                    .then(kecamatans => {
+                        let options = '<option value="">Pilih Kecamatan</option>';
+                        kecamatans.forEach(kec => {
+                            options +=
+                                `<option value="${kec.id}" data-nama="${kec.name}" ${kec.id == selectedKec ? 'selected' : ''}>${kec.name}</option>`;
+                        });
+                        kecSelect.innerHTML = options;
+
+                        // Set nama kecamatan jika sudah ada
+                        if (selectedKec) {
+                            const kecNama = kecamatans.find(k => k.id == selectedKec)?.name || '';
+                            document.getElementById('dosen_kecamatan_text').value = kecNama;
+                            loadKelurahan(selectedKec, selectedDesa);
+                        }
+                    });
+            }
+
+            document.getElementById('kecamatan').addEventListener('change', function() {
+                const kecId = this.value;
+                const kecNama = this.options[this.selectedIndex].getAttribute('data-nama') || '';
+                document.getElementById('dosen_kecamatan_text').value = kecNama;
+                resetSelect('kelurahan', 'Kelurahan/Desa');
+                if (!kecId) return;
+                loadKelurahan(kecId, null);
+            });
+
+            function loadKelurahan(kecId, selectedDesa) {
+                const kelSelect = document.getElementById('kelurahan');
+                kelSelect.disabled = false;
+                kelSelect.innerHTML = '<option value="">Loading...</option>';
+                fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${kecId}.json`)
+                    .then(response => response.json())
+                    .then(kelurahans => {
+                        let options = '<option value="">Pilih Kelurahan/Desa</option>';
+                        kelurahans.forEach(kel => {
+                            options +=
+                                `<option value="${kel.id}" data-nama="${kel.name}" ${kel.id == selectedDesa ? 'selected' : ''}>${kel.name}</option>`;
+                        });
+                        kelSelect.innerHTML = options;
+
+                        // Set nama kelurahan jika sudah ada
+                        if (selectedDesa) {
+                            const kelNama = kelurahans.find(k => k.id == selectedDesa)?.name || '';
+                            document.getElementById('dosen_desa_text').value = kelNama;
+                        }
+                    });
+            }
+
+            document.getElementById('kelurahan').addEventListener('change', function() {
+                const kelNama = this.options[this.selectedIndex].getAttribute('data-nama') || '';
+                document.getElementById('dosen_desa_text').value = kelNama;
+            });
+
+            function resetSelect(id, label) {
+                const select = document.getElementById(id);
+                select.innerHTML = `<option value="">Pilih ${label}</option>`;
+                select.disabled = true;
             }
         });
     </script>

@@ -116,19 +116,19 @@
                     <div class="card-body">
                         <div class="row mb-2">
                             <div class="col-sm-4">Provinsi</div>
-                            <div class="col-sm-8">{{ $dosen->dosen_provinsi }}</div>
+                            <div class="col-sm-8">{{ $dosen->dosen_provinsi_text }}</div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-sm-4">Kota</div>
-                            <div class="col-sm-8">{{ $dosen->dosen_kota }}</div>
+                            <div class="col-sm-8">{{ $dosen->dosen_kota_text }}</div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-sm-4">Kecamatan</div>
-                            <div class="col-sm-8">{{ $dosen->dosen_kecamatan }}</div>
+                            <div class="col-sm-8">{{ $dosen->dosen_kecamatan_text }}</div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-sm-4">Desa</div>
-                            <div class="col-sm-8">{{ $dosen->dosen_desa }}</div>
+                            <div class="col-sm-8">{{ $dosen->dosen_desa_text }}</div>
                         </div>
                     </div>
                 </div>
