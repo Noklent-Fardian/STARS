@@ -123,10 +123,10 @@
                                                 $alamat = implode(
                                                     ', ',
                                                     array_filter([
-                                                        $mahasiswa->mahasiswa_desa,
-                                                        $mahasiswa->mahasiswa_kecamatan,
-                                                        $mahasiswa->mahasiswa_kota,
-                                                        $mahasiswa->mahasiswa_provinsi,
+                                                        $mahasiswa->mahasiswa_desa_text,
+                                                        $mahasiswa->mahasiswa_kecamatan_text,
+                                                        $mahasiswa->mahasiswa_kota_text,
+                                                        $mahasiswa->mahasiswa_provinsi_text,
                                                     ]),
                                                 );
                                             @endphp

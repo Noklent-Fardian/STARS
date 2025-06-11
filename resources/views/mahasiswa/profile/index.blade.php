@@ -130,19 +130,19 @@
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-sm-4">Provinsi</div>
-                        <div class="col-sm-8">{{ $mahasiswa->mahasiswa_provinsi }}</div>
+                        <div class="col-sm-8">{{ $mahasiswa->mahasiswa_provinsi_text }}</div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-sm-4">Kota</div>
-                        <div class="col-sm-8">{{ $mahasiswa->mahasiswa_kota }}</div>
+                        <div class="col-sm-8">{{ $mahasiswa->mahasiswa_kota_text }}</div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-sm-4">Kecamatan</div>
-                        <div class="col-sm-8">{{ $mahasiswa->mahasiswa_kecamatan }}</div>
+                        <div class="col-sm-8">{{ $mahasiswa->mahasiswa_kecamatan_text }}</div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-sm-4">Desa</div>
-                        <div class="col-sm-8">{{ $mahasiswa->mahasiswa_desa }}</div>
+                        <div class="col-sm-8">{{ $mahasiswa->mahasiswa_desa_text}}</div>
                     </div>
                 </div>
             </div>

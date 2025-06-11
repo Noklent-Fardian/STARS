@@ -23,16 +23,19 @@ class DosenController extends Controller
     public function index()
     {
         $dosen = Auth::user()->dosen;
-        
+
         // Get mahasiswa bimbingan through verifikasi records
         $mahasiswaBimbingan = Mahasiswa::whereHas('verifikasis', function ($query) use ($dosen) {
             $query->where('dosen_id', $dosen->id);
         })
-        ->with(['prodi', 'verifikasis' => function ($query) use ($dosen) {
-            $query->where('dosen_id', $dosen->id);
-        }])
-        ->where('mahasiswa_visible', true)
-        ->get();
+            ->with([
+                'prodi',
+                'verifikasis' => function ($query) use ($dosen) {
+                    $query->where('dosen_id', $dosen->id);
+                }
+            ])
+            ->where('mahasiswa_visible', true)
+            ->get();
 
         // Calculate overall ranking among all dosen
         $overallRank = DB::table('m_dosens')
@@ -195,6 +198,10 @@ class DosenController extends Controller
             'dosen_kota' => 'nullable|string|max:100',
             'dosen_kecamatan' => 'nullable|string|max:100',
             'dosen_desa' => 'nullable|string|max:100',
+            'dosen_provinsi_text' => 'nullable|string|max:100',
+            'dosen_kota_text' => 'nullable|string|max:100',
+            'dosen_kecamatan_text' => 'nullable|string|max:100',
+            'dosen_desa_text' => 'nullable|string|max:100',
             'dosen_photo' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
             'keahlian_sertifikat' => 'nullable|url',
             'keahlian_sertifikat_tambahan' => 'array',
@@ -212,10 +219,14 @@ class DosenController extends Controller
                 'dosen_nomor_telepon' => $validated['dosen_nomor_telepon'] ?? null,
                 'keahlian_id' => $validated['keahlian_id'],
                 'keahlian_sertifikat' => $validated['keahlian_sertifikat'] ?? null,
-                'dosen_provinsi' => $validated['dosen_provinsi'] ?? null,
-                'dosen_kota' => $validated['dosen_kota'] ?? null,
-                'dosen_kecamatan' => $validated['dosen_kecamatan'] ?? null,
-                'dosen_desa' => $validated['dosen_desa'] ?? null,
+                'dosen_provinsi' => $request->dosen_provinsi,
+                'dosen_kota' => $request->dosen_kota,
+                'dosen_kecamatan' => $request->dosen_kecamatan,
+                'dosen_desa' => $request->dosen_desa,
+                'dosen_provinsi_text' => $request->dosen_provinsi_text,
+                'dosen_kota_text' => $request->dosen_kota_text,
+                'dosen_kecamatan_text' => $request->dosen_kecamatan_text,
+                'dosen_desa_text' => $request->dosen_desa_text,
                 'dosen_photo' => $validated['dosen_photo'] ?? $dosen->dosen_photo,
             ]);
 
@@ -257,13 +268,13 @@ class DosenController extends Controller
         return redirect()->route('dosen.profile')->with('success', 'Password berhasil diubah.');
     }
 
-   public function updatePhoto(Request $request)
+    public function updatePhoto(Request $request)
     {
         $messages = [
             'dosen_photo.required' => 'Silakan pilih foto terlebih dahulu.',
-            'dosen_photo.image'    => 'File harus berupa gambar.',
-            'dosen_photo.mimes'    => 'Format foto harus jpeg, jpg, png, atau webp.',
-            'dosen_photo.max'      => 'Ukuran foto tidak boleh lebih dari 2MB.',
+            'dosen_photo.image' => 'File harus berupa gambar.',
+            'dosen_photo.mimes' => 'Format foto harus jpeg, jpg, png, atau webp.',
+            'dosen_photo.max' => 'Ukuran foto tidak boleh lebih dari 2MB.',
         ];
 
         $validator = Validator::make($request->all(), [
