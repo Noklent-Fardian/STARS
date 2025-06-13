@@ -35,7 +35,7 @@
                 <div class="form-group">
                     <label class="font-weight-bold">ID Tingkatan</label>
                     <select name="tingkatan_id" class="form-control" required>
-                        <option value="" disabled selected>-- Pilih Tingkatan --</option>
+                        <option value="" disabled selected>Pilih Tingkatan</option>
                         @foreach($tingkatans as $tingkatan)
                             <option value="{{ $tingkatan->id }}">{{ $tingkatan->tingkatan_nama }}</option>
                         @endforeach
@@ -46,7 +46,7 @@
                 <div class="form-group">
                     <label class="font-weight-bold">ID Semester</label>
                     <select name="semester_id" class="form-control" required>
-                        <option value="" disabled selected>-- Pilih Semester --</option>
+                        <option value="" disabled selected>Pilih Semester</option>
                         @foreach($semesters as $semester)
                             <option value="{{ $semester->id }}">{{ $semester->semester_nama }}</option>
                         @endforeach
@@ -69,9 +69,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="font-weight-bold">Kategori</label>
-                    <input type="text" name="lomba_kategori" class="form-control" placeholder="Masukkan kategori lomba"
-                        required>
+                    <label class="font-weight-bold">Kategori Lomba</label>
+                    <select name="lomba_kategori" class="form-control" required>
+                        <option value="" disabled selected>Pilih Kategori</option>
+                        <option value="Akademik">Akademik</option>
+                        <option value="Non-Akademik">Non-Akademik</option>
+                    </select>
                     <small id="error-lomba_kategori" class="error-text form-text text-danger"></small>
                 </div>
 
@@ -322,8 +325,7 @@
                     maxlength: "Maksimal 255 karakter",
                 },
                 lomba_kategori: {
-                    required: "Kategori tidak boleh kosong",
-                    maxlength: "Maksimal 255 karakter",
+                    required: "Pilih kategori"
                 },
                 lomba_tanggal_mulai: {
                     required: "Tanggal mulai harus diisi",

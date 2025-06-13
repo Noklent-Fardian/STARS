@@ -192,6 +192,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
 
         // Export routes
         Route::get('/export_pdf', [AdminKelolaLombaController::class, 'exportPDF'])->name('exportPDF');
+        Route::get('/export_excel', [AdminKelolaLombaController::class, 'exportExcel'])->name('exportExcel');
 
         // Import routes
         Route::get('/import_form', [AdminKelolaLombaController::class, 'importForm'])->name('importForm');
