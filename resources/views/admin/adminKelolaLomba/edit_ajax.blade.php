@@ -64,7 +64,7 @@
                 <div class="form-group">
                     <label class="font-weight-bold">ID Tingkatan</label>
                     <select name="tingkatan_id" id="tingkatan_id" class="form-control" required>
-                        <option value="" disabled>-- Pilih Tingkatan --</option>
+                        <option value="" disabled>Pilih Tingkatan</option>
                         @foreach ($tingkatans as $tingkatan)
                             <option value="{{ $tingkatan->id }}" {{ old('tingkatan_id', $lomba->tingkatan_id) == $tingkatan->id ? 'selected' : '' }}>
                                 {{ $tingkatan->tingkatan_nama }}
@@ -76,7 +76,7 @@
                 <div class="form-group">
                     <label class="font-weight-bold">ID Semester</label>
                     <select name="semester_id" id="semester_id" class="form-control" required>
-                        <option value="" disabled>-- Pilih Semester --</option>
+                        <option value="" disabled>Pilih Semester</option>
                         @foreach ($semesters as $semester)
                             <option value="{{ $semester->id }}" {{ old('semester_id', $lomba->semester_id) == $semester->id ? 'selected' : '' }}>
                                 {{ $semester->semester_nama }}
@@ -100,7 +100,13 @@
                 @foreach ($fields as $field => $label)
                     <div class="form-group">
                         <label class="font-weight-bold">{{ $label }}</label>
-                        @if (str_contains($field, 'tanggal'))
+                        @if ($field == 'lomba_kategori')
+                            <select name="lomba_kategori" id="lomba_kategori" class="form-control" required>
+                                <option value="">Pilih Kategori</option>
+                                <option value="Akademik" {{ old('lomba_kategori', $lomba->lomba_kategori) == 'Akademik' ? 'selected' : '' }}>Akademik</option>
+                                <option value="Non-Akademik" {{ old('lomba_kategori', $lomba->lomba_kategori) == 'Non-Akademik' ? 'selected' : '' }}>Non-Akademik</option>
+                            </select>
+                        @elseif (str_contains($field, 'tanggal'))
                             <input type="date" name="{{ $field }}" id="{{ $field }}" class="form-control"
                                 placeholder="Masukkan {{ strtolower($label) }}"
                                 value="{{ old($field, optional($lomba->$field)->format('Y-m-d')) }}" required>
@@ -343,8 +349,7 @@
                     maxlength: "Maksimal 255 karakter",
                 },
                 lomba_kategori: {
-                    required: "Kategori tidak boleh kosong",
-                    maxlength: "Maksimal 255 karakter",
+                    required: "Pilih kategori"
                 },
                 lomba_tanggal_mulai: {
                     required: "Tanggal mulai harus diisi",
