@@ -31,13 +31,11 @@
                                     <div class="d-flex align-items-center">
                                         <div class="profile-image-container mr-4" style="width: 100px; height: 100px;">
                                             @if ($dosen->dosen_photo)
-                                                <img src="{{ asset('storage/' . $dosen->dosen_photo) }}"
+                                                <img src="{{ asset('storage/dosen_photos/' . $dosen->dosen_photo) }}"
                                                      alt="{{ $dosen->dosen_nama }}"
-                                                     class="rounded-circle user-profile-image" 
-                                                     style="width: 100px; height: 100px;">
+                                                     class="rounded-circle user-profile-image" style="width: 100px; height: 100px;">
                                             @else
-                                                <div class="no-avatar rounded-circle bg-secondary" 
-                                                style="width: 100px; height: 100px;">
+                                                <div class="no-avatar rounded-circle bg-secondary" style="width: 100px; height: 100px;">
                                                     <i class="fas fa-user"></i>
                                                 </div>
                                             @endif
