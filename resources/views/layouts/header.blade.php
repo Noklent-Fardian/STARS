@@ -19,7 +19,7 @@
                 @endphp
                 @if ($notificationCount > 0)
                     <span class="badge badge-danger badge-counter">
-                        {{ $notificationCount > 9 ? '9+' : $notificationCount }}
+                        {{ $notificationCount > 4 ? '4+' : $notificationCount }}
                     </span>
                 @endif
             </a>
@@ -148,7 +148,7 @@
         } else {
             // Update counter
             if (counter) {
-                counter.textContent = remainingNotifications > 9 ? '9+' : remainingNotifications;
+                counter.textContent = remainingNotifications > 4 ? '4+' : remainingNotifications;
             }
         }
     }

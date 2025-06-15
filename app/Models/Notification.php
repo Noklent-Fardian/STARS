@@ -19,7 +19,8 @@ class Notification extends Model
         'icon_bg',
         'is_read',
         'related_id',
-        'related_type'
+        'related_type',
+        'data'
     ];
 
     protected $casts = [

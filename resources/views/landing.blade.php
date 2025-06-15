@@ -320,7 +320,7 @@
                     <div class="col-xl-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="1000">
                         <div class="service-item position-relative">
                             <div class="icon"><i class="bi bi-person-badge-fill"></i></div>
-                            <h4><a href="#" class="stretched-link">Sentralilasi Data Mahasiswa</a></h4>
+                            <h4><a href="#" class="stretched-link">Sentralilasi Data Dosen</a></h4>
                             <p>Sistem ini akan mencatat data dosen yang nantinya akan melakukan verifikasi prestasi.</p>
                         </div>
                     </div><!-- End Service Item -->

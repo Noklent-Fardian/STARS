@@ -273,10 +273,10 @@
 
         <div class="sidebar-heading">Notifikasi</div>
 
-        <li class="nav-item {{ request()->routeIs('mahasiswa.notifikasi.*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('mahasiswa.notifikasi.index') }}">
+        <li class="nav-item {{ request()->routeIs('mahasiswa.rekomendasi.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('mahasiswa.rekomendasi.index') }}">
                 <i class="nav-icon fas fa-plus-circle"></i>
-                <span>Notifikasi Mahasiswa</span>
+                <span>Rekomendasi Lomba</span>
             </a>
         </li>
 

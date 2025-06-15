@@ -89,9 +89,8 @@ if (!function_exists('getUnreadNotifications')) {
     }
 }
 
-
 if (!function_exists('createNotification')) {
-    function createNotification($userId, $type, $message, $url, $icon = 'fas fa-bell', $iconBg = 'bg-primary', $relatedId = null, $relatedType = null)
+    function createNotification($userId, $type, $message, $url, $icon = 'fas fa-bell', $iconBg = 'bg-primary', $relatedId = null, $relatedType = null, $additionalData = null)
     {
         return Notification::create([
             'user_id' => $userId,
@@ -104,6 +103,7 @@ if (!function_exists('createNotification')) {
             'is_read' => false,
             'related_id' => $relatedId,
             'related_type' => $relatedType,
+            'data' => $additionalData ? json_encode($additionalData) : null,
         ]);
     }
 }

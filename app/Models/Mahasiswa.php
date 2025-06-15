@@ -93,4 +93,9 @@ class Mahasiswa extends Model
     {
         return $this->hasMany(Verifikasi::class, 'mahasiswa_id');
     }
+
+    public function competitionSubmissions()
+    {
+        return $this->hasMany(CompetitionSubmission::class, 'mahasiswa_id');
+    }
 }

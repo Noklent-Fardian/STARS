@@ -9,7 +9,6 @@ use App\Models\keahlianMahasiswa;
 use App\Models\Penghargaan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use App\Services\TopsisService;
 use App\Services\SawService;
@@ -20,25 +19,13 @@ class RekomendasiController extends Controller
     public function index()
     {
         try {
-            // Debug: Check if we can connect to database
-            // dd('Starting rekomendasi index method');
-            
-            // Fix: Use correct column names from your migration
             $lombaAkanDatang = Lomba::where('lomba_tanggal_mulai', '>', Carbon::now())
-                ->where('lomba_visible', true) // Only show visible competitions
+                ->where('lomba_visible', true)
                 ->orderBy('lomba_tanggal_mulai', 'asc')
                 ->get();
 
-            // Debug: Check what we found
-            // dd('Found ' . $lombaAkanDatang->count() . ' upcoming competitions', $lombaAkanDatang->toArray());
-
             return view('admin.rekomendasiTopsis.index', compact('lombaAkanDatang'));
-            
         } catch (\Exception $e) {
-            // Debug: Show the error
-            dd('Error in rekomendasi index: ' . $e->getMessage(), $e->getTraceAsString());
-            
-            // Return view with empty collection and error message
             $lombaAkanDatang = collect();
             return view('admin.rekomendasiTopsis.index', compact('lombaAkanDatang'))
                 ->with('error', 'Terjadi kesalahan saat memuat data: ' . $e->getMessage());
@@ -67,7 +54,6 @@ class RekomendasiController extends Controller
             return redirect()->back()->with('error', 'Tidak ada data mahasiswa yang tersedia.');
         }
 
-        // Pakai service
         $topsis = new TopsisService();
         $hasilTopsis = $topsis->hitung($mahasiswas, $bobots, $keahlianLomba);
 
@@ -75,6 +61,7 @@ class RekomendasiController extends Controller
 
         return view('admin.rekomendasiTopsis.hasil', compact('lomba', 'rekomendasi', 'bobots'));
     }
+
 
     private function getMahasiswaData()
     {
@@ -85,64 +72,206 @@ class RekomendasiController extends Controller
             'm_mahasiswas.mahasiswa_score',
             'm_mahasiswas.keahlian_id as keahlian_utama_id',
             'keahlian_utama.keahlian_nama as keahlian_utama',
-            'm_mahasiswas.mahasiswa_nomor_telepon as mahasiswa_nomor_telepon', // <-- Tambahkan ini!
+            'm_mahasiswas.mahasiswa_nomor_telepon',
+            'm_mahasiswas.mahasiswa_photo',
+            'm_mahasiswas.mahasiswa_angkatan',
             DB::raw('COUNT(DISTINCT t_keahlian_mahasiswas.keahlian_id) as jumlah_keahlian_tambahan'),
             DB::raw('COUNT(DISTINCT m_penghargaans.id) as jumlah_lomba')
         ])
-        ->leftJoin('m_keahlians as keahlian_utama', 'm_mahasiswas.keahlian_id', '=', 'keahlian_utama.id')
-        ->leftJoin('t_keahlian_mahasiswas', 'm_mahasiswas.id', '=', 't_keahlian_mahasiswas.mahasiswa_id')
-        ->leftJoin('m_penghargaans', 'm_mahasiswas.id', '=', 'm_penghargaans.mahasiswa_id')
-        ->groupBy([
-            'm_mahasiswas.id',
-            'm_mahasiswas.mahasiswa_nama',
-            'm_mahasiswas.mahasiswa_nim',
-            'm_mahasiswas.mahasiswa_score',
-            'm_mahasiswas.keahlian_id',
-            'keahlian_utama.keahlian_nama',
-            'm_mahasiswas.mahasiswa_nomor_telepon' // <-- Tambahkan juga di groupBy!
-        ])
-        ->get();
+            ->leftJoin('m_keahlians as keahlian_utama', 'm_mahasiswas.keahlian_id', '=', 'keahlian_utama.id')
+            ->leftJoin('t_keahlian_mahasiswas', 'm_mahasiswas.id', '=', 't_keahlian_mahasiswas.mahasiswa_id')
+            ->leftJoin('m_penghargaans', 'm_mahasiswas.id', '=', 'm_penghargaans.mahasiswa_id')
+            ->where('m_mahasiswas.mahasiswa_visible', true)
+            ->groupBy([
+                'm_mahasiswas.id',
+                'm_mahasiswas.mahasiswa_nama',
+                'm_mahasiswas.mahasiswa_nim',
+                'm_mahasiswas.mahasiswa_score',
+                'm_mahasiswas.keahlian_id',
+                'keahlian_utama.keahlian_nama',
+                'm_mahasiswas.mahasiswa_nomor_telepon',
+                'm_mahasiswas.mahasiswa_photo',
+                'm_mahasiswas.mahasiswa_angkatan'
+            ])
+            ->get();
     }
 
-    // filepath: [RekomendasiController.php](http://_vscodecontentref_/0)
     public function kirimRekomendasi(Request $request)
     {
-        // Hapus session notifikasi lama
-        session()->forget('notifikasi_mahasiswa');
+        try {
+            $mahasiswaId = $request->mahasiswa_id;
+            $lombaId = $request->lomba_id;
+            $rekomendasiData = $request->rekomendasi_data;
 
-        $ranking = $request->rekomendasi_data;
-        $mahasiswaId = $request->mahasiswa_id;
-        $lombaId = $request->lomba_id; // pastikan dikirim dari AJAX
+            $mahasiswa = Mahasiswa::with('user')->findOrFail($mahasiswaId);
+            $lomba = Lomba::findOrFail($lombaId);
 
-        $mahasiswa = Mahasiswa::find($mahasiswaId);
-        $lomba = Lomba::find($lombaId);
+            // Prepare other qualified students data with additional info
+            $otherQualifiedStudents = [];
+            foreach ($rekomendasiData as $item) {
+                if ($item['mahasiswa']['id'] != $mahasiswaId) {
+                    $otherQualifiedStudents[] = [
+                        'ranking' => $item['ranking'],
+                        'nama' => $item['mahasiswa']['nama'] ?? 'Nama tidak tersedia',
+                        'nim' => $item['mahasiswa']['nim'] ?? 'NIM tidak tersedia',
+                        'nomor_telepon' => $item['mahasiswa']['mahasiswa_nomor_telepon'] ?? 'Tidak tersedia',
+                        'photo' => $item['mahasiswa']['mahasiswa_photo'] ?? 'default-avatar.png',
+                        'angkatan' => $item['mahasiswa']['mahasiswa_angkatan'] ?? 'Tidak tersedia',
+                        'skor_preferensi' => number_format($item['skor_preferensi'], 4),
+                        'keahlian_utama' => $item['mahasiswa']['keahlian_utama'] ?? 'Tidak ada'
+                    ];
+                }
+            }
 
-        $dataRanking = [];
-        foreach ($ranking as $item) {
-            $dataRanking[] = [
-                'ranking' => $item['ranking'],
-                'nama' => $item['mahasiswa']['nama'],
-                'nim' => $item['mahasiswa']['nim'],
-                'telepon' => $item['mahasiswa']['mahasiswa_nomor_telepon'] ?? '-',
+            // Find current student's ranking
+            $currentStudentRanking = null;
+            foreach ($rekomendasiData as $item) {
+                if ($item['mahasiswa']['id'] == $mahasiswaId) {
+                    $currentStudentRanking = $item['ranking'];
+                    break;
+                }
+            }
+
+            // Create detailed notification message
+            $notificationMessage = "Anda direkomendasikan untuk mengikuti lomba '{$lomba->lomba_nama}' (Ranking #{$currentStudentRanking}). " .
+                "Total " . count($rekomendasiData) . " mahasiswa direkomendasikan untuk lomba ini.";
+
+            // Prepare notification data
+            $notificationData = [
+                'lomba_id' => $lombaId,
+                'lomba_nama' => $lomba->lomba_nama,
+                'ranking' => $currentStudentRanking,
+                'total_recommended' => count($rekomendasiData),
+                'other_qualified' => $otherQualifiedStudents,
+                'lomba_details' => [
+                    'penyelenggara' => $lomba->lomba_penyelenggara,
+                    'tanggal_mulai' => $lomba->lomba_tanggal_mulai,
+                    'tanggal_selesai' => $lomba->lomba_tanggal_selesai,
+                    'link_pendaftaran' => $lomba->lomba_link_pendaftaran
+                ]
             ];
+
+            // Check if mahasiswa has user_id
+            if (!$mahasiswa->user_id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Mahasiswa tidak memiliki akun user yang terhubung.'
+                ], 400);
+            }
+
+            // Create notification using the existing createNotification function
+            createNotification(
+                $mahasiswa->user_id,
+                'Rekomendasi Lomba',
+                $notificationMessage,
+                route('mahasiswa.rekomendasi.index'),
+                'fas fa-trophy',
+                'bg-success',
+                $lombaId,
+                'Rekomendasi Lomba',
+                $notificationData
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Rekomendasi berhasil dikirim ke mahasiswa!',
+                'data' => [
+                    'other_qualified_students' => $otherQualifiedStudents,
+                    'current_student_ranking' => $currentStudentRanking,
+                    'total_recommended' => count($rekomendasiData)
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
         }
+    }
 
-        $notifikasi = session()->get('notifikasi_mahasiswa', []);
-        $notifikasi[] = [
-            'judul' => 'Rekomendasi Lomba: ' . ($lomba->lomba_nama ?? '-'),
-            'lomba_nama' => $lomba->lomba_nama ?? '-',
-            'pesan' => 'Anda direkomendasikan untuk mengikuti lomba ini.',
-            'mahasiswa' => [
-                'mahasiswa_nama' => $mahasiswa->mahasiswa_nama,
-                'mahasiswa_telepon' => $mahasiswa->mahasiswa_nomor_telepon,
-            ],
-            'data_ranking' => json_encode($dataRanking),
-            'is_read' => false,
-            'created_at' => now(),
-        ];
-        session()->put('notifikasi_mahasiswa', $notifikasi);
+    public function kirimRekomendasiSaw(Request $request)
+    {
+        try {
+            $mahasiswaId = $request->mahasiswa_id;
+            $lombaId = $request->lomba_id;
+            $rekomendasiData = $request->rekomendasi_data;
 
-        return response()->json(['success' => true, 'message' => 'Notifikasi berhasil dikirim ke mahasiswa.']);
+            $mahasiswa = Mahasiswa::with('user')->findOrFail($mahasiswaId);
+            $lomba = Lomba::findOrFail($lombaId);
+
+            // Prepare other qualified students data for SAW with additional info
+            $otherQualifiedStudents = [];
+            $currentStudentRanking = null;
+
+            foreach ($rekomendasiData as $index => $item) {
+                $ranking = $index + 1;
+
+                if ($item['mahasiswa']['id'] == $mahasiswaId) {
+                    $currentStudentRanking = $ranking;
+                } else {
+                    $otherQualifiedStudents[] = [
+                        'ranking' => $ranking,
+                        'nama' => $item['mahasiswa']['nama'] ?? 'Nama tidak tersedia',
+                        'nim' => $item['mahasiswa']['nim'] ?? 'NIM tidak tersedia',
+                        'nomor_telepon' => $item['mahasiswa']['mahasiswa_nomor_telepon'] ?? 'Tidak tersedia',
+                        'photo' => $item['mahasiswa']['mahasiswa_photo'] ?? 'default-avatar.png',
+                        'angkatan' => $item['mahasiswa']['mahasiswa_angkatan'] ?? 'Tidak tersedia',
+                        'skor_preferensi' => number_format($item['skor_preferensi'], 4),
+                        'keahlian_utama' => $item['mahasiswa']['keahlian_utama'] ?? 'Tidak ada'
+                    ];
+                }
+            }
+
+            // Create detailed notification message
+            $notificationMessage = "Anda direkomendasikan untuk mengikuti lomba '{$lomba->lomba_nama}' (Ranking #{$currentStudentRanking}). " .
+                "Total " . count($rekomendasiData) . " mahasiswa direkomendasikan untuk lomba ini.";
+
+            // Prepare notification data
+            $notificationData = [
+                'lomba_id' => $lombaId,
+                'lomba_nama' => $lomba->lomba_nama,
+                'ranking' => $currentStudentRanking,
+                'total_recommended' => count($rekomendasiData),
+                'other_qualified' => $otherQualifiedStudents,
+                'lomba_details' => [
+                    'penyelenggara' => $lomba->lomba_penyelenggara,
+                    'tanggal_mulai' => $lomba->lomba_tanggal_mulai,
+                    'tanggal_selesai' => $lomba->lomba_tanggal_selesai,
+                    'link_pendaftaran' => $lomba->lomba_link_pendaftaran
+                ]
+            ];
+
+            // Check if mahasiswa has user_id
+            if (!$mahasiswa->user_id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Mahasiswa tidak memiliki akun user yang terhubung.'
+                ], 400);
+            }
+
+            // Create notification
+            createNotification(
+                $mahasiswa->user_id,
+                'Rekomendasi Lomba (SAW)',
+                $notificationMessage,
+                route('mahasiswa.rekomendasi.index'),
+                'fas fa-trophy',
+                'bg-success',
+                $lombaId,
+                'Rekomendasi Lomba (SAW)',
+                $notificationData  
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Rekomendasi berhasil dikirim ke mahasiswa!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     public function indexSaw()

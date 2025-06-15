@@ -6,12 +6,12 @@
 
 @section('breadcrumb')
 
-@if (session('notifikasi'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('notifikasi') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-@endif
+    @if (session('notifikasi'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('notifikasi') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
 @section('content')
     <!-- Page Heading -->
@@ -142,16 +142,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($rekomendasi as $item)
+                                @foreach ($rekomendasi as $item)
                                     <tr class="{{ $item['ranking'] <= 3 ? 'table-success' : '' }}">
                                         <td class="text-center">
-                                            <span class="badge badge-{{ $item['ranking'] == 1 ? 'warning' : ($item['ranking'] == 2 ? 'secondary' : ($item['ranking'] == 3 ? 'info' : 'light')) }}">
+                                            <span
+                                                class="badge badge-{{ $item['ranking'] == 1 ? 'warning' : ($item['ranking'] == 2 ? 'secondary' : ($item['ranking'] == 3 ? 'info' : 'light')) }}">
                                                 #{{ $item['ranking'] }}
                                             </span>
                                         </td>
                                         <td>
                                             <strong>{{ $item['mahasiswa']->nama }}</strong>
-                                            @if($item['ranking'] <= 3)
+                                            @if ($item['ranking'] <= 3)
                                                 <i class="fas fa-star text-warning ml-1"></i>
                                             @endif
                                         </td>
@@ -162,25 +163,26 @@
                                         <td class="text-center">{{ $item['kriteria']['score'] ?? 0 }}</td>
                                         <td>
                                             {{ $item['mahasiswa']->keahlian_utama ?? 'Tidak ada' }}
-                                            @if($item['kriteria']['keahlian_utama'])
+                                            @if ($item['kriteria']['keahlian_utama'])
                                                 <i class="fas fa-check-circle text-success ml-1"></i>
                                             @endif
                                         </td>
                                         <td class="text-center">
-                                            <span class="badge badge-info">{{ $item['kriteria']['keahlian_tambahan'] }}</span>
+                                            <span
+                                                class="badge badge-info">{{ $item['kriteria']['keahlian_tambahan'] }}</span>
                                         </td>
                                         <td class="text-center">
-                                            <span class="badge badge-warning">{{ $item['kriteria']['jumlah_lomba'] }}</span>
+                                            <span
+                                                class="badge badge-warning">{{ $item['kriteria']['jumlah_lomba'] }}</span>
                                         </td>
                                         <td class="text-center">
-                                            <button type="button" 
-                                                    class="btn btn-success btn-sm btn-rekomendasi" 
-                                                    data-mahasiswa-id="{{ $item['mahasiswa']->id }}"
-                                                    data-mahasiswa-nama="{{ $item['mahasiswa']->nama }}"
-                                                    data-mahasiswa-nim="{{ $item['mahasiswa']->nim }}"
-                                                    data-lomba-id="{{ $lomba->id }}"
-                                                    data-lomba-nama="{{ $lomba->lomba_nama }}"
-                                                    title="Kirim Rekomendasi ke Mahasiswa">
+                                            <button type="button" class="btn btn-success btn-sm btn-rekomendasi"
+                                                data-mahasiswa-id="{{ $item['mahasiswa']->id }}"
+                                                data-mahasiswa-nama="{{ $item['mahasiswa']->nama }}"
+                                                data-mahasiswa-nim="{{ $item['mahasiswa']->nim }}"
+                                                data-lomba-id="{{ $lomba->id }}"
+                                                data-lomba-nama="{{ $lomba->lomba_nama }}"
+                                                title="Kirim Rekomendasi ke Mahasiswa">
                                                 <i class="fas fa-paper-plane"></i> Rekomendasikan
                                             </button>
                                         </td>
@@ -237,8 +239,10 @@
                     </div>
                     <div class="alert alert-info mt-3">
                         <i class="fas fa-info-circle"></i>
-                        <strong>Catatan:</strong> Hasil rekomendasi ini dihitung menggunakan metode TOPSIS (Technique for Order Preference by Similarity to Ideal Solution) 
-                        yang mempertimbangkan kedekatan alternatif dengan solusi ideal positif dan jarak dari solusi ideal negatif.
+                        <strong>Catatan:</strong> Hasil rekomendasi ini dihitung menggunakan metode TOPSIS (Technique for
+                        Order Preference by Similarity to Ideal Solution)
+                        yang mempertimbangkan kedekatan alternatif dengan solusi ideal positif dan jarak dari solusi ideal
+                        negatif.
                     </div>
                 </div>
             </div>
@@ -246,7 +250,8 @@
     </div>
 
     <!-- Modal Konfirmasi Rekomendasi -->
-    <div class="modal fade" id="modalKonfirmasiRekomendasi" tabindex="-1" role="dialog" aria-labelledby="modalKonfirmasiRekomendasiLabel" aria-hidden="true">
+    <div class="modal fade" id="modalKonfirmasiRekomendasi" tabindex="-1" role="dialog"
+        aria-labelledby="modalKonfirmasiRekomendasiLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -262,11 +267,12 @@
                         <i class="fas fa-question-circle fa-3x text-warning mb-3"></i>
                         <h5>Apakah Anda yakin ingin mengirim rekomendasi?</h5>
                         <p class="text-muted">
-                            Mahasiswa <strong id="modal-nama-mahasiswa"></strong> (<span id="modal-nim-mahasiswa"></span>) 
-                            akan menerima notifikasi rekomendasi untuk mengikuti lomba <strong id="modal-nama-lomba"></strong>.
+                            Mahasiswa <strong id="modal-nama-mahasiswa"></strong> (<span id="modal-nim-mahasiswa"></span>)
+                            akan menerima notifikasi rekomendasi untuk mengikuti lomba <strong
+                                id="modal-nama-lomba"></strong>.
                         </p>
                         <p class="text-info">
-                            <i class="fas fa-info-circle"></i> 
+                            <i class="fas fa-info-circle"></i>
                             Mahasiswa akan menerima notifikasi beserta daftar mahasiswa lain yang juga direkomendasikan.
                         </p>
                     </div>
@@ -285,85 +291,81 @@
 @endsection
 
 @push('js')
-<script>
-// Data rekomendasi untuk JavaScript
-const rekomendasiData = @json($rekomendasi);
-const lombaData = @json($lomba);
+    <script>
+        // Data rekomendasi untuk JavaScript
+        const rekomendasiData = @json($rekomendasi);
+        const lombaData = @json($lomba);
 
-// Debug: cek isi rekomendasiData
-    console.log('rekomendasiData:', rekomendasiData);
+        // Event listener untuk button rekomendasi
+        $(document).on('click', '.btn-rekomendasi', function() {
+            const mahasiswaId = $(this).data('mahasiswa-id');
+            const mahasiswaNama = $(this).data('mahasiswa-nama');
+            const mahasiswaNim = $(this).data('mahasiswa-nim');
+            const lombaId = $(this).data('lomba-id');
+            const lombaNama = $(this).data('lomba-nama');
 
-// Event listener untuk button rekomendasi
-$(document).on('click', '.btn-rekomendasi', function() {
-    const mahasiswaId = $(this).data('mahasiswa-id');
-    const mahasiswaNama = $(this).data('mahasiswa-nama');
-    const mahasiswaNim = $(this).data('mahasiswa-nim');
-    const lombaId = $(this).data('lomba-id');
-    const lombaNama = $(this).data('lomba-nama');
-    
-    // Set data ke modal
-    $('#modal-nama-mahasiswa').text(mahasiswaNama);
-    $('#modal-nim-mahasiswa').text(mahasiswaNim);
-    $('#modal-nama-lomba').text(lombaNama);
-    
-    // Set data untuk konfirmasi
-    $('#btn-konfirmasi-rekomendasi').data('mahasiswa-id', mahasiswaId);
-    $('#btn-konfirmasi-rekomendasi').data('lomba-id', lombaId);
-    
-    // Tampilkan modal
-    $('#modalKonfirmasiRekomendasi').modal('show');
-});
+            // Set data ke modal
+            $('#modal-nama-mahasiswa').text(mahasiswaNama);
+            $('#modal-nim-mahasiswa').text(mahasiswaNim);
+            $('#modal-nama-lomba').text(lombaNama);
 
-// Event listener untuk konfirmasi rekomendasi
-$(document).on('click', '#btn-konfirmasi-rekomendasi', function() {
-    const mahasiswaId = $(this).data('mahasiswa-id');
-    const lombaId = $(this).data('lomba-id');
-    
-    // Disable button untuk mencegah double click
-    $(this).prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Mengirim...');
-    
-    // Kirim AJAX request
-    $.ajax({
-        url: '{{ route("admin.rekomendasiTopsis.kirimRekomendasi") }}',
-        method: 'POST',
-        data: {
-            _token: '{{ csrf_token() }}',
-            mahasiswa_id: mahasiswaId,
-            lomba_id: lombaId,
-            rekomendasi_data: rekomendasiData // Kirim semua data rekomendasi
-        },
-        success: function(response) {
-            $('#modalKonfirmasiRekomendasi').modal('hide');
-            
-            // Tampilkan pesan sukses
-            showAlert('success', 'Rekomendasi berhasil dikirim! Mahasiswa akan menerima notifikasi.');
-            
-            // Disable button yang sudah diklik dan ubah textnya
-            $(`button[data-mahasiswa-id="${mahasiswaId}"]`).prop('disabled', true)
-                .removeClass('btn-success').addClass('btn-secondary')
-                .html('<i class="fas fa-check"></i> Terkirim');
-        },
-        error: function(xhr) {
-            $('#modalKonfirmasiRekomendasi').modal('hide');
-            
-            let errorMessage = 'Terjadi kesalahan saat mengirim rekomendasi.';
-            if (xhr.responseJSON && xhr.responseJSON.message) {
-                errorMessage = xhr.responseJSON.message;
-            }
-            
-            showAlert('danger', errorMessage);
-        },
-        complete: function() {
-            // Enable button kembali
-            $('#btn-konfirmasi-rekomendasi').prop('disabled', false)
-                .html('<i class="fas fa-paper-plane"></i> Ya, Kirim Rekomendasi');
-        }
-    });
-});
+            // Set data untuk konfirmasi
+            $('#btn-konfirmasi-rekomendasi').data('mahasiswa-id', mahasiswaId);
+            $('#btn-konfirmasi-rekomendasi').data('lomba-id', lombaId);
 
-// Function untuk menampilkan alert
-function showAlert(type, message) {
-    const alertHtml = `
+            // Tampilkan modal
+            $('#modalKonfirmasiRekomendasi').modal('show');
+        });
+
+        // Event listener untuk konfirmasi rekomendasi
+        $(document).on('click', '#btn-konfirmasi-rekomendasi', function() {
+            const mahasiswaId = $(this).data('mahasiswa-id');
+            const lombaId = $(this).data('lomba-id');
+
+            // Disable button untuk mencegah double click
+            $(this).prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Mengirim...');
+
+            // Kirim AJAX request
+            $.ajax({
+                url: '{{ route('admin.rekomendasiTopsis.kirimRekomendasi') }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    mahasiswa_id: mahasiswaId,
+                    lomba_id: lombaId,
+                    rekomendasi_data: rekomendasiData
+                },
+                success: function(response) {
+                    $('#modalKonfirmasiRekomendasi').modal('hide');
+
+                    showAlert('success', 'Rekomendasi berhasil dikirim! Mahasiswa akan menerima notifikasi.');
+
+                    // Disable button yang sudah diklik dan ubah textnya
+                    $(`button[data-mahasiswa-id="${mahasiswaId}"]`).prop('disabled', true)
+                        .removeClass('btn-success').addClass('btn-secondary')
+                        .html('<i class="fas fa-check"></i> Terkirim');
+                },
+                error: function(xhr) {
+                    $('#modalKonfirmasiRekomendasi').modal('hide');
+
+                    let errorMessage = 'Terjadi kesalahan saat mengirim rekomendasi.';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+
+                    showAlert('danger', errorMessage);
+                },
+                complete: function() {
+                    // Enable button kembali
+                    $('#btn-konfirmasi-rekomendasi').prop('disabled', false)
+                        .html('<i class="fas fa-paper-plane"></i> Ya, Kirim Rekomendasi');
+                }
+            });
+        });
+
+        // Function untuk menampilkan alert
+        function showAlert(type, message) {
+            const alertHtml = `
         <div class="alert alert-${type} border-left-${type} alert-dismissible fade show" role="alert">
             ${message}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -371,117 +373,113 @@ function showAlert(type, message) {
             </button>
         </div>
     `;
-    
-    // Insert alert di atas konten
-    $('.content').prepend(alertHtml);
-    
-    // Auto hide after 5 seconds
-    setTimeout(function() {
-        $('.alert').alert('close');
-    }, 5000);
-}
 
-function exportToExcel() {
-    // Simple table to CSV export
-    var csv = [];
-    var rows = document.querySelectorAll("table tr");
-    
-    for (var i = 0; i < rows.length; i++) {
-        var row = [], cols = rows[i].querySelectorAll("td, th");
-        
-        for (var j = 0; j < cols.length - 1; j++) { // Exclude last column (Aksi)
-            // Clean up the text content
-            var cellText = cols[j].innerText.replace(/"/g, '""');
-            row.push('"' + cellText + '"');
+            // Insert alert di atas konten
+            $('.content').prepend(alertHtml);
+
+            // Auto hide after 5 seconds
+            setTimeout(function() {
+                $('.alert').alert('close');
+            }, 5000);
         }
-        
-        csv.push(row.join(","));
-    }
 
-    // Download CSV file
-    var csvFile = csv.join("\n");
-    var downloadLink = document.createElement("a");
-    var blob = new Blob(["\ufeff", csvFile]);
-    var url = URL.createObjectURL(blob);
-    downloadLink.href = url;
-    downloadLink.download = "rekomendasi_mahasiswa_{{ $lomba->lomba_nama }}.csv";
+        function exportToExcel() {
+            // Simple table to CSV export
+            var csv = [];
+            var rows = document.querySelectorAll("table tr");
 
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-}
+            for (var i = 0; i < rows.length; i++) {
+                var row = [],
+                    cols = rows[i].querySelectorAll("td, th");
 
-// Print styles
-window.addEventListener('beforeprint', function() {
-    // Hide buttons when printing
-    document.querySelectorAll('.btn').forEach(function(btn) {
-        btn.style.display = 'none';
-    });
-    
-    // Hide action column when printing
-    document.querySelectorAll('th:last-child, td:last-child').forEach(function(cell) {
-        cell.style.display = 'none';
-    });
-});
+                for (var j = 0; j < cols.length - 1; j++) {
+                    var cellText = cols[j].innerText.replace(/"/g, '""');
+                    row.push('"' + cellText + '"');
+                }
 
-window.addEventListener('afterprint', function() {
-    // Show buttons after printing
-    document.querySelectorAll('.btn').forEach(function(btn) {
-        btn.style.display = '';
-    });
-    
-    // Show action column after printing
-    document.querySelectorAll('th:last-child, td:last-child').forEach(function(cell) {
-        cell.style.display = '';
-    });
-});
-</script>
+                csv.push(row.join(","));
+            }
 
-<style>
-@media print {
-    .btn {
-        display: none !important;
-    }
-    
-    .card {
-        border: 1px solid #dee2e6 !important;
-        box-shadow: none !important;
-    }
-    
-    .table {
-        font-size: 12px;
-    }
-    
-    /* Hide action column when printing */
-    th:last-child, 
-    td:last-child {
-        display: none !important;
-    }
-}
+            // Download CSV file
+            var csvFile = csv.join("\n");
+            var downloadLink = document.createElement("a");
+            var blob = new Blob(["\ufeff", csvFile]);
+            var url = URL.createObjectURL(blob);
+            downloadLink.href = url;
+            downloadLink.download = "rekomendasi_mahasiswa_{{ $lomba->lomba_nama }}.csv";
 
-/* Button rekomendasi styling */
-.btn-rekomendasi {
-    transition: all 0.3s ease;
-}
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
 
-.btn-rekomendasi:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
+        // Print styles
+        window.addEventListener('beforeprint', function() {
+            document.querySelectorAll('.btn').forEach(function(btn) {
+                btn.style.display = 'none';
+            });
 
-/* Modal styling */
-.modal-header {
-    background: linear-gradient(135deg, #28a745, #20c997);
-    color: white;
-}
+            document.querySelectorAll('th:last-child, td:last-child').forEach(function(cell) {
+                cell.style.display = 'none';
+            });
+        });
 
-.modal-header .close {
-    color: white;
-    opacity: 0.8;
-}
+        window.addEventListener('afterprint', function() {
+            document.querySelectorAll('.btn').forEach(function(btn) {
+                btn.style.display = '';
+            });
 
-.modal-header .close:hover {
-    opacity: 1;
-}
-</style>
+            document.querySelectorAll('th:last-child, td:last-child').forEach(function(cell) {
+                cell.style.display = '';
+            });
+        });
+    </script>
+
+    <style>
+        @media print {
+            .btn {
+                display: none !important;
+            }
+
+            .card {
+                border: 1px solid #dee2e6 !important;
+                box-shadow: none !important;
+            }
+
+            .table {
+                font-size: 12px;
+            }
+
+            /* Hide action column when printing */
+            th:last-child,
+            td:last-child {
+                display: none !important;
+            }
+        }
+
+        /* Button rekomendasi styling */
+        .btn-rekomendasi {
+            transition: all 0.3s ease;
+        }
+
+        .btn-rekomendasi:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Modal styling */
+        .modal-header {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .modal-header .close {
+            color: white;
+            opacity: 0.8;
+        }
+
+        .modal-header .close:hover {
+            opacity: 1;
+        }
+    </style>
 @endpush

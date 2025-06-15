@@ -139,7 +139,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     });
 
     // Admin Kelola Rekomendasi Saw
-    Route::prefix('admin/rekomendasiSaw')->name('admin.rekomendasiSaw.')->middleware(['auth', 'role:Admin'])->group(function () {
+    Route::prefix('rekomendasiSaw')->name('admin.rekomendasiSaw.')->group(function () {
         Route::get('/', [RekomendasiController::class, 'indexSaw'])->name('index');
         Route::post('/generate', [RekomendasiController::class, 'generateRekomendasiSaw'])->name('generate');
         Route::post('/kirim-rekomendasi', [RekomendasiController::class, 'kirimRekomendasiSaw'])->name('kirimRekomendasi');
@@ -421,6 +421,7 @@ Route::middleware(['auth', 'role:Mahasiswa'])->prefix('mahasiswa')->name('mahasi
     // Dashboard
     Route::get('/dashboard', [MahasiswaController::class, 'index'])->name('dashboard');
     Route::get('/notifikasi', [MahasiswaNotifikasiController::class, 'index'])->name('notifikasi');
+    Route::get('/show/{id}', [MahasiswaNotifikasiController::class, 'show'])->name('show');
 
     // Lihat Lomba dan Tambah
     Route::prefix('lomba')->name('lomba.')->group(function () {
@@ -440,15 +441,10 @@ Route::middleware(['auth', 'role:Mahasiswa'])->prefix('mahasiswa')->name('mahasi
         Route::get('/show_ajax/{id}', [MahasiswaController::class, 'prestasiShowAjax'])->name('showAjax');
     });
 
-    // Notifikasi Mahasiswa
-    Route::prefix('notifikasi')->name('notifikasi.')->group(function () {
-        Route::get('/', [MahasiswaNotifikasiController::class, 'index'])->name('index'); // Tampilkan semua notifikasi
-        Route::get('/{index}', [MahasiswaNotifikasiController::class, 'show'])->name('show'); // Lihat detail notifikasi
-        Route::post('/read/{index}', [MahasiswaNotifikasiController::class, 'markAsRead'])->name('read'); // Tandai satu notifikasi dibaca
-        Route::post('/read-all', [MahasiswaNotifikasiController::class, 'markAllAsRead'])->name('read_all'); // Tandai semua notifikasi dibaca
-        Route::get('/unread-count', [MahasiswaNotifikasiController::class, 'getUnreadCount'])->name('unread_count'); // Ambil jumlah belum dibaca
-        // Opsional: Simulasi notifikasi dummy (untuk testing)
-        Route::get('/simulate', [MahasiswaNotifikasiController::class, 'simulateNotifikasi'])->name('simulate');
+    // Rekomendasi Mahasiswa
+    Route::prefix('rekomendasi')->name('rekomendasi.')->group(function () {
+        Route::get('/', [MahasiswaNotifikasiController::class, 'rekomendasiIndex'])->name('index');
+        Route::get('/show/{id}', [MahasiswaNotifikasiController::class, 'show'])->name('show');
     });
 
     // Profil Mahasiswa
