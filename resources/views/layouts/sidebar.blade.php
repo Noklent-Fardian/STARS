@@ -202,14 +202,6 @@
                 <span>Lihat Lomba</span>
             </a>
         </li>
-
-        {{-- <li class="nav-item {{ request()->routeIs('dosen.bimbingan.index') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('dosen.bimbingan.index') }}">
-                <i class="nav-icon fas fa-users"></i>
-                <span>Bimbingan</span>
-            </a>
-        </li> --}}
-
         <hr class="sidebar-divider">
         <!-- Manajemen Prestasi -->
         <div class="sidebar-heading">Manajemen Prestasi</div>
