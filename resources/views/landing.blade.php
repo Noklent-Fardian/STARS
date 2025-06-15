@@ -394,27 +394,30 @@
             </div><!-- End Section Title -->
 
             <div class="container">
-
                 <div class="row gy-4">
-
                     <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="1000">
                         <div class="pricing-item featured">
                             <h3>Prestasi Terbaru</h3>
                             <h4><sup>Mahasiswa</sup></h4>
                             <ol class="p-0" style="list-style: none;">
-                                <?php if (isset($data['top10NewVerifikasi']) && !empty($data['top10NewVerifikasi'])): ?>
-                                <?php foreach ($data['top10NewVerifikasi'] as $index => $prestasi): ?>
-                                <li class="d-flex align-items-center mb-3">
-                                    <span class="badge bg-gradient-primary px-3 py-2 rounded-pill me-3"
-                                        style="background: linear-gradient(45deg, <?= $index == 0 ? '#FFD700, #FFA500' : ($index == 1 ? '#C0C0C0, #D3D3D3' : ($index == 2 ? '#CD7F32, #B8860B' : '#4e54c8, #8f94fb')) ?>); width: 50px; text-align: center;">
-                                        <?= $index + 1 . ($index + 1 == 1 ? 'st' : ($index + 1 == 2 ? 'nd' : ($index + 1 == 3 ? 'rd' : 'th'))) ?>
-                                    </span>
-                                    <span><?= $prestasi['mahasiswa_name'] . ' - ' . $prestasi['judul'] . ' - ' . $prestasi['tingkatan_name'] ?></span>
-                                </li>
-                                <?php endforeach; ?>
-                                <?php endif; ?>
+                                @if (isset($top10NewVerifikasi) && $top10NewVerifikasi->count() > 0)
+                                    @foreach ($top10NewVerifikasi as $index => $prestasi)
+                                        <li class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-gradient-primary px-3 py-2 rounded-pill me-3"
+                                                style="background: linear-gradient(45deg, {{ $index == 0 ? '#FFD700, #FFA500' : ($index == 1 ? '#C0C0C0, #D3D3D3' : ($index == 2 ? '#CD7F32, #B8860B' : '#4e54c8, #8f94fb')) }}); width: 50px; text-align: center;">
+                                                {{ $index + 1 }}{{ $index + 1 == 1 ? 'st' : ($index + 1 == 2 ? 'nd' : ($index + 1 == 3 ? 'rd' : 'th')) }}
+                                            </span>
+                                            <span>{{ $prestasi->mahasiswa_name }} - {{ $prestasi->judul }} -
+                                                {{ $prestasi->tingkatan_name }}</span>
+                                        </li>
+                                    @endforeach
+                                @else
+                                    <li class="d-flex align-items-center mb-3">
+                                        <span class="text-muted">Belum ada prestasi terbaru</span>
+                                    </li>
+                                @endif
                             </ol>
-                            <a href="hallOfFame" class="buy-btn">Lihat Selengkapnya</a>
+                            <a href="{{ route('hallOfFame') }}" class="buy-btn">Lihat Selengkapnya</a>
                         </div>
                     </div>
 
@@ -423,41 +426,53 @@
                             <h3>TOP 10</h3>
                             <h4><sup>Mahasiswa</sup></h4>
                             <ol class="p-0" style="list-style: none;">
-                                <?php if (isset($data['top10mahasiswas']) && !empty($data['top10mahasiswas'])): ?>
-                                <?php foreach ($data['top10mahasiswas'] as $index => $mahasiswa): ?>
-                                <li class="d-flex align-items-center mb-3">
-                                    <span class="badge bg-gradient-primary px-3 py-2 rounded-pill me-3"
-                                        style="background: linear-gradient(45deg, <?= $index == 0 ? '#FFD700, #FFA500' : ($index == 1 ? '#C0C0C0, #D3D3D3' : ($index == 2 ? '#CD7F32, #B8860B' : '#4e54c8, #8f94fb')) ?>); width: 50px; text-align: center;">
-                                        <?= $index + 1 . ($index + 1 == 1 ? 'st' : ($index + 1 == 2 ? 'nd' : ($index + 1 == 3 ? 'rd' : 'th'))) ?></span>
-                                    <span><?= $mahasiswa['name'] . ' - ' . $mahasiswa['score'] . ' Points' ?></span>
-                                </li>
-                                <?php endforeach; ?>
-                                <?php endif; ?>
+                                @if (isset($top10mahasiswas) && $top10mahasiswas->count() > 0)
+                                    @foreach ($top10mahasiswas as $index => $mahasiswa)
+                                        <li class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-gradient-primary px-3 py-2 rounded-pill me-3"
+                                                style="background: linear-gradient(45deg, {{ $index == 0 ? '#FFD700, #FFA500' : ($index == 1 ? '#C0C0C0, #D3D3D3' : ($index == 2 ? '#CD7F32, #B8860B' : '#4e54c8, #8f94fb')) }}); width: 50px; text-align: center;">
+                                                {{ $index + 1 }}{{ $index + 1 == 1 ? 'st' : ($index + 1 == 2 ? 'nd' : ($index + 1 == 3 ? 'rd' : 'th')) }}
+                                            </span>
+                                            <span>{{ $mahasiswa->name }} - {{ number_format($mahasiswa->score, 0) }}
+                                                Points</span>
+                                        </li>
+                                    @endforeach
+                                @else
+                                    <li class="d-flex align-items-center mb-3">
+                                        <span class="text-muted">Belum ada data mahasiswa</span>
+                                    </li>
+                                @endif
                             </ol>
-                            <a href="hallOfFame" class="buy-btn">Lihat Selengkapnya</a>
+                            <a href="{{ route('hallOfFame') }}" class="buy-btn">Lihat Selengkapnya</a>
                         </div>
                     </div>
+
                     <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="1000">
                         <div class="pricing-item featured">
                             <h3>TOP 10</h3>
                             <h4><sup>Dosen</sup></h4>
                             <ol class="p-0" style="list-style: none;">
-                                top10mahasiswas <?php if (isset($data['top10dosen']) && !empty($data['top10dosen'])): ?>
-                                <?php foreach ($data['top10dosen'] as $index => $dosen): ?>
-                                <li class="d-flex align-items-center mb-3">
-                                    <span class="badge bg-gradient-primary px-3 py-2 rounded-pill me-3"
-                                        style="background: linear-gradient(45deg, <?= $index == 0 ? '#FFD700, #FFA500' : ($index == 1 ? '#C0C0C0, #D3D3D3' : ($index == 2 ? '#CD7F32, #B8860B' : '#4e54c8, #8f94fb')) ?>); width: 50px; text-align: center;">
-                                        <?= $index + 1 . ($index + 1 == 1 ? 'st' : ($index + 1 == 2 ? 'nd' : ($index + 1 == 3 ? 'rd' : 'th'))) ?></span>
-                                    <span><?= $dosen['name'] . ' - ' . $dosen['score'] . ' Points' ?></span>
-                                </li>
-                                <?php endforeach; ?>
-                                <?php endif; ?>
+                                @if (isset($top10dosen) && $top10dosen->count() > 0)
+                                    @foreach ($top10dosen as $index => $dosen)
+                                        <li class="d-flex align-items-center mb-3">
+                                            <span class="badge bg-gradient-primary px-3 py-2 rounded-pill me-3"
+                                                style="background: linear-gradient(45deg, {{ $index == 0 ? '#FFD700, #FFA500' : ($index == 1 ? '#C0C0C0, #D3D3D3' : ($index == 2 ? '#CD7F32, #B8860B' : '#4e54c8, #8f94fb')) }}); width: 50px; text-align: center;">
+                                                {{ $index + 1 }}{{ $index + 1 == 1 ? 'st' : ($index + 1 == 2 ? 'nd' : ($index + 1 == 3 ? 'rd' : 'th')) }}
+                                            </span>
+                                            <span>{{ $dosen->name }} - {{ number_format($dosen->score, 0) }}
+                                                Points</span>
+                                        </li>
+                                    @endforeach
+                                @else
+                                    <li class="d-flex align-items-center mb-3">
+                                        <span class="text-muted">Belum ada data dosen</span>
+                                    </li>
+                                @endif
                             </ol>
-                            <a href="hallOfFame" class="buy-btn">Lihat Selengkapnya</a>
+                            <a href="{{ route('hallOfFame') }}" class="buy-btn">Lihat Selengkapnya</a>
                         </div>
                     </div>
                 </div>
-
             </div>
 
         </section><!-- /Pricing Section -->

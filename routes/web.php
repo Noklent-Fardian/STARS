@@ -25,6 +25,7 @@ use App\Http\Controllers\RekomendasiController;
 use App\Http\Controllers\BobotController;
 use App\Http\Controllers\MahasiswaNotifikasiController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\HallOfFameController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,7 @@ Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::get('/login', [LandingController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/hallOfFame', [HallOfFameController::class, 'index'])->name('hallOfFame');
 
 // Notification routes (moved here and fixed paths)
 Route::middleware(['auth'])->group(function () {
