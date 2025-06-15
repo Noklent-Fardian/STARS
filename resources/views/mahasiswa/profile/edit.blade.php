@@ -254,9 +254,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex gap-3 mt-3">
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                        <a href="{{ route('mahasiswa.profile') }}" class="btn btn-secondary">Batal</a>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i> Simpan
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='{{ route('mahasiswa.profile') }}'">
+                            <i class="fas fa-times me-1"></i> Batal
+                        </button>
                     </div>
                     @yield('form-edit-content')
                 </div>
@@ -321,7 +325,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-lock me-1"></i>Simpan
+                        <i class="fas fa-lock me-1"></i> Simpan
                     </button>
                 </div>
             </form>

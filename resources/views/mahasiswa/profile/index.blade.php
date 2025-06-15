@@ -151,8 +151,8 @@
                 <div class="card-header fw-bold">Lain-lain</div>
                 <div class="card-body">
                     <div class="row mb-2">
-                        <div class="col-sm-4">Akun User</div>
-                        <div class="col-sm-8">{{ $mahasiswa->user->email ?? '-' }}</div>
+                        <div class="col-sm-4">Username</div>
+                        <div class="col-sm-8">{{ Auth::user()->username }}</div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-sm-4">Foto Profil</div>
