@@ -322,7 +322,7 @@ class CompetitionSubmissionController extends Controller
                 "Pengajuan prestasi '{$penghargaan->penghargaan_judul}' berhasil dikirim dan sedang menunggu verifikasi.",
                 route('mahasiswa.riwayatPengajuanPrestasi.show', $verifikasi->id),
                 'fas fa-upload',
-              'bg-warning',
+                'bg-warning',
                 $verifikasi->id,
                 'prestasi_verification'
             );

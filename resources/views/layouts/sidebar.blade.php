@@ -203,12 +203,12 @@
             </a>
         </li>
 
-        <li class="nav-item {{ request()->routeIs('dosen.bimbingan.index') ? 'active' : '' }}">
+        {{-- <li class="nav-item {{ request()->routeIs('dosen.bimbingan.index') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('dosen.bimbingan.index') }}">
                 <i class="nav-icon fas fa-users"></i>
                 <span>Bimbingan</span>
             </a>
-        </li>
+        </li> --}}
 
         <hr class="sidebar-divider">
         <!-- Manajemen Prestasi -->
@@ -281,10 +281,10 @@
 
         <div class="sidebar-heading">Notifikasi</div>
 
-        <li class="nav-item {{ request()->routeIs('mahasiswa.notifikasi.*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('mahasiswa.notifikasi.index') }}">
+        <li class="nav-item {{ request()->routeIs('mahasiswa.rekomendasi.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('mahasiswa.rekomendasi.index') }}">
                 <i class="nav-icon fas fa-plus-circle"></i>
-                <span>Notifikasi Mahasiswa</span>
+                <span>Rekomendasi Lomba</span>
             </a>
         </li>
 

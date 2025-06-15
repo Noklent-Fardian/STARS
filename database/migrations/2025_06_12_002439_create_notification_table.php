@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('is_read')->default(false);
             $table->unsignedBigInteger('related_id')->nullable();
             $table->string('related_type')->nullable();
+            $table->json('data')->nullable(); 
             $table->timestamps();
 
             $table->index(['user_id', 'is_read']);
