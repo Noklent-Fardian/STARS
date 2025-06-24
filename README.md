@@ -1,4 +1,7 @@
-# ✨ STARS-STUDENT ACHIEVEMENT RECORD SYSTEM Repository ✨
+<p align="center">
+  <img src="public/img/logo.svg" alt="STAR Logo" width="150" height="150">
+  <h1 align="center">✨ STARS-STUDENT ACHIEVEMENT RECORD SYSTEM✨</h1>
+</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white">
@@ -72,7 +75,7 @@ Untuk menjalankan proyek ini secara lokal, ikuti langkah-langkah instalasi berik
 ```
 
 <p align="center">
-    <!-- <img src="https://via.placeholder.com/150x150" alt="STAR Logo" width="150" height="150"> -->
+    <img src="public/img/logo.svg" alt="STAR Logo" width="150" height="150">
     <h1 align="center">✨ STARS ✨</h1>
     <h2 align="center">STUDENT ACHIEVEMENT RECORD SYSTEM</h2>
     <p align="center"><em>Track, Record, and Celebrate Student Excellence</em></p>
