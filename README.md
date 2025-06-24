@@ -56,7 +56,7 @@ Untuk menjalankan proyek ini secara lokal, ikuti langkah-langkah instalasi berik
 
 # Buat database baru dengan nama 'star_student'
 
-# Atur konfigurasi database di file .env
+# Atur konfigurasi database di file .env isi bagian databse dengan 'star_sudent'
 
 # Generate application key
  php artisan key:generate
